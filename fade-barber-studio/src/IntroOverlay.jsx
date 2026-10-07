@@ -21,6 +21,13 @@ const GRADE_LEAD_S = 1;
 // Se il video non riesce a partire entro questo tempo (file mancante, rete lenta), si passa alla Hero.
 const START_TIMEOUT_MS = 8000;
 
+/** MP4 (H.264) dove il browser lo legge, altrimenti WebM. */
+function pickIntroSource(video) {
+  if (video.canPlayType('video/mp4; codecs="avc1.640028"')) return introMp4;
+  if (video.canPlayType('video/webm; codecs="vp9"')) return introWebm;
+  return null;
+}
+
 /** L'intro non parte per chi ha chiesto al sistema di ridurre il movimento. */
 export function shouldPlayIntro() {
   if (typeof window === "undefined") return false;
@@ -44,31 +51,48 @@ export default function IntroOverlay({ fading, onFinish }) {
     onFinish();
   };
 
-  // Se un formato non è leggibile il browser prova il successivo: si chiude solo quando non ne resta nessuno.
-  const finishIfNoSource = () => {
-    const video = videoRef.current;
-    if (!video || video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) finish();
-  };
-
   useEffect(() => {
     skipRef.current?.focus({ preventScroll: true });
     const video = videoRef.current;
+    if (!video) return undefined;
     let started = false;
+    let cancelled = false;
+    let blobUrl = null;
     const onPlaying = () => {
       started = true;
     };
-    video?.addEventListener("playing", onPlaying);
-    // Autoplay bloccato (es. risparmio energetico su iPhone): si passa subito alla Hero.
-    // Un AbortError è solo il browser che passa da una <source> all'altra: il video parte comunque.
-    video?.play().catch((err) => {
-      if (err?.name === "NotAllowedError") finish();
-    });
+    video.addEventListener("playing", onPlaying);
+
+    (async () => {
+      const src = pickIntroSource(video);
+      if (!src) return finish();
+      // Nell'anteprima in un solo file il video è un data: URL, che Safari e iPhone non riproducono:
+      // lo trasformiamo in un blob: URL, che invece funziona ovunque.
+      let playable = src;
+      if (src.startsWith("data:")) {
+        try {
+          blobUrl = URL.createObjectURL(await (await fetch(src)).blob());
+          playable = blobUrl;
+        } catch {
+          /* resta il data: URL */
+        }
+      }
+      if (cancelled) return;
+      video.src = playable;
+      // Autoplay bloccato (es. risparmio energetico su iPhone): si passa subito alla Hero.
+      video.play().catch((err) => {
+        if (err?.name === "NotAllowedError") finish();
+      });
+    })();
+
     const timeout = window.setTimeout(() => {
       if (!started) finish();
     }, START_TIMEOUT_MS);
     return () => {
-      video?.removeEventListener("playing", onPlaying);
+      cancelled = true;
+      video.removeEventListener("playing", onPlaying);
       window.clearTimeout(timeout);
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -95,11 +119,8 @@ export default function IntroOverlay({ fading, onFinish }) {
           if (!graded && v.duration && v.duration - v.currentTime <= GRADE_LEAD_S) setGraded(true);
         }}
         onEnded={finish}
-        onError={finishIfNoSource}
-      >
-        <source src={introMp4} type="video/mp4" />
-        <source src={introWebm} type="video/webm" onError={finishIfNoSource} />
-      </video>
+        onError={finish}
+      />
 
       {/* Nell'ultimo secondo il video riceve le sfumature della Hero: l'ultimo fotogramma è identico alla pagina. */}
       <HeroScrims
