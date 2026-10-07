@@ -38,6 +38,28 @@
   section[id] {
     scroll-margin-top: 5rem;
   }
+  body {
+    caret-color: var(--color-gold);
+    scrollbar-color: rgb(138 43 226 / 0.6) var(--color-obsidian);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-obsidian);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(138 43 226 / 0.55);
+    border: 2px solid var(--color-obsidian);
+    border-radius: 999px;
+  }
+  button,
+  summary {
+    cursor: pointer;
+  }
+  a {
+    text-underline-offset: 0.2em;
+  }
   ::selection {
     background: var(--color-violet);
     color: var(--color-ivory);
@@ -161,7 +183,7 @@
   @media (hover: hover) {
     .btn-ghost:hover {
       background: rgb(138 43 226 / 0.3);
-      box-shadow: 0 0 32px -6px rgb(138 43 226 / 0.8);
+      box-shadow: 0 12px 32px -12px rgb(138 43 226 / 0.85);
     }
   }
   .btn-ghost:active {
@@ -178,14 +200,17 @@
   }
 }
 
+/*
+  Movimento ridotto: niente scroll animato, niente spostamenti al passaggio del mouse.
+  Restano i cambi di colore e di bagliore, che segnalano lo stato senza muovere nulla.
+  Le comparse allo scroll e l'intro video vengono disattivate dai componenti React.
+*/
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+  .btn-gold:active,
+  .btn-ghost:active {
+    transform: none;
   }
 }

@@ -21,11 +21,15 @@ import {
 } from "lucide-react";
 
 import IntroOverlay, { shouldPlayIntro } from "./IntroOverlay.jsx";
+import HeroScrims from "./HeroScrims.jsx";
 import logo from "./assets/logo.webp";
 import salone from "./assets/salone.webp";
 import certificato from "./assets/certificato.webp";
 import premiazione from "./assets/premiazione.webp";
 import taglioFade from "./assets/taglio-fade.webp";
+import taglioCropSkinFade from "./assets/taglio-crop-skin-fade.webp";
+import taglioSlickBack from "./assets/taglio-slick-back.webp";
+import taglioMullet from "./assets/taglio-mullet.webp";
 
 /* ───────────── Dati del salone ───────────── */
 
@@ -109,10 +113,10 @@ function Reveal({ children, delay = 0, className = "", as = "div" }) {
   return (
     <Tag
       className={className}
-      initial={reduce ? false : { opacity: 0, y: 28 }}
+      initial={reduce ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </Tag>
@@ -158,7 +162,7 @@ function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <a href={LINKS.treatwell} {...EXT} className="btn-gold px-4 py-3 text-[11px] sm:px-5">
+          <a href={LINKS.treatwell} {...EXT} className="btn-gold min-h-11 px-4 py-3 text-xs sm:px-5">
             Prenota online
           </a>
           <button
@@ -219,15 +223,13 @@ function Hero({ revealed }) {
         className="absolute inset-0 -z-20 h-full w-full object-cover"
         fetchPriority="high"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-obsidian via-obsidian/70 to-obsidian/10" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-obsidian/90 via-obsidian/40 to-transparent" />
-      <div className="pointer-events-none absolute -left-40 bottom-0 -z-10 h-[520px] w-[520px] rounded-full bg-violet/25 blur-[140px]" />
+      <HeroScrims className="-z-10" />
 
       <div className="mx-auto w-full max-w-7xl px-4 pb-28 pt-28 sm:px-6 md:pb-24 lg:px-8">
         <div className="max-w-5xl">
           <motion.p
             {...enter(0.1)}
-            className="inline-flex items-center gap-2 rounded-full border border-violet-soft/60 bg-violet/15 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold shadow-[0_0_28px_-6px_rgba(138,43,226,0.9)] backdrop-blur-md"
+            className="inline-flex items-center gap-2 rounded-full border border-violet-soft/60 bg-violet/15 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold shadow-[0_10px_30px_-10px_rgba(138,43,226,0.9)] backdrop-blur-md"
           >
             <BadgeCheck size={16} strokeWidth={2} aria-hidden="true" />
             Certificato Accademia Gilmont
@@ -286,7 +288,7 @@ function About() {
         <Reveal delay={0.1} className="md:col-span-7 md:-ml-16">
           <div className="glass rounded-[20px] p-7 shadow-[0_30px_80px_-30px_rgba(138,43,226,0.55)] sm:p-10">
             <SectionTitle>
-              Passione <span className="text-gold-gradient">certificata</span>
+              Passione <span className="text-gold">certificata</span>
             </SectionTitle>
             <p className="mt-6 max-w-[60ch] text-base leading-relaxed text-ivory/80 sm:text-lg">
               Federico Giustini e David Pannunzi hanno trasformato talento e dedizione in un salone dove ogni
@@ -337,12 +339,12 @@ function ServiceCard({ service, index }) {
     >
       <article
         onPointerMove={trackSpotlight}
-        className={`spotlight group flex h-full flex-col rounded-[20px] border border-white/[0.07] bg-carbon p-7 transition-transform duration-300 ease-out hover:-translate-y-1 ${
+        className={`spotlight group flex h-full flex-col rounded-[20px] border border-white/[0.07] bg-carbon p-7 transition-transform duration-300 ease-out motion-safe:hover:-translate-y-1 ${
           service.featured ? "bg-gradient-to-br from-violet/25 via-carbon to-carbon md:p-9" : ""
         }`}
       >
         <div className="flex items-start justify-between gap-4">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl border border-violet-soft/40 bg-violet/15 text-violet-soft transition-shadow duration-300 group-hover:shadow-[0_0_30px_-4px_rgba(138,43,226,0.9)]">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl border border-violet-soft/40 bg-violet/15 text-violet-soft transition-shadow duration-300 group-hover:shadow-[0_10px_28px_-8px_rgba(138,43,226,0.95)]">
             <Icon size={22} strokeWidth={1.75} aria-hidden="true" />
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs text-mist">
@@ -361,14 +363,14 @@ function ServiceCard({ service, index }) {
         <p className="mt-3 max-w-[48ch] text-sm leading-relaxed text-mist">{service.text}</p>
 
         <div className="mt-auto flex items-end justify-between gap-4 pt-8">
-          <p className="font-display text-4xl font-black text-gold">
+          <p className="font-display text-4xl font-black tabular-nums text-gold">
             <span className="mr-1 align-top text-lg">€</span>
             {service.price}
           </p>
           <a
             href={LINKS.treatwell}
             {...EXT}
-            className="btn-ghost px-5 py-3 text-[11px]"
+            className="btn-ghost min-h-11 px-5 py-3 text-xs"
             aria-label={`Prenota ora: ${service.name}`}
           >
             Prenota ora
@@ -387,7 +389,7 @@ function Services() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="max-w-2xl">
           <SectionTitle>
-            Listino <span className="text-gold-gradient">servizi</span>
+            Listino <span className="text-gold">servizi</span>
           </SectionTitle>
           <p className="mt-5 max-w-[55ch] text-base leading-relaxed text-mist sm:text-lg">
             Prezzi chiari, tempi dedicati. Scegli il servizio e prenota il tuo posto su Treatwell.
@@ -406,85 +408,140 @@ function Services() {
 
 /* ───────────── I nostri tagli ───────────── */
 
-const CUT_TAGS = ["Sfumatura Fade", "Beard Care", "Styling"];
+/*
+  Galleria dei tagli. Per aggiungere un lavoro: importa la foto in alto e aggiungi un oggetto qui.
+  `layout` decide la cella su schermi larghi: "tall" occupa due righe, "small" una.
+*/
+const CUTS = [
+  {
+    src: taglioFade,
+    width: 1100,
+    height: 1100,
+    title: "Riccio con low fade",
+    tags: ["Sfumatura Fade", "Beard Care"],
+    alt: "Capelli ricci con sfumatura bassa e barba piena definita, visti di profilo",
+    layout: "tall",
+  },
+  {
+    src: taglioCropSkinFade,
+    width: 960,
+    height: 1194,
+    title: "Crop texturizzato e skin fade",
+    tags: ["Sfumatura Fade", "Beard Care"],
+    alt: "Ciuffo mosso con sfumatura alta a pelle e barba corta sagomata",
+    layout: "tall",
+  },
+  {
+    src: taglioSlickBack,
+    width: 960,
+    height: 1200,
+    title: "Slick back sfumato",
+    tags: ["Sfumatura Fade", "Styling"],
+    alt: "Capelli pettinati all'indietro con sfumatura bassa dietro l'orecchio",
+    layout: "small",
+  },
+  {
+    src: taglioMullet,
+    width: 960,
+    height: 1280,
+    title: "Mullet sfumato",
+    tags: ["Sfumatura Fade", "Styling"],
+    alt: "Mullet con riflessi chiari e sfumatura netta attorno all'orecchio",
+    layout: "small",
+  },
+];
+
+const CUT_CELL = {
+  tall: "md:col-span-1 lg:col-span-4 lg:row-span-2",
+  small: "md:col-span-1 lg:col-span-4",
+};
+
+function CutCard({ cut, index }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.figure
+      onPointerMove={trackSpotlight}
+      className={`spotlight group flex flex-col rounded-[20px] border border-white/[0.07] bg-carbon p-2 ${CUT_CELL[cut.layout]}`}
+      initial={reduce ? false : { clipPath: "inset(10% 6% 10% 6% round 20px)", opacity: 0.4 }}
+      whileInView={{ clipPath: "inset(0% 0% 0% 0% round 20px)", opacity: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div className="relative min-h-0 flex-1 overflow-hidden rounded-[14px]">
+        <img
+          src={cut.src}
+          alt={cut.alt}
+          width={cut.width}
+          height={cut.height}
+          loading="lazy"
+          decoding="async"
+          className="aspect-[4/5] w-full object-cover object-[50%_30%] transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04] lg:aspect-auto lg:h-full"
+        />
+      </div>
+      <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-3 pb-3 pt-4">
+        <span className="font-display text-sm font-bold uppercase tracking-wide text-ivory">{cut.title}</span>
+        <span className="flex flex-wrap gap-2">
+          {cut.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold"
+            >
+              {tag}
+            </span>
+          ))}
+        </span>
+      </figcaption>
+    </motion.figure>
+  );
+}
 
 function Lookbook() {
   return (
     <section id="tagli" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
       <Reveal>
         <SectionTitle className="max-w-3xl">
-          I nostri <span className="text-gold-gradient">tagli</span>
+          I nostri <span className="text-gold">tagli</span>
         </SectionTitle>
+        <p className="mt-5 max-w-[55ch] text-base leading-relaxed text-mist sm:text-lg">
+          Lavori reali, fatti nel nostro salone. Sfumature, barbe e styling su misura.
+        </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-12 md:gap-5">
-        <Reveal className="md:col-span-7 md:row-span-2">
-          <figure
-            onPointerMove={trackSpotlight}
-            className="spotlight group h-full overflow-hidden rounded-[20px] border border-white/[0.07] bg-carbon/60 p-2 backdrop-blur"
-          >
-            <div className="overflow-hidden rounded-[14px]">
-              <img
-                src={taglioFade}
-                alt="Taglio riccio con sfumatura bassa e barba definita, realizzato da Fade Barber Studio"
-                loading="lazy"
-                width="1100"
-                height="1100"
-                className="aspect-square w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
-            </div>
-            <figcaption className="flex flex-wrap gap-2 px-3 pb-3 pt-4">
-              {CUT_TAGS.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-gold"
-                >
-                  {tag}
-                </span>
-              ))}
-            </figcaption>
-          </figure>
-        </Reveal>
-
-        <Reveal delay={0.08} className="md:col-span-5">
-          <figure className="group h-full overflow-hidden rounded-[20px] border border-white/[0.07] bg-carbon/60 p-2">
-            <div className="overflow-hidden rounded-[14px]">
-              <img
-                src={salone}
-                alt="Poltrona da barbiere con il logo Fade e lavabi neri"
-                loading="lazy"
-                className="aspect-[16/10] w-full object-cover object-[35%_60%] transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-              />
-            </div>
-            <figcaption className="px-3 pb-2 pt-3 text-sm text-mist">La tua poltrona ti aspetta.</figcaption>
-          </figure>
-        </Reveal>
-
-        <Reveal delay={0.16} className="md:col-span-5">
-          <a
-            href={LINKS.instagram}
-            {...EXT}
-            onPointerMove={trackSpotlight}
-            className="spotlight group flex h-full min-h-56 flex-col justify-between rounded-[20px] border border-violet-soft/30 bg-gradient-to-br from-violet/45 via-violet/10 to-carbon p-7"
-          >
-            <Camera size={30} strokeWidth={1.75} className="text-ivory" aria-hidden="true" />
-            <div>
-              <p className="font-display text-xl font-bold uppercase leading-tight text-ivory sm:text-2xl">
-                Sfoglia tutti i look su Instagram
-              </p>
-              <p className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold">
-                @fade_barber_studio
-                <ArrowUpRight
-                  size={16}
-                  strokeWidth={2.25}
-                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                />
-              </p>
-            </div>
-          </a>
-        </Reveal>
+      <div className="mt-12 grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-12 lg:grid-rows-[400px_400px]">
+        {CUTS.map((cut, i) => (
+          <CutCard key={cut.title} cut={cut} index={i} />
+        ))}
       </div>
+
+      <Reveal delay={0.1} className="mt-5">
+        <a
+          href={LINKS.instagram}
+          {...EXT}
+          onPointerMove={trackSpotlight}
+          className="spotlight group flex flex-col gap-6 rounded-[20px] border border-violet-soft/30 bg-gradient-to-r from-violet/40 via-violet/10 to-carbon p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9"
+        >
+          <span className="flex items-center gap-5">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/15 bg-white/5">
+              <Camera size={26} strokeWidth={1.75} className="text-ivory" aria-hidden="true" />
+            </span>
+            <span>
+              <span className="block font-display text-lg font-bold uppercase leading-tight text-ivory sm:text-2xl">
+                Sfoglia tutti i look su Instagram
+              </span>
+              <span className="mt-1 block text-sm font-semibold text-gold">@fade_barber_studio</span>
+            </span>
+          </span>
+          <span className="btn-ghost min-h-11 self-start px-6 py-3 text-xs sm:self-auto">
+            Apri Instagram
+            <ArrowUpRight
+              size={16}
+              strokeWidth={2.25}
+              className="transition-transform duration-300 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </span>
+        </a>
+      </Reveal>
     </section>
   );
 }
@@ -499,7 +556,7 @@ function Stars({ size = 18 }) {
           key={i}
           size={size}
           strokeWidth={1.5}
-          className="fill-gold text-gold drop-shadow-[0_0_6px_rgba(255,230,0,0.6)]"
+          className="fill-gold text-gold drop-shadow-[0_2px_6px_rgba(255,230,0,0.5)]"
           aria-hidden="true"
         />
       ))}
@@ -530,7 +587,7 @@ function Reviews() {
         <Reveal className="mx-auto max-w-3xl text-center">
           <Quote size={40} strokeWidth={1.5} className="mx-auto text-violet-soft" aria-hidden="true" />
           <SectionTitle className="mt-6">
-            Le recensioni dei nostri <span className="text-gold-gradient">clienti</span>
+            Le recensioni dei nostri <span className="text-gold">clienti</span>
           </SectionTitle>
           <p className="mx-auto mt-5 max-w-[52ch] text-base leading-relaxed text-mist sm:text-lg">
             Opinioni vere e verificate, dove le lasciano i clienti: su Google e su Treatwell.
@@ -569,7 +626,7 @@ function Reviews() {
                     <ArrowUpRight
                       size={20}
                       strokeWidth={2}
-                      className="text-mist transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold"
+                      className="text-mist transition-transform duration-300 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5 group-hover:text-gold"
                       aria-hidden="true"
                     />
                   </div>
@@ -595,15 +652,15 @@ function ContactTile({ href, icon: Icon, label, value, external = true, classNam
       href={href}
       {...(external ? EXT : {})}
       onPointerMove={trackSpotlight}
-      className={`spotlight group flex flex-col justify-between gap-6 rounded-[20px] border p-6 transition-transform duration-200 active:scale-[0.98] ${
+      className={`spotlight group flex flex-col justify-between gap-6 rounded-[20px] border p-6 transition-transform duration-200 motion-safe:active:scale-[0.98] ${
         accent ? "border-gold/40 bg-gold/[0.08]" : "border-white/[0.07] bg-carbon"
       } ${className}`}
     >
       <span
         className={`grid h-12 w-12 place-items-center rounded-2xl border transition-shadow duration-300 ${
           accent
-            ? "border-gold/50 bg-gold/15 text-gold group-hover:shadow-[0_0_28px_-4px_rgba(255,230,0,0.7)]"
-            : "border-violet-soft/40 bg-violet/15 text-violet-soft group-hover:shadow-[0_0_28px_-4px_rgba(138,43,226,0.9)]"
+            ? "border-gold/50 bg-gold/15 text-gold group-hover:shadow-[0_10px_28px_-8px_rgba(255,230,0,0.75)]"
+            : "border-violet-soft/40 bg-violet/15 text-violet-soft group-hover:shadow-[0_10px_28px_-8px_rgba(138,43,226,0.95)]"
         }`}
       >
         <Icon size={22} strokeWidth={1.75} aria-hidden="true" />
@@ -615,7 +672,7 @@ function ContactTile({ href, icon: Icon, label, value, external = true, classNam
           <ArrowUpRight
             size={16}
             strokeWidth={2.25}
-            className="shrink-0 text-mist transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold"
+            className="shrink-0 text-mist transition-transform duration-300 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5 group-hover:text-gold"
             aria-hidden="true"
           />
         </span>
@@ -630,7 +687,7 @@ function Contacts() {
     <section id="contatti" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
       <Reveal>
         <SectionTitle>
-          Vieni a <span className="text-gold-gradient">trovarci</span>
+          Vieni a <span className="text-gold">trovarci</span>
         </SectionTitle>
       </Reveal>
 
@@ -656,7 +713,7 @@ function Contacts() {
                   <span className="text-sm text-mist">00172 Roma RM</span>
                 </span>
               </span>
-              <span className="btn-ghost px-4 py-2.5 text-[11px]">Indicazioni</span>
+              <span className="btn-ghost min-h-11 px-4 py-2.5 text-xs">Indicazioni</span>
             </a>
           </div>
         </Reveal>
@@ -693,7 +750,7 @@ function Contacts() {
               {HOURS.map((row) => (
                 <div key={row.days}>
                   <dt className="text-sm text-mist">{row.days}</dt>
-                  <dd className="mt-1 font-display text-lg font-bold text-ivory">{row.time}</dd>
+                  <dd className="mt-1 font-display text-lg font-bold tabular-nums text-ivory">{row.time}</dd>
                 </div>
               ))}
             </dl>
@@ -736,7 +793,7 @@ function MobileQuickBar() {
             {label}
           </a>
         ))}
-        <a href={LINKS.treatwell} {...EXT} className="btn-gold flex-[1.3] px-4 py-3 text-[11px]">
+        <a href={LINKS.treatwell} {...EXT} className="btn-gold min-h-11 flex-[1.3] px-4 py-3 text-xs">
           Prenota
         </a>
       </div>
