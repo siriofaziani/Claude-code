@@ -13,10 +13,11 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 
 ## Da completare
 
-- **Video intro:** copia `kling_20260911_VIDEO_First_pers_6108_0.mp4` in `public/intro.mp4`.
-  Finché manca, l'intro si chiude da sola e la pagina parte dalla Hero.
-  L'ultima inquadratura del video deve coincidere con `src/assets/salone.webp`: nell'ultimo secondo
-  il video riceve le stesse sfumature scure della Hero (`src/HeroScrims.jsx`), poi sfuma in 1 secondo.
-- **Foto Hero:** `src/assets/salone.webp` è larga solo 1360 px; per schermi grandi serve una versione ad alta risoluzione con lo stesso nome.
+- **Video intro:** è il video Kling (`src/assets/intro.mp4`, più `intro.webm` per i browser che non leggono l'MP4).
+  La Hero usa come sfondo il suo ultimo fotogramma (`src/assets/hero-ultimo-fotogramma.webp`) con lo stesso ritaglio
+  (`FRAME_FIT` in `src/IntroOverlay.jsx`), quindi la dissolvenza di 1 secondo non mostra stacchi.
+  Se cambi il video, rigenera webm e ultimo fotogramma:
+  `ffmpeg -i src/assets/intro.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 40 src/assets/intro.webm`
+  `ffmpeg -sseof -0.08 -i src/assets/intro.mp4 -frames:v 1 ultimo.png` (poi convertilo in `hero-ultimo-fotogramma.webp`).
 - **Tagli:** per aggiungere un lavoro, importa la foto in `src/App.jsx` e aggiungila all'elenco `CUTS`.
 - **Recensioni:** incolla recensioni reali (copiate da Google o Treatwell) nell'elenco `REVIEWS` di `src/App.jsx`.

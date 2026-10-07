@@ -1,65 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 import { SkipForward } from "lucide-react";
 import HeroScrims from "./HeroScrims.jsx";
+import introMp4 from "./assets/intro.mp4";
+import introWebm from "./assets/intro.webm";
 
 /*
-  Video introduttivo a tutto schermo.
-  Metti il file in public/intro.mp4 (il video "kling_20260911_VIDEO_First_pers_6108_0.mp4" rinominato).
-  L'ultima inquadratura del video deve coincidere con la foto della Hero (src/assets/salone.webp):
-  stessa inquadratura e stesso object-fit "cover", così la dissolvenza incrociata non mostra stacchi.
-  Se il file manca, non parte entro 4 secondi o l'utente preferisce meno movimento, l'intro si chiude da sola.
+  Video introduttivo a tutto schermo: src/assets/intro.mp4 (il video Kling, senza audio) + intro.webm (stesso video,
+  per i browser che non leggono l'MP4).
+  La Hero usa come sfondo l'ULTIMO FOTOGRAMMA di questo video (src/assets/hero-ultimo-fotogramma.webp)
+  con lo stesso ritaglio (FRAME_FIT): alla fine della dissolvenza l'immagine sotto è identica al video.
+  Se cambi il video, rigenera anche l'ultimo fotogramma:
+    ffmpeg -sseof -0.08 -i src/assets/intro.mp4 -frames:v 1 ultimo.png
 */
-export const INTRO_VIDEO_SRC = "/intro.mp4";
-const FADE_MS = 1000;
-// Quanti secondi prima della fine compaiono le sfumature della Hero sopra il video.
-const GRADE_LEAD_S = 1.1;
-const START_TIMEOUT_MS = 4000;
-const SEEN_KEY = "fade-intro-seen";
 
-function introAlreadySeen() {
-  try {
-    return sessionStorage.getItem(SEEN_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
+/** Ritaglio condiviso da video e foto della Hero: devono coincidere al pixel. */
+export const FRAME_FIT = "object-cover object-[50%_60%]";
+export const FADE_MS = 1000;
+// Secondi prima della fine in cui sul video compaiono le stesse sfumature scure della Hero.
+const GRADE_LEAD_S = 1;
+// Se il video non riesce a partire entro questo tempo (file mancante, rete lenta), si passa alla Hero.
+const START_TIMEOUT_MS = 8000;
 
-function markIntroSeen() {
-  try {
-    sessionStorage.setItem(SEEN_KEY, "1");
-  } catch {
-    /* storage non disponibile: l'intro verrà semplicemente riproposta */
-  }
-}
-
+/** L'intro non parte per chi ha chiesto al sistema di ridurre il movimento. */
 export function shouldPlayIntro() {
   if (typeof window === "undefined") return false;
-  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  return !reduce && !introAlreadySeen();
+  return !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
-export default function IntroOverlay({ onFinish }) {
+/**
+ * fading: true quando la dissolvenza è in corso (la gestisce App).
+ * onFinish: chiamato una sola volta, a fine video, su "Salta intro" o se il video non può partire.
+ */
+export default function IntroOverlay({ fading, onFinish }) {
   const videoRef = useRef(null);
   const skipRef = useRef(null);
-  const finishing = useRef(false);
-  const [fading, setFading] = useState(false);
+  const finished = useRef(false);
   const [graded, setGraded] = useState(false);
 
   const finish = () => {
-    if (finishing.current) return;
-    finishing.current = true;
-    markIntroSeen();
+    if (finished.current) return;
+    finished.current = true;
     setGraded(true);
-    setFading(true);
-    onFinish?.("start");
-    window.setTimeout(() => onFinish?.("done"), FADE_MS);
+    onFinish();
+  };
+
+  // Se un formato non è leggibile il browser prova il successivo: si chiude solo quando non ne resta nessuno.
+  const finishIfNoSource = () => {
+    const video = videoRef.current;
+    if (!video || video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) finish();
   };
 
   useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.style.overflow;
-    root.style.overflow = "hidden";
-
     skipRef.current?.focus({ preventScroll: true });
     const video = videoRef.current;
     let started = false;
@@ -67,23 +58,20 @@ export default function IntroOverlay({ onFinish }) {
       started = true;
     };
     video?.addEventListener("playing", onPlaying);
-    video?.play().catch(() => finish());
+    // Autoplay bloccato (es. risparmio energetico su iPhone): si passa subito alla Hero.
+    // Un AbortError è solo il browser che passa da una <source> all'altra: il video parte comunque.
+    video?.play().catch((err) => {
+      if (err?.name === "NotAllowedError") finish();
+    });
     const timeout = window.setTimeout(() => {
       if (!started) finish();
     }, START_TIMEOUT_MS);
-
     return () => {
-      root.style.overflow = previous;
       video?.removeEventListener("playing", onPlaying);
       window.clearTimeout(timeout);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Rilascia lo scroll appena parte la dissolvenza, così la pagina è subito usabile.
-  useEffect(() => {
-    if (fading) document.documentElement.style.overflow = "";
-  }, [fading]);
 
   return (
     <div
@@ -97,8 +85,7 @@ export default function IntroOverlay({ onFinish }) {
       <video
         ref={videoRef}
         aria-hidden="true"
-        className="h-full w-full object-cover"
-        src={INTRO_VIDEO_SRC}
+        className={`absolute inset-0 h-full w-full ${FRAME_FIT}`}
         autoPlay
         muted
         playsInline
@@ -108,16 +95,22 @@ export default function IntroOverlay({ onFinish }) {
           if (!graded && v.duration && v.duration - v.currentTime <= GRADE_LEAD_S) setGraded(true);
         }}
         onEnded={finish}
-        onError={finish}
-      />
+        onError={finishIfNoSource}
+      >
+        <source src={introMp4} type="video/mp4" />
+        <source src={introWebm} type="video/webm" onError={finishIfNoSource} />
+      </video>
+
+      {/* Nell'ultimo secondo il video riceve le sfumature della Hero: l'ultimo fotogramma è identico alla pagina. */}
       <HeroScrims
         className={`transition-opacity duration-1000 ease-out ${graded ? "opacity-100" : "opacity-0"}`}
       />
+
       <button
+        ref={skipRef}
         type="button"
         onClick={finish}
-        ref={skipRef}
-        className="btn-ghost absolute right-4 top-[max(1rem,env(safe-area-inset-top))] min-h-11 border-gold/60 px-5 py-3 text-xs sm:right-8 sm:top-8"
+        className="btn-ghost absolute right-6 top-6 z-10 min-h-11 border-gold/60 bg-black/45 px-5 py-3 text-xs [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]"
       >
         Salta intro
         <SkipForward size={16} strokeWidth={2} aria-hidden="true" />

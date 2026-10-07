@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowUpRight,
@@ -20,10 +20,10 @@ import {
   X,
 } from "lucide-react";
 
-import IntroOverlay, { shouldPlayIntro } from "./IntroOverlay.jsx";
+import IntroOverlay, { FADE_MS, FRAME_FIT, shouldPlayIntro } from "./IntroOverlay.jsx";
 import HeroScrims from "./HeroScrims.jsx";
 import logo from "./assets/logo.webp";
-import salone from "./assets/salone.webp";
+import heroFrame from "./assets/hero-ultimo-fotogramma.webp";
 import certificato from "./assets/certificato.webp";
 import premiazione from "./assets/premiazione.webp";
 import taglioFade from "./assets/taglio-fade.webp";
@@ -216,11 +216,13 @@ function Hero({ revealed }) {
 
   return (
     <section id="top" className="relative isolate flex min-h-[100dvh] items-end overflow-hidden">
-      {/* La foto resta ferma: è la stessa inquadratura su cui termina il video introduttivo. */}
+      {/* Ultimo fotogramma del video introduttivo, con lo stesso ritaglio: la dissolvenza non mostra stacchi. */}
       <img
-        src={salone}
-        alt="L'interno di Fade Barber Studio: poltrone nere, luci ad anello e il logo illuminato di viola"
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        src={heroFrame}
+        alt="Interno di Fade Barber Studio: poltrona da barbiere nera davanti agli specchi con luci ad anello"
+        width="1244"
+        height="1660"
+        className={`absolute inset-0 -z-20 h-full w-full ${FRAME_FIT}`}
         fetchPriority="high"
       />
       <HeroScrims className="-z-10" />
@@ -804,24 +806,36 @@ function MobileQuickBar() {
 /* ───────────── Pagina ───────────── */
 
 export default function App() {
-  const [intro, setIntro] = useState(() => (shouldPlayIntro() ? "playing" : "off"));
-  const heroRevealed = intro !== "playing";
-  const handled = useRef(false);
+  const [showIntro, setShowIntro] = useState(shouldPlayIntro);
+  const [introFading, setIntroFading] = useState(false);
+  const fadeTimer = useRef(null);
 
-  const onIntroFinish = (stage) => {
-    if (stage === "start") setIntro("fading");
-    if (stage === "done" && !handled.current) {
-      handled.current = true;
-      setIntro("off");
-    }
+  // Fine video o "Salta intro": parte la dissolvenza, dopo 1 secondo l'overlay esce dal DOM.
+  const endIntro = () => {
+    setIntroFading(true);
+    fadeTimer.current = window.setTimeout(() => setShowIntro(false), FADE_MS);
   };
+
+  // Lo scorrimento è bloccato solo mentre il video è in riproduzione; si sblocca appena parte la dissolvenza.
+  const scrollLocked = showIntro && !introFading;
+  useEffect(() => {
+    if (!scrollLocked) return;
+    const root = document.documentElement;
+    const previous = root.style.overflow;
+    root.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = previous;
+    };
+  }, [scrollLocked]);
+
+  useEffect(() => () => window.clearTimeout(fadeTimer.current), []);
 
   return (
     <>
-      {intro !== "off" && <IntroOverlay onFinish={onIntroFinish} />}
+      {showIntro && <IntroOverlay fading={introFading} onFinish={endIntro} />}
       <Header />
       <main className="overflow-x-clip">
-        <Hero revealed={heroRevealed} />
+        <Hero revealed={!showIntro || introFading} />
         <About />
         <Lookbook />
         <Services />
