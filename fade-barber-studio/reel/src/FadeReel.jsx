@@ -454,20 +454,22 @@ const centerOf = (b, dy = 0) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 + dy });
 // Inquadrature: in quale punto della pagina guardare (coordinate CSS) e con quale ingrandimento.
 const SHOTS = [
   { f: 0, at: { x: 195, y: 422 }, zoom: 1 }, // Hero
-  { f: 105, at: { x: 195, y: 422 }, zoom: 1 },
-  { f: 122, at: centerOf(M.map, 60), zoom: 1.3 }, // mappa + indirizzo
-  { f: 150, at: centerOf(M.map, 70), zoom: 1.34 },
-  { f: 164, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 }, zoom: 1.45 }, // chiamata + WhatsApp
-  { f: 178, at: centerOf(M.hours), zoom: 1.45 }, // orari
-  { f: 195, at: centerOf(M.hours), zoom: 1.45 },
-  { f: 212, at: centerOf(M.certificate), zoom: 1.32 }, // certificazione Gilmont
-  { f: 240, at: centerOf(M.certificate, 20), zoom: 1.38 },
-  { f: 256, at: { x: 195, y: M.aboutCard.y + 210 }, zoom: 1.16 }, // la storia
-  { f: 285, at: { x: 195, y: M.aboutCard.y + 250 }, zoom: 1.18 },
-  { f: 302, at: { x: 195, y: M.cutsGrid.y + 300 }, zoom: 1.22 }, // lookbook
-  { f: 372, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1.22 },
-  { f: 388, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1 }, // vista intera con tasto fisso
-  { f: 420, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1 },
+  { f: 90, at: { x: 195, y: 422 }, zoom: 1 },
+  { f: 104, at: centerOf(M.map, 60), zoom: 1.3 }, // mappa + indirizzo
+  { f: 126, at: centerOf(M.map, 70), zoom: 1.34 },
+  { f: 140, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 }, zoom: 1.42 }, // chiamata + WhatsApp
+  { f: 153, at: centerOf(M.hours), zoom: 1.42 }, // orari
+  { f: 165, at: centerOf(M.hours), zoom: 1.42 },
+  { f: 180, at: centerOf(M.certificate), zoom: 1.32 }, // certificazione Gilmont
+  { f: 202, at: centerOf(M.certificate, 20), zoom: 1.38 },
+  { f: 216, at: { x: 195, y: M.aboutCard.y + 210 }, zoom: 1.16 }, // la storia
+  { f: 240, at: { x: 195, y: M.aboutCard.y + 250 }, zoom: 1.18 },
+  { f: 255, at: { x: 195, y: M.cutsGrid.y + 300 }, zoom: 1.22 }, // lookbook
+  { f: 313, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1.22 },
+  { f: 328, at: { x: 195, y: M.servizi.y + 330 }, zoom: 1.18 }, // listino prezzi
+  { f: 372, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1.18 },
+  { f: 388, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 }, // vista intera con tasto fisso
+  { f: 420, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 },
 ];
 
 function cameraAt(frame) {
@@ -493,8 +495,8 @@ function SiteScreen({ w, h }) {
   const fx = (cam.x) * k;
   const fy = (cam.y - top) * k;
 
-  const videoOpacity = interpolate(frame, [80, 100], [1, 0], clamp);
-  const heroOnly = frame < 105;
+  const videoOpacity = interpolate(frame, [68, 86], [1, 0], clamp);
+  const heroOnly = frame < 90;
 
   // tasto fisso "Prenota" nella barra in basso
   const bb = M.viewport.barBook;
@@ -577,7 +579,7 @@ function SiteScreen({ w, h }) {
       {/* intro video a tutto schermo, poi dissolvenza sulla Hero (come sul sito) */}
       {videoOpacity > 0 && (
         <AbsoluteFill style={{ opacity: videoOpacity }}>
-          <OffthreadVideo src={staticFile("intro.mp4")} playbackRate={1.6} muted style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 60%" }} />
+          <OffthreadVideo src={staticFile("intro.mp4")} playbackRate={1.8} muted style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 60%" }} />
         </AbsoluteFill>
       )}
     </AbsoluteFill>
@@ -595,22 +597,25 @@ function SceneSolution() {
   const phoneW = 560;
   return (
     <AbsoluteFill style={{ transform: `scale(${scaleIn})`, filter: blurIn > 0.3 ? `blur(${blurIn}px)` : undefined, opacity: Math.min(1, enter * 1.6) }}>
-      <SolutionChip label="Impatto immediato" from={4} to={102} />
-      <SolutionChip label="Soluzione info" from={106} to={192} />
-      <SolutionChip label="Soluzione storia" from={196} to={282} />
-      <SolutionChip label="Soluzione lookbook" from={286} to={372} />
+      <SolutionChip label="Impatto immediato" from={4} to={88} />
+      <SolutionChip label="Soluzione info" from={92} to={163} />
+      <SolutionChip label="Soluzione storia" from={167} to={238} />
+      <SolutionChip label="Soluzione lookbook" from={242} to={313} />
+      <SolutionChip label="Soluzione listino" from={317} to={373} />
       <SolutionChip label="Sempre visibile" from={376} to={420} />
       <CaptionPages
         top={SAFE.top + 82}
         fontSize={54}
         pages={[
-          { from: 6, to: 102, step: 6, words: ["Intro", "video", { text: "immersiva", accent: true }] },
-          { from: 108, to: 150, step: 5, words: ["Tutte", "le", { text: "info", accent: true }, "chiare"] },
-          { from: 150, to: 192, step: 5, words: [{ text: "Mappa.", accent: true }, "Orari.", "Chiamata.", { text: "WhatsApp.", accent: true }] },
-          { from: 198, to: 240, step: 5, words: ["La", "storia", "dei", { text: "titolari", accent: true }] },
-          { from: 240, to: 282, step: 5, words: ["Certificati", { text: "Accademia", accent: true }, { text: "Gilmont", accent: true }] },
-          { from: 288, to: 330, step: 5, words: ["Il", "lookbook", "dei", { text: "tagli", accent: true }] },
-          { from: 330, to: 372, step: 5, words: [{ text: "Sfumature", accent: true }, "e", { text: "barba", accent: true }, "in", "HD"] },
+          { from: 6, to: 88, step: 6, words: ["Intro", "video", { text: "immersiva", accent: true }] },
+          { from: 94, to: 128, step: 5, words: ["Tutte", "le", { text: "info", accent: true }, "chiare"] },
+          { from: 128, to: 163, step: 5, words: [{ text: "Mappa.", accent: true }, "Orari.", "Chiamata.", { text: "WhatsApp.", accent: true }] },
+          { from: 169, to: 204, step: 5, words: ["La", "storia", "dei", { text: "titolari", accent: true }] },
+          { from: 204, to: 238, step: 5, words: ["Certificati", { text: "Accademia", accent: true }, { text: "Gilmont", accent: true }] },
+          { from: 244, to: 279, step: 5, words: ["Il", "lookbook", "dei", { text: "tagli", accent: true }] },
+          { from: 279, to: 313, step: 5, words: [{ text: "Sfumature", accent: true }, "e", { text: "barba", accent: true }, "in", "HD"] },
+          { from: 319, to: 346, step: 5, words: ["Il", { text: "listino", accent: true }, "prezzi"] },
+          { from: 346, to: 373, step: 5, words: [{ text: "Taglio", accent: true }, "18€.", { text: "Barba", accent: true }, "15€."] },
           { from: 378, step: 4, words: ["Prenota", "su", { text: "Treatwell", accent: true }, "in", "un", "tap"] },
         ]}
       />

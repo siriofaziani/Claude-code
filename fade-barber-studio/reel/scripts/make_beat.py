@@ -2,7 +2,7 @@
 
 Uso: python3 scripts/make_beat.py public/beat.wav
 I cambi di scena del Reel cadono su battiti esatti (120 BPM = 1 battito ogni 0,5 s):
-3 s problema, 8 s drop sul sito, 11,5 / 14,5 / 17,5 / 20,5 s soluzioni, 22 s stacco per l'invito finale, 24 s ripartenza.
+3 s problema, 8 s drop sul sito, 11 / 13,5 / 16 / 18,5 / 20,5 s soluzioni, 22 s stacco per l'invito finale, 24 s ripartenza.
 """
 import sys
 import wave
@@ -153,7 +153,7 @@ for bar in range(bars):
         if s in (0, 6, 10) and t < 29:
             place(music, bass808(root * (2 if s == 10 and bar % 2 else 1), STEP * (6 if s == 0 else 4)), t, 0.9 if t >= 3 else 0.5)
 
-for t, g in ((3.0, 0.55), (8.0, 0.9), (11.5, 0.45), (14.5, 0.45), (17.5, 0.45), (20.5, 0.45), (22.0, 0.8), (24.0, 0.7)):
+for t, g in ((3.0, 0.55), (8.0, 0.9), (11.0, 0.45), (13.5, 0.45), (16.0, 0.45), (18.5, 0.45), (20.5, 0.45), (22.0, 0.8), (24.0, 0.7)):
     place(fx, impact(), t, g)
     place(fx, whoosh(), t - 0.45, 0.8)
 place(fx, riser(2.0), 6.0, 1.0)
