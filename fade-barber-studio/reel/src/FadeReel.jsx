@@ -617,7 +617,7 @@ function SceneSolution() {
           { from: 381, to: 428, step: 7, words: ["Il", "lookbook", "dei", { text: "tagli", accent: true }] },
           { from: 428, to: 476, step: 6, words: [{ text: "Sfumature", accent: true }, "e", { text: "barba", accent: true }, "in", "HD"] },
           { from: 486, to: 533, step: 7, words: ["Il", { text: "listino", accent: true }, "prezzi"] },
-          { from: 533, to: 581, step: 7, words: [{ text: "Taglio", accent: true }, "18€.", { text: "Barba", accent: true }, "15€."] },
+          { from: 533, to: 581, step: 7, words: ["Prezzi", { text: "chiari", accent: true }, "e", { text: "trasparenti", accent: true }] },
           { from: 591, step: 6, words: ["Prenota", "su", { text: "Treatwell", accent: true }, "in", "un", "tap"] },
         ]}
       />
