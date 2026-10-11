@@ -19,7 +19,7 @@ import metrics from "../public/site-metrics.json";
 
 /* ───────────── Impostazioni ───────────── */
 
-export const REEL = { fps: 30, width: 1080, height: 1920, durationInFrames: 900 };
+export const REEL = { fps: 30, width: 1080, height: 1920, durationInFrames: 1050 };
 
 const C = {
   obsidian: "#050505",
@@ -43,8 +43,8 @@ const BEAT = 15;
 const S = {
   hook: { from: 0, dur: 90 }, // 0:00-0:03
   problem: { from: 90, dur: 150 }, // 0:03-0:08
-  solution: { from: 240, dur: 420 }, // 0:08-0:22
-  cta: { from: 660, dur: 240 }, // 0:22-0:30
+  solution: { from: 240, dur: 660 }, // 0:08-0:30
+  cta: { from: 900, dur: 150 }, // 0:30-0:35
 };
 
 const VW = 390; // larghezza CSS del sito catturato
@@ -339,7 +339,7 @@ function SceneHook() {
       <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 55%, transparent 0%, ${C.obsidian}cc 75%)` }} />
       <AbsoluteFill style={{ background: `linear-gradient(180deg, ${C.violet}22, transparent 40%, ${C.violet}44)`, mixBlendMode: "screen" }} />
       <div style={{ opacity: flicker }}>
-        <KineticCaption words={toWords(HOOK, 3, 5)} top={560} fontSize={90} maxWidth={940} activeFor={5} neon />
+        <KineticCaption words={toWords(HOOK, 3, 6)} top={560} fontSize={90} maxWidth={940} activeFor={6} neon />
       </div>
     </AbsoluteFill>
   );
@@ -453,23 +453,24 @@ const centerOf = (b, dy = 0) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 + dy });
 
 // Inquadrature: in quale punto della pagina guardare (coordinate CSS) e con quale ingrandimento.
 const SHOTS = [
-  { f: 0, at: { x: 195, y: 422 }, zoom: 1 }, // Hero
-  { f: 90, at: { x: 195, y: 422 }, zoom: 1 },
-  { f: 104, at: centerOf(M.map, 60), zoom: 1.3 }, // mappa + indirizzo
-  { f: 126, at: centerOf(M.map, 70), zoom: 1.34 },
-  { f: 140, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 }, zoom: 1.42 }, // chiamata + WhatsApp
-  { f: 153, at: centerOf(M.hours), zoom: 1.42 }, // orari
-  { f: 165, at: centerOf(M.hours), zoom: 1.42 },
-  { f: 180, at: centerOf(M.certificate), zoom: 1.32 }, // certificazione Gilmont
-  { f: 202, at: centerOf(M.certificate, 20), zoom: 1.38 },
-  { f: 216, at: { x: 195, y: M.aboutCard.y + 210 }, zoom: 1.16 }, // la storia
-  { f: 240, at: { x: 195, y: M.aboutCard.y + 250 }, zoom: 1.18 },
-  { f: 255, at: { x: 195, y: M.cutsGrid.y + 300 }, zoom: 1.22 }, // lookbook
-  { f: 313, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1.22 },
-  { f: 328, at: { x: 195, y: M.servizi.y + 330 }, zoom: 1.18 }, // listino prezzi
-  { f: 372, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1.18 },
-  { f: 388, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 }, // vista intera con tasto fisso
-  { f: 420, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 },
+  { f: 0, at: { x: 195, y: 422 }, zoom: 1 }, // intro video + Hero
+  { f: 165, at: { x: 195, y: 422 }, zoom: 1 },
+  { f: 187, at: centerOf(M.map, 60), zoom: 1.2 }, // mappa + indirizzo
+  { f: 220, at: centerOf(M.map, 70), zoom: 1.22 },
+  { f: 238, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 }, zoom: 1.2 }, // chiamata + WhatsApp
+  { f: 250, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 + 20 }, zoom: 1.2 },
+  { f: 262, at: centerOf(M.hours), zoom: 1.2 }, // orari
+  { f: 270, at: centerOf(M.hours), zoom: 1.2 },
+  { f: 294, at: centerOf(M.certificate), zoom: 1.28 }, // certificazione Gilmont
+  { f: 325, at: centerOf(M.certificate, 20), zoom: 1.34 },
+  { f: 345, at: { x: 195, y: M.aboutCard.y + 210 }, zoom: 1.15 }, // la storia
+  { f: 375, at: { x: 195, y: M.aboutCard.y + 260 }, zoom: 1.17 },
+  { f: 399, at: { x: 195, y: M.cutsGrid.y + 300 }, zoom: 1.2 }, // lookbook
+  { f: 476, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1.2 },
+  { f: 502, at: { x: 195, y: M.servizi.y + 330 }, zoom: 1.16 }, // listino prezzi
+  { f: 578, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1.16 },
+  { f: 602, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 }, // vista intera con tasto fisso
+  { f: 660, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 },
 ];
 
 function cameraAt(frame) {
@@ -495,15 +496,15 @@ function SiteScreen({ w, h }) {
   const fx = (cam.x) * k;
   const fy = (cam.y - top) * k;
 
-  const videoOpacity = interpolate(frame, [68, 86], [1, 0], clamp);
-  const heroOnly = frame < 90;
+  const videoOpacity = interpolate(frame, [134, 162], [1, 0], clamp);
+  const heroOnly = frame < 165;
 
   // tasto fisso "Prenota" nella barra in basso
   const bb = M.viewport.barBook;
-  const tap = frame - 396;
+  const tap = frame - 618;
   const ring = interpolate(tap, [0, 16], [0, 1], clamp);
   const press = tap >= 0 && tap < 7 ? 0.95 : 1;
-  const pulse = frame >= 384 ? 0.5 + 0.5 * Math.cos(((frame % BEAT) / BEAT) * Math.PI * 2) : 0;
+  const pulse = frame >= 600 ? 0.5 + 0.5 * Math.cos(((frame % BEAT) / BEAT) * Math.PI * 2) : 0;
 
   return (
     <AbsoluteFill>
@@ -521,7 +522,7 @@ function SiteScreen({ w, h }) {
       {heroOnly && <Img src={staticFile("site-hero.jpg")} style={{ position: "absolute", inset: 0, width: w, height: h }} />}
 
       {/* evidenzia il tasto Prenota */}
-      {frame >= 384 && (
+      {frame >= 600 && (
         <div
           style={{
             position: "absolute",
@@ -567,8 +568,8 @@ function SiteScreen({ w, h }) {
             fontFamily: SANS,
             fontSize: 24,
             fontWeight: 600,
-            transform: `translateY(${(1 - pop(frame, fps, 405)) * -40}px)`,
-            opacity: pop(frame, fps, 405),
+            transform: `translateY(${(1 - pop(frame, fps, 628)) * -40}px)`,
+            opacity: pop(frame, fps, 628),
           }}
         >
           <CalendarCheck size={34} color={C.gold} />
@@ -579,7 +580,7 @@ function SiteScreen({ w, h }) {
       {/* intro video a tutto schermo, poi dissolvenza sulla Hero (come sul sito) */}
       {videoOpacity > 0 && (
         <AbsoluteFill style={{ opacity: videoOpacity }}>
-          <OffthreadVideo src={staticFile("intro.mp4")} playbackRate={1.8} muted style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 60%" }} />
+          <OffthreadVideo src={staticFile("intro.mp4")} playbackRate={1} muted style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 60%" }} />
         </AbsoluteFill>
       )}
     </AbsoluteFill>
@@ -593,30 +594,31 @@ function SceneSolution() {
   const scaleIn = 1.35 - 0.35 * enter;
   const blurIn = (1 - enter) * 14;
   // finale: il telefono sale per tenere il tasto Prenota fuori dalla zona coperta da Instagram
-  const settle = interpolate(frame, [376, 392], [0, 1], { ...clamp, easing: inOut });
+  const settle = interpolate(frame, [585, 605], [0, 1], { ...clamp, easing: inOut });
   const phoneW = 560;
   return (
     <AbsoluteFill style={{ transform: `scale(${scaleIn})`, filter: blurIn > 0.3 ? `blur(${blurIn}px)` : undefined, opacity: Math.min(1, enter * 1.6) }}>
-      <SolutionChip label="Impatto immediato" from={4} to={88} />
-      <SolutionChip label="Soluzione info" from={92} to={163} />
-      <SolutionChip label="Soluzione storia" from={167} to={238} />
-      <SolutionChip label="Soluzione lookbook" from={242} to={313} />
-      <SolutionChip label="Soluzione listino" from={317} to={373} />
-      <SolutionChip label="Sempre visibile" from={376} to={420} />
+      <SolutionChip label="Impatto immediato" from={6} to={161} />
+      <SolutionChip label="Soluzione info" from={169} to={266} />
+      <SolutionChip label="Soluzione storia" from={274} to={371} />
+      <SolutionChip label="Soluzione lookbook" from={379} to={476} />
+      <SolutionChip label="Soluzione listino" from={484} to={581} />
+      <SolutionChip label="Sempre visibile" from={589} to={660} />
       <CaptionPages
         top={SAFE.top + 82}
         fontSize={54}
         pages={[
-          { from: 6, to: 88, step: 6, words: ["Intro", "video", { text: "immersiva", accent: true }] },
-          { from: 94, to: 128, step: 5, words: ["Tutte", "le", { text: "info", accent: true }, "chiare"] },
-          { from: 128, to: 163, step: 5, words: [{ text: "Mappa.", accent: true }, "Orari.", "Chiamata.", { text: "WhatsApp.", accent: true }] },
-          { from: 169, to: 204, step: 5, words: ["La", "storia", "dei", { text: "titolari", accent: true }] },
-          { from: 204, to: 238, step: 5, words: ["Certificati", { text: "Accademia", accent: true }, { text: "Gilmont", accent: true }] },
-          { from: 244, to: 279, step: 5, words: ["Il", "lookbook", "dei", { text: "tagli", accent: true }] },
-          { from: 279, to: 313, step: 5, words: [{ text: "Sfumature", accent: true }, "e", { text: "barba", accent: true }, "in", "HD"] },
-          { from: 319, to: 346, step: 5, words: ["Il", { text: "listino", accent: true }, "prezzi"] },
-          { from: 346, to: 373, step: 5, words: [{ text: "Taglio", accent: true }, "18€.", { text: "Barba", accent: true }, "15€."] },
-          { from: 378, step: 4, words: ["Prenota", "su", { text: "Treatwell", accent: true }, "in", "un", "tap"] },
+          { from: 10, to: 85, step: 7, words: ["Intro", "video", { text: "immersiva", accent: true }] },
+          { from: 85, to: 161, step: 7, words: ["Dall'ingresso", "alla", { text: "Hero", accent: true }] },
+          { from: 171, to: 218, step: 7, words: ["Tutte", "le", { text: "info", accent: true }, "chiare"] },
+          { from: 218, to: 266, step: 6, words: [{ text: "Mappa.", accent: true }, "Orari.", "Chiamata.", { text: "WhatsApp.", accent: true }] },
+          { from: 276, to: 323, step: 7, words: ["La", "storia", "dei", { text: "titolari", accent: true }] },
+          { from: 323, to: 371, step: 7, words: ["Certificati", { text: "Accademia", accent: true }, { text: "Gilmont", accent: true }] },
+          { from: 381, to: 428, step: 7, words: ["Il", "lookbook", "dei", { text: "tagli", accent: true }] },
+          { from: 428, to: 476, step: 6, words: [{ text: "Sfumature", accent: true }, "e", { text: "barba", accent: true }, "in", "HD"] },
+          { from: 486, to: 533, step: 7, words: ["Il", { text: "listino", accent: true }, "prezzi"] },
+          { from: 533, to: 581, step: 7, words: [{ text: "Taglio", accent: true }, "18€.", { text: "Barba", accent: true }, "15€."] },
+          { from: 591, step: 6, words: ["Prenota", "su", { text: "Treatwell", accent: true }, "in", "un", "tap"] },
         ]}
       />
       <div style={{ position: "absolute", inset: 0, transformOrigin: "50% 545px", transform: `translateY(${-50 * settle}px) scale(${1 - 0.15 * settle})` }}>
@@ -662,7 +664,6 @@ function PixelNoirLogo({ size, hasLogo }) {
   );
 }
 
-const CTA_WORDS = ["Vuoi", "scoprire", "cosa", "sta", "facendo", { text: "scappare", accent: true }, "i", "tuoi", { text: "clienti", accent: true }, "e", "cosa", "può", "offrire", "un", { text: "sito", accent: true }, { text: "web", accent: true }, { text: "perfetto", accent: true }, "alla", "tua", "attività?"];
 
 function SceneCta({ hasLogo }) {
   const frame = useCurrentFrame();
@@ -670,8 +671,8 @@ function SceneCta({ hasLogo }) {
   const logo = pop(frame, fps, 4, { damping: 12, stiffness: 110 });
   const spin = frame * 1.6;
   const beat = Math.pow(Math.max(0, Math.cos(((frame % BEAT) / BEAT) * Math.PI * 2)), 4);
-  const badgeIn = pop(frame, fps, 112, { damping: 12, stiffness: 160 });
-  const blink = frame >= 120 && Math.floor((frame - 120) / BEAT) % 2 === 0 ? 1 : 0.55;
+  const badgeIn = pop(frame, fps, 24, { damping: 12, stiffness: 160 });
+  const blink = frame >= 40 && Math.floor((frame - 40) / BEAT) % 2 === 0 ? 1 : 0.55;
   const size = 420;
   return (
     <AbsoluteFill>
@@ -693,7 +694,6 @@ function SceneCta({ hasLogo }) {
         </div>
       </div>
 
-      <KineticCaption words={toWords(CTA_WORDS, 26, 4)} top={790} fontSize={54} maxWidth={940} activeFor={4} />
 
       {/* badge CTA lampeggiante */}
       <div
@@ -701,8 +701,8 @@ function SceneCta({ hasLogo }) {
           position: "absolute",
           left: 70,
           right: 70,
-          top: 1230,
-          padding: "30px 34px",
+          top: 860,
+          padding: "40px 38px",
           borderRadius: 34,
           background: "linear-gradient(145deg, rgba(138,43,226,0.42), rgba(14,14,18,0.94))",
           border: `3px solid ${blink > 0.9 ? C.gold : C.violetSoft}`,
@@ -710,14 +710,14 @@ function SceneCta({ hasLogo }) {
           textAlign: "center",
           fontFamily: SANS,
           fontWeight: 800,
-          fontSize: 40,
-          lineHeight: 1.3,
+          fontSize: 50,
+          lineHeight: 1.28,
           color: C.ivory,
           transform: `translateY(${(1 - badgeIn) * 140}px) scale(${0.85 + 0.15 * badgeIn})`,
           opacity: Math.min(1, badgeIn * 1.4),
         }}
       >
-        <span style={{ fontSize: 48 }}>📩</span> Scrivi{" "}
+        <span style={{ fontSize: 58 }}>📩</span> Scrivi{" "}
         <span
           style={{
             display: "inline-block",

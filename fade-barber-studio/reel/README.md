@@ -1,14 +1,14 @@
 # Reel Instagram - Fade Barber Studio
 
-Video verticale 1080x1920, 30 s, 30 fps, H.264 + AAC (-13 LUFS), fatto con Remotion.
+Video verticale 1080x1920, 35 s, 30 fps, H.264 + AAC (-13 LUFS), fatto con Remotion.
 File finale: `out/fade-reel.mp4`.
 
 | Tempo | Scena |
 |---|---|
 | 0:00-0:03 | Aggancio: insegna del salone (video Kling) scurita, testo neon "Questo salone d'eccellenza a Roma stava rischiando di perdere decine di clienti..." |
 | 0:03-0:08 | Problema: ricerca sullo smartphone e 3 carenze con la X rossa, a tempo di musica; uscita con zoom dentro lo schermo |
-| 0:08-0:22 | Soluzione: intro video e Hero, poi zoom su contatti (mappa, chiamata, WhatsApp, orari), Chi siamo con certificazione Gilmont, lookbook dei tagli, listino prezzi, tasto fisso "Prenota" su Treatwell |
-| 0:22-0:30 | Invito: logo PIXELNOIR, domanda animata e badge lampeggiante "Scrivi ANALISI per una consulenza gratuita e per capire cosa manca al tuo sito." |
+| 0:08-0:30 | Soluzione: intro video e Hero, poi zoom su contatti (mappa, chiamata, WhatsApp, orari), Chi siamo con certificazione Gilmont, lookbook dei tagli, listino prezzi, tasto fisso "Prenota" su Treatwell |
+| 0:30-0:35 | Invito: logo PIXELNOIR e badge lampeggiante "Scrivi ANALISI per una consulenza gratuita e per capire cosa manca al tuo sito." |
 
 **Logo PIXELNOIR:** metti il logo circolare ritagliato in `public/pixelnoir-logo.png` (quadrato, sfondo trasparente fuori dal cerchio)
 e rilancia `npm run render`. Senza file il video usa un segnaposto tipografico.
