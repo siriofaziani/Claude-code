@@ -14,13 +14,17 @@ mkdirSync(out, { recursive: true });
 const localChrome = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell";
 const browserExecutable = process.env.REMOTION_CHROME || (existsSync(localChrome) ? localChrome : undefined);
 
+// Logo PIXELNOIR: se esiste public/pixelnoir-logo.png lo usa, altrimenti un segnaposto tipografico.
+const inputProps = { hasLogo: existsSync(path.join(root, "public/pixelnoir-logo.png")) };
+console.log("logo PIXELNOIR:", inputProps.hasLogo ? "file" : "segnaposto");
+
 const serveUrl = await bundle({ entryPoint: path.join(root, "src/index.js") });
-const composition = await selectComposition({ serveUrl, id: "FadeReel", browserExecutable });
+const composition = await selectComposition({ serveUrl, id: "FadeReel", browserExecutable, inputProps });
 
 const stillsArg = process.argv.indexOf("--stills");
 if (stillsArg > -1) {
   for (const f of process.argv[stillsArg + 1].split(",").map(Number)) {
-    await renderStill({ serveUrl, composition, frame: f, output: path.join(out, `still-${f}.png`), browserExecutable });
+    await renderStill({ serveUrl, composition, frame: f, output: path.join(out, `still-${f}.png`), browserExecutable, inputProps });
     console.log("still", f);
   }
   process.exit(0);
@@ -35,6 +39,7 @@ await renderMedia({
   pixelFormat: "yuv420p",
   audioCodec: "aac",
   outputLocation: raw,
+  inputProps,
   browserExecutable,
   concurrency: Number(process.env.CONCURRENCY || 4),
   onProgress: ({ progress }) => {

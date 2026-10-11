@@ -1,7 +1,8 @@
 """Base dark phonk originale per il Reel (120 BPM, 30 s). Generata da zero: nessun campione esterno, nessun diritto da pagare.
 
 Uso: python3 scripts/make_beat.py public/beat.wav
-I cambi di scena del Reel (3, 7, 15, 22 s) cadono su battiti esatti: 120 BPM = 1 battito ogni 0,5 s.
+I cambi di scena del Reel cadono su battiti esatti (120 BPM = 1 battito ogni 0,5 s):
+3 s problema, 8 s drop sul sito, 11,5 / 14,5 / 17,5 / 20,5 s soluzioni, 22 s stacco per l'invito finale, 24 s ripartenza.
 """
 import sys
 import wave
@@ -128,8 +129,8 @@ bars = int(DUR / (BEAT * 4)) + 1
 for bar in range(bars):
     t0 = bar * BEAT * 4
     root = ROOTS[bar % 4]
-    full = 7.0 <= t0 < 28.0  # drop dalla trasformazione fino al finale
-    half = 3.0 <= t0 < 7.0
+    full = (8.0 <= t0 < 22.0) or (24.0 <= t0 < 28.0)  # drop sul sito, pausa 22-24 s per l'invito, ripartenza
+    half = 3.0 <= t0 < 8.0
     for s in range(16):
         t = t0 + s * STEP
         if t >= DUR:
@@ -137,7 +138,7 @@ for bar in range(bars):
         # campanaccio: filtrato nell'intro, pieno dal drop
         note = RIFF[s]
         if note is not None and t < 29:
-            place(music, cowbell(note + (12 if bar % 8 >= 6 else 0)), t, 0.55 if t < 3 else 1.0)
+            place(music, cowbell(note + (12 if bar % 8 >= 6 else 0)), t, 0.55 if (t < 3 or 22 <= t < 24) else 1.0)
         if full or half:
             if s in (0, 6, 10) or (full and s == 14 and bar % 2):
                 place(drums, K, t)
@@ -152,11 +153,11 @@ for bar in range(bars):
         if s in (0, 6, 10) and t < 29:
             place(music, bass808(root * (2 if s == 10 and bar % 2 else 1), STEP * (6 if s == 0 else 4)), t, 0.9 if t >= 3 else 0.5)
 
-for t in (3.0, 7.0, 15.0, 22.0):
-    place(fx, impact(), t, 0.8 if t in (7.0, 22.0) else 0.55)
+for t, g in ((3.0, 0.55), (8.0, 0.9), (11.5, 0.45), (14.5, 0.45), (17.5, 0.45), (20.5, 0.45), (22.0, 0.8), (24.0, 0.7)):
+    place(fx, impact(), t, g)
     place(fx, whoosh(), t - 0.45, 0.8)
-place(fx, riser(2.0), 5.0, 1.0)
-place(fx, riser(1.5), 20.5, 0.7)
+place(fx, riser(2.0), 6.0, 1.0)
+place(fx, riser(1.5), 22.5, 0.7)
 
 mix = drums + music * 0.9 + fx
 # volume finale: dissolvenza negli ultimi 2 secondi

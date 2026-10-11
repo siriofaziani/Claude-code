@@ -11,5 +11,6 @@ export const Root = () => (
     fps={REEL.fps}
     width={REEL.width}
     height={REEL.height}
+    defaultProps={{ hasLogo: false }}
   />
 );

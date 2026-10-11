@@ -5,14 +5,19 @@ File finale: `out/fade-reel.mp4`.
 
 | Tempo | Scena |
 |---|---|
-| 0:00-0:03 | Aggancio: "Questo salone a Roma stava perdendo clienti ogni singolo giorno..." su bagliore viola |
-| 0:03-0:07 | Problema: "0 sito web = centinaia di clienti persi", smartphone con ricerca senza risultati |
-| 0:07-0:15 | Trasformazione: intro video del sito, dissolvenza sulla Hero, tocco su "Prenota su Treatwell", scorrimento fino al listino |
-| 0:15-0:22 | I tagli: carosello delle 4 foto con badge "Sfumatura Fade", poi griglia |
-| 0:22-0:30 | Invito: logo, "Vuoi capire cosa sta facendo scappare i tuoi clienti?" e "Scrivi ANALISI in DM per un check gratuito!" |
+| 0:00-0:03 | Aggancio: insegna del salone (video Kling) scurita, testo neon "Questo salone d'eccellenza a Roma stava rischiando di perdere decine di clienti..." |
+| 0:03-0:08 | Problema: ricerca sullo smartphone e 3 carenze con la X rossa, a tempo di musica; uscita con zoom dentro lo schermo |
+| 0:08-0:22 | Soluzione: intro video e Hero, poi zoom su contatti (mappa, chiamata, WhatsApp, orari), Chi siamo con certificazione Gilmont, lookbook dei tagli, tasto fisso "Prenota" su Treatwell |
+| 0:22-0:30 | Invito: logo PIXELNOIR, domanda animata e badge lampeggiante "Commenta o scrivici ANALISI in DM" |
+
+**Logo PIXELNOIR:** metti il logo circolare ritagliato in `public/pixelnoir-logo.png` (quadrato, sfondo trasparente fuori dal cerchio)
+e rilancia `npm run render`. Senza file il video usa un segnaposto tipografico.
+
+**Mappa:** nelle catture la mappa Google è sostituita da un'illustrazione con il segnaposto sull'indirizzo
+(Google Maps non era raggiungibile durante la cattura). Rifai le catture con `node scripts/capture-site.mjs ../dist-single/index.html public`.
 
 La musica (`public/beat.wav`) è una base dark phonk a 120 BPM generata da `scripts/make_beat.py`:
-nessun campione esterno, nessun diritto da pagare. I cambi di scena cadono sui battiti.
+nessun campione esterno, nessun diritto da pagare. I cambi di scena e le inquadrature cadono sui battiti.
 
 ```bash
 npm install
