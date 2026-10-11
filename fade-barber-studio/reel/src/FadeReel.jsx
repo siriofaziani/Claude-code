@@ -717,7 +717,7 @@ function SceneCta({ hasLogo }) {
           opacity: Math.min(1, badgeIn * 1.4),
         }}
       >
-        <span style={{ fontSize: 48 }}>📩</span> Commenta o scrivici{" "}
+        <span style={{ fontSize: 48 }}>📩</span> Scrivi{" "}
         <span
           style={{
             display: "inline-block",
@@ -735,7 +735,7 @@ function SceneCta({ hasLogo }) {
         >
           “ANALISI”
         </span>{" "}
-        in DM per un check gratuito della tua presenza online!
+        per una consulenza gratuita e per capire cosa manca al tuo sito.
       </div>
     </AbsoluteFill>
   );
