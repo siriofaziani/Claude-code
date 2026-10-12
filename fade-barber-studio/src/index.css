@@ -191,6 +191,24 @@
   }
 }
 
+/* Nastro scorrevole: due copie identiche, la traccia si sposta di metà della sua larghezza. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+@media (hover: hover) {
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .glass,
   .btn-ghost {
@@ -212,5 +230,8 @@
   .btn-gold:active,
   .btn-ghost:active {
     transform: none;
+  }
+  .marquee-track {
+    animation: none;
   }
 }

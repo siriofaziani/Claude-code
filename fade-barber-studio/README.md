@@ -11,6 +11,17 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 
 `anteprima.html` è la versione in un unico file, apribile con doppio clic.
 
+## Animazioni
+
+- **OriginKit** (`src/components/originkit/`, da [originkit.dev](https://originkit.dev)):
+  - Morphing Glyph Cloud: "FADE" fatto di lettere che diventa "BARBER" (sotto la Hero; tocca per trasformarlo).
+  - Orbit Bundle: anelli 3D che ruotano dietro la targa Gilmont (Chi siamo).
+  - Mirror Shards: "FADE" sospeso tra specchi in WebGL (prima dei Contatti).
+- **Nostre** (`src/Effects.jsx`): barra di avanzamento in alto, nastro scorrevole tra Tagli e Listino,
+  inclinazione 3D di foto dei tagli e targa al passaggio del mouse.
+- Le animazioni pesanti partono solo quando sono vicine allo schermo (`LazyMount`) e con
+  "riduci movimento" attivo mostrano una versione statica. Il video iniziale è invariato.
+
 ## Da completare
 
 - **Video intro:** è il video Kling (`src/assets/intro.mp4`, più `intro.webm` per i browser che non leggono l'MP4).

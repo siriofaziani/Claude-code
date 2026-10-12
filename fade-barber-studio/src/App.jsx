@@ -22,6 +22,7 @@ import {
 
 import IntroOverlay, { FADE_MS, FRAME_FIT, shouldPlayIntro } from "./IntroOverlay.jsx";
 import HeroScrims from "./HeroScrims.jsx";
+import { GlyphMorphBand, Marquee, MirrorBand, OrbitRings, ScrollProgress, useTilt } from "./Effects.jsx";
 import logo from "./assets/logo.webp";
 import heroFrame from "./assets/hero-ultimo-fotogramma.webp";
 import certificato from "./assets/certificato.webp";
@@ -273,9 +274,10 @@ function About() {
     <section id="chi-siamo" className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
       <div className="pointer-events-none absolute right-0 top-10 h-80 w-80 rounded-full bg-gold/10 blur-[120px]" />
       <div className="grid items-center gap-10 md:grid-cols-12 md:gap-8">
-        <Reveal className="relative md:col-span-5">
+        <Reveal className="relative isolate md:col-span-5">
           <div className="absolute -inset-6 -z-10 rounded-[28px] bg-gradient-to-br from-violet/40 via-transparent to-gold/25 blur-2xl" />
-          <figure className="overflow-hidden rounded-[20px] border border-white/10">
+          <OrbitRings className="-inset-[30%]" />
+          <TiltFigure className="overflow-hidden rounded-[20px] border border-white/10">
             <img
               src={certificato}
               alt="La targa Eccellenza Gilmont di Fade Barber Studio sul bancone del salone"
@@ -284,7 +286,7 @@ function About() {
               height="1220"
               className="aspect-[4/5] w-full object-cover"
             />
-          </figure>
+          </TiltFigure>
         </Reveal>
 
         <Reveal delay={0.1} className="md:col-span-7 md:-ml-16">
@@ -458,8 +460,23 @@ const CUT_CELL = {
   small: "md:col-span-1 lg:col-span-4",
 };
 
+function TiltFigure({ children, className = "" }) {
+  const tilt = useTilt(10);
+  return (
+    <figure
+      ref={tilt.ref}
+      onPointerMove={tilt.onPointerMove}
+      onPointerLeave={tilt.onPointerLeave}
+      className={`transition-transform duration-300 ease-out will-change-transform ${className}`}
+    >
+      {children}
+    </figure>
+  );
+}
+
 function CutCard({ cut, index }) {
   const reduce = useReducedMotion();
+  const tilt = useTilt(9);
   return (
     <motion.figure
       onPointerMove={trackSpotlight}
@@ -469,7 +486,12 @@ function CutCard({ cut, index }) {
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="relative min-h-0 flex-1 overflow-hidden rounded-[14px]">
+      <div
+        ref={tilt.ref}
+        onPointerMove={tilt.onPointerMove}
+        onPointerLeave={tilt.onPointerLeave}
+        className="relative min-h-0 flex-1 overflow-hidden rounded-[14px] transition-transform duration-300 ease-out"
+      >
         <img
           src={cut.src}
           alt={cut.alt}
@@ -833,13 +855,17 @@ export default function App() {
   return (
     <>
       {showIntro && <IntroOverlay fading={introFading} onFinish={endIntro} />}
+      <ScrollProgress />
       <Header />
       <main className="overflow-x-clip">
         <Hero revealed={!showIntro || introFading} />
+        <GlyphMorphBand />
         <About />
         <Lookbook />
+        <Marquee items={["Sfumature", "Barba", "Styling", "Fade", "Roma", "Gilmont"]} />
         <Services />
         <Reviews />
+        <MirrorBand />
         <Contacts />
       </main>
       <Footer />
