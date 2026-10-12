@@ -14,7 +14,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { CalendarCheck, Check, Hand, X } from "lucide-react";
+import { CalendarCheck, Check, Lock, MousePointer2, X } from "lucide-react";
 import metrics from "../public/site-metrics.json";
 
 /* ───────────── Impostazioni ───────────── */
@@ -47,8 +47,8 @@ const S = {
   cta: { from: 900, dur: 150 }, // 0:30-0:35
 };
 
-const VW = 390; // larghezza CSS del sito catturato
-const VH = 844;
+const VW = metrics.width; // finestra CSS del sito catturato (versione computer, 1440x900)
+const VH = metrics.height;
 const PAGE_H = metrics.pageHeight;
 
 /* ───────────── Utilità ───────────── */
@@ -277,40 +277,87 @@ function SolutionChip({ label, from, to }) {
   );
 }
 
-/* ───────────── Smartphone ───────────── */
+/* ───────────── Portatile con browser ───────────── */
 
-function Phone({ width, x, y, children, glow = 1 }) {
-  const bezel = width * 0.035;
-  const screenW = width - bezel * 2;
-  const screenH = screenW * (VH / VW);
+const TOOLBAR = 44; // barra del browser sopra la pagina
+
+/** Portatile: schermo con finestra del browser (larghezza della pagina = width) e base. */
+function Laptop({ width, x, y, children, glow = 1, title = "Fade Barber Studio" }) {
+  const bezel = 16;
+  const screenH = width * (VH / VW);
+  const lidW = width + bezel * 2;
+  const lidH = screenH + TOOLBAR + bezel * 2;
+  const baseW = lidW + 70;
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: x,
-        top: y,
-        width,
-        height: screenH + bezel * 2,
-        borderRadius: width * 0.13,
-        background: "linear-gradient(145deg, #2c2c33, #0b0b0d 45%, #1d1d22)",
-        padding: bezel,
-        boxShadow: `0 50px 110px -30px ${C.violet}${hex(glow * 0.85)}, 0 0 0 2px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.15)`,
-      }}
-    >
-      <div style={{ position: "relative", width: screenW, height: screenH, borderRadius: width * 0.1, overflow: "hidden", background: "#000" }}>
-        {children(screenW, screenH)}
-        <div
-          style={{
-            position: "absolute",
-            top: screenW * 0.025,
-            left: "50%",
-            width: screenW * 0.28,
-            height: screenW * 0.075,
-            marginLeft: -screenW * 0.14,
-            borderRadius: 999,
-            background: "#000",
-          }}
-        />
+    <div style={{ position: "absolute", left: x - bezel, top: y, width: lidW }}>
+      <div
+        style={{
+          position: "relative",
+          width: lidW,
+          height: lidH,
+          padding: bezel,
+          borderRadius: "26px 26px 8px 8px",
+          background: "linear-gradient(160deg, #2c2c33, #0b0b0d 45%, #1d1d22)",
+          boxShadow: `0 60px 120px -30px ${C.violet}${hex(glow * 0.85)}, 0 0 0 2px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.15)`,
+        }}
+      >
+        <div style={{ position: "relative", width, height: screenH + TOOLBAR, borderRadius: 8, overflow: "hidden", background: "#000" }}>
+          {/* barra del browser */}
+          <div
+            style={{
+              height: TOOLBAR,
+              display: "flex",
+              alignItems: "center",
+              gap: 16,
+              padding: "0 16px",
+              background: "#18181c",
+              borderBottom: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <div style={{ display: "flex", gap: 8 }}>
+              {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+                <span key={c} style={{ width: 13, height: 13, borderRadius: "50%", background: c }} />
+              ))}
+            </div>
+            <div
+              style={{
+                flex: 1,
+                height: 28,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                borderRadius: 8,
+                background: "#0e0e11",
+                color: C.mist,
+                fontFamily: SANS,
+                fontSize: 17,
+                fontWeight: 500,
+              }}
+            >
+              <Lock size={14} strokeWidth={2.4} color={C.mist} />
+              {title}
+            </div>
+            <div style={{ width: 58 }} />
+          </div>
+          <div style={{ position: "relative", width, height: screenH, overflow: "hidden" }}>{children(width, screenH)}</div>
+        </div>
+        {/* webcam */}
+        <span style={{ position: "absolute", top: 5, left: "50%", width: 6, height: 6, marginLeft: -3, borderRadius: "50%", background: "#2f2f36" }} />
+      </div>
+      {/* base */}
+      <div
+        style={{
+          position: "relative",
+          left: (lidW - baseW) / 2,
+          width: baseW,
+          height: 24,
+          borderRadius: "0 0 22px 22px",
+          background: "linear-gradient(180deg, #3a3a42, #17171b 70%)",
+          boxShadow: "0 30px 50px -20px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.18)",
+        }}
+      >
+        <span style={{ position: "absolute", top: 0, left: "50%", width: 150, height: 9, marginLeft: -75, borderRadius: "0 0 10px 10px", background: "#0e0e11" }} />
       </div>
     </div>
   );
@@ -376,9 +423,9 @@ function SceneProblem() {
         words={toWords(["3", { text: "errori", accent: true }, "che", "costavano", { text: "clienti", accent: true }], 2, 5)}
       />
       <div style={{ opacity: dim }}>
-        <Phone width={440} x={(1080 - 440) / 2} y={480} glow={0.6}>
-          {(w) => (
-            <AbsoluteFill style={{ background: "#0d0d10", padding: w * 0.07, paddingTop: w * 0.2, fontFamily: SANS }}>
+        <Laptop width={900} x={90} y={470} glow={0.6} title="Cerca">
+          {() => (
+            <AbsoluteFill style={{ background: "#0d0d10", padding: "56px 120px 0", fontFamily: SANS }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, height: 64, borderRadius: 999, background: "#1e1e24", padding: "0 22px", color: C.ivory, fontSize: 24 }}>
                 <span style={{ width: 20, height: 20, borderRadius: "50%", border: `3px solid ${C.mist}` }} />
                 {typed}
@@ -397,7 +444,7 @@ function SceneProblem() {
               </div>
             </AbsoluteFill>
           )}
-        </Phone>
+        </Laptop>
       </div>
 
       {PROBLEMS.map((p, i) => {
@@ -451,26 +498,27 @@ function SceneProblem() {
 const M = metrics;
 const centerOf = (b, dy = 0) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 + dy });
 
-// Inquadrature: in quale punto della pagina guardare (coordinate CSS) e con quale ingrandimento.
+// Inquadrature: punto della pagina al centro dello schermo (coordinate CSS) e ingrandimento.
+const contactTiles = { x: M.call.x + (M.whatsapp.x + M.whatsapp.w - M.call.x) / 2, y: M.call.y + 210 };
 const SHOTS = [
-  { f: 0, at: { x: 195, y: 422 }, zoom: 1 }, // intro video + Hero
-  { f: 165, at: { x: 195, y: 422 }, zoom: 1 },
-  { f: 187, at: centerOf(M.map, 60), zoom: 1.2 }, // mappa + indirizzo
-  { f: 220, at: centerOf(M.map, 70), zoom: 1.22 },
-  { f: 238, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 }, zoom: 1.2 }, // chiamata + WhatsApp
-  { f: 250, at: { x: 195, y: M.call.y + (M.whatsapp.y + M.whatsapp.h - M.call.y) / 2 + 20 }, zoom: 1.2 },
-  { f: 262, at: centerOf(M.hours), zoom: 1.2 }, // orari
-  { f: 270, at: centerOf(M.hours), zoom: 1.2 },
-  { f: 294, at: centerOf(M.certificate), zoom: 1.28 }, // certificazione Gilmont
-  { f: 325, at: centerOf(M.certificate, 20), zoom: 1.34 },
-  { f: 345, at: { x: 195, y: M.aboutCard.y + 210 }, zoom: 1.15 }, // la storia
-  { f: 375, at: { x: 195, y: M.aboutCard.y + 260 }, zoom: 1.17 },
-  { f: 399, at: { x: 195, y: M.cutsGrid.y + 300 }, zoom: 1.2 }, // lookbook
-  { f: 476, at: { x: 195, y: M.cutsGrid.y + M.cutsGrid.h - 420 }, zoom: 1.2 },
-  { f: 502, at: { x: 195, y: M.servizi.y + 330 }, zoom: 1.16 }, // listino prezzi
-  { f: 578, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1.16 },
-  { f: 602, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 }, // vista intera con tasto fisso
-  { f: 660, at: { x: 195, y: M.servizi.y + M.servizi.h - 470 }, zoom: 1 },
+  { f: 0, at: { x: VW / 2, y: VH / 2 }, zoom: 1 }, // intro video + Hero
+  { f: 165, at: { x: VW / 2, y: VH / 2 }, zoom: 1 },
+  { f: 187, at: centerOf(M.map, 45), zoom: 1.6 }, // mappa + indirizzo
+  { f: 220, at: centerOf(M.map, 55), zoom: 1.66 },
+  { f: 238, at: contactTiles, zoom: 1.6 }, // chiamata + WhatsApp
+  { f: 250, at: { x: contactTiles.x, y: contactTiles.y + 15 }, zoom: 1.66 },
+  { f: 262, at: centerOf(M.hours), zoom: 1.25 }, // orari
+  { f: 270, at: centerOf(M.hours), zoom: 1.27 },
+  { f: 294, at: centerOf(M.certificate), zoom: 1.42 }, // certificazione Gilmont
+  { f: 325, at: centerOf(M.certificate, 15), zoom: 1.5 },
+  { f: 345, at: centerOf(M.aboutCard), zoom: 1.4 }, // la storia
+  { f: 375, at: centerOf(M.aboutCard, 15), zoom: 1.46 },
+  { f: 399, at: { x: M.cutsGrid.x + 480, y: M.cutsGrid.y + 300 }, zoom: 1.5 }, // lookbook, da sinistra a destra
+  { f: 476, at: { x: M.cutsGrid.x + M.cutsGrid.w - 480, y: M.cutsGrid.y + M.cutsGrid.h - 260 }, zoom: 1.5 },
+  { f: 502, at: { x: VW / 2, y: M.servizi.y + 330 }, zoom: 1.15 }, // listino prezzi
+  { f: 578, at: { x: VW / 2, y: M.servizi.y + M.servizi.h - 340 }, zoom: 1.15 },
+  { f: 602, at: { x: VW / 2, y: M.servizi.y + 480 }, zoom: 1 }, // vista intera con tasto fisso
+  { f: 660, at: { x: VW / 2, y: M.servizi.y + 480 }, zoom: 1 },
 ];
 
 function cameraAt(frame) {
@@ -480,7 +528,15 @@ function cameraAt(frame) {
   const b = SHOTS[i];
   const t = a === b ? 1 : inOut(Math.min(1, Math.max(0, (frame - a.f) / (b.f - a.f))));
   const lerp = (p, q) => p + (q - p) * t;
-  return { x: lerp(a.at.x, b.at.x), y: lerp(a.at.y, b.at.y), zoom: lerp(a.zoom, b.zoom) };
+  const zoom = lerp(a.zoom, b.zoom);
+  // il riquadro inquadrato non esce mai dai bordi della pagina
+  const halfW = VW / 2 / zoom;
+  const halfH = VH / 2 / zoom;
+  return {
+    x: Math.min(VW - halfW, Math.max(halfW, lerp(a.at.x, b.at.x))),
+    y: Math.min(PAGE_H - halfH, Math.max(halfH, lerp(a.at.y, b.at.y))),
+    zoom,
+  };
 }
 
 function SiteScreen({ w, h }) {
@@ -490,89 +546,101 @@ function SiteScreen({ w, h }) {
 
   const cam = cameraAt(frame);
   const prev = cameraAt(frame - 1);
-  const speed = Math.abs(cam.y - prev.y); // px CSS per frame: sfocatura di movimento sulle corse veloci
-  const motionBlur = Math.min(10, speed / 40);
-  const top = Math.min(PAGE_H - VH, Math.max(0, cam.y - VH / 2)); // pagina scorsa in modo da centrare il punto
-  const fx = (cam.x) * k;
-  const fy = (cam.y - top) * k;
+  // sfocatura di movimento sulle corse veloci (spostamento in pixel di schermo per frame)
+  const speed = Math.hypot(cam.x - prev.x, cam.y - prev.y) * k * cam.zoom;
+  const motionBlur = Math.min(10, speed / 30);
+  const tx = w / 2 - cam.x * k * cam.zoom;
+  const ty = h / 2 - cam.y * k * cam.zoom;
 
   const videoOpacity = interpolate(frame, [134, 162], [1, 0], clamp);
   const heroOnly = frame < 165;
 
-  // tasto fisso "Prenota" nella barra in basso
-  const bb = M.viewport.barBook;
+  // tasto fisso "Prenota online" nell'intestazione: il puntatore arriva e clicca
+  const hb = M.viewport.headerBook;
+  const btn = { x: (hb.x + hb.w / 2) * k, y: (hb.y + hb.h / 2) * k };
   const tap = frame - 618;
   const ring = interpolate(tap, [0, 16], [0, 1], clamp);
-  const press = tap >= 0 && tap < 7 ? 0.95 : 1;
+  const press = tap >= 0 && tap < 7 ? 0.93 : 1;
   const pulse = frame >= 600 ? 0.5 + 0.5 * Math.cos(((frame % BEAT) / BEAT) * Math.PI * 2) : 0;
+  const glide = interpolate(frame, [598, 616], [0, 1], { ...clamp, easing: inOut });
+  const cursor = { x: interpolate(glide, [0, 1], [w * 0.52, btn.x]), y: interpolate(glide, [0, 1], [h * 0.72, btn.y]) };
+  const headerOpacity = interpolate(cam.zoom, [1, 1.15], [1, 0], clamp);
 
   return (
     <AbsoluteFill>
-      {/* pagina con camera: scorrimento + zoom attorno al punto inquadrato */}
-      <AbsoluteFill style={{ transformOrigin: `${fx}px ${fy}px`, transform: `scale(${cam.zoom})`, filter: motionBlur > 0.5 ? `blur(${motionBlur}px)` : undefined }}>
-        <Img src={staticFile("site-full.jpg")} style={{ position: "absolute", top: 0, left: 0, width: w, transform: `translateY(${-top * k}px)`, opacity: heroOnly ? 0 : 1 }} />
+      {/* pagina con camera: scorrimento + zoom sul punto inquadrato */}
+      <AbsoluteFill style={{ filter: motionBlur > 0.5 ? `blur(${motionBlur}px)` : undefined }}>
+        <Img
+          src={staticFile("site-full.jpg")}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: w,
+            transformOrigin: "0 0",
+            transform: `translate(${tx}px, ${ty}px) scale(${cam.zoom})`,
+            opacity: heroOnly ? 0 : 1,
+          }}
+        />
       </AbsoluteFill>
-      {/* barre fisse del sito (non zoomate) */}
-      {!heroOnly && (
-        <>
-          <Img src={staticFile("site-header.png")} style={{ position: "absolute", top: 0, left: 0, width: w, opacity: interpolate(cam.zoom, [1, 1.15], [1, 0], clamp) }} />
-          <Img src={staticFile("site-bar.png")} style={{ position: "absolute", bottom: 0, left: 0, width: w, transform: `scale(${press})`, transformOrigin: "80% 50%" }} />
-        </>
+      {/* intestazione fissa del sito (sparisce quando la camera ingrandisce) */}
+      {!heroOnly && headerOpacity > 0 && (
+        <Img src={staticFile("site-header.png")} style={{ position: "absolute", top: 0, left: 0, width: w, opacity: headerOpacity }} />
       )}
       {heroOnly && <Img src={staticFile("site-hero.jpg")} style={{ position: "absolute", inset: 0, width: w, height: h }} />}
 
-      {/* evidenzia il tasto Prenota */}
+      {/* evidenzia il tasto Prenota online */}
       {frame >= 600 && (
         <div
           style={{
             position: "absolute",
-            left: bb.x * k,
-            top: bb.y * k,
-            width: bb.w * k,
-            height: bb.h * k,
+            left: hb.x * k,
+            top: hb.y * k,
+            width: hb.w * k,
+            height: hb.h * k,
             borderRadius: 999,
-            boxShadow: `0 0 0 ${3 + pulse * 6 + ring * 24}px ${C.gold}${hex(0.75 - ring * 0.75 + pulse * 0.2)}, 0 0 ${30 + pulse * 30}px ${C.gold}`,
+            boxShadow: `0 0 0 ${3 + pulse * 5 + ring * 20}px ${C.gold}${hex(0.75 - ring * 0.75 + pulse * 0.2)}, 0 0 ${24 + pulse * 26}px ${C.gold}`,
             transform: `scale(${press})`,
           }}
         />
       )}
-      {tap >= -8 && tap < 22 && (
+      {frame >= 596 && tap < 30 && (
         <div
           style={{
             position: "absolute",
-            left: (bb.x + bb.w * 0.55) * k,
-            top: (bb.y + bb.h * 0.5) * k,
-            color: C.ivory,
-            transform: `translate(-30%, ${interpolate(tap, [-8, 0], [60, 0], clamp)}px) scale(${press})`,
-            filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.8))",
+            left: cursor.x,
+            top: cursor.y,
+            transform: `translate(-6px, -4px) scale(${press})`,
+            opacity: interpolate(frame, [596, 602], [0, 1], clamp),
+            filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.85))",
           }}
         >
-          <Hand size={62} strokeWidth={1.8} fill="rgba(0,0,0,0.35)" />
+          <MousePointer2 size={44} strokeWidth={1.6} color="#0b0b0b" fill={C.ivory} />
         </div>
       )}
       {tap > 8 && (
         <div
           style={{
             position: "absolute",
-            left: w * 0.07,
-            right: w * 0.07,
-            top: h * 0.1,
+            right: 22,
+            top: (M.viewport.header + 14) * k,
             display: "flex",
             alignItems: "center",
             gap: 14,
-            padding: "18px 22px",
-            borderRadius: 22,
+            padding: "16px 22px",
+            borderRadius: 18,
             background: "rgba(18,18,18,0.94)",
             border: `1px solid ${C.gold}88`,
+            boxShadow: "0 20px 50px -20px rgba(0,0,0,0.9)",
             color: C.ivory,
             fontFamily: SANS,
             fontSize: 24,
             fontWeight: 600,
-            transform: `translateY(${(1 - pop(frame, fps, 628)) * -40}px)`,
+            transform: `translateY(${(1 - pop(frame, fps, 628)) * -30}px)`,
             opacity: pop(frame, fps, 628),
           }}
         >
-          <CalendarCheck size={34} color={C.gold} />
+          <CalendarCheck size={32} color={C.gold} />
           Prenotazione aperta su Treatwell
         </div>
       )}
@@ -593,9 +661,7 @@ function SceneSolution() {
   const enter = interpolate(frame, [0, 16], [0, 1], { ...clamp, easing: outExpo });
   const scaleIn = 1.35 - 0.35 * enter;
   const blurIn = (1 - enter) * 14;
-  // finale: il telefono sale per tenere il tasto Prenota fuori dalla zona coperta da Instagram
-  const settle = interpolate(frame, [585, 605], [0, 1], { ...clamp, easing: inOut });
-  const phoneW = 560;
+  const screenW = 1000;
   return (
     <AbsoluteFill style={{ transform: `scale(${scaleIn})`, filter: blurIn > 0.3 ? `blur(${blurIn}px)` : undefined, opacity: Math.min(1, enter * 1.6) }}>
       <SolutionChip label="Impatto immediato" from={6} to={161} />
@@ -618,14 +684,12 @@ function SceneSolution() {
           { from: 428, to: 476, step: 6, words: [{ text: "Sfumature", accent: true }, "e", { text: "barba", accent: true }, "in", "HD"] },
           { from: 486, to: 533, step: 7, words: ["Il", { text: "listino", accent: true }, "prezzi"] },
           { from: 533, to: 581, step: 7, words: ["Prezzi", { text: "chiari", accent: true }, "e", { text: "trasparenti", accent: true }] },
-          { from: 591, step: 6, words: ["Prenota", "su", { text: "Treatwell", accent: true }, "in", "un", "tap"] },
+          { from: 591, step: 6, words: ["Prenota", "su", { text: "Treatwell", accent: true }, "in", "un", "clic"] },
         ]}
       />
-      <div style={{ position: "absolute", inset: 0, transformOrigin: "50% 545px", transform: `translateY(${-50 * settle}px) scale(${1 - 0.15 * settle})` }}>
-        <Phone width={phoneW} x={(1080 - phoneW) / 2} y={545} glow={1}>
-          {(w, h) => <SiteScreen w={w} h={h} />}
-        </Phone>
-      </div>
+      <Laptop width={screenW} x={(1080 - screenW) / 2} y={640} glow={1}>
+        {(w, h) => <SiteScreen w={w} h={h} />}
+      </Laptop>
     </AbsoluteFill>
   );
 }

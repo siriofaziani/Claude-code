@@ -1,17 +1,18 @@
-// Cattura il sito (versione telefono, 390x844 a scala 2,5) per il Reel.
-// Uso: node scripts/capture-site.mjs ../dist-single/index.html public
-// Produce: site-hero.jpg, site-header.png, site-bar.png, site-full.jpg (pagina intera), site-metrics.json
+// Cattura il sito per il Reel: versione computer (1440x900 a scala 1,5) o telefono (390x844 a scala 2,5).
+// Uso: node scripts/capture-site.mjs ../dist-single/index.html public [desktop|mobile]
+// Produce: site-hero.jpg, site-header.png, site-bar.png (solo telefono), site-full.jpg (pagina intera), site-metrics.json
 // Richiede playwright-core (npm i -D playwright-core) e un Chromium (variabile CHROME o /opt/pw-browsers).
 import { chromium } from "playwright-core";
 import { execFileSync } from "node:child_process";
 import { existsSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-const [file, outArg = "public"] = process.argv.slice(2);
+const [file, outArg = "public", mode = "desktop"] = process.argv.slice(2);
 const out = path.resolve(outArg);
-const DPR = 2.5;
-const VW = 390;
-const VH = 844;
+const desktop = mode === "desktop";
+const DPR = desktop ? 1.5 : 2.5;
+const VW = desktop ? 1440 : 390;
+const VH = desktop ? 900 : 844;
 const exe = process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 
 const browser = await chromium.launch({
@@ -48,11 +49,14 @@ const viewport = await page.evaluate(() => {
     const r = el.getBoundingClientRect();
     return { x: r.x, y: r.y, w: r.width, h: r.height };
   };
+  // Su computer la barra in basso è nascosta: il tasto fisso è "Prenota online" nell'intestazione.
   const bar = document.querySelector("div.fixed.bottom-0");
+  const barVisible = bar && bar.getBoundingClientRect().height > 0 && getComputedStyle(bar).display !== "none";
   return {
     header: document.querySelector("header nav").getBoundingClientRect().bottom,
-    bar: box(bar),
-    barBook: box([...bar.querySelectorAll("a")].pop()),
+    bar: barVisible ? box(bar) : null,
+    barBook: barVisible ? box([...bar.querySelectorAll("a")].pop()) : null,
+    headerBook: box([...document.querySelectorAll("header a")].find((a) => /Prenota/.test(a.textContent))),
     heroBtn: box([...document.querySelectorAll("#top a")].find((a) => /Treatwell/.test(a.textContent))),
   };
 });
@@ -91,7 +95,13 @@ const layout = await page.evaluate(() => {
 });
 
 // Pagina intera a pezzi da una schermata: Chromium non cattura immagini più alte di 16384 px.
-await page.addStyleTag({ content: "header, div.fixed.bottom-0 { visibility: hidden !important }" });
+// Intestazione fissa ripresa sopra una zona scura (margine sopra il titolo del listino), non sopra la foto della Hero.
+await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), layout.servizi.y + 5);
+await page.waitForTimeout(400);
+await page.screenshot({ path: path.join(out, "site-header.png"), clip: { x: 0, y: 0, width: VW, height: 80 } });
+
+// Nasconde intestazione, barra in basso e barra di avanzamento: sono elementi fissi, ripetuti su ogni pezzo.
+await page.addStyleTag({ content: "header, body .fixed { visibility: hidden !important }" });
 const parts = [];
 for (let y = 0, i = 0; y < total; y += VH, i++) {
   await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), y);
@@ -112,8 +122,11 @@ execFileSync("convert", [...parts, "-append", "-quality", "88", path.join(out, "
 parts.forEach((p) => rmSync(p));
 const hero = path.join(out, "site-hero.png");
 execFileSync("convert", [hero, "-quality", "90", path.join(out, "site-hero.jpg")]);
-execFileSync("convert", [hero, "-crop", `${VW * DPR}x${Math.round(80 * DPR)}+0+0`, "+repage", path.join(out, "site-header.png")]);
-execFileSync("convert", [hero, "-crop", `${VW * DPR}x${Math.round((VH - viewport.bar.y) * DPR)}+0+${Math.round(viewport.bar.y * DPR)}`, "+repage", path.join(out, "site-bar.png")]);
+if (viewport.bar) {
+  execFileSync("convert", [hero, "-crop", `${VW * DPR}x${Math.round((VH - viewport.bar.y) * DPR)}+0+${Math.round(viewport.bar.y * DPR)}`, "+repage", path.join(out, "site-bar.png")]);
+} else {
+  rmSync(path.join(out, "site-bar.png"), { force: true });
+}
 rmSync(hero);
-writeFileSync(path.join(out, "site-metrics.json"), JSON.stringify({ dpr: DPR, viewport, ...layout }, null, 2));
+writeFileSync(path.join(out, "site-metrics.json"), JSON.stringify({ mode, dpr: DPR, width: VW, height: VH, viewport, ...layout }, null, 2));
 console.log("ok", total);
