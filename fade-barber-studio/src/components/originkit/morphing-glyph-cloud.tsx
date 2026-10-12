@@ -6,7 +6,7 @@
 import * as React from "react"
 import { useEffect, useRef } from "react"
 
-const MAX_DPR = 2
+const MAX_DPR = 1.5 // ridotto da 2: meno pixel da disegnare sui telefoni (schermi a densità 3)
 const DEFAULT_FACE = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>/\\{}[]()=+-*#$%&@?!"
 const FS = 0.018

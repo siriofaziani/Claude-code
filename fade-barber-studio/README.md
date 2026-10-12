@@ -11,6 +11,15 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 
 `anteprima.html` è la versione in un unico file, apribile con doppio clic.
 
+## Prestazioni su telefono
+
+Sotto i 1024 px (o senza mouse) il sito passa in modalità leggera, per restare a 60 fps:
+niente `backdrop-filter` (fondi scuri quasi pieni), niente animazioni infinite che ridipingono (bordi luminosi,
+riflessi, shimmer, anelli), niente inclinazione 3D, parallasse, grana a schermo intero e anelli SVG animati.
+Le comparse usano solo opacità e spostamento. La scena WebGL degli specchi è sostituita da un suo fotogramma
+(`src/assets/specchi-telefono.webp`), la mappa Google si carica al tocco e le animazioni canvas si montano solo
+quando la sezione resta a schermo (`LazyMount`). Gli effetti completi restano su computer (`DESKTOP_FX` in `src/ui.jsx`).
+
 ## Struttura
 
 - `src/App.jsx`: pagina, intro video e footer. `src/data.js`: link, listino, tagli, recensioni, orari.

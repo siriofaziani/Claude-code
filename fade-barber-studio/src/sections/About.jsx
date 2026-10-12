@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { Award, Gem, Scissors, Sofa, Timer } from "lucide-react";
 
 import certificato from "../assets/certificato.webp";
 import premiazione from "../assets/premiazione.webp";
 import { OrbitRings } from "../Effects.jsx";
-import { Reveal, SectionHeading, useTiltCard } from "../ui.jsx";
+import { Reveal, SectionHeading, useDesktopFx, useTiltCard } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 /** Sigillo animato dell'Accademia Gilmont: testo circolare che ruota attorno alla corona. */
@@ -19,7 +19,7 @@ export function GilmontSeal({ size = 132, className = "" }) {
       aria-label="Sigillo: Accademia Gilmont, Albo degli Eccellenti"
     >
       <div className="neon-frame absolute inset-0 rounded-full">
-        <div className="absolute inset-0 rounded-full bg-obsidian/90 backdrop-blur-md" />
+        <div className="absolute inset-0 rounded-full bg-obsidian/95" />
       </div>
       <svg viewBox="0 0 100 100" className="spin-slow absolute inset-0 h-full w-full" aria-hidden="true">
         <defs>
@@ -58,23 +58,24 @@ const FOUNDERS = [
 
 export default function About() {
   const ref = useRef(null);
-  const reduce = useReducedMotion();
+  // Parallasse delle foto solo su computer: sul telefono le foto scorrono con la pagina.
+  const fx = useDesktopFx();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const photoY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [40, -40]);
-  const awardY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [90, -70]);
+  const photoY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const awardY = useTransform(scrollYProgress, [0, 1], [90, -70]);
   const tilt = useTiltCard(10);
 
   return (
     <section id="chi-siamo" ref={ref} className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-36 lg:px-8">
-      <div className="pointer-events-none absolute right-0 top-10 -z-10 h-80 w-80 rounded-full bg-gold/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-20 top-0 -z-10 h-[34rem] w-[34rem] bg-[radial-gradient(closest-side,rgba(255,230,0,0.1),transparent)]" />
 
       <SectionHeading index="01" eyebrow="La storia" words={["Passione"]} accent="certificata" />
 
       <div className="mt-14 grid items-center gap-16 lg:grid-cols-12 lg:gap-10">
         {/* collage: targa Gilmont, foto della premiazione, sigillo */}
-        <div className="relative isolate mx-auto mb-24 w-full max-w-md lg:col-span-6 lg:mb-0 lg:max-w-none lg:pr-10">
+        <div className="relative isolate mx-auto mb-14 w-full max-w-md lg:col-span-6 lg:mb-0 lg:max-w-none lg:pr-10">
           <OrbitRings className="-inset-[25%]" />
-          <motion.div style={{ y: photoY }} className="relative">
+          <motion.div style={fx ? { y: photoY } : undefined} className="relative">
             <div {...tilt.wrapProps} className="t-tilt">
               <div
                 ref={tilt.cardRef}
@@ -84,6 +85,7 @@ export default function About() {
                   src={certificato}
                   alt="La targa Eccellenza Gilmont di Fade Barber Studio sul bancone del salone"
                   loading="lazy"
+                  decoding="async"
                   width="1100"
                   height="1220"
                   className="aspect-[4/5] w-full object-cover lg:aspect-[5/6]"
@@ -98,13 +100,14 @@ export default function About() {
           </motion.div>
 
           <motion.figure
-            style={{ y: awardY }}
+            style={fx ? { y: awardY } : undefined}
             className="absolute -bottom-10 -right-2 w-[46%] rotate-[4deg] rounded-[18px] border border-white/15 bg-carbon p-1.5 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.95)] sm:-right-6 lg:right-0"
           >
             <img
               src={premiazione}
               alt="Federico Giustini e David Pannunzi ricevono il riconoscimento dell'Accademia Gilmont"
               loading="lazy"
+              decoding="async"
               width="1200"
               height="900"
               className="aspect-[4/3] w-full rounded-[13px] object-cover"

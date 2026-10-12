@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { EXT } from "./data.js";
@@ -55,7 +55,30 @@ export function ActionOrb({ href, icon: Icon, label, gold = false, size = 56, cl
   );
 }
 
+/* ───────────── Effetti pesanti solo dove servono ───────────── */
+
+/** Schermi larghi con mouse e senza "riduci movimento": qui girano parallasse, inclinazione 3D, effetti continui. */
+export const DESKTOP_FX = "(min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference)";
+
+export function useMediaQuery(query) {
+  const get = () => typeof window !== "undefined" && Boolean(window.matchMedia?.(query).matches);
+  const [matches, setMatches] = useState(get);
+  useEffect(() => {
+    const mq = window.matchMedia?.(query);
+    if (!mq) return undefined;
+    const on = () => setMatches(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, [query]);
+  return matches;
+}
+
+export const useDesktopFx = () => useMediaQuery(DESKTOP_FX);
+
 /* ───────────── Comparse allo scorrimento ───────────── */
+
+// Solo opacità e spostamento (niente filtri di sfocatura): restano sul compositore della GPU.
 
 export function Reveal({ children, delay = 0, className = "", y = 16, as = "div" }) {
   const reduce = useReducedMotion();
@@ -63,10 +86,10 @@ export function Reveal({ children, delay = 0, className = "", y = 16, as = "div"
   return (
     <Tag
       className={className}
-      initial={reduce ? false : { opacity: 0, y, filter: "blur(4px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.7, delay, ease: EASE }}
+      initial={reduce ? false : { opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay, ease: EASE }}
     >
       {children}
     </Tag>
@@ -108,10 +131,10 @@ export function SectionHeading({ index, eyebrow, words, accent, align = "left", 
           <motion.span
             key={i}
             className={cn("mr-[0.25em] inline-block last:mr-0", word === accent && "text-gold-gradient pb-1")}
-            initial={reduce ? false : { opacity: 0, y: "0.5em", filter: "blur(6px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={reduce ? false : { opacity: 0, y: "0.4em" }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.7, delay: 0.12 + i * 0.07, ease: EASE }}
+            transition={{ duration: 0.5, delay: 0.08 + i * 0.05, ease: EASE }}
           >
             {word}
           </motion.span>
@@ -126,12 +149,12 @@ export function SectionHeading({ index, eyebrow, words, accent, align = "left", 
 
 /**
  * Inclinazione 3D con riflesso, da transitions.dev ("card hover tilt").
- * Mouse: segue il puntatore. Dito: segue il trascinamento mentre il dito è appoggiato, senza bloccare lo scorrimento verticale.
+ * Attiva solo su schermi larghi con il mouse: su telefono e tablet la scheda resta piatta (niente lavoro per la GPU).
  */
 export function useTiltCard(max = 12) {
   const wrapRef = useRef(null);
   const cardRef = useRef(null);
-  const reduce = useReducedMotion();
+  const fx = useDesktopFx();
 
   const reset = () => {
     const wrap = wrapRef.current;
@@ -146,7 +169,7 @@ export function useTiltCard(max = 12) {
   const track = (e) => {
     const wrap = wrapRef.current;
     const card = cardRef.current;
-    if (reduce || !wrap || !card) return;
+    if (!fx || e.pointerType !== "mouse" || !wrap || !card) return;
     const r = wrap.getBoundingClientRect();
     const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
     const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
@@ -162,10 +185,7 @@ export function useTiltCard(max = 12) {
     wrapProps: {
       ref: wrapRef,
       onPointerMove: track,
-      onPointerDown: track,
       onPointerLeave: reset,
-      onPointerUp: (e) => e.pointerType !== "mouse" && reset(),
-      onPointerCancel: reset,
     },
     cardRef,
   };

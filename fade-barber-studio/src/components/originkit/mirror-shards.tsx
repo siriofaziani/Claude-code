@@ -151,7 +151,7 @@ const SHELL_DETAIL = 4
 const SHELL_Z = -5
 const TITLE_Z = -10
 const CAMERA_FOV = 70
-const MAX_DPR = 2
+const MAX_DPR = 1.5 // ridotto da 2: meno pixel da disegnare sui telefoni (schermi a densità 3)
 
 const MATCAP_TINT: Vec3 = [195.6 / 203.9, 203.6 / 203.9, 212.4 / 203.9]
 const MATCAP_N = 64

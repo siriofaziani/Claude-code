@@ -27,8 +27,8 @@ function PopPrice({ value, className = "" }) {
             key={i}
             aria-hidden="true"
             className="inline-block"
-            initial={reduce ? false : { opacity: 0, y: "0.35em", filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={reduce ? false : { opacity: 0, y: "0.35em" }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 0.5, delay: 0.15 + i * 0.07, ease: [0.34, 1.45, 0.64, 1] }}
           >
@@ -125,7 +125,7 @@ function MenuRow({ service, index, open, onToggle }) {
     <div
       data-open={open}
       className={cn(
-        "rounded-[20px] border transition-[background-color,border-color,box-shadow] duration-300",
+        "rounded-[20px] border transition-[background-color,border-color] duration-200",
         open
           ? "border-violet-soft/45 bg-violet/[0.12] shadow-[0_0_0_1px_rgba(183,124,255,0.15),0_24px_60px_-28px_rgba(138,43,226,0.9)]"
           : "border-white/[0.07] bg-carbon/70 hover:border-white/15",
@@ -186,9 +186,13 @@ function MenuRow({ service, index, open, onToggle }) {
               {/* durata in proporzione al servizio più lungo */}
               <div className="mt-4 flex items-center gap-3">
                 <span className="h-1.5 w-full max-w-[220px] overflow-hidden rounded-full bg-white/10">
+                  {/* la barra cresce con transform (scaleX), non con la larghezza: nessun ricalcolo del layout */}
                   <span
-                    className="block h-full rounded-full bg-gradient-to-r from-violet to-gold transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    style={{ width: open ? `${(service.minutes / MAX_MINUTES) * 100}%` : "0%" }}
+                    className="block h-full origin-left rounded-full bg-gradient-to-r from-violet to-gold transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    style={{
+                      width: `${(service.minutes / MAX_MINUTES) * 100}%`,
+                      transform: `scaleX(${open ? 1 : 0})`,
+                    }}
                   />
                 </span>
                 <span className="shrink-0 text-[11px] uppercase tracking-wider text-mist">{service.duration}</span>
@@ -217,7 +221,7 @@ export default function Services() {
 
   return (
     <section id="servizi" className="relative py-24 md:py-36">
-      <div className="pointer-events-none absolute inset-x-0 top-1/3 -z-10 mx-auto h-96 max-w-4xl rounded-full bg-violet/15 blur-[160px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-1/4 -z-10 mx-auto h-[40rem] max-w-6xl bg-[radial-gradient(closest-side,rgba(138,43,226,0.16),transparent)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading index="03" eyebrow="Listino" words={["Il", "menù"]} accent="servizi">
           <p className="mt-5 max-w-[52ch] text-base leading-relaxed text-mist sm:text-lg">

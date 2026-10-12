@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, Camera, Plus } from "lucide-react";
+import { ArrowUpRight, Camera, Plus, X } from "lucide-react";
 
 import { CUTS, LINKS } from "../data.js";
-import { ChromeButton, Reveal, SectionHeading } from "../ui.jsx";
+import { ChromeButton, Reveal, SectionHeading, useMediaQuery } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -13,20 +13,6 @@ const FILTERS = [
   { id: "barba", label: "Barba" },
   { id: "styling", label: "Styling" },
 ];
-
-function useMediaQuery(query) {
-  const get = () => typeof window !== "undefined" && window.matchMedia?.(query).matches;
-  const [matches, setMatches] = useState(get);
-  useEffect(() => {
-    const mq = window.matchMedia?.(query);
-    if (!mq) return undefined;
-    const on = () => setMatches(mq.matches);
-    on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, [query]);
-  return matches;
-}
 
 /** Filtri a segmenti con la pillola che scorre sotto la voce attiva (transitions.dev, "tabs sliding"). */
 function FilterTabs({ value, onChange }) {
@@ -62,7 +48,8 @@ function FilterTabs({ value, onChange }) {
   );
 }
 
-function CutPanel({ cut, index, active, wide, onActivate }) {
+/** Computer: schede affiancate che si allargano al passaggio del mouse o al clic. */
+function CutPanel({ cut, index, active, onActivate }) {
   const reduce = useReducedMotion();
   const panelId = `cut-${index}`;
   return (
@@ -72,13 +59,12 @@ function CutPanel({ cut, index, active, wide, onActivate }) {
       animate={{
         opacity: 1,
         scale: 1,
-        flexGrow: wide ? (active ? 3.4 : 1) : 0,
-        height: wide ? "100%" : active ? 460 : 92,
+        flexGrow: active ? 3.4 : 1,
       }}
       exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
       transition={{ duration: reduce ? 0 : 0.65, ease: EASE }}
       className={cn(
-        "relative isolate min-w-0 shrink-0 overflow-hidden rounded-[22px] border bg-carbon lg:basis-0",
+        "relative isolate h-full min-w-0 shrink-0 basis-0 overflow-hidden rounded-[22px] border bg-carbon",
         active
           ? "border-gold/50 shadow-[0_0_0_1px_rgba(255,230,0,0.25),0_30px_80px_-30px_rgba(255,230,0,0.45)]"
           : "border-white/[0.08]",
@@ -93,8 +79,15 @@ function CutPanel({ cut, index, active, wide, onActivate }) {
         decoding="async"
         style={{ objectPosition: cut.focus }}
         className={cn(
-          "absolute inset-0 -z-10 h-full w-full object-cover transition-[filter,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          active ? "scale-100 saturate-100" : "scale-110 brightness-[0.45] saturate-[0.3]",
+          "absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          active ? "scale-100" : "scale-110",
+        )}
+      />
+      {/* velo scuro sulle schede chiuse: cambia solo l'opacità */}
+      <div
+        className={cn(
+          "absolute inset-0 -z-10 bg-obsidian/60 transition-opacity duration-500",
+          active ? "opacity-0" : "opacity-100",
         )}
       />
       <div
@@ -183,7 +176,7 @@ function CutPanel({ cut, index, active, wide, onActivate }) {
                 {cut.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-gold/40 bg-obsidian/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold backdrop-blur"
+                    className="rounded-full border border-gold/40 bg-obsidian/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold"
                   >
                     {tag}
                   </span>
@@ -193,8 +186,8 @@ function CutPanel({ cut, index, active, wide, onActivate }) {
               <motion.div
                 key={i}
                 variants={{
-                  hidden: { opacity: 0, y: 12, filter: "blur(3px)", transition: { duration: 0.15 } },
-                  shown: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.5, ease: EASE } },
+                  hidden: { opacity: 0, y: 12, transition: { duration: 0.15 } },
+                  shown: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
                 }}
               >
                 {node}
@@ -207,9 +200,97 @@ function CutPanel({ cut, index, active, wide, onActivate }) {
   );
 }
 
+/**
+ * Telefono e tablet: carosello orizzontale con aggancio. Toccando una scheda compaiono i dettagli
+ * (solo opacità e spostamento, nessun cambio di dimensioni): resta fluido anche sui telefoni economici.
+ */
+function CutCardMobile({ cut, index, open, onToggle }) {
+  const panelId = `cut-m-${index}`;
+  return (
+    <li className="w-[78%] shrink-0 snap-center sm:w-[46%]">
+      <div
+        className={cn(
+          "relative isolate aspect-[4/5] overflow-hidden rounded-[22px] border bg-carbon transition-[transform,border-color] duration-200 active:scale-[0.98]",
+          open ? "border-gold/60" : "border-white/[0.08]",
+        )}
+      >
+        <img
+          src={cut.src}
+          alt={cut.alt}
+          width={cut.width}
+          height={cut.height}
+          loading="lazy"
+          decoding="async"
+          style={{ objectPosition: cut.focus }}
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent" />
+        {/* velo che scurisce la foto quando i dettagli sono aperti */}
+        <div
+          className={cn(
+            "absolute inset-0 -z-10 bg-obsidian/70 transition-opacity duration-200",
+            open ? "opacity-100" : "opacity-0",
+          )}
+        />
+
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          aria-label={`${cut.title}: ${open ? "nascondi" : "mostra"} i dettagli`}
+          onClick={onToggle}
+          className="absolute inset-0 z-0"
+        />
+
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border transition-[transform,background-color,border-color] duration-200",
+            open ? "rotate-90 border-gold bg-gold text-obsidian" : "border-white/25 bg-obsidian/80 text-ivory",
+          )}
+        >
+          {open ? <X size={18} /> : <Plus size={18} />}
+        </span>
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5">
+          <p className="font-display text-xs font-bold uppercase tracking-[0.24em] text-gold">Look 0{index + 1}</p>
+          <h3 className="mt-1.5 font-display text-xl font-black uppercase leading-none text-ivory">{cut.title}</h3>
+          <div
+            id={panelId}
+            className={cn(
+              "transition-[opacity,transform] duration-200 ease-out",
+              open ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0",
+            )}
+          >
+            <dl className="mt-4 grid gap-1.5 text-sm">
+              {cut.details.map(([k, v]) => (
+                <div key={k} className="flex items-baseline gap-3">
+                  <dt className="w-20 shrink-0 text-[11px] uppercase tracking-wider text-mist">{k}</dt>
+                  <dd className="font-medium text-ivory">{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {cut.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-gold/40 bg-obsidian/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
 export default function Lookbook() {
   const [filter, setFilter] = useState("tutti");
   const [active, setActive] = useState(0);
+  const [openMobile, setOpenMobile] = useState(-1);
   const wide = useMediaQuery("(min-width: 1024px)");
   const cuts = CUTS.map((cut, i) => ({ cut, i })).filter(({ cut }) => filter === "tutti" || cut.kind.includes(filter));
 
@@ -231,20 +312,30 @@ export default function Lookbook() {
         </Reveal>
       </div>
 
-      <ul className="mt-10 flex flex-col gap-3 lg:h-[600px] lg:flex-row lg:gap-4">
-        <AnimatePresence mode="popLayout" initial={false}>
+      {wide ? (
+        <ul className="mt-10 flex h-[600px] gap-4">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {cuts.map(({ cut, i }) => (
+              <CutPanel key={cut.title} cut={cut} index={i} active={i === active} onActivate={() => setActive(i)} />
+            ))}
+          </AnimatePresence>
+        </ul>
+      ) : (
+        <ul
+          className="snap-row -mx-4 mt-10 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6"
+          aria-label="Galleria dei tagli"
+        >
           {cuts.map(({ cut, i }) => (
-            <CutPanel
+            <CutCardMobile
               key={cut.title}
               cut={cut}
               index={i}
-              active={i === active}
-              wide={wide}
-              onActivate={() => setActive(i)}
+              open={openMobile === i}
+              onToggle={() => setOpenMobile(openMobile === i ? -1 : i)}
             />
           ))}
-        </AnimatePresence>
-      </ul>
+        </ul>
+      )}
 
       <Reveal delay={0.1} className="mt-5">
         <div className="neon-frame rounded-[22px]">

@@ -53,7 +53,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-6">
+    <header className="gpu fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-6">
       <nav
         aria-label="Navigazione principale"
         className={cn(
@@ -109,10 +109,10 @@ export function Header() {
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
                 key={open ? "x" : "menu"}
-                initial={{ opacity: 0, scale: 0.6, filter: "blur(2px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.6, filter: "blur(2px)" }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, scale: 0.6 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.6 }}
+                transition={{ duration: 0.15 }}
               >
                 {open ? <X size={22} strokeWidth={2} /> : <Menu size={22} strokeWidth={2} />}
               </motion.span>
@@ -135,9 +135,9 @@ export function Header() {
               {NAV.map((item, i) => (
                 <motion.li
                   key={item.href}
-                  initial={reduce ? false : { opacity: 0, y: 10, filter: "blur(3px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.4, delay: 0.04 * i, ease: [0.22, 1, 0.36, 1] }}
+                  initial={reduce ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, delay: 0.03 * i, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <a
                     href={item.href}
@@ -174,7 +174,7 @@ export function MobileDock() {
   return (
     <div
       className={cn(
-        "fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden",
+        "gpu fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-[translate,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden",
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-[120%] opacity-0",
       )}
     >

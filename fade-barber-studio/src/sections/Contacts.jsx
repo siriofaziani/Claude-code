@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import { EXT, HOURS, LINKS, MAP_EMBED, WEEK, isOpenNow, romeNow } from "../data.js";
-import { NeonButton, Reveal, SectionHeading, trackSpotlight } from "../ui.jsx";
+import { NeonButton, Reveal, SectionHeading, trackSpotlight, useDesktopFx } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 const ACTIONS = [
@@ -119,25 +119,62 @@ function HoursCard() {
   );
 }
 
-/** Mappa scura: sul telefono si attiva con un tocco, così non blocca lo scorrimento della pagina. */
+/** Mappa disegnata (leggera): strade stilizzate e segnaposto sull'indirizzo. */
+function MapSketch() {
+  const roads = [
+    "M-20 60 L420 140",
+    "M-20 210 L420 170",
+    "M60 -20 L140 420",
+    "M250 -20 L210 420",
+    "M-20 330 L420 280",
+    "M330 -20 L390 420",
+    "M-20 20 L200 420",
+  ];
+  return (
+    <div className="absolute inset-0 bg-[#16161b]" aria-hidden="true">
+      <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+        <rect x="150" y="190" width="120" height="70" rx="10" fill="#1f2b22" />
+        {roads.map((d, i) => (
+          <path key={d} d={d} stroke={i % 3 ? "#34343f" : "#4c4c5c"} strokeWidth={i % 3 ? 7 : 12} fill="none" />
+        ))}
+      </svg>
+      <div className="absolute left-1/2 top-[40%] flex -translate-x-1/2 -translate-y-full flex-col items-center">
+        <span className="whitespace-nowrap rounded-full bg-gold px-2.5 py-1 font-display text-[11px] font-bold text-obsidian shadow-[0_6px_18px_rgba(0,0,0,0.6)]">
+          Fade Barber Studio
+        </span>
+        <MapPin size={34} strokeWidth={2} className="fill-violet text-ivory" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Mappa scura. Su computer è la mappa Google interattiva. Sul telefono parte come disegno leggero
+ * (nessun iframe da caricare e filtrare durante lo scorrimento) e la mappa vera si carica al tocco.
+ */
 function DarkMap() {
   const [live, setLive] = useState(false);
+  const fx = useDesktopFx();
+  const showIframe = fx || live;
   return (
     <div className="neon-frame h-full rounded-[24px]">
       <div className="relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-[24px] bg-carbon lg:min-h-[520px]">
-        <iframe
-          title="Mappa: Fade Barber Studio, Via Delle Azalee 73, Roma"
-          src={MAP_EMBED}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className={cn(
-            "h-full min-h-[360px] w-full flex-1 [filter:grayscale(1)_invert(0.92)_hue-rotate(200deg)_contrast(0.95)_saturate(2.2)] lg:min-h-[520px]",
-            !live && "pointer-events-none",
-          )}
-        />
-        {/* velatura viola sopra la mappa */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_45%,transparent,rgba(5,5,5,0.55))] mix-blend-multiply" />
-        <div className="pointer-events-none absolute inset-0 bg-violet/10 mix-blend-color" />
+        {showIframe ? (
+          <iframe
+            title="Mappa: Fade Barber Studio, Via Delle Azalee 73, Roma"
+            src={MAP_EMBED}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className={cn(
+              "h-full min-h-[360px] w-full flex-1 [filter:grayscale(1)_invert(0.92)_hue-rotate(200deg)_contrast(0.95)_saturate(2.2)] lg:min-h-[520px]",
+              !live && "pointer-events-none",
+            )}
+          />
+        ) : (
+          <MapSketch />
+        )}
+        {/* velatura scura ai bordi (gradiente semplice, nessuna fusione di livelli) */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_45%,transparent,rgba(5,5,5,0.5))]" />
 
         {!live && (
           <button
@@ -146,9 +183,9 @@ function DarkMap() {
             className="absolute inset-0 flex items-start justify-end p-4"
             aria-label="Attiva la mappa interattiva"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-obsidian/80 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-ivory backdrop-blur-md">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-obsidian/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-ivory">
               <Hand size={14} aria-hidden="true" />
-              Tocca per esplorare
+              {showIframe ? "Tocca per esplorare" : "Tocca per aprire la mappa"}
             </span>
           </button>
         )}

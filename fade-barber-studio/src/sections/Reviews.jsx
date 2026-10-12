@@ -11,11 +11,12 @@ const EASE = [0.22, 1, 0.36, 1];
 /** Fascio di luce a "lampada" sopra il titolo (adattato dal Lamp di Aceternity UI). */
 function Lamp() {
   const reduce = useReducedMotion();
-  const grow = (from, to) => ({
-    initial: reduce ? false : { width: from, opacity: 0.5 },
-    whileInView: { width: to, opacity: 1 },
+  // Si apre con scaleX (transform), non animando la larghezza: niente ricalcolo del layout.
+  const grow = (from) => ({
+    initial: reduce ? false : { scaleX: from, opacity: 0.5 },
+    whileInView: { scaleX: 1, opacity: 1 },
     viewport: { once: true, amount: 0.6 },
-    transition: { duration: 1, delay: 0.2, ease: EASE },
+    transition: { duration: 0.8, delay: 0.15, ease: EASE },
   });
   return (
     <div
@@ -24,25 +25,25 @@ function Lamp() {
     >
       {/* due coni di luce che partono dal centro: viola a sinistra, oro a destra */}
       <motion.div
-        {...grow("9rem", "20rem")}
-        className="absolute right-1/2 top-0 h-56 blur-[2px] [background-image:conic-gradient(from_180deg_at_100%_0%,#8a2be2_0deg,transparent_70deg)]"
+        {...grow(0.45)}
+        className="absolute right-1/2 top-0 h-56 w-80 origin-right [background-image:conic-gradient(from_180deg_at_100%_0%,#8a2be2_0deg,transparent_70deg)]"
       >
         <div className="absolute inset-x-0 bottom-0 h-40 bg-obsidian [mask-image:linear-gradient(to_top,white,transparent)]" />
         <div className="absolute inset-y-0 left-0 w-32 bg-obsidian [mask-image:linear-gradient(to_right,white,transparent)]" />
       </motion.div>
       <motion.div
-        {...grow("9rem", "20rem")}
-        className="absolute left-1/2 top-0 h-56 blur-[2px] [background-image:conic-gradient(from_110deg_at_0%_0%,transparent_0deg,#ffe600_70deg,transparent_70deg)]"
+        {...grow(0.45)}
+        className="absolute left-1/2 top-0 h-56 w-80 origin-left [background-image:conic-gradient(from_110deg_at_0%_0%,transparent_0deg,#ffe600_70deg,transparent_70deg)]"
       >
         <div className="absolute inset-x-0 bottom-0 h-40 bg-obsidian [mask-image:linear-gradient(to_top,white,transparent)]" />
         <div className="absolute inset-y-0 right-0 w-32 bg-obsidian [mask-image:linear-gradient(to_left,white,transparent)]" />
       </motion.div>
       {/* bagliore centrale: fonde i due coni */}
-      <div className="absolute top-0 h-44 w-28 bg-gradient-to-b from-ivory/25 via-violet-soft/20 to-transparent blur-2xl" />
-      <div className="absolute top-0 h-24 w-[26rem] max-w-full -translate-y-1/2 rounded-full bg-violet/60 blur-3xl" />
+      <div className="absolute top-0 h-48 w-48 bg-[radial-gradient(50%_100%_at_50%_0%,rgba(245,245,242,0.22),transparent)]" />
+      <div className="absolute top-0 h-40 w-[34rem] max-w-full -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(138,43,226,0.55),transparent)]" />
       <motion.div
-        {...grow("6rem", "16rem")}
-        className="absolute top-0 h-[2px] bg-gradient-to-r from-violet-soft via-ivory to-gold shadow-[0_0_24px_4px_rgba(183,124,255,0.8)]"
+        {...grow(0.35)}
+        className="absolute top-0 h-[2px] w-64 bg-gradient-to-r from-violet-soft via-ivory to-gold shadow-[0_0_24px_4px_rgba(183,124,255,0.8)]"
       />
     </div>
   );
@@ -77,8 +78,8 @@ function ReviewCard({ review }) {
   return (
     <figure
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-white/[0.08] bg-gradient-to-b from-white/[0.06] to-white/[0.015] p-6 backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-7",
-        "active:scale-[0.98] active:border-gold/50 active:shadow-[0_0_40px_-8px_rgba(255,230,0,0.55)]",
+        "group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(180deg,#17171c,#101014)] p-6 transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-7",
+        "active:scale-[0.98] active:border-gold/50",
         "hover:-translate-y-1 hover:border-violet-soft/40 hover:shadow-[0_30px_70px_-30px_rgba(138,43,226,0.9)]",
       )}
     >
@@ -129,11 +130,17 @@ export default function Reviews() {
       setPages(Math.max(1, REVIEWS.length - visible + 1));
       setPage(Math.round(row.scrollLeft / step));
     };
+    // al massimo un aggiornamento per fotogramma
+    let raf = 0;
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(() => ((raf = 0), update()));
+    };
     update();
-    row.addEventListener("scroll", update, { passive: true });
+    row.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", update);
     return () => {
-      row.removeEventListener("scroll", update);
+      cancelAnimationFrame(raf);
+      row.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", update);
     };
   }, []);

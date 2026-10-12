@@ -6,7 +6,7 @@ import HeroScrims from "../HeroScrims.jsx";
 import { FRAME_FIT } from "../IntroOverlay.jsx";
 import heroFrame from "../assets/hero-ultimo-fotogramma.webp";
 import { LINKS, isOpenNow } from "../data.js";
-import { ActionOrb, ChromeButton, NeonButton } from "../ui.jsx";
+import { ActionOrb, ChromeButton, NeonButton, useDesktopFx } from "../ui.jsx";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -15,19 +15,20 @@ export default function Hero({ revealed }) {
   const reduce = useReducedMotion();
   const show = revealed || reduce;
   const open = isOpenNow();
+  const fx = useDesktopFx();
 
-  // Parallasse allo scorrimento: a pagina ferma l'immagine resta identica all'ultimo fotogramma dell'intro.
+  // Parallasse allo scorrimento, solo su computer: a pagina ferma l'immagine resta identica all'ultimo fotogramma dell'intro.
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.14]);
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "8%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "-18%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, reduce ? 1 : 0]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.14]);
+  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // Entrata a cascata con sfocatura (transitions.dev, "texts reveal").
+  // Entrata a cascata (transitions.dev, "texts reveal"), solo opacità e spostamento.
   const enter = (delay) => ({
-    initial: reduce ? false : { opacity: 0, y: 22, filter: "blur(8px)" },
-    animate: show ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 22, filter: "blur(8px)" },
-    transition: { duration: 0.9, delay, ease: EASE },
+    initial: reduce ? false : { opacity: 0, y: 22 },
+    animate: show ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 },
+    transition: { duration: 0.8, delay, ease: EASE },
   });
 
   return (
@@ -39,14 +40,14 @@ export default function Hero({ revealed }) {
         width="1244"
         height="1660"
         className={`absolute inset-0 -z-20 h-full w-full origin-bottom ${FRAME_FIT}`}
-        style={{ scale: imgScale, y: imgY }}
+        style={fx ? { scale: imgScale, y: imgY } : undefined}
         fetchPriority="high"
       />
       <HeroScrims className="-z-10" />
       {/* griglia prospettica luminosa in basso */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[38%] opacity-40 [mask-image:linear-gradient(to_top,black,transparent)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 hidden h-[38%] opacity-40 lg:block [mask-image:linear-gradient(to_top,black,transparent)]"
         style={{
           backgroundImage:
             "linear-gradient(rgba(183,124,255,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(183,124,255,0.35) 1px, transparent 1px)",
@@ -65,18 +66,18 @@ export default function Hero({ revealed }) {
       </motion.p>
 
       <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={fx ? { y: contentY, opacity: contentOpacity } : undefined}
         className="mx-auto w-full max-w-7xl px-4 pb-24 pt-28 sm:px-6 md:pb-20 lg:px-8"
       >
         <div className="max-w-5xl">
           <motion.div {...enter(0.05)} className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/45 bg-gold/10 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold backdrop-blur-md sm:text-[11px]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/45 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] bg-obsidian/70 text-gold sm:text-[11px]">
               <BadgeCheck size={15} strokeWidth={2} aria-hidden="true" />
               Albo degli Eccellenti Gilmont
             </span>
             {open !== null && (
               <span
-                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] backdrop-blur-md sm:text-[11px] ${
+                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] sm:text-[11px] ${
                   open
                     ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
                     : "border-white/15 bg-white/5 text-mist"
