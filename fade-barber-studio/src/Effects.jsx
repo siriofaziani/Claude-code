@@ -47,23 +47,6 @@ export function ScrollProgress() {
   );
 }
 
-/** Inclinazione 3D che segue il mouse (solo mouse: su touch non disturba lo scorrimento). */
-export function useTilt(max = 8) {
-  const ref = useRef(null);
-  const reduce = useReducedMotion();
-  const onPointerMove = (e) => {
-    if (reduce || e.pointerType !== "mouse" || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    ref.current.style.transform = `perspective(900px) rotateX(${(-y * max).toFixed(2)}deg) rotateY(${(x * max).toFixed(2)}deg) scale(1.02)`;
-  };
-  const onPointerLeave = () => {
-    if (ref.current) ref.current.style.transform = "";
-  };
-  return { ref, onPointerMove, onPointerLeave };
-}
-
 /** Nastro di parole che scorre all'infinito. */
 export function Marquee({ items }) {
   const row = (

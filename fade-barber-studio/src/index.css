@@ -2,8 +2,8 @@
 
 /*
   Design tokens. Tema unico scuro (il brand e il salone sono neri).
-  Forme: card 20px, bottoni e badge a pillola. Nessun'altra variante.
-  Z-index: nav 40, barra mobile 40, intro 50.
+  Forme: card 20px; pulsanti d'azione a spigoli tagliati (.btn-neon, .btn-chrome); azioni rapide tonde (.orb); badge a pillola.
+  Z-index: nav 40, barra mobile 40, intro 50, grana 60 (non cliccabile).
 */
 @theme {
   --color-obsidian: #050505;
@@ -73,7 +73,13 @@
 @layer components {
   /* Vetro scuro: approssimazione web del glassmorphism, con fallback pieno. */
   .glass {
-    background: linear-gradient(145deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.015)), rgb(18 18 18 / 0.72);
+    background:
+      linear-gradient(
+        145deg,
+        rgb(255 255 255 / 0.06),
+        rgb(255 255 255 / 0.015)
+      ),
+      rgb(18 18 18 / 0.72);
     border: 1px solid rgb(255 255 255 / 0.08);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
     backdrop-filter: blur(18px) saturate(140%);
@@ -82,7 +88,12 @@
 
   /* Testo sfumato oro → avorio per una sola parola chiave per titolo. */
   .text-gold-gradient {
-    background: linear-gradient(100deg, var(--color-gold) 0%, #fff6a3 45%, var(--color-ivory) 100%);
+    background: linear-gradient(
+      100deg,
+      var(--color-gold) 0%,
+      #fff6a3 45%,
+      var(--color-ivory) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -106,7 +117,9 @@
       rgb(255 230 0 / 0.35) 40%,
       transparent 70%
     );
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
@@ -118,7 +131,11 @@
     inset: 0;
     z-index: -1;
     border-radius: inherit;
-    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgb(138 43 226 / 0.16), transparent 60%);
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 0%),
+      rgb(138 43 226 / 0.16),
+      transparent 60%
+    );
     opacity: 0;
     transition: opacity 300ms var(--ease-out-expo);
     pointer-events: none;
@@ -143,7 +160,9 @@
     font-weight: 700;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    box-shadow: 0 0 0 1px rgb(255 230 0 / 0.4), 0 10px 40px -12px rgb(255 230 0 / 0.55);
+    box-shadow:
+      0 0 0 1px rgb(255 230 0 / 0.4),
+      0 10px 40px -12px rgb(255 230 0 / 0.55);
     transition:
       transform 160ms var(--ease-out-expo),
       box-shadow 300ms var(--ease-out-expo),
@@ -152,7 +171,9 @@
   @media (hover: hover) {
     .btn-gold:hover {
       background: #fff04d;
-      box-shadow: 0 0 0 1px rgb(255 230 0 / 0.6), 0 14px 50px -10px rgb(255 230 0 / 0.75);
+      box-shadow:
+        0 0 0 1px rgb(255 230 0 / 0.6),
+        0 14px 50px -10px rgb(255 230 0 / 0.75);
     }
   }
   .btn-gold:active {
@@ -188,6 +209,433 @@
   }
   .btn-ghost:active {
     transform: scale(0.97);
+  }
+}
+
+/*
+  Pulsanti Cyber-Luxury: forma a spigoli tagliati (non a pillola), bordo di luce che gira (conic-gradient
+  animato tramite la proprietà registrata --angle) e un riflesso che attraversa la superficie.
+  Struttura: .btn-x (ombra + pressione) > .btn-x__rim (bordo luminoso, ritagliato) > .btn-x__face (superficie).
+*/
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+/* Dentro @layer components: le classi di utilità Tailwind (padding, testo, a capo) possono sovrascriverle. */
+@layer components {
+  @keyframes spin-angle {
+    to {
+      --angle: 360deg;
+    }
+  }
+  @keyframes sheen {
+    0%,
+    55% {
+      transform: translateX(-120%) skewX(-18deg);
+    }
+    100% {
+      transform: translateX(220%) skewX(-18deg);
+    }
+  }
+  .cut {
+    --cut: 12px;
+    clip-path: polygon(
+      var(--cut) 0,
+      100% 0,
+      100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%,
+      0 100%,
+      0 var(--cut)
+    );
+  }
+
+  .btn-neon,
+  .btn-chrome {
+    position: relative;
+    display: inline-flex;
+    text-decoration: none;
+    -webkit-user-select: none;
+    user-select: none;
+    transition:
+      transform 160ms var(--ease-out-expo),
+      filter 300ms var(--ease-out-expo);
+  }
+  .btn-neon {
+    filter: drop-shadow(0 10px 26px rgb(255 230 0 / 0.32));
+  }
+  .btn-neon__rim,
+  .btn-chrome__rim {
+    --cut: 14px;
+    display: flex;
+    width: 100%;
+    padding: 1.5px;
+    clip-path: polygon(
+      var(--cut) 0,
+      100% 0,
+      100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%,
+      0 100%,
+      0 var(--cut)
+    );
+    animation: spin-angle 4.5s linear infinite;
+  }
+  .btn-neon__rim {
+    background: conic-gradient(
+      from var(--angle),
+      #fff8b8,
+      var(--color-gold) 25%,
+      var(--color-violet-soft) 50%,
+      var(--color-gold) 75%,
+      #fff8b8
+    );
+  }
+  .btn-chrome__rim {
+    background: conic-gradient(
+      from var(--angle),
+      rgb(255 255 255 / 0.12),
+      rgb(183 124 255 / 0.9) 18%,
+      rgb(255 255 255 / 0.12) 36%,
+      rgb(255 255 255 / 0.12) 64%,
+      rgb(255 230 0 / 0.75) 82%,
+      rgb(255 255 255 / 0.12)
+    );
+  }
+  .btn-neon__face,
+  .btn-chrome__face {
+    --cut: 13px;
+    position: relative;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: polygon(
+      var(--cut) 0,
+      100% 0,
+      100% calc(100% - var(--cut)),
+      calc(100% - var(--cut)) 100%,
+      0 100%,
+      0 var(--cut)
+    );
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .btn-neon__face {
+    background: linear-gradient(
+      180deg,
+      #fff27a,
+      var(--color-gold) 45%,
+      #f2c900
+    );
+    color: #0b0b0b;
+  }
+  .btn-chrome__face {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02)),
+      rgb(10 10 12 / 0.82);
+    color: var(--color-ivory);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  /* riflesso che attraversa il pulsante */
+  .btn-neon__face::after,
+  .btn-chrome__face::after {
+    content: "";
+    position: absolute;
+    inset: -20% auto -20% 0;
+    width: 40%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.75),
+      transparent
+    );
+    transform: translateX(-120%) skewX(-18deg);
+    animation: sheen 3.6s var(--ease-out-expo) infinite;
+    pointer-events: none;
+  }
+  .btn-chrome__face::after {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.22),
+      transparent
+    );
+    animation-delay: 1.2s;
+  }
+  @media (hover: hover) {
+    .btn-neon:hover {
+      filter: drop-shadow(0 14px 34px rgb(255 230 0 / 0.55));
+    }
+    .btn-chrome:hover {
+      filter: drop-shadow(0 12px 30px rgb(138 43 226 / 0.6));
+    }
+    .btn-neon:hover .btn-neon__rim,
+    .btn-chrome:hover .btn-chrome__rim {
+      animation-duration: 1.6s;
+    }
+  }
+  .btn-neon:active,
+  .btn-chrome:active {
+    transform: scale(0.96);
+  }
+  .btn-neon:active {
+    filter: drop-shadow(0 0 22px rgb(255 230 0 / 0.85));
+  }
+  .btn-chrome:active {
+    filter: drop-shadow(0 0 20px rgb(183 124 255 / 0.85));
+  }
+
+  /* Pulsanti tondi per le azioni rapide (chiamata, WhatsApp, mappa): anello tratteggiato che ruota. */
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .orb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle at 35% 30%,
+      rgb(183 124 255 / 0.35),
+      rgb(18 18 18 / 0.9) 70%
+    );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      0 10px 30px -12px rgb(138 43 226 / 0.9);
+    transition:
+      transform 160ms var(--ease-out-expo),
+      box-shadow 300ms var(--ease-out-expo);
+  }
+  .orb::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: inherit;
+    border: 1.5px dashed rgb(183 124 255 / 0.65);
+    animation: orbit 14s linear infinite;
+  }
+  .orb--gold {
+    background: radial-gradient(
+      circle at 35% 30%,
+      rgb(255 246 163 / 0.55),
+      rgb(40 34 0 / 0.95) 72%
+    );
+    color: var(--color-gold);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.18),
+      0 10px 30px -12px rgb(255 230 0 / 0.8);
+  }
+  .orb--gold::before {
+    border-color: rgb(255 230 0 / 0.6);
+  }
+  @media (hover: hover) {
+    .group:hover .orb,
+    .orb:hover {
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.18),
+        0 0 0 1px rgb(183 124 255 / 0.6),
+        0 14px 40px -10px rgb(138 43 226 / 1);
+    }
+  }
+  .group:active .orb,
+  .orb:active {
+    transform: scale(0.92);
+    box-shadow:
+      0 0 0 6px rgb(183 124 255 / 0.25),
+      0 0 40px rgb(138 43 226 / 0.9);
+  }
+
+  /* Testo con riflesso dorato che scorre (shimmer). */
+  @keyframes shimmer-text {
+    to {
+      background-position: -200% 0;
+    }
+  }
+  .text-shimmer {
+    background: linear-gradient(
+      100deg,
+      var(--color-gold) 0%,
+      var(--color-gold) 35%,
+      #fffbe0 50%,
+      var(--color-gold) 65%,
+      var(--color-gold) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer-text 4s linear infinite;
+  }
+
+  /* Grana leggera su tutta la pagina: dà materia al nero. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Scheda con inclinazione 3D e riflesso che segue il dito o il mouse (transitions.dev, "card hover tilt"). */
+  .t-tilt {
+    touch-action: pan-y;
+  }
+  .t-tilt-card {
+    position: relative;
+    transform: perspective(1000px) rotateX(var(--tilt-rx, 0deg))
+      rotateY(var(--tilt-ry, 0deg));
+    transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+  .t-tilt-card.is-tilting {
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .t-tilt-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: screen;
+    border-radius: inherit;
+    background:
+      radial-gradient(
+        circle 110px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+        rgb(255 255 255 / 0.5),
+        rgb(255 255 255 / 0.06) 52%,
+        transparent 84%
+      ),
+      radial-gradient(
+        circle 260px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+        rgb(255 230 0 / 0.22),
+        transparent 78%
+      );
+    transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .t-tilt.is-hover .t-tilt-glare {
+    opacity: 0.4;
+  }
+
+  /* Pannello che si apre in altezza (transitions.dev, "accordion"). */
+  .t-accordion-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .t-accordion-body > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+  [data-open="true"] > .t-accordion-body {
+    grid-template-rows: 1fr;
+    transition-duration: 400ms;
+  }
+
+  /* Carosello a scorrimento con aggancio: barra di scorrimento nascosta. */
+  .snap-row {
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .snap-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Bordo di luce animato per riquadri importanti (mappa, scheda premium). */
+  .neon-frame {
+    position: relative;
+    isolation: isolate;
+  }
+  .neon-frame::before {
+    content: "";
+    position: absolute;
+    inset: -1.5px;
+    z-index: -1;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--angle),
+      transparent 0deg,
+      var(--color-violet-soft) 70deg,
+      transparent 140deg,
+      transparent 200deg,
+      var(--color-gold) 270deg,
+      transparent 340deg
+    );
+    animation: spin-angle 6s linear infinite;
+  }
+
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 currentColor;
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 10px transparent;
+    }
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: currentColor;
+    animation: pulse-dot 1.8s ease-out infinite;
+  }
+
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .spin-slow {
+    animation: spin-slow 22s linear infinite;
+  }
+
+  /* Lama di luce del passaggio intro → Hero. */
+  @keyframes intro-blade {
+    0% {
+      transform: translateY(0) scaleX(0.2);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100dvh) scaleX(1);
+      opacity: 0;
+    }
+  }
+  .intro-blade {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-violet-soft),
+      #fffbe0,
+      var(--color-gold),
+      var(--color-violet-soft),
+      transparent
+    );
+    box-shadow:
+      0 0 18px 4px rgb(183 124 255 / 0.8),
+      0 0 60px 10px rgb(138 43 226 / 0.55);
+    animation: intro-blade 950ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+
+  @keyframes scroll-cue {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(200%);
+    }
   }
 }
 
@@ -228,10 +676,31 @@
     scroll-behavior: auto;
   }
   .btn-gold:active,
-  .btn-ghost:active {
+  .btn-ghost:active,
+  .btn-neon:active,
+  .btn-chrome:active,
+  .orb:active {
     transform: none;
   }
-  .marquee-track {
-    animation: none;
+  .marquee-track,
+  .btn-neon__rim,
+  .btn-chrome__rim,
+  .btn-neon__face::after,
+  .btn-chrome__face::after,
+  .orb::before,
+  .text-shimmer,
+  .neon-frame::before,
+  .live-dot,
+  .spin-slow,
+  .scroll-cue,
+  .intro-blade {
+    animation: none !important;
+  }
+  .t-tilt-card {
+    transform: none !important;
+    transition: none !important;
+  }
+  .t-accordion-body {
+    transition: none;
   }
 }

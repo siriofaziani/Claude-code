@@ -98,44 +98,48 @@ export default function IntroOverlay({ fading, onFinish }) {
   }, []);
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Video introduttivo di Fade Barber Studio"
-      className={`fixed inset-0 z-50 bg-black transition-opacity duration-1000 ease-out ${
-        fading ? "pointer-events-none opacity-0" : "opacity-100"
-      }`}
-    >
-      <video
-        ref={videoRef}
-        aria-hidden="true"
-        className={`absolute inset-0 h-full w-full ${FRAME_FIT}`}
-        autoPlay
-        muted
-        playsInline
-        preload="auto"
-        onTimeUpdate={(e) => {
-          const v = e.currentTarget;
-          if (!graded && v.duration && v.duration - v.currentTime <= GRADE_LEAD_S) setGraded(true);
-        }}
-        onEnded={finish}
-        onError={finish}
-      />
-
-      {/* Nell'ultimo secondo il video riceve le sfumature della Hero: l'ultimo fotogramma è identico alla pagina. */}
-      <HeroScrims
-        className={`transition-opacity duration-1000 ease-out ${graded ? "opacity-100" : "opacity-0"}`}
-      />
-
-      <button
-        ref={skipRef}
-        type="button"
-        onClick={finish}
-        className="btn-ghost absolute right-6 top-6 z-10 min-h-11 border-gold/60 bg-black/45 px-5 py-3 text-xs [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]"
+    <>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Video introduttivo di Fade Barber Studio"
+        className={`fixed inset-0 z-50 bg-black transition-opacity duration-1000 ease-out ${
+          fading ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
       >
-        Salta intro
-        <SkipForward size={16} strokeWidth={2} aria-hidden="true" />
-      </button>
-    </div>
+        <video
+          ref={videoRef}
+          aria-hidden="true"
+          className={`absolute inset-0 h-full w-full ${FRAME_FIT}`}
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          onTimeUpdate={(e) => {
+            const v = e.currentTarget;
+            if (!graded && v.duration && v.duration - v.currentTime <= GRADE_LEAD_S) setGraded(true);
+          }}
+          onEnded={finish}
+          onError={finish}
+        />
+
+        {/* Nell'ultimo secondo il video riceve le sfumature della Hero: l'ultimo fotogramma è identico alla pagina. */}
+        <HeroScrims className={`transition-opacity duration-1000 ease-out ${graded ? "opacity-100" : "opacity-0"}`} />
+
+        <button
+          ref={skipRef}
+          type="button"
+          onClick={finish}
+          className="btn-ghost absolute right-6 top-6 z-10 min-h-11 border-gold/60 bg-black/45 px-5 py-3 text-xs [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]"
+        >
+          Salta intro
+          <SkipForward size={16} strokeWidth={2} aria-hidden="true" />
+        </button>
+      </div>
+      {/* Al passaggio verso la Hero una lama di luce attraversa lo schermo dall'alto in basso. */}
+      {fading && (
+        <div aria-hidden="true" className="intro-blade pointer-events-none fixed inset-x-0 top-0 z-[55] h-[2px]" />
+      )}
+    </>
   );
 }
