@@ -1,24 +1,28 @@
 @import "tailwindcss";
 
 /*
-  Design tokens. Tema unico scuro (il brand e il salone sono neri).
-  Forme: card 20px; pulsanti d'azione a spigoli tagliati (.btn-neon, .btn-chrome); azioni rapide tonde (.orb); badge a pillola.
-  Z-index: nav 40, barra mobile 40, intro 50, grana 60 (non cliccabile).
+  Design tokens "Gold & Obsidian", presi dal logo: oro caldo (lettere FADE), champagne (contorni) e nero.
+  Niente viola, niente vetro sfocato: superfici piene, linee sottili, oro come unico accento.
+  Forme: card 22px, pulsanti a pillola con "chip" della freccia, azioni rapide quadrate arrotondate.
+  Z-index: nav 40, barra mobile 40, intro 50.
 */
 @theme {
-  --color-obsidian: #050505;
-  --color-carbon: #121212;
-  --color-graphite: #1b1b1f;
-  --color-violet: #8a2be2;
-  --color-violet-soft: #b77cff;
-  --color-gold: #ffe600;
-  --color-ivory: #f5f5f2;
-  --color-mist: #a6a6ad;
+  --color-obsidian: #070707;
+  --color-carbon: #0f0f0f;
+  --color-graphite: #161616;
+  --color-anthracite: #222222;
+  --color-gold: #f2c14e;
+  --color-gold-light: #ffe08a;
+  --color-gold-deep: #b8862b;
+  --color-champagne: #e6d3a3;
+  --color-ivory: #f6f1e7;
+  --color-mist: #9e978a;
 
   --font-display: "Unbounded Variable", "Geist Variable", system-ui, sans-serif;
   --font-sans: "Geist Variable", system-ui, sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -34,13 +38,11 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
+    caret-color: var(--color-gold);
+    scrollbar-color: rgb(242 193 78 / 0.55) var(--color-obsidian);
   }
   section[id] {
     scroll-margin-top: 5rem;
-  }
-  body {
-    caret-color: var(--color-gold);
-    scrollbar-color: rgb(138 43 226 / 0.6) var(--color-obsidian);
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -49,7 +51,7 @@
     background: var(--color-obsidian);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgb(138 43 226 / 0.55);
+    background: rgb(242 193 78 / 0.5);
     border: 2px solid var(--color-obsidian);
     border-radius: 999px;
   }
@@ -61,8 +63,8 @@
     text-underline-offset: 0.2em;
   }
   ::selection {
-    background: var(--color-violet);
-    color: var(--color-ivory);
+    background: var(--color-gold);
+    color: var(--color-obsidian);
   }
   :focus-visible {
     outline: 2px solid var(--color-gold);
@@ -71,465 +73,176 @@
 }
 
 @layer components {
-  /* Vetro scuro: approssimazione web del glassmorphism, con fallback pieno. */
-  .glass {
-    background:
-      linear-gradient(
-        145deg,
-        rgb(255 255 255 / 0.06),
-        rgb(255 255 255 / 0.015)
-      ),
-      rgb(18 18 18 / 0.72);
-    border: 1px solid rgb(255 255 255 / 0.08);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-  }
-
-  /* Testo sfumato oro → avorio per una sola parola chiave per titolo. */
+  /* Oro metallico per le parole chiave dei titoli. */
   .text-gold-gradient {
-    background: linear-gradient(
-      100deg,
-      var(--color-gold) 0%,
-      #fff6a3 45%,
-      var(--color-ivory) 100%
-    );
+    background: linear-gradient(100deg, var(--color-gold-light) 0%, var(--color-gold) 45%, var(--color-gold-deep) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  /* Card con riflettore che segue il puntatore (variabili aggiornate fuori da React). */
-  .spotlight {
+  /* Superfici: nero pieno, bordo sottile, una linea d'oro in alto. Nessun filtro, nessuna sfocatura. */
+  .card {
     position: relative;
-    isolation: isolate;
+    border-radius: 22px;
+    border: 1px solid rgb(255 255 255 / 0.07);
+    background: #101010;
   }
-  .spotlight::before {
+  .card-gold-edge::before {
     content: "";
     position: absolute;
-    inset: -1px;
-    z-index: -1;
-    border-radius: inherit;
-    padding: 1px;
-    background: radial-gradient(
-      320px circle at var(--mx, 50%) var(--my, 0%),
-      rgb(138 43 226 / 0.85),
-      rgb(255 230 0 / 0.35) 40%,
-      transparent 70%
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 300ms var(--ease-out-expo);
-  }
-  .spotlight::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    background: radial-gradient(
-      420px circle at var(--mx, 50%) var(--my, 0%),
-      rgb(138 43 226 / 0.16),
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 300ms var(--ease-out-expo);
+    inset: 0 18% auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    opacity: 0.55;
     pointer-events: none;
   }
-  @media (hover: hover) {
-    .spotlight:hover::before,
-    .spotlight:hover::after {
-      opacity: 1;
-    }
+  .surface {
+    background: rgb(12 12 12 / 0.96);
+    border: 1px solid rgb(255 255 255 / 0.08);
   }
 
+  /*
+    Pulsante principale: oro metallico, testo nero, "chip" nera con la freccia.
+    Al tocco: scala 0.98 e un filo più di luminosità (solo transform e filter: brightness, economici).
+  */
   .btn-gold {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    white-space: nowrap;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.4rem 0.45rem 0.4rem 1.6rem;
     border-radius: 999px;
-    background: var(--color-gold);
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 42%, var(--color-gold-deep) 100%);
     color: #0b0b0b;
     font-family: var(--font-display);
+    font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     box-shadow:
-      0 0 0 1px rgb(255 230 0 / 0.4),
-      0 10px 40px -12px rgb(255 230 0 / 0.55);
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      inset 0 -1px 0 rgb(0 0 0 / 0.25),
+      0 14px 34px -16px rgb(242 193 78 / 0.7);
     transition:
-      transform 160ms var(--ease-out-expo),
-      box-shadow 300ms var(--ease-out-expo),
-      background-color 300ms var(--ease-out-expo);
+      transform 160ms var(--ease-smooth),
+      filter 160ms var(--ease-smooth);
+  }
+  .btn-gold .btn-chip {
+    display: grid;
+    place-items: center;
+    width: 2.45rem;
+    height: 2.45rem;
+    border-radius: 999px;
+    background: #0b0b0b;
+    color: var(--color-gold);
+    transition: transform 300ms var(--ease-smooth);
+  }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    border: 1px solid rgb(242 193 78 / 0.55);
+    background: #0b0b0b;
+    color: var(--color-gold-light);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition:
+      transform 160ms var(--ease-smooth),
+      background-color 200ms var(--ease-smooth),
+      color 200ms var(--ease-smooth);
   }
   @media (hover: hover) {
     .btn-gold:hover {
-      background: #fff04d;
-      box-shadow:
-        0 0 0 1px rgb(255 230 0 / 0.6),
-        0 14px 50px -10px rgb(255 230 0 / 0.75);
+      filter: brightness(1.07);
     }
+    .btn-gold:hover .btn-chip {
+      transform: rotate(45deg);
+    }
+    .btn-outline:hover {
+      background: var(--color-gold);
+      color: #0b0b0b;
+    }
+  }
+  .btn-gold:active,
+  .btn-outline:active {
+    transform: scale(0.98);
   }
   .btn-gold:active {
-    transform: scale(0.97);
+    filter: brightness(1.12);
+  }
+  .btn-outline:active {
+    background: rgb(242 193 78 / 0.14);
   }
 
-  .btn-ghost {
-    display: inline-flex;
+  /* Azione rapida (chiama, WhatsApp, mappa): quadrato nero arrotondato con icona oro. */
+  .quick {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    white-space: nowrap;
-    border-radius: 999px;
-    border: 1px solid rgb(183 124 255 / 0.55);
-    background: rgb(138 43 226 / 0.14);
+    gap: 0.55rem;
     color: var(--color-ivory);
-    font-family: var(--font-display);
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition:
-      transform 160ms var(--ease-out-expo),
-      background-color 300ms var(--ease-out-expo),
-      box-shadow 300ms var(--ease-out-expo);
+    transition: transform 160ms var(--ease-smooth);
   }
-  @media (hover: hover) {
-    .btn-ghost:hover {
-      background: rgb(138 43 226 / 0.3);
-      box-shadow: 0 12px 32px -12px rgb(138 43 226 / 0.85);
-    }
-  }
-  .btn-ghost:active {
-    transform: scale(0.97);
-  }
-}
-
-/*
-  Pulsanti Cyber-Luxury: forma a spigoli tagliati (non a pillola), bordo di luce che gira (conic-gradient
-  animato tramite la proprietà registrata --angle) e un riflesso che attraversa la superficie.
-  Struttura: .btn-x (ombra + pressione) > .btn-x__rim (bordo luminoso, ritagliato) > .btn-x__face (superficie).
-*/
-@property --angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-/* Dentro @layer components: le classi di utilità Tailwind (padding, testo, a capo) possono sovrascriverle. */
-@layer components {
-  @keyframes spin-angle {
-    to {
-      --angle: 360deg;
-    }
-  }
-  @keyframes sheen {
-    0%,
-    55% {
-      transform: translateX(-120%) skewX(-18deg);
-    }
-    100% {
-      transform: translateX(220%) skewX(-18deg);
-    }
-  }
-  .cut {
-    --cut: 12px;
-    clip-path: polygon(
-      var(--cut) 0,
-      100% 0,
-      100% calc(100% - var(--cut)),
-      calc(100% - var(--cut)) 100%,
-      0 100%,
-      0 var(--cut)
-    );
-  }
-
-  .btn-neon,
-  .btn-chrome {
-    position: relative;
-    display: inline-flex;
-    text-decoration: none;
-    -webkit-user-select: none;
-    user-select: none;
-    transition:
-      transform 160ms var(--ease-out-expo),
-      filter 300ms var(--ease-out-expo);
-  }
-  .btn-neon {
-    filter: drop-shadow(0 10px 26px rgb(255 230 0 / 0.32));
-  }
-  .btn-neon__rim,
-  .btn-chrome__rim {
-    --cut: 14px;
-    display: flex;
-    width: 100%;
-    padding: 1.5px;
-    clip-path: polygon(
-      var(--cut) 0,
-      100% 0,
-      100% calc(100% - var(--cut)),
-      calc(100% - var(--cut)) 100%,
-      0 100%,
-      0 var(--cut)
-    );
-    animation: spin-angle 4.5s linear infinite;
-  }
-  .btn-neon__rim {
-    background: conic-gradient(
-      from var(--angle),
-      #fff8b8,
-      var(--color-gold) 25%,
-      var(--color-violet-soft) 50%,
-      var(--color-gold) 75%,
-      #fff8b8
-    );
-  }
-  .btn-chrome__rim {
-    background: conic-gradient(
-      from var(--angle),
-      rgb(255 255 255 / 0.12),
-      rgb(183 124 255 / 0.9) 18%,
-      rgb(255 255 255 / 0.12) 36%,
-      rgb(255 255 255 / 0.12) 64%,
-      rgb(255 230 0 / 0.75) 82%,
-      rgb(255 255 255 / 0.12)
-    );
-  }
-  .btn-neon__face,
-  .btn-chrome__face {
-    --cut: 13px;
-    position: relative;
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    overflow: hidden;
-    white-space: nowrap;
-    clip-path: polygon(
-      var(--cut) 0,
-      100% 0,
-      100% calc(100% - var(--cut)),
-      calc(100% - var(--cut)) 100%,
-      0 100%,
-      0 var(--cut)
-    );
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .btn-neon__face {
-    background: linear-gradient(
-      180deg,
-      #fff27a,
-      var(--color-gold) 45%,
-      #f2c900
-    );
-    color: #0b0b0b;
-  }
-  .btn-chrome__face {
-    background:
-      linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02)),
-      rgb(10 10 12 / 0.82);
-    color: var(--color-ivory);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-  /* riflesso che attraversa il pulsante */
-  .btn-neon__face::after,
-  .btn-chrome__face::after {
-    content: "";
-    position: absolute;
-    inset: -20% auto -20% 0;
-    width: 40%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgb(255 255 255 / 0.75),
-      transparent
-    );
-    transform: translateX(-120%) skewX(-18deg);
-    animation: sheen 3.6s var(--ease-out-expo) infinite;
-    pointer-events: none;
-  }
-  .btn-chrome__face::after {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgb(255 255 255 / 0.22),
-      transparent
-    );
-    animation-delay: 1.2s;
-  }
-  @media (hover: hover) {
-    .btn-neon:hover {
-      filter: drop-shadow(0 14px 34px rgb(255 230 0 / 0.55));
-    }
-    .btn-chrome:hover {
-      filter: drop-shadow(0 12px 30px rgb(138 43 226 / 0.6));
-    }
-    .btn-neon:hover .btn-neon__rim,
-    .btn-chrome:hover .btn-chrome__rim {
-      animation-duration: 1.6s;
-    }
-  }
-  .btn-neon:active,
-  .btn-chrome:active {
-    transform: scale(0.96);
-  }
-  .btn-neon:active {
-    filter: drop-shadow(0 0 22px rgb(255 230 0 / 0.85));
-  }
-  .btn-chrome:active {
-    filter: drop-shadow(0 0 20px rgb(183 124 255 / 0.85));
-  }
-
-  /* Pulsanti tondi per le azioni rapide (chiamata, WhatsApp, mappa): anello tratteggiato che ruota. */
-  @keyframes orbit {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .orb {
-    position: relative;
+  .quick-icon {
     display: grid;
     place-items: center;
-    border-radius: 999px;
-    background: radial-gradient(
-      circle at 35% 30%,
-      rgb(183 124 255 / 0.35),
-      rgb(18 18 18 / 0.9) 70%
-    );
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.12),
-      0 10px 30px -12px rgb(138 43 226 / 0.9);
-    transition:
-      transform 160ms var(--ease-out-expo),
-      box-shadow 300ms var(--ease-out-expo);
-  }
-  .orb::before {
-    content: "";
-    position: absolute;
-    inset: -5px;
-    border-radius: inherit;
-    border: 1.5px dashed rgb(183 124 255 / 0.65);
-    animation: orbit 14s linear infinite;
-  }
-  .orb--gold {
-    background: radial-gradient(
-      circle at 35% 30%,
-      rgb(255 246 163 / 0.55),
-      rgb(40 34 0 / 0.95) 72%
-    );
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.1rem;
+    border: 1px solid rgb(242 193 78 / 0.4);
+    background: linear-gradient(180deg, #181818, #0b0b0b);
     color: var(--color-gold);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.18),
-      0 10px 30px -12px rgb(255 230 0 / 0.8);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+    transition:
+      background-color 200ms var(--ease-smooth),
+      color 200ms var(--ease-smooth),
+      border-color 200ms var(--ease-smooth);
   }
-  .orb--gold::before {
-    border-color: rgb(255 230 0 / 0.6);
+  .quick-icon--solid {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold) 45%, var(--color-gold-deep));
+    color: #0b0b0b;
   }
   @media (hover: hover) {
-    .group:hover .orb,
-    .orb:hover {
-      box-shadow:
-        inset 0 1px 0 rgb(255 255 255 / 0.18),
-        0 0 0 1px rgb(183 124 255 / 0.6),
-        0 14px 40px -10px rgb(138 43 226 / 1);
+    .quick:hover .quick-icon:not(.quick-icon--solid) {
+      border-color: var(--color-gold);
+      color: var(--color-gold-light);
     }
   }
-  .group:active .orb,
-  .orb:active {
-    transform: scale(0.92);
-    box-shadow:
-      0 0 0 6px rgb(183 124 255 / 0.25),
-      0 0 40px rgb(138 43 226 / 0.9);
+  .quick:active {
+    transform: scale(0.96);
+  }
+  .quick:active .quick-icon {
+    filter: brightness(1.15);
   }
 
-  /* Testo con riflesso dorato che scorre (shimmer). */
-  @keyframes shimmer-text {
-    to {
-      background-position: -200% 0;
-    }
+  /* Card che si premono al tocco. */
+  .press {
+    transition: transform 160ms var(--ease-smooth);
   }
-  .text-shimmer {
-    background: linear-gradient(
-      100deg,
-      var(--color-gold) 0%,
-      var(--color-gold) 35%,
-      #fffbe0 50%,
-      var(--color-gold) 65%,
-      var(--color-gold) 100%
-    );
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shimmer-text 4s linear infinite;
+  .press:active {
+    transform: scale(0.98);
   }
 
-  /* Grana leggera su tutta la pagina: dà materia al nero. */
-  .grain {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.06;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* Scheda con inclinazione 3D e riflesso che segue il dito o il mouse (transitions.dev, "card hover tilt"). */
-  .t-tilt {
-    touch-action: pan-y;
-  }
-  .t-tilt-card {
-    position: relative;
-    transform: perspective(1000px) rotateX(var(--tilt-rx, 0deg))
-      rotateY(var(--tilt-ry, 0deg));
-    transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
-  }
-  .t-tilt-card.is-tilting {
-    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .t-tilt-glare {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    mix-blend-mode: screen;
-    border-radius: inherit;
-    background:
-      radial-gradient(
-        circle 110px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-        rgb(255 255 255 / 0.5),
-        rgb(255 255 255 / 0.06) 52%,
-        transparent 84%
-      ),
-      radial-gradient(
-        circle 260px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-        rgb(255 230 0 / 0.22),
-        transparent 78%
-      );
-    transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .t-tilt.is-hover .t-tilt-glare {
-    opacity: 0.4;
-  }
-
-  /* Pannello che si apre in altezza (transitions.dev, "accordion"). */
+  /* Menù del listino: si apre subito (niente animazione d'altezza), il contenuto entra con opacità e spostamento. */
   .t-accordion-body {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 350ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   .t-accordion-body > * {
     min-height: 0;
@@ -537,15 +250,13 @@
   }
   [data-open="true"] > .t-accordion-body {
     grid-template-rows: 1fr;
-    transition-duration: 400ms;
   }
-  /* il contenuto entra con sola opacità e spostamento (economici per la GPU) */
   .t-accordion-body > * > * {
     opacity: 0;
     transform: translate3d(0, -6px, 0);
     transition:
       opacity 200ms ease-out,
-      transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+      transform 250ms var(--ease-smooth);
   }
   [data-open="true"] > .t-accordion-body > * > * {
     opacity: 1;
@@ -563,112 +274,79 @@
     display: none;
   }
 
-  /* Bordo di luce animato per riquadri importanti (mappa, scheda premium). */
-  .neon-frame {
-    position: relative;
-    isolation: isolate;
-  }
-  .neon-frame::before {
-    content: "";
-    position: absolute;
-    inset: -1.5px;
-    z-index: -1;
-    border-radius: inherit;
-    background: conic-gradient(
-      from var(--angle),
-      transparent 0deg,
-      var(--color-violet-soft) 70deg,
-      transparent 140deg,
-      transparent 200deg,
-      var(--color-gold) 270deg,
-      transparent 340deg
-    );
-    animation: spin-angle 6s linear infinite;
-  }
-
-  @keyframes pulse-dot {
-    0% {
-      box-shadow: 0 0 0 0 currentColor;
-    }
-    70%,
-    100% {
-      box-shadow: 0 0 0 10px transparent;
-    }
-  }
+  /* Pallino "aperto ora": un solo anello che si espande (transform + opacity). */
   .live-dot {
+    position: relative;
     width: 8px;
     height: 8px;
     border-radius: 999px;
     background: currentColor;
-    animation: pulse-dot 1.8s ease-out infinite;
   }
+  .live-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: ping 1.8s var(--ease-smooth) infinite;
+  }
+}
 
-  @keyframes spin-slow {
-    to {
-      transform: rotate(360deg);
-    }
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
   }
-  .spin-slow {
-    animation: spin-slow 22s linear infinite;
+  80%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
   }
+}
 
-  /* Lama di luce del passaggio intro → Hero. */
-  @keyframes intro-blade {
-    0% {
-      transform: translateY(0) scaleX(0.2);
-      opacity: 0;
-    }
-    15% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(100dvh) scaleX(1);
-      opacity: 0;
-    }
+/* Lama di luce dorata del passaggio intro → Hero (solo transform e opacity). */
+@keyframes intro-blade {
+  0% {
+    transform: translate3d(0, 0, 0) scaleX(0.2);
+    opacity: 0;
   }
-  .intro-blade {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--color-violet-soft),
-      #fffbe0,
-      var(--color-gold),
-      var(--color-violet-soft),
-      transparent
-    );
-    box-shadow:
-      0 0 18px 4px rgb(183 124 255 / 0.8),
-      0 0 60px 10px rgb(138 43 226 / 0.55);
-    animation: intro-blade 950ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  15% {
+    opacity: 1;
   }
+  100% {
+    transform: translate3d(0, 100dvh, 0) scaleX(1);
+    opacity: 0;
+  }
+}
+.intro-blade {
+  background: linear-gradient(90deg, transparent, var(--color-gold-deep), #fff4cc, var(--color-gold), transparent);
+  box-shadow: 0 0 18px 4px rgb(242 193 78 / 0.7);
+  animation: intro-blade 950ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
 
-  @keyframes scroll-cue {
-    0% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(200%);
-    }
+@keyframes scroll-cue {
+  0% {
+    transform: translate3d(0, -100%, 0);
   }
+  100% {
+    transform: translate3d(0, 200%, 0);
+  }
+}
+.scroll-cue {
+  animation: scroll-cue 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 /* Nastro scorrevole: due copie identiche, la traccia si sposta di metà della sua larghezza. */
 @keyframes marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 .marquee-track {
   animation: marquee 28s linear infinite;
-  will-change: transform;
-}
-
-/* Elementi fissi o animati di continuo: livello GPU dedicato. */
-.gpu {
-  transform: translateZ(0);
   will-change: transform;
 }
 @media (hover: hover) {
@@ -677,18 +355,14 @@
   }
 }
 
-@media (prefers-reduced-transparency: reduce) {
-  .glass,
-  .btn-ghost {
-    background: var(--color-carbon);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
+/* Elementi fissi o animati di continuo: livello GPU dedicato. */
+.gpu {
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /*
-  Movimento ridotto: niente scroll animato, niente spostamenti al passaggio del mouse.
-  Restano i cambi di colore e di bagliore, che segnalano lo stato senza muovere nulla.
+  Movimento ridotto: niente scroll animato, niente animazioni continue né pressioni.
   Le comparse allo scroll e l'intro video vengono disattivate dai componenti React.
 */
 @media (prefers-reduced-motion: reduce) {
@@ -696,91 +370,15 @@
     scroll-behavior: auto;
   }
   .btn-gold:active,
-  .btn-ghost:active,
-  .btn-neon:active,
-  .btn-chrome:active,
-  .orb:active {
+  .btn-outline:active,
+  .quick:active,
+  .press:active {
     transform: none;
   }
   .marquee-track,
-  .btn-neon__rim,
-  .btn-chrome__rim,
-  .btn-neon__face::after,
-  .btn-chrome__face::after,
-  .orb::before,
-  .text-shimmer,
-  .neon-frame::before,
-  .live-dot,
-  .spin-slow,
+  .live-dot::after,
   .scroll-cue,
   .intro-blade {
     animation: none !important;
-  }
-  .t-tilt-card {
-    transform: none !important;
-    transition: none !important;
-  }
-  .t-accordion-body {
-    transition: none;
-  }
-}
-
-/*
-  Telefono e tablet (o schermi senza mouse): modalità leggera per restare a 60 fps durante lo scorrimento.
-  - niente backdrop-filter: vetro sostituito da fondi scuri quasi pieni;
-  - niente animazioni infinite che ridipingono (bordi conici, riflessi, shimmer, anelli, pallini);
-  - niente filtri drop-shadow, inclinazione 3D, riflettori e grana a schermo intero;
-  - menù del listino: si apre senza animare l'altezza, il contenuto entra solo con opacità e spostamento.
-  Gli effetti completi restano sopra i 1024 px con il mouse.
-*/
-@media (max-width: 1023.98px), (hover: none) {
-  .glass {
-    background: rgb(15 15 20 / 0.95);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .btn-ghost {
-    background: rgb(30 18 46 / 0.95);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .btn-chrome__face {
-    background: rgb(15 15 20 / 0.95);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .btn-neon,
-  .btn-chrome,
-  .btn-neon:active,
-  .btn-chrome:active {
-    filter: none;
-  }
-  .btn-neon__rim,
-  .btn-chrome__rim,
-  .orb::before,
-  .text-shimmer,
-  .neon-frame::before,
-  .live-dot,
-  .spin-slow {
-    animation: none;
-  }
-  .btn-neon__face::after,
-  .btn-chrome__face::after,
-  .t-tilt-glare,
-  .spotlight::before,
-  .spotlight::after,
-  .grain {
-    display: none;
-  }
-  .text-shimmer {
-    background-position: 100% 0;
-  }
-  .t-tilt-card {
-    transform: none;
-    transition: none;
-    will-change: auto;
-  }
-  .t-accordion-body {
-    transition: none;
   }
 }

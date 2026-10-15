@@ -1,63 +1,52 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { animate, motion, useInView, useReducedMotion } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 
 import { EXT } from "./data.js";
 import { cn } from "./lib/utils.js";
 
-const EASE = [0.16, 1, 0.3, 1];
+export const EASE = [0.22, 1, 0.36, 1];
 
 /* ───────────── Pulsanti ───────────── */
 
-/**
- * Pulsante principale: superficie oro, bordo di luce che gira, riflesso che passa.
- * `href` esterno (http) apre in una nuova scheda.
- */
-export function NeonButton({ href, children, className = "", faceClassName = "", ...rest }) {
-  const external = /^https?:/.test(href);
+const isExternal = (href) => /^https?:/.test(href);
+
+/** Pulsante principale oro con "chip" nera della freccia. `href` esterno apre in una nuova scheda. */
+export function GoldButton({ href, children, icon: Icon = ArrowUpRight, className = "", ...rest }) {
   return (
-    <a href={href} {...(external ? EXT : {})} className={cn("btn-neon", className)} {...rest}>
-      <span className="btn-neon__rim">
-        <span className={cn("btn-neon__face px-7 py-4 text-sm", faceClassName)}>{children}</span>
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-gold", className)} {...rest}>
+      <span>{children}</span>
+      <span className="btn-chip" aria-hidden="true">
+        <Icon size={17} strokeWidth={2.4} />
       </span>
     </a>
   );
 }
 
-/** Pulsante secondario: vetro scuro con bordo cromato animato. */
-export function ChromeButton({ href, children, className = "", faceClassName = "", ...rest }) {
-  const external = /^https?:/.test(href);
+/** Pulsante secondario: nero con bordo e testo oro. */
+export function OutlineButton({ href, children, className = "", ...rest }) {
   return (
-    <a href={href} {...(external ? EXT : {})} className={cn("btn-chrome", className)} {...rest}>
-      <span className="btn-chrome__rim">
-        <span className={cn("btn-chrome__face px-7 py-4 text-sm", faceClassName)}>{children}</span>
-      </span>
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-outline", className)} {...rest}>
+      {children}
     </a>
   );
 }
 
-/** Azione rapida tonda con etichetta (chiama, WhatsApp, indicazioni). */
-export function ActionOrb({ href, icon: Icon, label, gold = false, size = 56, className = "", labelClassName = "" }) {
-  const external = /^https?:/.test(href);
+/** Azione rapida con icona e etichetta (chiama, WhatsApp, mappa). */
+export function QuickAction({ href, icon: Icon, label, solid = false, className = "" }) {
   return (
-    <a
-      href={href}
-      {...(external ? EXT : {})}
-      className={cn("group flex flex-col items-center gap-2.5 outline-offset-4", className)}
-      aria-label={label}
-    >
-      <span className={cn("orb", gold ? "orb--gold" : "text-violet-soft")} style={{ width: size, height: size }}>
-        <Icon size={Math.round(size * 0.4)} strokeWidth={1.8} aria-hidden="true" />
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("quick", className)} aria-label={label}>
+      <span className={cn("quick-icon", solid && "quick-icon--solid")}>
+        <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
       </span>
-      <span className={cn("text-[11px] font-semibold uppercase tracking-[0.16em] text-ivory/85", labelClassName)}>
-        {label}
-      </span>
+      {label}
     </a>
   );
 }
 
-/* ───────────── Effetti pesanti solo dove servono ───────────── */
+/* ───────────── Media query ───────────── */
 
-/** Schermi larghi con mouse e senza "riduci movimento": qui girano parallasse, inclinazione 3D, effetti continui. */
+/** Schermi larghi con mouse e senza "riduci movimento": qui girano gli effetti legati allo scorrimento più ricchi. */
 export const DESKTOP_FX = "(min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference)";
 
 export function useMediaQuery(query) {
@@ -76,11 +65,9 @@ export function useMediaQuery(query) {
 
 export const useDesktopFx = () => useMediaQuery(DESKTOP_FX);
 
-/* ───────────── Comparse allo scorrimento ───────────── */
+/* ───────────── Comparse allo scorrimento (solo opacità e transform: restano sulla GPU) ───────────── */
 
-// Solo opacità e spostamento (niente filtri di sfocatura): restano sul compositore della GPU.
-
-export function Reveal({ children, delay = 0, className = "", y = 16, as = "div" }) {
+export function Reveal({ children, delay = 0, className = "", y = 24, as = "div" }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
@@ -89,7 +76,41 @@ export function Reveal({ children, delay = 0, className = "", y = 16, as = "div"
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay, ease: EASE }}
+      transition={{ duration: 0.6, delay, ease: EASE }}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+/** Contenitore che fa entrare i figli `StaggerItem` uno dopo l'altro (transitions.dev, "stagger"). */
+export function Stagger({ children, className = "", as = "div", gap = 0.08, amount = 0.15, ...rest }) {
+  const reduce = useReducedMotion();
+  const Tag = motion[as];
+  return (
+    <Tag
+      className={className}
+      initial={reduce ? false : "hidden"}
+      whileInView="shown"
+      viewport={{ once: true, amount }}
+      variants={{ hidden: {}, shown: { transition: { staggerChildren: gap } } }}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+export function StaggerItem({ children, className = "", as = "div", y = 28, ...rest }) {
+  const Tag = motion[as];
+  return (
+    <Tag
+      className={className}
+      variants={{
+        hidden: { opacity: 0, y, scale: 0.98 },
+        shown: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: EASE } },
+      }}
+      {...rest}
     >
       {children}
     </Tag>
@@ -97,104 +118,161 @@ export function Reveal({ children, delay = 0, className = "", y = 16, as = "div"
 }
 
 /**
- * Titolo di sezione: etichetta numerata con linea che si allunga, poi le parole salgono una alla volta
- * (transitions.dev, "texts reveal"). `accent` è la parola in oro.
+ * Titolo di sezione: numero e linea d'oro che si disegna, poi le parole salgono una alla volta
+ * da dentro una "finestra" (effetto editoriale, solo transform). `accent` è la parola in oro.
  */
 export function SectionHeading({ index, eyebrow, words, accent, align = "left", className = "", children }) {
   const reduce = useReducedMotion();
   const all = [...words, accent].filter(Boolean);
   return (
     <div className={cn(align === "center" && "mx-auto text-center", className)}>
-      <motion.p
+      <p
         className={cn(
-          "flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-violet-soft",
+          "flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-champagne",
           align === "center" && "justify-center",
         )}
-        initial={reduce ? false : { opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.5 }}
       >
         <span className="font-display text-gold">{index}</span>
         <motion.span
           aria-hidden="true"
-          className="h-px w-10 origin-left bg-gradient-to-r from-gold to-violet-soft"
+          className="h-px w-12 origin-left bg-gradient-to-r from-gold to-transparent"
           initial={reduce ? false : { scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.8, ease: EASE }}
         />
         {eyebrow}
-      </motion.p>
-      <h2 className="mt-5 font-display text-[2rem] font-black uppercase leading-[1.02] tracking-tight text-ivory sm:text-5xl lg:text-6xl">
+      </p>
+      {/* l'osservazione parte dal titolo intero: le parole, nascoste dentro le loro "finestre", non sarebbero mai visibili */}
+      <motion.h2
+        className="mt-5 font-display text-[2.1rem] font-black uppercase leading-[1] tracking-tight text-ivory sm:text-5xl lg:text-6xl"
+        initial={reduce ? false : "hidden"}
+        whileInView="shown"
+        viewport={{ once: true, amount: 0.5 }}
+        variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
+      >
         {all.map((word, i) => (
-          <motion.span
-            key={i}
-            className={cn("mr-[0.25em] inline-block last:mr-0", word === accent && "text-gold-gradient pb-1")}
-            initial={reduce ? false : { opacity: 0, y: "0.4em" }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.5, delay: 0.08 + i * 0.05, ease: EASE }}
-          >
-            {word}
-          </motion.span>
+          <span key={i} className="mr-[0.25em] inline-block overflow-hidden pb-[0.08em] align-bottom last:mr-0">
+            <motion.span
+              className={cn("inline-block", word === accent && "text-gold-gradient")}
+              variants={{ hidden: { y: "105%" }, shown: { y: 0, transition: { duration: 0.7, ease: EASE } } }}
+            >
+              {word}
+            </motion.span>
+          </span>
         ))}
-      </h2>
+      </motion.h2>
       {children}
     </div>
   );
 }
 
-/* ───────────── Inclinazione 3D (mouse e dito) ───────────── */
+/* ───────────── Contatore ───────────── */
 
 /**
- * Inclinazione 3D con riflesso, da transitions.dev ("card hover tilt").
- * Attiva solo su schermi larghi con il mouse: su telefono e tablet la scheda resta piatta (niente lavoro per la GPU).
+ * Numero che conta da 0 al valore quando entra a schermo. Scrive direttamente nel testo del nodo
+ * (nessun render React per fotogramma).
  */
-export function useTiltCard(max = 12) {
-  const wrapRef = useRef(null);
-  const cardRef = useRef(null);
-  const fx = useDesktopFx();
-
-  const reset = () => {
-    const wrap = wrapRef.current;
-    const card = cardRef.current;
-    if (!wrap || !card) return;
-    wrap.classList.remove("is-hover");
-    card.classList.remove("is-tilting");
-    card.style.setProperty("--tilt-rx", "0deg");
-    card.style.setProperty("--tilt-ry", "0deg");
-  };
-
-  const track = (e) => {
-    const wrap = wrapRef.current;
-    const card = cardRef.current;
-    if (!fx || e.pointerType !== "mouse" || !wrap || !card) return;
-    const r = wrap.getBoundingClientRect();
-    const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-    const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
-    wrap.classList.add("is-hover");
-    card.classList.add("is-tilting");
-    card.style.setProperty("--tilt-ry", `${((px - 0.5) * max).toFixed(2)}deg`);
-    card.style.setProperty("--tilt-rx", `${((0.5 - py) * max).toFixed(2)}deg`);
-    card.style.setProperty("--tilt-gx", `${(px * 100).toFixed(1)}%`);
-    card.style.setProperty("--tilt-gy", `${(py * 100).toFixed(1)}%`);
-  };
-
-  return {
-    wrapProps: {
-      ref: wrapRef,
-      onPointerMove: track,
-      onPointerLeave: reset,
-    },
-    cardRef,
-  };
+export function CountUp({ value, duration = 1.2, decimals = 0, className = "" }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.8 });
+  const reduce = useReducedMotion();
+  const format = (n) => n.toFixed(decimals).replace(".", ",");
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !inView) return undefined;
+    if (reduce) {
+      el.textContent = format(value);
+      return undefined;
+    }
+    const controls = animate(0, value, {
+      duration,
+      ease: EASE,
+      onUpdate: (v) => {
+        el.textContent = format(v);
+      },
+    });
+    return () => controls.stop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, value]);
+  return (
+    <span ref={ref} className={cn("tabular-nums", className)}>
+      {format(reduce ? value : 0)}
+    </span>
+  );
 }
 
-/** Riflettore che segue il puntatore sulle card .spotlight. */
-export function trackSpotlight(event) {
-  const el = event.currentTarget;
-  const rect = el.getBoundingClientRect();
-  el.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-  el.style.setProperty("--my", `${event.clientY - rect.top}px`);
+/* ───────────── Linee vettoriali che si disegnano ───────────── */
+
+/** Tracciato SVG d'oro che si disegna quando entra a schermo (pathLength). */
+export function DrawPath({ d, viewBox, className = "", strokeWidth = 1.5, delay = 0, duration = 1.4 }) {
+  const reduce = useReducedMotion();
+  return (
+    <svg viewBox={viewBox} fill="none" className={className} aria-hidden="true">
+      <motion.path
+        d={d}
+        stroke="url(#gold-stroke)"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={reduce ? false : { pathLength: 0, opacity: 0 }}
+        whileInView={{ pathLength: 1, opacity: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration, delay, ease: EASE }}
+      />
+    </svg>
+  );
+}
+
+/** Gradiente oro condiviso dai tracciati (va messo una volta nella pagina). */
+export function GoldStrokeDefs() {
+  return (
+    <svg width="0" height="0" className="absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="gold-stroke" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffe08a" />
+          <stop offset="50%" stopColor="#f2c14e" />
+          <stop offset="100%" stopColor="#b8862b" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+/* ───────────── Immagine con "sipario" ───────────── */
+
+/**
+ * La foto entra con un sipario dorato che si ritira verso l'alto mentre l'immagine si stabilizza
+ * (scaleY del sipario e scale della foto: solo transform, gira sulla GPU).
+ */
+export function CurtainImage({ src, alt, width, height, className = "", imgClassName = "", style, delay = 0 }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={cn("relative overflow-hidden", className)}
+      initial={reduce ? false : "hidden"}
+      whileInView="shown"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+        style={style}
+        className={cn("h-full w-full object-cover", imgClassName)}
+        variants={{ hidden: { scale: 1.18 }, shown: { scale: 1, transition: { duration: 1.2, delay, ease: EASE } } }}
+      />
+      <motion.span
+        aria-hidden="true"
+        className="absolute inset-0 origin-top bg-gradient-to-b from-gold-light via-gold to-gold-deep"
+        variants={{
+          hidden: { scaleY: 1 },
+          shown: { scaleY: 0, transition: { duration: 0.8, delay: delay + 0.05, ease: [0.76, 0, 0.24, 1] } },
+        }}
+      />
+    </motion.div>
+  );
 }

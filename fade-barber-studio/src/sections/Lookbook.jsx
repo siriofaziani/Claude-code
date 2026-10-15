@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, Camera, Plus, X } from "lucide-react";
+import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { Camera, Plus } from "lucide-react";
 
 import { CUTS, LINKS } from "../data.js";
-import { ChromeButton, Reveal, SectionHeading, useMediaQuery } from "../ui.jsx";
+import { CurtainImage, EASE, OutlineButton, Reveal, SectionHeading } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
-const EASE = [0.22, 1, 0.36, 1];
 const FILTERS = [
   { id: "tutti", label: "Tutti" },
   { id: "sfumature", label: "Sfumature" },
@@ -14,11 +13,11 @@ const FILTERS = [
   { id: "styling", label: "Styling" },
 ];
 
-/** Filtri a segmenti con la pillola che scorre sotto la voce attiva (transitions.dev, "tabs sliding"). */
+/** Filtri a segmenti con la pillola dorata che scorre sotto la voce attiva (transitions.dev, "tabs sliding"). */
 function FilterTabs({ value, onChange }) {
   const reduce = useReducedMotion();
   return (
-    <div role="tablist" aria-label="Filtra i tagli" className="glass inline-flex gap-1 rounded-full p-1">
+    <div role="tablist" aria-label="Filtra i tagli" className="surface inline-flex gap-1 rounded-full p-1">
       {FILTERS.map((f) => {
         const active = f.id === value;
         return (
@@ -29,14 +28,14 @@ function FilterTabs({ value, onChange }) {
             aria-selected={active}
             onClick={() => onChange(f.id)}
             className={cn(
-              "relative min-h-10 rounded-full px-4 text-xs font-semibold uppercase tracking-wider transition-colors duration-200 sm:px-5",
+              "relative min-h-10 rounded-full px-4 text-xs font-semibold uppercase tracking-wider transition-[color,transform] duration-200 active:scale-95 sm:px-5",
               active ? "text-obsidian" : "text-mist hover:text-ivory",
             )}
           >
             {active && (
               <motion.span
                 layoutId="cut-filter"
-                className="absolute inset-0 rounded-full bg-gold shadow-[0_0_24px_-4px_rgba(255,230,0,0.8)]"
+                className="absolute inset-0 rounded-full bg-gradient-to-br from-gold-light via-gold to-gold-deep"
                 transition={reduce ? { duration: 0 } : { duration: 0.25, ease: EASE }}
               />
             )}
@@ -48,263 +47,110 @@ function FilterTabs({ value, onChange }) {
   );
 }
 
-/** Computer: schede affiancate che si allargano al passaggio del mouse o al clic. */
-function CutPanel({ cut, index, active, onActivate }) {
-  const reduce = useReducedMotion();
+/**
+ * Scheda del taglio: la foto entra con il sipario dorato; al tocco (o al passaggio del mouse)
+ * i dettagli salgono dal basso. Solo opacità e transform: nessun cambio di dimensioni.
+ */
+function CutCard({ cut, index, open, onToggle, className = "" }) {
   const panelId = `cut-${index}`;
   return (
-    <motion.li
-      layout={!reduce}
-      initial={reduce ? false : { opacity: 0, scale: 0.96 }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-        flexGrow: active ? 3.4 : 1,
-      }}
-      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
-      transition={{ duration: reduce ? 0 : 0.65, ease: EASE }}
+    <div
       className={cn(
-        "relative isolate h-full min-w-0 shrink-0 basis-0 overflow-hidden rounded-[22px] border bg-carbon",
-        active
-          ? "border-gold/50 shadow-[0_0_0_1px_rgba(255,230,0,0.25),0_30px_80px_-30px_rgba(255,230,0,0.45)]"
-          : "border-white/[0.08]",
+        "group relative isolate overflow-hidden rounded-[22px] border border-white/[0.08] bg-carbon",
+        className,
       )}
     >
-      <img
-        src={cut.src}
-        alt={cut.alt}
-        width={cut.width}
-        height={cut.height}
-        loading="lazy"
-        decoding="async"
-        style={{ objectPosition: cut.focus }}
-        className={cn(
-          "absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          active ? "scale-100" : "scale-110",
-        )}
-      />
-      {/* velo scuro sulle schede chiuse: cambia solo l'opacità */}
-      <div
-        className={cn(
-          "absolute inset-0 -z-10 bg-obsidian/60 transition-opacity duration-500",
-          active ? "opacity-0" : "opacity-100",
-        )}
-      />
-      <div
-        className={cn(
-          "absolute inset-0 -z-10 transition-opacity duration-500",
-          active
-            ? "bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent"
-            : "bg-gradient-to-r from-violet/40 to-obsidian/50 lg:bg-gradient-to-t",
-        )}
-      />
-
-      {/* lama di luce che attraversa la scheda quando si apre */}
-      <AnimatePresence>
-        {active && !reduce && (
-          <motion.span
-            key="sweep"
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 -left-1/2 z-10 w-1/2 bg-gradient-to-r from-transparent via-white/25 to-transparent"
-            initial={{ x: "0%", skewX: -18 }}
-            animate={{ x: "400%" }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.1, ease: EASE, delay: 0.15 }}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* l'intera scheda è il pulsante che la apre */}
-      <button
-        type="button"
-        aria-expanded={active}
-        aria-controls={panelId}
-        aria-label={`${cut.title}: mostra i dettagli`}
-        onClick={onActivate}
-        onPointerEnter={(e) => e.pointerType === "mouse" && onActivate()}
-        onFocus={onActivate}
-        className="absolute inset-0 z-0 cursor-pointer"
-      />
-
-      {/* scheda chiusa: numero e nome */}
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-0 flex items-center gap-4 px-5 transition-opacity duration-300 lg:items-end lg:justify-center lg:px-0 lg:pb-8",
-          active ? "opacity-0" : "opacity-100 delay-200",
-        )}
-      >
-        <span className="font-display text-xs font-bold text-gold">0{index + 1}</span>
-        <span className="font-display text-sm font-bold uppercase tracking-[0.14em] text-ivory lg:rotate-180 lg:[writing-mode:vertical-rl]">
-          {cut.title}
-        </span>
-        <span className="ml-auto grid h-9 w-9 place-items-center rounded-full border border-white/20 text-ivory lg:hidden">
-          <Plus size={16} aria-hidden="true" />
-        </span>
-      </div>
-
-      {/* scheda aperta: dettagli del taglio */}
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            id={panelId}
-            key="details"
-            className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-5 sm:p-7"
-            initial="hidden"
-            animate="shown"
-            exit="hidden"
-            variants={{ shown: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } }, hidden: {} }}
-          >
-            {[
-              <p key="n" className="font-display text-xs font-bold uppercase tracking-[0.24em] text-gold">
-                Look 0{index + 1}
-              </p>,
-              <h3
-                key="t"
-                className="mt-2 font-display text-2xl font-black uppercase leading-none text-ivory sm:text-3xl"
-              >
-                {cut.title}
-              </h3>,
-              <dl key="d" className="mt-4 grid max-w-sm gap-1.5 text-sm">
-                {cut.details.map(([k, v]) => (
-                  <div key={k} className="flex items-baseline gap-3">
-                    <dt className="w-20 shrink-0 text-[11px] uppercase tracking-wider text-mist">{k}</dt>
-                    <dd className="font-medium text-ivory">{v}</dd>
-                  </div>
-                ))}
-              </dl>,
-              <div key="g" className="mt-4 flex flex-wrap gap-2">
-                {cut.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-gold/40 bg-obsidian/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>,
-            ].map((node, i) => (
-              <motion.div
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 12, transition: { duration: 0.15 } },
-                  shown: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
-                }}
-              >
-                {node}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.li>
-  );
-}
-
-/**
- * Telefono e tablet: carosello orizzontale con aggancio. Toccando una scheda compaiono i dettagli
- * (solo opacità e spostamento, nessun cambio di dimensioni): resta fluido anche sui telefoni economici.
- */
-function CutCardMobile({ cut, index, open, onToggle }) {
-  const panelId = `cut-m-${index}`;
-  return (
-    <li className="w-[78%] shrink-0 snap-center sm:w-[46%]">
-      <div
-        className={cn(
-          "relative isolate aspect-[4/5] overflow-hidden rounded-[22px] border bg-carbon transition-[transform,border-color] duration-200 active:scale-[0.98]",
-          open ? "border-gold/60" : "border-white/[0.08]",
-        )}
-      >
-        <img
+      <div className="absolute inset-0 -z-10 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]">
+        <CurtainImage
           src={cut.src}
           alt={cut.alt}
           width={cut.width}
           height={cut.height}
-          loading="lazy"
-          decoding="async"
+          delay={0.06 * index}
           style={{ objectPosition: cut.focus }}
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          className="h-full"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent" />
-        {/* velo che scurisce la foto quando i dettagli sono aperti */}
+      </div>
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-obsidian via-obsidian/15 to-transparent" />
+      {/* velo che scurisce la foto quando i dettagli sono aperti */}
+      <div
+        className={cn(
+          "absolute inset-0 -z-10 bg-obsidian/70 transition-opacity duration-300",
+          open ? "opacity-100" : "opacity-0 lg:group-hover:opacity-100",
+        )}
+      />
+
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
+        aria-label={`${cut.title}: ${open ? "nascondi" : "mostra"} i dettagli`}
+        onClick={onToggle}
+        className="absolute inset-0 z-0"
+      />
+
+      <span
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border transition-[transform,background-color,border-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          open ? "rotate-45 border-gold bg-gold text-obsidian" : "border-white/25 bg-obsidian/85 text-ivory",
+        )}
+      >
+        <Plus size={18} />
+      </span>
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 sm:p-6">
+        <p className="font-display text-xs font-bold uppercase tracking-[0.24em] text-gold">Look 0{index + 1}</p>
+        <h3 className="mt-1.5 font-display text-xl font-black uppercase leading-none text-ivory sm:text-2xl">
+          {cut.title}
+        </h3>
         <div
+          id={panelId}
           className={cn(
-            "absolute inset-0 -z-10 bg-obsidian/70 transition-opacity duration-200",
-            open ? "opacity-100" : "opacity-0",
-          )}
-        />
-
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls={panelId}
-          aria-label={`${cut.title}: ${open ? "nascondi" : "mostra"} i dettagli`}
-          onClick={onToggle}
-          className="absolute inset-0 z-0"
-        />
-
-        <span
-          aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border transition-[transform,background-color,border-color] duration-200",
-            open ? "rotate-90 border-gold bg-gold text-obsidian" : "border-white/25 bg-obsidian/80 text-ivory",
+            "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            open
+              ? "translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-3 opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100",
           )}
         >
-          {open ? <X size={18} /> : <Plus size={18} />}
-        </span>
-
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5">
-          <p className="font-display text-xs font-bold uppercase tracking-[0.24em] text-gold">Look 0{index + 1}</p>
-          <h3 className="mt-1.5 font-display text-xl font-black uppercase leading-none text-ivory">{cut.title}</h3>
-          <div
-            id={panelId}
-            className={cn(
-              "transition-[opacity,transform] duration-200 ease-out",
-              open ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0",
-            )}
-          >
-            <dl className="mt-4 grid gap-1.5 text-sm">
-              {cut.details.map(([k, v]) => (
-                <div key={k} className="flex items-baseline gap-3">
-                  <dt className="w-20 shrink-0 text-[11px] uppercase tracking-wider text-mist">{k}</dt>
-                  <dd className="font-medium text-ivory">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {cut.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-gold/40 bg-obsidian/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+          <dl className="mt-4 grid gap-1.5 text-sm">
+            {cut.details.map(([k, v]) => (
+              <div key={k} className="flex items-baseline gap-3">
+                <dt className="w-20 shrink-0 text-[11px] uppercase tracking-wider text-champagne">{k}</dt>
+                <dd className="font-medium text-ivory">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {cut.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-gold/50 bg-obsidian/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 
+// disposizione su computer: due schede alte ai lati, due sovrapposte al centro
+const DESKTOP_CELL = ["lg:row-span-2", "lg:row-span-2", "", ""];
+
 export default function Lookbook() {
   const [filter, setFilter] = useState("tutti");
-  const [active, setActive] = useState(0);
-  const [openMobile, setOpenMobile] = useState(-1);
-  const wide = useMediaQuery("(min-width: 1024px)");
+  const [open, setOpen] = useState(-1);
   const cuts = CUTS.map((cut, i) => ({ cut, i })).filter(({ cut }) => filter === "tutti" || cut.kind.includes(filter));
-
-  // Se il filtro nasconde la scheda aperta, apre la prima rimasta.
-  useEffect(() => {
-    if (!cuts.some(({ i }) => i === active) && cuts.length) setActive(cuts[0].i);
-  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section id="tagli" className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading index="02" eyebrow="Lookbook" words={["I", "nostri"]} accent="tagli">
           <p className="mt-5 max-w-[50ch] text-base leading-relaxed text-mist sm:text-lg">
-            Lavori reali, fatti nel nostro salone. Tocca una scheda per scoprire sfumatura e finitura.
+            Lavori reali, fatti nel nostro salone. Tocca una foto per scoprire sfumatura e finitura.
           </p>
         </SectionHeading>
         <Reveal delay={0.1}>
@@ -312,50 +158,48 @@ export default function Lookbook() {
         </Reveal>
       </div>
 
-      {wide ? (
-        <ul className="mt-10 flex h-[600px] gap-4">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {cuts.map(({ cut, i }) => (
-              <CutPanel key={cut.title} cut={cut} index={i} active={i === active} onActivate={() => setActive(i)} />
-            ))}
-          </AnimatePresence>
-        </ul>
-      ) : (
-        <ul
-          className="snap-row -mx-4 mt-10 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6"
-          aria-label="Galleria dei tagli"
-        >
-          {cuts.map(({ cut, i }) => (
-            <CutCardMobile
-              key={cut.title}
+      {/* telefono: carosello con aggancio · computer: griglia editoriale */}
+      <ul
+        className={cn(
+          "snap-row -mx-4 mt-10 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:h-[640px] lg:grid-rows-2 lg:gap-4 lg:overflow-visible lg:px-0",
+          cuts.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-3",
+        )}
+        aria-label="Galleria dei tagli"
+      >
+        {cuts.map(({ cut, i }, pos) => (
+          <li
+            key={cut.title}
+            className={cn(
+              "w-[80%] shrink-0 snap-center sm:w-[46%] lg:w-auto",
+              cuts.length === 4 && DESKTOP_CELL[pos],
+              cuts.length === 2 && "lg:row-span-2",
+            )}
+          >
+            <CutCard
               cut={cut}
               index={i}
-              open={openMobile === i}
-              onToggle={() => setOpenMobile(openMobile === i ? -1 : i)}
+              open={open === i}
+              onToggle={() => setOpen(open === i ? -1 : i)}
+              className="aspect-[4/5] lg:aspect-auto lg:h-full"
             />
-          ))}
-        </ul>
-      )}
+          </li>
+        ))}
+      </ul>
 
       <Reveal delay={0.1} className="mt-5">
-        <div className="neon-frame rounded-[22px]">
-          <div className="flex flex-col gap-6 rounded-[22px] bg-gradient-to-r from-violet/35 via-carbon to-carbon p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-            <span className="flex items-center gap-5">
-              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/15 bg-white/5">
-                <Camera size={26} strokeWidth={1.75} className="text-ivory" aria-hidden="true" />
-              </span>
-              <span>
-                <span className="block font-display text-lg font-bold uppercase leading-tight text-ivory sm:text-2xl">
-                  Tutti i look su Instagram
-                </span>
-                <span className="mt-1 block text-sm font-semibold text-gold">@fade_barber_studio</span>
-              </span>
+        <div className="card card-gold-edge flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <span className="flex items-center gap-5">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-gold/40 bg-gold/[0.06] text-gold">
+              <Camera size={26} strokeWidth={1.75} aria-hidden="true" />
             </span>
-            <ChromeButton href={LINKS.instagram} faceClassName="px-6 py-3.5 text-xs">
-              Apri Instagram
-              <ArrowUpRight size={16} strokeWidth={2.25} aria-hidden="true" />
-            </ChromeButton>
-          </div>
+            <span>
+              <span className="block font-display text-lg font-bold uppercase leading-tight text-ivory sm:text-2xl">
+                Tutti i look su Instagram
+              </span>
+              <span className="mt-1 block text-sm font-semibold text-gold">@fade_barber_studio</span>
+            </span>
+          </span>
+          <OutlineButton href={LINKS.instagram}>Apri Instagram</OutlineButton>
         </div>
       </Reveal>
     </section>

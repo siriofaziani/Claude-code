@@ -130,7 +130,7 @@ export default function IntroOverlay({ fading, onFinish }) {
           ref={skipRef}
           type="button"
           onClick={finish}
-          className="btn-ghost absolute right-6 top-6 z-10 min-h-11 border-gold/60 bg-black/45 px-5 py-3 text-xs [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]"
+          className="btn-outline absolute right-6 top-6 z-10 min-h-11 bg-black/70 px-5 text-xs"
         >
           Salta intro
           <SkipForward size={16} strokeWidth={2} aria-hidden="true" />

@@ -11,38 +11,30 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 
 `anteprima.html` è la versione in un unico file, apribile con doppio clic.
 
-## Prestazioni su telefono
+## Stile
 
-Sotto i 1024 px (o senza mouse) il sito passa in modalità leggera, per restare a 60 fps:
-niente `backdrop-filter` (fondi scuri quasi pieni), niente animazioni infinite che ridipingono (bordi luminosi,
-riflessi, shimmer, anelli), niente inclinazione 3D, parallasse, grana a schermo intero e anelli SVG animati.
-Le comparse usano solo opacità e spostamento. La scena WebGL degli specchi è sostituita da un suo fotogramma
-(`src/assets/specchi-telefono.webp`), la mappa Google si carica al tocco e le animazioni canvas si montano solo
-quando la sezione resta a schermo (`LazyMount`). Gli effetti completi restano su computer (`DESKTOP_FX` in `src/ui.jsx`).
+Palette presa dal logo: oro caldo (`gold` #F2C14E, `gold-light`, `gold-deep`), `champagne` e neri
+(`obsidian`, `carbon`, `graphite`, `anthracite`). Niente viola, niente vetro sfocato (`backdrop-filter`),
+niente inclinazione 3D o riflessi: superfici piene con linee sottili e l'oro come unico accento.
+Pulsanti: `GoldButton` (oro metallico con chip nera della freccia), `OutlineButton` (nero con bordo oro),
+`QuickAction` (chiama, WhatsApp, mappa). Tutto in `src/ui.jsx` e `src/index.css`.
+
+## Animazioni (solo transform e opacità, 60 fps su telefono)
+
+- Titoli: numero e linea d'oro che si disegna, parole che salgono da una "finestra".
+- Foto: sipario dorato che si ritira mentre l'immagine si stabilizza (`CurtainImage`).
+- Card che entrano a cascata (`Stagger`), contatori che contano (`CountUp`: numeri del salone e prezzi).
+- Scritte giganti a contorno dorato che scorrono con la pagina (`ScrollText`), barra di avanzamento in alto.
+- Tracciati vettoriali che si disegnano (sigillo Gilmont, forbici), lampada dorata sopra le recensioni (Aceternity UI),
+  pillola dei filtri e del menù che scorre (transitions.dev), menù del listino che si apre al tocco.
+- Al tocco: `scale(0.98)` e un filo più di luminosità sui pulsanti.
+- Solo su computer: parallasse delle foto e nuvola di lettere "FADE → BARBER" in canvas
+  (sul telefono è uno scambio di lettere leggero). La mappa Google sul telefono si carica al tocco.
 
 ## Struttura
 
 - `src/App.jsx`: pagina, intro video e footer. `src/data.js`: link, listino, tagli, recensioni, orari.
-- `src/sections/`: Hero, Chi siamo, Lookbook, Listino, Recensioni, Contatti, intestazione e barra fissa del telefono.
-- `src/ui.jsx`: pulsanti (`NeonButton`, `ChromeButton`, `ActionOrb`), comparse allo scorrimento, titoli di sezione,
-  inclinazione 3D. Gli stili dei pulsanti (spigoli tagliati, bordo di luce rotante, riflesso) sono in `src/index.css`.
-
-## Animazioni
-
-- **transitions.dev** (skill in `.claude/skills/transitions-dev`): inclinazione 3D con riflesso (targa Gilmont,
-  scheda premium), comparse a cascata con sfocatura, filtri con pillola scorrevole, menù a fisarmonica del listino,
-  prezzi che entrano cifra per cifra, scambio d'icona del menù.
-- **Aceternity UI**: effetto "lampada" sopra le recensioni, bordi luminosi in movimento.
-
-- **OriginKit** (`src/components/originkit/`, da [originkit.dev](https://originkit.dev)):
-  - Morphing Glyph Cloud: "FADE" fatto di lettere che diventa "BARBER" (sotto la Hero; tocca per trasformarlo).
-  - Orbit Bundle: anelli 3D che ruotano dietro la targa Gilmont (Chi siamo).
-  - Mirror Shards: "FADE" sospeso tra specchi in WebGL (prima dei Contatti).
-- **Nostre**: barra di avanzamento in alto e nastro scorrevole (`src/Effects.jsx`), lama di luce nel passaggio
-  intro → Hero, parallasse della Hero, galleria a schede espandibili, sigillo Gilmont rotante, mappa scura
-  che si attiva al tocco, grana su tutta la pagina.
-- Le animazioni pesanti partono solo quando sono vicine allo schermo (`LazyMount`) e con
-  "riduci movimento" attivo mostrano una versione statica. Il video iniziale è invariato.
+- `src/sections/`: Hero, numeri, Chi siamo, Lookbook, Listino, Recensioni, Contatti, intestazione e barra del telefono.
 
 ## Da completare
 

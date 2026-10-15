@@ -4,7 +4,7 @@ import { CalendarCheck, MapPin, Menu, MessageCircle, Phone, X } from "lucide-rea
 
 import logo from "../assets/logo-trasparente.webp";
 import { LINKS, NAV } from "../data.js";
-import { NeonButton } from "../ui.jsx";
+import { GoldButton } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 /** Sezione visibile in questo momento, per la pillola che scorre nel menu. */
@@ -57,12 +57,12 @@ export function Header() {
       <nav
         aria-label="Navigazione principale"
         className={cn(
-          "mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 rounded-full pl-3 pr-2 transition-[background-color,box-shadow,border-color] duration-500",
-          scrolled ? "glass shadow-[0_18px_50px_-20px_rgba(0,0,0,0.9)]" : "border border-transparent bg-transparent",
+          "mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 rounded-full border pl-3 pr-2 transition-[background-color,border-color] duration-300",
+          scrolled || open ? "border-white/[0.08] bg-[#0b0b0b]/95" : "border-transparent bg-transparent",
         )}
       >
         <a href="#top" className="flex items-center gap-2" aria-label="Fade Barber Studio, torna all'inizio">
-          <img src={logo} alt="" width="48" height="48" className="h-12 w-12" />
+          <img src={logo} alt="" width="48" height="48" className="h-11 w-11" />
           <span className="font-display text-sm font-extrabold tracking-[0.18em] text-ivory">FADE</span>
         </a>
 
@@ -74,7 +74,7 @@ export function Header() {
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full border border-violet-soft/40 bg-violet/20 shadow-[0_0_20px_-4px_rgba(138,43,226,0.9)]"
+                    className="absolute inset-0 rounded-full bg-gold/12 ring-1 ring-gold/40"
                     transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 36 }}
                   />
                 )}
@@ -82,8 +82,8 @@ export function Header() {
                   href={item.href}
                   aria-current={isActive ? "location" : undefined}
                   className={cn(
-                    "relative block rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
-                    isActive ? "text-ivory" : "text-mist hover:text-ivory",
+                    "relative block rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+                    isActive ? "text-gold-light" : "text-mist hover:text-ivory",
                   )}
                 >
                   {item.label}
@@ -94,27 +94,30 @@ export function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <NeonButton href={LINKS.treatwell} faceClassName="px-4 py-3 text-[11px] sm:px-5">
-            Prenota online
-          </NeonButton>
+          <GoldButton
+            href={LINKS.treatwell}
+            className="min-h-11 py-1 pl-4 pr-1 text-[10.5px] sm:pl-5 [&_.btn-chip]:h-9 [&_.btn-chip]:w-9"
+          >
+            Prenota
+          </GoldButton>
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-full text-ivory transition-colors hover:bg-white/5 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 text-ivory transition-[transform,background-color] duration-150 active:scale-95 active:bg-gold/15 lg:hidden"
             aria-label={open ? "Chiudi il menu" : "Apri il menu"}
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((v) => !v)}
           >
-            {/* scambio di icone con sfocatura (transitions.dev, "icon swap") */}
+            {/* scambio di icone (transitions.dev, "icon swap"), solo scala e opacità */}
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
                 key={open ? "x" : "menu"}
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.6 }}
+                initial={{ opacity: 0, scale: 0.6, rotate: -45 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.6, rotate: 45 }}
                 transition={{ duration: 0.15 }}
               >
-                {open ? <X size={22} strokeWidth={2} /> : <Menu size={22} strokeWidth={2} />}
+                {open ? <X size={21} strokeWidth={2} /> : <Menu size={21} strokeWidth={2} />}
               </motion.span>
             </AnimatePresence>
           </button>
@@ -125,27 +128,27 @@ export function Header() {
         {open && (
           <motion.div
             id="menu-mobile"
-            className="glass mx-auto mt-2 max-w-7xl origin-top overflow-hidden rounded-[24px] !bg-[#0b0b0e] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.95)] lg:hidden"
+            className="mx-auto mt-2 max-w-7xl origin-top overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#0b0b0b] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.95)] lg:hidden"
             initial={reduce ? false : { opacity: 0, scale: 0.97, y: -6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.15 } }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.12 } }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
           >
             <ul className="flex flex-col p-2">
               {NAV.map((item, i) => (
                 <motion.li
                   key={item.href}
-                  initial={reduce ? false : { opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={reduce ? false : { opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.25, delay: 0.03 * i, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <a
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-center justify-between rounded-2xl px-4 py-4 font-display text-sm font-semibold uppercase tracking-wide text-ivory active:bg-violet/20 hover:bg-white/5"
+                    className="flex items-center justify-between rounded-2xl px-4 py-4 font-display text-sm font-semibold uppercase tracking-wide text-ivory transition-colors duration-150 active:bg-gold/15 hover:bg-white/5"
                   >
                     {item.label}
-                    <span className="font-display text-xs text-violet-soft">0{i + 1}</span>
+                    <span className="font-display text-xs text-gold">0{i + 1}</span>
                   </a>
                 </motion.li>
               ))}
@@ -161,7 +164,7 @@ export function Header() {
 export function MobileDock() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.6);
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.7);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -178,22 +181,25 @@ export function MobileDock() {
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-[120%] opacity-0",
       )}
     >
-      <div className="glass flex items-center gap-1 rounded-[22px] p-1.5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.95)]">
+      <div className="flex items-center gap-1 rounded-[22px] border border-white/[0.08] bg-[#0b0b0b]/[0.97] p-1.5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.95)]">
         {actions.map(({ href, icon: Icon, label }) => (
           <a
             key={label}
             href={href}
             {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl text-[10px] font-semibold uppercase tracking-wider text-ivory/85 transition-[transform,background-color] duration-150 active:scale-95 active:bg-violet/25"
+            className="flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl text-[10px] font-semibold uppercase tracking-wider text-ivory/85 transition-[transform,background-color] duration-150 active:scale-95 active:bg-gold/15"
           >
-            <Icon size={18} strokeWidth={2} className="text-violet-soft" aria-hidden="true" />
+            <Icon size={18} strokeWidth={2} className="text-gold" aria-hidden="true" />
             {label}
           </a>
         ))}
-        <NeonButton href={LINKS.treatwell} className="flex-[1.5]" faceClassName="min-h-12 px-3 py-3 text-[11px]">
-          <CalendarCheck size={16} strokeWidth={2.2} aria-hidden="true" />
+        <GoldButton
+          href={LINKS.treatwell}
+          icon={CalendarCheck}
+          className="min-h-12 flex-[1.5] gap-2 py-1 pl-4 pr-1 text-[11px] [&_.btn-chip]:h-10 [&_.btn-chip]:w-10"
+        >
           Prenota
-        </NeonButton>
+        </GoldButton>
       </div>
     </div>
   );
