@@ -10,6 +10,10 @@ npm run build    # build di produzione
 npm start        # avvia la build
 ```
 
+Anteprima senza server: `anteprima.html` è tutto il sito in un unico file (tutte le pagine, EN e IT, foto ridotte),
+apribile con doppio clic; si rigenera con `npm run preview:file` (cartella `preview/`, Vite + vite-plugin-singlefile).
+Video dello scroll completo dall'alba alla sera: `anteprima-video/casale-preview.mp4` (telefono) e `casale-preview-desktop.mp4`.
+
 Pubblicazione: su Vercel basta importare la cartella `casale-del-gallo` come progetto (Root Directory), nessuna variabile d'ambiente.
 
 ## Lingue e indirizzi
