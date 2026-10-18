@@ -10,9 +10,9 @@ import Reveal from "./Reveal";
 /** Every page ends at night, with Giulio's invitation to write and the estate's details. */
 export default function Footer({ lang, letter = true }) {
   return (
-    <Section phase="night" cue={l(contact.title, lang)} className="overflow-hidden pb-36 pt-28 md:pb-28 md:pt-40">
+    <Section phase="night" cue={l(contact.title, lang)} className={`overflow-hidden pb-36 md:pb-28 ${letter ? "pt-28 md:pt-40" : "pt-10 md:pt-16"}`}>
       <footer className="mx-auto max-w-[1440px] px-4 md:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-20">
+        <div className={`grid gap-12 lg:gap-20 ${letter ? "lg:grid-cols-[1.25fr_1fr]" : ""}`}>
           {letter ? <Reveal>
             <p className="display text-[clamp(2rem,6vw,4.2rem)] leading-[1.04]">{l(contact.letter, lang)[0]}</p>
             <p className="mt-6 text-[var(--soft)]">
@@ -22,7 +22,7 @@ export default function Footer({ lang, letter = true }) {
               <AskButton lang={lang} />
               <EmailButton lang={lang} />
             </div>
-          </Reveal> : <div />}
+          </Reveal> : null}
           <Reveal delay={0.1} className="grid content-start gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             {letter ? <div className="flex flex-col gap-3">
               <address className="not-italic leading-relaxed">{site.address.map((a) => <span key={a} className="block">{a}</span>)}</address>

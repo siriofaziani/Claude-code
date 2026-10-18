@@ -32,7 +32,7 @@ The owner, Giulio, answers enquiries personally by email (info@casaledelgallo.co
 - The contact form (Name, Email, Phone, Subject, Message) composes the message and opens it in WhatsApp or the email app; no backend.
 - All original copy and all 80 original photos must be kept; no filler text.
 - Pages: The Property (home), About, The Houses (+3 house pages), The Garden, Activities, Services, Wedding, Location, Contact.
-- Original copy ends one sentence unfinished ("The golf club is closed on"); the day is unknown and must not be invented.
+- Original copy ends one sentence unfinished ("The golf club is closed on"); the day is unknown and must not be invented. User decision: omit the fragment until the closing day is supplied.
 
 ## Brand Commitments
 

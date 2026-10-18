@@ -320,7 +320,8 @@ export const activities = {
       preview: "golf-course-view",
       cue: { value: "50", unit: "m", label: { en: "to the golf course", it: "dal campo da golf" } },
       text: {
-        // The original sentence stops at "The golf club is closed on": the day is not published, so it is left out.
+        // The original sentence stops at "The golf club is closed on" with no day. Left out by the owner's
+        // decision ("Ometti la frase"), to be completed when the closing day is known.
         en: ["The Golf course is adjacent to the property at approximately 50 meters. It is possible to play in the opening hours of the golf club."],
         it: ["Il campo da golf confina con la proprietà, a circa 50 metri. Si può giocare negli orari di apertura del golf club."],
       },
