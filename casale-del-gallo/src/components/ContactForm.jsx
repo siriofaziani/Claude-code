@@ -41,7 +41,7 @@ function Field({ name, label, type = "text", required, error, lang, textarea, wr
   return (
     <div ref={wrapRef} className="t-input-wrap">
       <label className="block">
-        <span className="cue text-[0.68rem] text-[var(--soft)]">
+        <span className="cue text-xs text-[var(--soft)]">
           {l(label, lang)}
           {required ? <span aria-hidden="true"> *</span> : null}
         </span>

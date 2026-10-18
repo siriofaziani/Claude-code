@@ -86,8 +86,8 @@
 }
 .sky[data-sky="dawn"] {
   background:
-    radial-gradient(120% 42% at 70% 64%, rgb(246 186 140 / 0.85), transparent 60%),
-    linear-gradient(180deg, #0a0f1f 0%, #142456 30%, #1f3a8a 48%, #8d5f8f 60%, #e39b8f 66%, #f3c08f 70%, #2b1d2a 71%, #120d16 100%);
+    radial-gradient(110% 40% at 72% 64%, rgb(240 168 162 / 0.75), transparent 62%),
+    linear-gradient(180deg, #0c1230 0%, #1a2f74 18%, #1f3a8a 36%, #3b4a96 46%, #8a6a9e 55%, #d293a4 61%, #e8a0a0 64%, #f2bca8 67%, #2b1d2a 71%, #120d16 100%);
 }
 .sky[data-sky="morning"] {
   background:
@@ -150,12 +150,18 @@ img { -webkit-user-drag: none; }
   line-height: 0.98;
   text-wrap: balance;
 }
-.cue {
-  font-family: var(--font-cue);
-  font-variation-settings: "wdth" 72;
-  font-weight: 500;
+/* Headlines and names are Roman capitals, set open like an inscription. */
+:is(h1, h2, h3).display,
+.caps {
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.05em;
+}
+/* Labels: legible small caps in the text face; the stencil is kept for figures. */
+.cue {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   font-variant-numeric: tabular-nums;
 }
 .cue-num {
@@ -168,6 +174,11 @@ img { -webkit-user-drag: none; }
 }
 .prose-casale p + p { margin-top: 1em; }
 .prose-casale { max-width: 62ch; text-wrap: pretty; }
+
+/* Backlit vane: a rim of dawn light around the silhouette (on a wrapper, so the mask keeps it). */
+.vane-glow {
+  filter: drop-shadow(0 0 1px rgb(255 214 190 / 0.95)) drop-shadow(0 0 22px rgb(240 168 162 / 0.55));
+}
 
 /* The weathervane is a mask so it takes any phase colour. */
 .vane {

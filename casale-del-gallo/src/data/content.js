@@ -74,7 +74,7 @@ export const home = {
   cues: [
     { value: "15", unit: "km", label: { en: "from the centre of Rome", it: "dal centro di Roma" } },
     { value: "5", unit: "km", label: { en: "from Ciampino airport", it: "dall'aeroporto di Ciampino" } },
-    { value: "3", unit: "", label: { en: "houses on the estate", it: "case nella tenuta" } },
+    { value: "20", unit: "min", label: { en: "by car to the Colosseum", it: "in auto dal Colosseo" } },
   ],
 };
 
@@ -109,6 +109,7 @@ export const houses = {
       name: "Casale Sant'Antonio",
       cover: "santantonio-lawn",
       pin: { x: 42.5, y: 52 },
+      labelPos: "right",
       label: { x: 44.4, y: 39.2 },
       facts: [
         { value: "4", unit: "", label: { en: "double bedrooms", it: "camere matrimoniali" } },
@@ -121,7 +122,7 @@ export const houses = {
       name: "Casale San Giorgio",
       cover: "sangiorgio-exterior",
       pin: { x: 15.5, y: 55 },
-      labelAlign: "start",
+      labelPos: "above",
       label: { x: 18.8, y: 48.4 },
       facts: [
         { value: "2", unit: "", label: { en: "double bedrooms en suite", it: "camere matrimoniali con bagno" } },

@@ -9,6 +9,7 @@ import { nav, phases, site, ui, l, locales } from "@/data/content";
 import { href, whatsappHref, mailHref } from "@/lib/links";
 import { subscribePhase } from "./Sky";
 import { WhatsAppIcon } from "./Buttons";
+import useHeroCta from "./useHeroCta";
 
 const ease = [0.16, 1, 0.3, 1];
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -53,7 +54,7 @@ function LanguageTabs({ lang }) {
   };
 
   return (
-    <div ref={bar} className="t-tabs cue text-[0.72rem]" role="tablist" aria-label="Language / Lingua">
+    <div ref={bar} className="t-tabs cue text-xs" role="tablist" aria-label="Language / Lingua">
       <span ref={pill} className="t-tabs-pill" aria-hidden="true" />
       {locales.map((code) => (
         <button
@@ -78,6 +79,7 @@ export default function Header({ lang, initialPhase }) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const reduce = useReducedMotion();
+  const heroCta = useHeroCta();
 
   useEffect(() => subscribePhase((s) => setPhase(s.phase)), []);
   useEffect(() => setOpen(false), [pathname]);
@@ -124,7 +126,9 @@ export default function Header({ lang, initialPhase }) {
               href={whatsappHref(l(ui.waGreeting, lang))}
               target="_blank"
               rel="noopener"
-              className="btn btn-primary hidden min-h-11 py-1 pl-4 pr-1.5 text-[0.8rem] lg:inline-flex"
+              aria-hidden={heroCta || undefined}
+              tabIndex={heroCta ? -1 : undefined}
+              className={`btn btn-primary hidden min-h-11 py-1 pl-4 pr-1.5 text-[0.8rem] transition-[opacity,transform] duration-500 lg:inline-flex ${heroCta ? "pointer-events-none -translate-y-2 opacity-0" : ""}`}
             >
               {l(ui.ask, lang)}
               <span className="btn-chip h-8 w-8"><WhatsAppIcon size={16} /></span>
@@ -173,7 +177,7 @@ export default function Header({ lang, initialPhase }) {
                           aria-current={active ? "page" : undefined}
                           className="group grid grid-cols-[5.5rem_1fr] items-baseline gap-3 py-3 md:grid-cols-[8rem_1fr] md:py-4"
                         >
-                          <span className="cue text-[0.7rem] text-[var(--soft)]">{l(phases[item.phase], lang)}</span>
+                          <span className="cue text-xs text-[var(--soft)]">{l(phases[item.phase], lang)}</span>
                           <span className={`display text-[clamp(1.7rem,6vw,2.9rem)] transition-transform duration-300 group-hover:translate-x-2 ${active ? "text-[var(--accent)]" : ""}`}>
                             {l(item.label, lang)}
                           </span>

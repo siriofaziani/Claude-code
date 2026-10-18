@@ -5,6 +5,17 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 
 const ease = [0.16, 1, 0.3, 1];
 
+/** The hour's light on the photograph: its edges fall off into the phase colour. */
+function PhaseLight() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+      style={{ boxShadow: "inset 0 0 70px -10px color-mix(in srgb, var(--plate) 55%, transparent)" }}
+    />
+  );
+}
+
 /**
  * Frames a photo: a panel in the phase colour lifts off it the first time it is seen,
  * while the photo settles from a slight zoom. With `drift`, the photo also moves a little
@@ -20,6 +31,7 @@ export default function CurtainFrame({ className = "", drift = false, children, 
     return (
       <div className={`relative overflow-hidden ${className}`}>
         <div className="absolute inset-0">{children}</div>
+        <PhaseLight />
       </div>
     );
   }
@@ -40,6 +52,7 @@ export default function CurtainFrame({ className = "", drift = false, children, 
           {children}
         </motion.div>
       </motion.div>
+      <PhaseLight />
       <motion.div
         aria-hidden="true"
         className="curtain absolute inset-0"

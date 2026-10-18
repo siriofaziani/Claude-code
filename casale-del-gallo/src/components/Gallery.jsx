@@ -91,7 +91,7 @@ export default function Gallery({ names, lang, aspect = "aspect-[4/3]", sizes, c
         </div>
         {names.length > 1 ? (
           <div className="pointer-events-none absolute inset-x-3 bottom-3 flex items-end justify-between">
-            <span className="cue rounded-[2px] bg-black/45 px-2.5 py-1 text-[0.72rem] text-white">
+            <span className="cue rounded-[2px] bg-black/45 px-2.5 py-1 text-xs text-white">
               {pad(index + 1)} / {pad(names.length)}
             </span>
             <span className="pointer-events-auto hidden gap-1.5 md:flex">

@@ -6,6 +6,7 @@ import { phases, ui, l } from "@/data/content";
 import { whatsappHref } from "@/lib/links";
 import { subscribePhase } from "./Sky";
 import { WhatsAppIcon } from "./Buttons";
+import useHeroCta from "./useHeroCta";
 
 const ease = [0.16, 1, 0.3, 1];
 
@@ -47,6 +48,7 @@ export default function DayDial({ lang, initialPhase }) {
   const [cues, setCues] = useState([]);
   const [open, setOpen] = useState(false);
   const label = useRef(null);
+  const heroCta = useHeroCta();
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
@@ -106,7 +108,7 @@ export default function DayDial({ lang, initialPhase }) {
                       onClick={() => jump(c)}
                       className={`grid w-full grid-cols-[6.5rem_1fr] items-baseline gap-2 border-b border-[var(--line)] px-4 py-3 text-left last:border-0 ${c.i === state.index ? "text-[var(--accent)]" : ""}`}
                     >
-                      <span className="cue text-[0.68rem] text-[var(--soft)]">{l(phases[c.phase], lang)}</span>
+                      <span className="cue text-xs text-[var(--soft)]">{l(phases[c.phase], lang)}</span>
                       <span className="text-[0.95rem]">{c.cue}</span>
                     </button>
                   </li>
@@ -120,19 +122,19 @@ export default function DayDial({ lang, initialPhase }) {
             aria-expanded={open}
             aria-controls="day-cues"
             aria-label={l(ui.dayDial, lang)}
-            className="flex h-14 items-center gap-3 rounded-[3px] pl-3 pr-4 text-[var(--ink)] shadow-[0_12px_30px_-16px_rgb(0_0_0/0.55)] transition-[transform,background-color] duration-500 active:scale-[0.97]"
+            className="flex h-14 items-center gap-3 rounded-[3px] pl-3 pr-4 lg:h-[4.5rem] lg:gap-4 lg:pl-4 lg:pr-6 text-[var(--ink)] shadow-[0_12px_30px_-16px_rgb(0_0_0/0.55)] transition-[transform,background-color] duration-500 active:scale-[0.97]"
             style={{ background: "color-mix(in srgb, var(--plate) 94%, transparent)" }}
           >
-            <span className="relative block h-[22px] w-[44px] overflow-hidden" aria-hidden="true">
-              <span className="absolute inset-x-0 top-0 h-[44px] rounded-full border border-[var(--line)]" />
+            <span className="relative block h-[22px] w-[44px] overflow-hidden lg:h-[32px] lg:w-[64px]" aria-hidden="true">
+              <span className="absolute inset-x-0 top-0 h-[44px] rounded-full border border-[var(--line)] lg:h-[64px]" />
               <span className="absolute inset-x-[-4px] bottom-0 h-px bg-[var(--soft)] opacity-60" />
-              <motion.span className="absolute left-0 top-[22px] h-0 w-[44px]" style={{ rotate, transformOrigin: "50% 50%" }}>
+              <motion.span className="absolute left-0 top-[22px] h-0 w-[44px] lg:top-[32px] lg:w-[64px]" style={{ rotate, transformOrigin: "50% 50%" }}>
                 <span className="absolute -left-[5px] -top-[5px] block h-[10px] w-[10px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_2px_var(--accent)]" />
               </motion.span>
             </span>
             <span className="flex min-w-0 flex-col items-start leading-tight">
-              <span ref={label} className="t-text-soft cue min-h-[1.2em] whitespace-nowrap text-[0.8rem]" />
-              <span className="hidden max-w-[16rem] truncate text-[0.78rem] text-[var(--soft)] sm:block">{cueName}</span>
+              <span ref={label} className="t-text-soft cue min-h-[1.2em] whitespace-nowrap text-[0.8rem] lg:text-[0.95rem]" />
+              <span className="hidden max-w-[18rem] truncate text-[0.85rem] text-[var(--soft)] sm:block lg:text-[0.95rem]">{cueName}</span>
             </span>
           </button>
         </div>
@@ -140,7 +142,9 @@ export default function DayDial({ lang, initialPhase }) {
           href={whatsappHref(l(ui.waGreeting, lang))}
           target="_blank"
           rel="noopener"
-          className="btn btn-primary pointer-events-auto min-h-14 lg:hidden"
+          aria-hidden={heroCta || undefined}
+          tabIndex={heroCta ? -1 : undefined}
+          className={`btn btn-primary min-h-14 transition-[opacity,transform] duration-500 lg:hidden ${heroCta ? "pointer-events-none translate-y-3 opacity-0" : "pointer-events-auto"}`}
         >
           {l(ui.askShort, lang)}
           <span className="btn-chip"><WhatsAppIcon /></span>

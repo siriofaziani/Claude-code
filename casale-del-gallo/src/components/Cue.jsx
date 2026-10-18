@@ -11,7 +11,7 @@ export default function Cue({ value, unit, label, size = "md", className = "" })
         <span className={`cue-num ${sizes[size]}`}>{value}</span>
         {unit ? <span className="cue text-sm text-[var(--soft)]">{unit}</span> : null}
       </span>
-      {label ? <span className="cue text-[0.72rem] leading-snug text-[var(--soft)]">{label}</span> : null}
+      {label ? <span className="cue text-xs leading-snug text-[var(--soft)]">{label}</span> : null}
     </div>
   );
 }

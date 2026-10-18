@@ -22,38 +22,43 @@ export default async function Home({ params }) {
   return (
     <PageShell lang={lang} phase="dawn">
       {/* ── Dawn: the estate wakes under the Castelli Romani ── */}
-      <Section phase="dawn" cue={site.name} className="h-[100svh] min-h-[620px] [--hz:61%] md:[--hz:66%]">
+      <Section phase="dawn" cue={site.name} className="h-[100svh] min-h-[640px] overflow-hidden [--hz:62%] [--vh:min(25svh,10.5rem)] md:[--hz:66%] md:[--vh:min(48svh,27rem)]">
         <div className="absolute inset-x-0 bottom-0 overflow-hidden" style={{ top: "var(--hz)" }}>
           <HeroStage names={home.slides} lang={lang} />
-          <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(18_13_22/0.78)_0%,rgb(18_13_22/0.15)_42%,transparent_70%)]" />
-          <VaneShadow className="left-[calc(100%-1rem-min(26vw,9.5rem))] top-0 h-[min(31svh,15rem)] text-black/55 md:left-[calc(100%-3rem-min(17vw,15rem))] md:h-[min(46svh,25rem)]" />
-          <div className="relative mx-auto flex max-w-[1440px] gap-6 px-4 pt-4 text-[#f7efe4] md:gap-14 md:px-8 md:pt-6">
+          <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(24_14_30/0.88)_0%,rgb(24_14_30/0.35)_38%,transparent_68%)]" />
+          <VaneShadow className="bottom-full right-3 h-[var(--vh)] text-[#0b0610] md:right-12" />
+          <div className="relative mx-auto flex max-w-[1440px] gap-7 px-4 pt-4 text-[#fbf3ea] md:gap-16 md:px-8 md:pt-6">
             {home.cues.map((c) => (
               <div key={c.label.en} className="flex flex-col">
                 <span className="flex items-baseline gap-1">
-                  <span className="cue-num text-[2.3rem] md:text-[3.4rem]">{c.value}</span>
-                  {c.unit ? <span className="cue text-[0.7rem]">{c.unit}</span> : null}
+                  <span className="cue-num text-[2.4rem] md:text-[3.6rem]">{c.value}</span>
+                  {c.unit ? <span className="cue text-xs">{c.unit}</span> : null}
                 </span>
-                <span className="cue max-w-[9rem] text-[0.6rem] leading-snug text-[#f2dccf] md:text-[0.68rem]">{l(c.label, lang)}</span>
+                <span className="cue max-w-[9.5rem] text-xs leading-snug text-[#f6e4d8]">{l(c.label, lang)}</span>
               </div>
             ))}
           </div>
         </div>
-        <div aria-hidden="true" className="absolute inset-x-0 h-px bg-[linear-gradient(90deg,transparent,#ffd9a8_20%,#fff1dc_60%,transparent)] shadow-[0_0_24px_4px_rgb(255_200_150/0.55)]" style={{ top: "var(--hz)" }} />
-        <span
+        {/* the light where sky meets the estate: a bloom behind the vane that also falls on the photo */}
+        <div
           aria-hidden="true"
-          className="vane absolute right-4 block h-[min(31svh,15rem)] -translate-y-full text-[#120d16] md:right-12 md:h-[min(46svh,25rem)]"
-          style={{ top: "var(--hz)" }}
+          className="pointer-events-none absolute right-[-20vw] h-[46svh] w-[90vw] -translate-y-1/2 md:right-[-10vw] md:w-[70vw]"
+          style={{ top: "var(--hz)", background: "radial-gradient(closest-side, rgb(255 205 175 / 0.62), rgb(232 160 160 / 0.22) 55%, transparent)" }}
         />
+        <div aria-hidden="true" className="absolute inset-x-0 h-px bg-[linear-gradient(90deg,transparent,#ffd2b8_18%,#fff3e6_62%,transparent)] shadow-[0_0_28px_6px_rgb(255_196_170/0.6)]" style={{ top: "var(--hz)" }} />
+        <span aria-hidden="true" className="vane-glow absolute right-3 block -translate-y-full md:right-12" style={{ top: "var(--hz)" }}>
+          <span className="vane block h-[var(--vh)] text-[#120a16]" />
+        </span>
         <HeroScroll className="absolute inset-x-0 top-0" style={{ height: "var(--hz)" }}>
-          <div className="mx-auto flex h-full w-full max-w-[1440px] flex-col justify-end px-4 pb-6 md:px-8 md:pb-10">
-            <h1 className="display max-w-[11ch] pr-[28vw] text-[clamp(2.9rem,12vw,6rem)] text-[#fbf3ea] sm:pr-0 md:max-w-none">
-              {site.name}
+          <div className="mx-auto flex h-full w-full max-w-[1440px] flex-col justify-end px-4 pb-5 md:px-8 md:pb-10">
+            <h1 className="display caps text-[clamp(2.35rem,10.4vw,6rem)] leading-[0.95] text-[#fff6ee]">
+              <span className="block md:inline">Casale </span>
+              <span className="block md:inline">del Gallo</span>
             </h1>
-            <p className="mt-3 max-w-[30ch] pr-[30vw] text-[1.05rem] leading-snug text-[#f1dfe0] sm:pr-0 md:mt-4 md:text-[1.3rem]">{l(site.tagline, lang)}</p>
-            <div className="mt-5 flex flex-wrap gap-3 md:mt-7">
+            <p className="mt-3 max-w-[18rem] text-[1.05rem] leading-snug text-[#f6e2e4] md:mt-4 md:max-w-none md:text-[1.3rem]">{l(site.tagline, lang)}</p>
+            <div data-hero-cta className="mt-5 flex max-w-[16.5rem] flex-col items-start gap-2.5 sm:max-w-none sm:flex-row sm:gap-3 md:mt-7">
               <AskButton lang={lang} />
-              <EmailButton lang={lang} className="hidden sm:inline-flex" />
+              <EmailButton lang={lang} />
             </div>
           </div>
         </HeroScroll>
@@ -194,7 +199,7 @@ export default async function Home({ params }) {
               <StaggerItem as="li" key={d.place.en} className="flex flex-col gap-3">
                 <Cue value={d.value} unit={d.unit} size="lg" />
                 <span className="display text-[1.5rem] leading-tight">{l(d.place, lang)}</span>
-                <span className="cue text-[0.7rem] text-[var(--soft)]">{l(d.time, lang)}</span>
+                <span className="cue text-xs text-[var(--soft)]">{l(d.time, lang)}</span>
               </StaggerItem>
             ))}
           </Stagger>

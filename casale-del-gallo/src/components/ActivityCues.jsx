@@ -28,14 +28,14 @@ export default function ActivityCues({ items, lang }) {
                 {it.cue ? (
                   <span className="flex items-baseline gap-1">
                     <span className={`cue-num text-[3.4rem] transition-colors duration-300 sm:text-[4.6rem] ${lit === i ? "text-[var(--accent)]" : ""}`}>{it.cue.value}</span>
-                    <span className="cue text-[0.72rem] text-[var(--soft)]">{it.cue.unit}</span>
+                    <span className="cue text-xs text-[var(--soft)]">{it.cue.unit}</span>
                   </span>
                 ) : (
                   <span className="relative block aspect-square w-16 overflow-hidden rounded-[2px] sm:w-20">
                     <Image src={images[it.preview ?? it.images[0]].src} alt="" fill sizes="80px" className="object-cover" placeholder="blur" blurDataURL={images[it.preview ?? it.images[0]].blur} />
                   </span>
                 )}
-                {it.cue ? <span className="cue mt-2 block text-[0.62rem] leading-snug text-[var(--soft)]">{l(it.cue.label, lang)}</span> : null}
+                {it.cue ? <span className="cue mt-2 block text-xs leading-snug text-[var(--soft)]">{l(it.cue.label, lang)}</span> : null}
               </div>
               <h3 className="display text-[1.7rem] leading-tight sm:text-[2.1rem]">{l(it.title, lang)}</h3>
               <p className="max-w-[56ch] text-[var(--soft)]">{l(it.text, lang)[0]}</p>

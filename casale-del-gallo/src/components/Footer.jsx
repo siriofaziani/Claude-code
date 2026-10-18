@@ -24,19 +24,18 @@ export default function Footer({ lang, letter = true }) {
             </div>
           </Reveal> : <div />}
           <Reveal delay={0.1} className="grid content-start gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            <div className="flex flex-col gap-3">
-              <span className="cue text-[0.68rem] text-[var(--soft)]">{site.name}</span>
+            {letter ? <div className="flex flex-col gap-3">
               <address className="not-italic leading-relaxed">{site.address.map((a) => <span key={a} className="block">{a}</span>)}</address>
               <a href={mailHref("Casale del Gallo")} className="inline-flex items-center gap-2 underline"><Mail size={16} strokeWidth={1.6} aria-hidden="true" />{site.email}</a>
               <a href={site.phoneHref} className="inline-flex items-center gap-2"><Phone size={16} strokeWidth={1.6} aria-hidden="true" />{site.phone}</a>
               <a href={site.instagram} target="_blank" rel="noopener" className="inline-flex items-center gap-2"><InstagramIcon />{site.instagramHandle}</a>
-            </div>
+            </div> : null}
             <nav aria-label={l(ui.menu, lang)}>
               <ul className="grid gap-2">
                 {nav.map((item) => (
                   <li key={item.slug || "home"}>
                     <Link href={href(lang, item.slug)} className="group inline-flex items-baseline gap-3 hover:text-[var(--accent)]">
-                      <span className="cue w-24 text-[0.62rem] text-[var(--soft)]">{l(phases[item.phase], lang)}</span>
+                      <span className="cue w-24 text-xs text-[var(--soft)]">{l(phases[item.phase], lang)}</span>
                       <span>{l(item.label, lang)}</span>
                     </Link>
                   </li>
@@ -54,7 +53,7 @@ export default function Footer({ lang, letter = true }) {
               <p className="text-sm text-[var(--soft)]">{l(site.tagline, lang)}</p>
             </div>
           </div>
-          <p className="cue text-[0.68rem] text-[var(--soft)]">{site.copyright}</p>
+          <p className="cue text-xs text-[var(--soft)]">{site.copyright}</p>
         </div>
       </footer>
     </Section>

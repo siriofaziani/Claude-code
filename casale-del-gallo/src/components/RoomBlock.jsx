@@ -3,9 +3,10 @@ import imageData from "@/data/images.json";
 import Gallery from "./Gallery";
 import Reveal from "./Reveal";
 import Cue from "./Cue";
+import { AskButton } from "./Buttons";
 
 /** One room or one experience: its photographs and the owner's words, alternating sides down the page. */
-export default function RoomBlock({ lang, title, text, images, cue, flip = false, headingLevel = 3 }) {
+export default function RoomBlock({ lang, title, text, images, cue, flip = false, headingLevel = 3, cta = false }) {
   const H = `h${headingLevel}`;
   // Many originals are small: never stretch a gallery wider than its photos can hold.
   const narrowest = Math.min(...images.map((n) => imageData[n].width));
@@ -23,6 +24,7 @@ export default function RoomBlock({ lang, title, text, images, cue, flip = false
             <p key={p}>{p}</p>
           ))}
         </div>
+        {cta ? <AskButton lang={lang} className="mt-2 self-start" /> : null}
       </Reveal>
     </article>
   );

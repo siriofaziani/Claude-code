@@ -8,7 +8,7 @@ import EstateMap from "@/components/EstateMap";
 import Reveal from "@/components/Reveal";
 import CurtainFrame from "@/components/CurtainFrame";
 import Photo from "@/components/Photo";
-import Cue from "@/components/Cue";
+import HouseFacts from "@/components/HouseFacts";
 import LearnLink from "@/components/LearnLink";
 
 export async function generateMetadata({ params }) {
@@ -37,11 +37,7 @@ export default async function TheHouses({ params }) {
               <Reveal className={`flex flex-col gap-6 lg:col-span-5 ${i % 2 ? "lg:order-1" : ""}`}>
                 <h2 className="display text-[clamp(2.4rem,6vw,4.4rem)] leading-none">{h.name}</h2>
                 <p className="text-[var(--soft)]">{l(housePages[h.slug].subtitle, lang)}</p>
-                <div className="flex flex-wrap gap-x-8 gap-y-6">
-                  {h.facts.map((f) => (
-                    <Cue key={f.label.en} value={f.value} unit={f.unit} label={l(f.label, lang)} size="sm" className="max-w-[9rem]" />
-                  ))}
-                </div>
+                <HouseFacts facts={h.facts} lang={lang} size="sm" />
                 <LearnLink href={href(lang, h.slug)}>{l(ui.viewHouse, lang)}</LearnLink>
               </Reveal>
             </article>

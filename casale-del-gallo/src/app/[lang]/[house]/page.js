@@ -7,9 +7,9 @@ import PageIntro from "@/components/PageIntro";
 import Section from "@/components/Section";
 import RoomBlock from "@/components/RoomBlock";
 import Reveal from "@/components/Reveal";
-import Cue from "@/components/Cue";
 import Photo from "@/components/Photo";
-import { AskButton } from "@/components/Buttons";
+import HouseFacts from "@/components/HouseFacts";
+import { ArrowRight } from "lucide-react";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -33,10 +33,8 @@ export default async function House({ params }) {
   return (
     <PageShell lang={lang} phase="morning">
       <PageIntro lang={lang} phase="morning" cue={page.name} title={page.name} subtitle={l(page.subtitle, lang)} image={page.hero}>
-        <Reveal delay={0.12} className="mt-10 flex flex-wrap gap-x-12 gap-y-8">
-          {info.facts.map((f) => (
-            <Cue key={f.label.en} value={f.value} unit={f.unit} label={l(f.label, lang)} className="max-w-[10rem]" />
-          ))}
+        <Reveal delay={0.12} className="mt-8 flex flex-col gap-8">
+          <HouseFacts facts={info.facts} lang={lang} />
         </Reveal>
       </PageIntro>
 
@@ -47,12 +45,9 @@ export default async function House({ params }) {
           </Reveal>
           <div className="grid gap-16 md:gap-24">
             {page.rooms.map((room, i) => (
-              <RoomBlock key={room.title.en} lang={lang} title={room.title} text={room.text} images={room.images} flip={i % 2 === 1} />
+              <RoomBlock key={room.title.en} lang={lang} title={room.title} text={room.text} images={room.images} flip={i % 2 === 1} cta={i === page.rooms.length - 1} />
             ))}
           </div>
-          <Reveal className="mt-16">
-            <AskButton lang={lang} />
-          </Reveal>
         </div>
       </Section>
 
@@ -67,8 +62,8 @@ export default async function House({ params }) {
                 <Photo name={h.cover} lang={lang} fill sizes="(min-width: 640px) 46vw, 100vw" className="object-cover transition-transform duration-1000 ease-[var(--ease-out-expo)] group-hover:scale-105" />
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(0deg,rgb(30_20_8/0.75),transparent_60%)]" />
                 <span className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4 text-[#fbefdc]">
-                  <span className="display text-[clamp(1.7rem,4vw,2.5rem)] leading-none">{h.name}</span>
-                  <span className="cue text-[0.72rem] transition-transform duration-300 group-hover:translate-x-1">{l(ui.viewHouse, lang)} →</span>
+                  <span className="display caps text-[clamp(1.4rem,3.4vw,2.1rem)] leading-none">{h.name}</span>
+                  <span className="cue inline-flex items-center gap-1.5 text-xs transition-transform duration-300 group-hover:translate-x-1">{l(ui.viewHouse, lang)} <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" /></span>
                 </span>
               </Link>
             ))}

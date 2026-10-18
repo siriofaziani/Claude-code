@@ -41,7 +41,7 @@ export default function EstateMap({ lang, showList = true }) {
                   <span className={`h-3 w-3 rounded-full bg-white shadow-[0_0_0_4px_rgb(0_0_0/0.25)] transition-transform duration-300 ${on ? "scale-150" : ""}`} />
                 </span>
                 <span
-                  className={`display pointer-events-none absolute whitespace-nowrap rounded-[2px] px-1.5 py-0.5 text-[0.72rem] text-white transition-[background-color] duration-300 sm:mt-1 sm:px-2 sm:py-1 sm:text-[1.1rem] ${h.labelAlign === "start" ? "bottom-full left-1 mb-0.5" : "left-1/2 top-full mt-0.5 -translate-x-1/2"} ${on ? "bg-[#1f3a8a]" : "bg-black/45"}`}
+                  className={`display pointer-events-none absolute whitespace-nowrap rounded-[2px] px-1.5 py-0.5 text-xs text-white transition-[background-color] duration-300 sm:mt-1 sm:px-2 sm:py-1 sm:text-[1.1rem] ${h.labelPos === "above" ? "bottom-full left-1/2 mb-0.5 -translate-x-1/4" : h.labelPos === "right" ? "left-full top-1/2 -translate-y-1/2" : "left-1/2 top-full mt-0.5 -translate-x-1/2"} ${on ? "bg-[#1f3a8a]" : "bg-black/45"}`}
                 >
                   {h.name}
                 </span>
@@ -69,8 +69,8 @@ export default function EstateMap({ lang, showList = true }) {
                     <Image src={images[h.cover].src} alt="" fill sizes="80px" className="object-cover transition-transform duration-700 group-hover:scale-110" placeholder="blur" blurDataURL={images[h.cover].blur} />
                   </span>
                   <span className="flex flex-col gap-1">
-                    <span className={`display text-[1.55rem] transition-colors duration-300 sm:text-[1.8rem] ${on ? "text-[var(--accent)]" : ""}`}>{h.name}</span>
-                    <span className="cue text-[0.68rem] text-[var(--soft)]">
+                    <span className={`display caps text-[1.3rem] transition-colors duration-300 sm:text-[1.5rem] ${on ? "text-[var(--accent)]" : ""}`}>{h.name}</span>
+                    <span className="text-sm leading-snug text-[var(--soft)]">
                       {h.facts.map((f) => `${f.value}${f.unit ? " " + f.unit : ""} ${l(f.label, lang)}`).join(" · ")}
                     </span>
                   </span>

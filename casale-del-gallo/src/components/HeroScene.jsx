@@ -23,13 +23,14 @@ export function HeroScroll({ children, className = "", style }) {
 export function VaneShadow({ className = "" }) {
   const reduce = useReducedMotion();
   const { scrollY } = useScroll();
-  const skew = useTransform(scrollY, [0, 900], [58, 8]);
-  const scaleY = useTransform(scrollY, [0, 900], [-0.42, -0.16]);
+  // Low sun: a long shadow thrown across the estate; as it climbs the shadow swings and shortens.
+  const skew = useTransform(scrollY, [0, 700], [62, 18]);
+  const scaleY = useTransform(scrollY, [0, 700], [-0.62, -0.22]);
   return (
     <motion.span
       aria-hidden="true"
-      className={`vane absolute block origin-top ${className}`}
-      style={reduce ? { transform: "scaleY(-0.4) skewX(50deg)" } : { skewX: skew, scaleY }}
+      className={`vane absolute block origin-bottom opacity-70 ${className}`}
+      style={reduce ? { transform: "scaleY(-0.55) skewX(55deg)" } : { skewX: skew, scaleY }}
     />
   );
 }
