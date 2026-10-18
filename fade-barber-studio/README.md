@@ -11,6 +11,12 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 
 `anteprima.html` è la versione in un unico file, apribile con doppio clic.
 
+## Ingresso
+
+All'apertura c'è una schermata nera con il logo e il pulsante "Vieni a trovarci" (`src/EntryGate.jsx`), con anelli
+dorati che pulsano. Il video di benvenuto si precarica sotto la schermata e parte solo al tocco: la schermata si apre
+con uno zoom e una dissolvenza (0,7 s, solo transform e opacità), poi il video si dissolve nella Hero come prima.
+
 ## Stile
 
 Palette presa dal logo: oro caldo (`gold` #F2C14E, `gold-light`, `gold-deep`), `champagne` e neri

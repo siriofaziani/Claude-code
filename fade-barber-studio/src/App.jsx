@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 import IntroOverlay, { FADE_MS, shouldPlayIntro } from "./IntroOverlay.jsx";
+import EntryGate, { GATE_LEAVE_MS } from "./EntryGate.jsx";
 import { GlyphMorphBand, Marquee, ScrollProgress, ScrollText } from "./Effects.jsx";
 import { Header, MobileDock } from "./sections/Chrome.jsx";
 import Hero from "./sections/Hero.jsx";
@@ -63,9 +64,23 @@ function Footer() {
 /* ───────────── Pagina ───────────── */
 
 export default function App() {
+  // 1) schermata d'ingresso con "Vieni a trovarci"  2) video di benvenuto  3) Hero e pagina
+  const [gateVisible, setGateVisible] = useState(true);
+  const [gateLeaving, setGateLeaving] = useState(false);
   const [showIntro, setShowIntro] = useState(shouldPlayIntro);
+  const [introStarted, setIntroStarted] = useState(false);
   const [introFading, setIntroFading] = useState(false);
   const fadeTimer = useRef(null);
+  const gateTimer = useRef(null);
+
+  // Tocco su "Vieni a trovarci": il video parte subito (era già precaricato sotto la schermata),
+  // mentre la schermata si apre con uno zoom e sparisce.
+  const enter = () => {
+    if (gateLeaving) return;
+    setIntroStarted(true);
+    setGateLeaving(true);
+    gateTimer.current = window.setTimeout(() => setGateVisible(false), GATE_LEAVE_MS);
+  };
 
   // Fine video o "Salta intro": parte la dissolvenza, dopo 1 secondo l'overlay esce dal DOM.
   const endIntro = () => {
@@ -73,8 +88,8 @@ export default function App() {
     fadeTimer.current = window.setTimeout(() => setShowIntro(false), FADE_MS);
   };
 
-  // Lo scorrimento è bloccato solo mentre il video è in riproduzione; si sblocca appena parte la dissolvenza.
-  const scrollLocked = showIntro && !introFading;
+  // Lo scorrimento è bloccato sulla schermata d'ingresso e mentre il video è in riproduzione.
+  const scrollLocked = gateVisible || (showIntro && !introFading);
   useEffect(() => {
     if (!scrollLocked) return;
     const root = document.documentElement;
@@ -85,16 +100,23 @@ export default function App() {
     };
   }, [scrollLocked]);
 
-  useEffect(() => () => window.clearTimeout(fadeTimer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(fadeTimer.current);
+      window.clearTimeout(gateTimer.current);
+    },
+    [],
+  );
 
   return (
     <>
-      {showIntro && <IntroOverlay fading={introFading} onFinish={endIntro} />}
+      {gateVisible && <EntryGate leaving={gateLeaving} onEnter={enter} />}
+      {showIntro && <IntroOverlay started={introStarted} fading={introFading} onFinish={endIntro} />}
       <GoldStrokeDefs />
       <ScrollProgress />
       <Header />
       <main className="overflow-x-clip">
-        <Hero revealed={!showIntro || introFading} />
+        <Hero revealed={gateLeaving && (!showIntro || introFading)} />
         <div className="py-16 md:py-24">
           <Stats />
         </div>

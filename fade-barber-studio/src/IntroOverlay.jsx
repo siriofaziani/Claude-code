@@ -35,13 +35,17 @@ export function shouldPlayIntro() {
 }
 
 /**
+ * started: false finché l'utente non tocca "Entra nel salone" (schermata d'ingresso, vedi EntryGate):
+ *   intanto il video si prepara (sorgente impostata e precaricata) così, al tocco, parte senza attese.
  * fading: true quando la dissolvenza è in corso (la gestisce App).
  * onFinish: chiamato una sola volta, a fine video, su "Salta intro" o se il video non può partire.
  */
-export default function IntroOverlay({ fading, onFinish }) {
+export default function IntroOverlay({ started, fading, onFinish }) {
   const videoRef = useRef(null);
   const skipRef = useRef(null);
   const finished = useRef(false);
+  const ready = useRef(false);
+  const errored = useRef(false);
   const [graded, setGraded] = useState(false);
 
   const finish = () => {
@@ -51,18 +55,21 @@ export default function IntroOverlay({ fading, onFinish }) {
     onFinish();
   };
 
+  const play = () => {
+    const video = videoRef.current;
+    if (!video || !ready.current || finished.current) return;
+    // Riproduzione bloccata (es. risparmio energetico su iPhone): si passa subito alla Hero.
+    video.play().catch((err) => {
+      if (err?.name === "NotAllowedError") finish();
+    });
+  };
+
+  // Al montaggio: sceglie e precarica il video, senza avviarlo.
   useEffect(() => {
-    skipRef.current?.focus({ preventScroll: true });
     const video = videoRef.current;
     if (!video) return undefined;
-    let started = false;
     let cancelled = false;
     let blobUrl = null;
-    const onPlaying = () => {
-      started = true;
-    };
-    video.addEventListener("playing", onPlaying);
-
     (async () => {
       const src = pickIntroSource(video);
       if (!src) return finish();
@@ -79,23 +86,41 @@ export default function IntroOverlay({ fading, onFinish }) {
       }
       if (cancelled) return;
       video.src = playable;
-      // Autoplay bloccato (es. risparmio energetico su iPhone): si passa subito alla Hero.
-      video.play().catch((err) => {
-        if (err?.name === "NotAllowedError") finish();
-      });
+      video.load();
+      ready.current = true;
+      if (started) play();
     })();
-
-    const timeout = window.setTimeout(() => {
-      if (!started) finish();
-    }, START_TIMEOUT_MS);
     return () => {
       cancelled = true;
-      video.removeEventListener("playing", onPlaying);
-      window.clearTimeout(timeout);
       if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Al tocco su "Entra nel salone": parte il video; se non riesce a partire entro START_TIMEOUT_MS si va alla Hero.
+  useEffect(() => {
+    if (!started) return undefined;
+    if (errored.current) {
+      finish();
+      return undefined;
+    }
+    skipRef.current?.focus({ preventScroll: true });
+    play();
+    const video = videoRef.current;
+    let playing = false;
+    const onPlaying = () => {
+      playing = true;
+    };
+    video?.addEventListener("playing", onPlaying);
+    const timeout = window.setTimeout(() => {
+      if (!playing) finish();
+    }, START_TIMEOUT_MS);
+    return () => {
+      video?.removeEventListener("playing", onPlaying);
+      window.clearTimeout(timeout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [started]);
 
   return (
     <>
@@ -103,6 +128,7 @@ export default function IntroOverlay({ fading, onFinish }) {
         role="dialog"
         aria-modal="true"
         aria-label="Video introduttivo di Fade Barber Studio"
+        aria-hidden={!started}
         className={`fixed inset-0 z-50 bg-black transition-opacity duration-1000 ease-out ${
           fading ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
@@ -111,7 +137,6 @@ export default function IntroOverlay({ fading, onFinish }) {
           ref={videoRef}
           aria-hidden="true"
           className={`absolute inset-0 h-full w-full ${FRAME_FIT}`}
-          autoPlay
           muted
           playsInline
           preload="auto"
@@ -120,7 +145,10 @@ export default function IntroOverlay({ fading, onFinish }) {
             if (!graded && v.duration && v.duration - v.currentTime <= GRADE_LEAD_S) setGraded(true);
           }}
           onEnded={finish}
-          onError={finish}
+          onError={() => {
+            errored.current = true;
+            if (started) finish();
+          }}
         />
 
         {/* Nell'ultimo secondo il video riceve le sfumature della Hero: l'ultimo fotogramma è identico alla pagina. */}
