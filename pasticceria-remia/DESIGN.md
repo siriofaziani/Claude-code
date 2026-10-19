@@ -189,7 +189,7 @@ A stone palette (warm whites and greys) with one deep bottle green carrying the 
 - **Figure** (Barlow Condensed 600, 4.6–5.6rem, line-height 0.8): the single rating numeral.
 
 ### Named Rules
-**The One Script Rule.** The only script on the page is the traced sign wordmark, in sign green (or on green, sign green on night). No script or display fonts are added.
+**The One Script Rule.** The only script on the page is the traced sign wordmark, in sign green, on stone or on night green. No script or display fonts are added.
 
 **The Sign Grammar Rule.** Labels are grey condensed capitals, as on the sign's lower panels. Headlines stay Jost Light; no heavy Jost display weights.
 
