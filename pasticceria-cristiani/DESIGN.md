@@ -1,293 +1,322 @@
 ---
 name: Pasticceria Cristiani
-description: The family pasticceria of Centocelle, Roma, presented as its own shop: panna walls, mahogany counter, chocolate plaques, brass fittings.
+description: The family pasticceria of Centocelle, Roma, as a Roman pastry boutique: crema walls, oro fittings, espresso wood, a white-chocolate plaque piped by hand.
 colors:
-  panna: "#f5ede0"
-  crema: "#ebdcc4"
-  form-paper: "#fbf6ec"
-  mogano: "#5b2418"
-  cioccolato: "#241510"
-  fondente: "#170d09"
-  ottone: "#b08d3c"
-  ottone-chiaro: "#d9bd78"
-  brass-key: "#c39a45"
-  brass-key-hover: "#cfa752"
-  brass-text: "#e9cf8e"
-  brass-ink: "#22140d"
-  inchiostro: "#2a1a13"
+  panna: "#fcf8f1"
+  crema: "#f5ecdf"
+  sabbia: "#eadcc6"
+  oro: "#c9a257"
+  oro-hover: "#d6b268"
+  oro-chiaro: "#ecd8a6"
+  oro-scuro: "#8a6828"
+  espresso: "#1a100b"
+  espresso-2: "#241710"
+  tostato: "#3a2619"
+  inchiostro: "#2a1a12"
   cacao: "#5c4636"
-  cream-on-dark: "#fbf2e4"
-  muted-on-dark: "#d9c7aa"
-  plaque-chocolate: "#2e1a12"
-  plaque-piping: "#f3dfb5"
-  error-red: "#a5321c"
-  open-green: "#4f7a3a"
+  verde: "#5f8f4a"
+  open-green: "#7fc062"
+  closed-red: "#e0775e"
+  error-on-dark: "#f0a08c"
+  plaque-white-chocolate: "#f4e6c9"
+  plaque-piping: "#5b2a17"
+  whatsapp-bubble: "#d9fdd3"
+  whatsapp-ink: "#111b21"
 typography:
   display:
     fontFamily: "Bodoni Moda, Didot, Bodoni 72, serif"
-    fontSize: "clamp(3rem, 13vw, 6rem)"
+    fontSize: "clamp(4.4rem, 18.5vw, 11rem)"
     fontWeight: 600
     lineHeight: 0.92
-    letterSpacing: "-0.01em"
+    letterSpacing: "-0.035em"
   headline:
     fontFamily: "Bodoni Moda, Didot, Bodoni 72, serif"
-    fontSize: "clamp(2.5rem, 7vw, 4.75rem)"
+    fontSize: "clamp(2.9rem, 8vw, 5.6rem)"
     fontWeight: 500
     lineHeight: 1.02
-    letterSpacing: "-0.01em"
+    letterSpacing: "-0.015em"
   title:
     fontFamily: "Bodoni Moda, Didot, Bodoni 72, serif"
-    fontSize: "clamp(2.1rem, 5vw, 3.4rem)"
+    fontSize: "clamp(1.7rem, 3vw, 2.3rem)"
     fontWeight: 500
     lineHeight: 1.02
-    letterSpacing: "-0.01em"
-  quote:
+    letterSpacing: "-0.015em"
+  numeral:
     fontFamily: "Bodoni Moda, Didot, Bodoni 72, serif"
-    fontSize: "clamp(1.55rem, 3.6vw, 2.6rem)"
-    fontWeight: 400
-    lineHeight: 1.22
+    fontSize: "clamp(2.4rem, 4.6vw, 3.6rem)"
+    fontWeight: 600
+    lineHeight: 1
+    fontFeature: "\"tnum\" 1"
   body:
     fontFamily: "Figtree, system-ui, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.6
   lead:
     fontFamily: "Figtree, system-ui, sans-serif"
     fontSize: "1.12rem"
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.7
   label:
     fontFamily: "Figtree, system-ui, sans-serif"
-    fontSize: "0.78rem"
+    fontSize: "1rem"
     fontWeight: 600
-    letterSpacing: "0.14em"
-  plaque:
+    lineHeight: 1.4
+  caption:
+    fontFamily: "Figtree, system-ui, sans-serif"
+    fontSize: "0.92rem"
+    fontWeight: 600
+    lineHeight: 1.375
+  plaque-script:
     fontFamily: "Petit Formal Script, Snell Roundhand, cursive"
-    fontSize: "1.15rem"
+    fontSize: "clamp(1.5rem, 6vw, 2.1rem)"
     fontWeight: 400
-    lineHeight: 1.1
+    lineHeight: 1.25
 rounded:
-  photo: "4px"
-  shelf: "6px"
-  map: "10px"
-  card: "14px"
-  plaque: "0.45em"
-  tabs: "48px"
+  plaque: "0.9rem"
+  field: "14px"
+  tile: "1.4rem"
+  card: "1.5rem"
+  photo: "1.75rem"
+  panel: "2rem"
+  info: "2.25rem"
+  sheet: "2.5rem"
+  sheet-md: "3.5rem"
   pill: "999px"
 spacing:
-  gutter: "20px"
-  gutter-md: "40px"
-  section: "96px"
-  section-md: "144px"
+  gutter: "1.25rem"
+  gutter-md: "2.5rem"
   container: "1360px"
-  title-rail: "20px"
+  section-top: "5rem"
+  section-bottom: "7rem"
+  section-top-md: "7rem"
+  section-bottom-md: "10rem"
+  sheet-overlap: "2.5rem"
+  sheet-overlap-md: "3.5rem"
 components:
-  button-brass:
-    backgroundColor: "{colors.brass-key}"
-    textColor: "{colors.brass-ink}"
+  button-oro:
+    backgroundColor: "{colors.oro}"
+    textColor: "{colors.espresso}"
+    typography: "{typography.label}"
     rounded: "{rounded.pill}"
-    padding: "0.35rem 0.4rem 0.35rem 1.3rem"
+    padding: "0.5rem 1.5rem"
     height: "3.25rem"
-  button-brass-hover:
-    backgroundColor: "{colors.brass-key-hover}"
-  button-wood:
-    backgroundColor: "{colors.mogano}"
-    textColor: "#f8ecd8"
+  button-oro-hover:
+    backgroundColor: "{colors.oro-hover}"
+  button-line-on-dark:
+    textColor: "{colors.panna}"
+    typography: "{typography.label}"
     rounded: "{rounded.pill}"
-    padding: "0.35rem 0.4rem 0.35rem 1.3rem"
+    padding: "0.5rem 1.5rem"
     height: "3.25rem"
-  button-ghost:
-    textColor: "{colors.cream-on-dark}"
+  chip:
+    textColor: "{colors.oro-chiaro}"
     rounded: "{rounded.pill}"
-    padding: "0.35rem 0.4rem 0.35rem 1.3rem"
-    height: "3.25rem"
-  button-fitting:
-    rounded: "{rounded.pill}"
-    size: "2.5rem"
-  plaque:
-    backgroundColor: "{colors.plaque-chocolate}"
-    textColor: "{colors.plaque-piping}"
-    typography: "{typography.plaque}"
-    rounded: "{rounded.plaque}"
-    padding: "0.35em 0.9em 0.45em"
-  plaque-white:
-    backgroundColor: "#f7eedf"
-    textColor: "#6b3a1e"
-    rounded: "{rounded.plaque}"
-    padding: "0.35em 0.9em 0.45em"
-  tabs-bar:
-    rounded: "{rounded.tabs}"
-    padding: "4px"
-  tabs-pill:
-    backgroundColor: "{colors.brass-key}"
-    textColor: "{colors.brass-ink}"
-    rounded: "{rounded.tabs}"
-    height: "40px"
+    padding: "0.35rem 1rem"
+    height: "2.75rem"
+  chip-selected:
+    backgroundColor: "{colors.oro}"
+    textColor: "{colors.espresso}"
   field:
+    textColor: "{colors.panna}"
+    rounded: "{rounded.field}"
+    padding: "0.8rem 1rem"
+    height: "3.25rem"
+  filter-tab-active:
+    backgroundColor: "{colors.oro}"
+    textColor: "{colors.espresso}"
+    rounded: "{rounded.pill}"
+    padding: "0 1rem"
+    height: "2.75rem"
+  filter-tab:
+    textColor: "{colors.cacao}"
+    rounded: "{rounded.pill}"
+    padding: "0 1rem"
+    height: "2.75rem"
+  card-espresso:
+    backgroundColor: "{colors.espresso}"
+    textColor: "{colors.panna}"
+    rounded: "{rounded.photo}"
+    padding: "1.75rem"
+  card-review:
+    backgroundColor: "{colors.espresso-2}"
+    textColor: "{colors.panna}"
+    rounded: "{rounded.photo}"
+    padding: "1.5rem"
+  chapter-card:
+    backgroundColor: "{colors.panna}"
     textColor: "{colors.inchiostro}"
-    padding: "0.85rem 0 0.65rem"
-    rounded: "0"
-  order-card:
-    backgroundColor: "{colors.form-paper}"
-    rounded: "{rounded.card}"
-    padding: "40px"
-  shelf:
-    backgroundColor: "{colors.crema}"
-    rounded: "{rounded.shelf}"
+    rounded: "{rounded.panel}"
+    padding: "1rem"
+  plaque:
+    backgroundColor: "{colors.plaque-white-chocolate}"
+    textColor: "{colors.plaque-piping}"
+    typography: "{typography.plaque-script}"
+    rounded: "{rounded.plaque}"
+    padding: "1rem 1.75rem"
+  open-badge:
+    textColor: "{colors.panna}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.tile}"
+    padding: "0.5rem 1rem"
 ---
 
 # Design System: Pasticceria Cristiani
 
 ## Overview
 
-**Creative North Star: "Il Bancone di Famiglia"**
+**Creative North Star: "Boutique della Pasticceria Romana"**
 
-The interface is the shop itself, built from its own materials: panna walls, the mahogany counter, dark chocolate rooms, brass rails and fittings, the glass of the vitrines, and the hand-piped chocolate plaques that sit on the family's cakes. Pages alternate between light rooms (panna, crema) and dark rooms (chocolate, mahogany, fondente), the way a visitor moves from the street-lit doorway to the counter. Photography of the real counter and real products carries the weight; the chrome around it is a quiet shop window.
+The page is the shop itself, dressed for an evening window: crema walls and paper, oro for the brass of the counter and the gold foil of the cake boards, espresso for the dark wood and the chocolate. Content sits on rounded sheets that alternate crema and espresso and slide up over one another like fresh trays set on the counter. The shop's own photographs carry the products; the interface is the vitrine around them.
 
-The voice is an Italian Bodoni shop sign over a modern, warm sans. Ornament is earned from the shop: a 1px brass rail under every section title, a brass lip under each shelf of photos, a glass highlight line on top. The handwritten script appears only where the shop itself writes by hand: plaques. Motion is unhurried and soft-landing (expo and smooth-out curves), with transform and opacity only so phones hold 60fps; every motion has a reduced-motion fallback.
+Bodoni Moda is the shop's voice, set large and often italic; Figtree is for reading and for every control. A third face, a piped formal script, appears only where the shop really writes by hand: the white-chocolate plaque on a cake. Gold is a material, not a highlight colour: a metallic foil fill on the wordmark and display numbers, a solid pill on the one primary action, a thin hairline on dark glass.
 
-Density is generous: tall sections, wide gutters, one idea per room. Classy and warm, never flashy; no neon, no off-palette colour.
+Motion is generous but physical: text rises from behind masks, cards lean toward the pointer, sheets parallax, the review cards drift past like trays. Everything goes still under reduced motion (MotionConfig `reducedMotion="user"` plus a hydration-safe `useReduce` hook), and every motion uses transform and opacity only.
 
 **Key Characteristics:**
-- Light rooms and dark rooms alternate by section; no greys, every neutral is a warm brown or cream.
-- Bodoni headlines with a brass rail beneath; Figtree for everything read.
-- Pill-shaped "keys" with a round fitting that carries the icon.
-- Chocolate plaques in Petit Formal Script as name and category labels.
-- Photos stand on shelves with a brass lip, never in a grid of equal cards.
+- Alternating crema / espresso sheets with large top radii and a negative top margin, so each section overlaps the previous one.
+- Gold foil text only on espresso grounds; solid oro only for the primary action and selected states.
+- Pill-shaped controls everywhere (buttons, chips, filter tabs, shortcuts, header).
+- Inset 1px gold hairlines instead of borders on dark surfaces.
+- One expo-out easing curve (`cubic-bezier(0.16, 1, 0.3, 1)`) for nearly every transition; springs for layout pills.
+- The shop's real objects become components: the piped plaque, the WhatsApp message, the counter's day.
 
 ## Colors
 
-A warm, low-saturation palette of cream, wood and chocolate, lit by brass.
+A warm, low-saturation bakery palette of cream, brass and roasted brown, with green and red reserved for the shop's live open state.
 
 ### Primary
-- **Mogano (Mahogany Counter)** (`mogano`): section headings on light rooms, the wood key (call / secondary order action), the contacts room background.
-- **Brass Key** (`brass-key`): fill of the primary order key and the sliding category pill; the only filled brass surface. Hover warms to `brass-key-hover`.
-
-### Secondary
-- **Ottone (Brass Rail)** (`ottone`): 1px rails, the 3px shelf lip, focus outlines, active progress dashes, field focus underline, scrollbar.
-- **Ottone Chiaro (Pale Brass)** (`ottone-chiaro`): the bright middle of the rail gradient, star ratings, text selection.
-- **Brass Text** (`brass-text`): small labels and icons on dark rooms (hours status, viewer counter, round fittings on the footer).
+- **Oro (Counter Brass)** (`oro`): the primary action fill (pill buttons, WhatsApp shortcut), selected chips, the sliding filter pill, today's hours row, the progress bar of the order wizard, timeline dots and line, star ratings, focus ring and scrollbar thumb. Hover lifts to **Oro Hover** (`oro-hover`).
+- **Oro Chiaro (Pale Gilt)** (`oro-chiaro`): secondary text on espresso (supporting lines, hints, captions, addresses, links in the footer), the chip text colour at rest, selection highlight background, and the 1px glass hairline at 16–25% alpha.
+- **Oro Scuro (Old Brass)** (`oro-scuro`): the large timeline hours on crema, where pale gold would fail contrast.
 
 ### Neutral
-- **Panna** (`panna`): the default page ground and the solid header.
-- **Crema** (`crema`): the vitrine room (at 60%) and shelf backing behind photos.
-- **Form Paper** (`form-paper`): the raised order card only.
-- **Cioccolato** (`cioccolato`): reviews room, mobile menu, map backing.
-- **Fondente** (`fondente`): hero stage, photo viewer, footer, `html` background and theme colour; also the base of every photo falloff gradient.
-- **Inchiostro** (`inchiostro`): body text on light rooms. **Cacao** (`cacao`): secondary text, captions, field labels.
-- **Cream on Dark** (`cream-on-dark`): primary text on every dark room. **Muted on Dark** (`muted-on-dark`): secondary text on dark rooms.
-- **Brass Ink** (`brass-ink`): text and fitting fill on brass surfaces.
-- **Plaque Chocolate / Plaque Piping** (`plaque-chocolate`, `plaque-piping`): the plaque tablet and its piped writing.
+- **Crema (Shop Wall)** (`crema`): the light sheet colour and page body background; also the ring colour that cuts timeline dots out of the line.
+- **Panna (Whipped Cream)** (`panna`): text on espresso, and the raised chapter cards on crema.
+- **Sabbia (Sponge)** (`sabbia`): photo placeholders on crema and the unfilled timeline track.
+- **Espresso (Dark Wood)** (`espresso`): dark sheets, the hero, the footer, the html background, the mobile menu and photo viewer, cards on crema (vitrine intro, stat facts, info card), and the text on gold.
+- **Espresso 2 (Chocolate)** (`espresso-2`): raised panels on espresso: the wizard panel, review cards, map frame, photo wells.
+- **Tostato (Roast)** (`tostato`): supporting text on crema; top of the plaque stage gradient.
+- **Inchiostro (Ink)** (`inchiostro`): body text colour on crema.
+- **Cacao** (`cacao`): inactive filter tabs and secondary notes on crema.
 
 ### Status
-- **Error Red** (`error-red`): field error underline and message. **Open Green** (`open-green`): the breathing open-now dot only.
+- **Open Green** (`open-green`) / **Closed Red** (`closed-red`): the dot of the live open badge (green breathes while open). Closed red also marks invalid fields; **Error on Dark** (`error-on-dark`) is the error message text.
+- **Verde** (`verde`): the "Adesso" now-marker on the day timeline, on crema.
+
+### Quoted materials
+- **Plaque White Chocolate / Plaque Piping** (`plaque-white-chocolate`, `plaque-piping`): only on the plaque preview.
+- **WhatsApp Bubble / Ink** (`whatsapp-bubble`, `whatsapp-ink`): only on the message preview bubble, which quotes WhatsApp's own outgoing bubble so people recognise what they will send.
 
 ### Named Rules
-**The Two Rooms Rule.** Every section is either a light room (panna, crema) with inchiostro/mogano ink or a dark room (cioccolato, mogano, fondente) with cream ink. Never mid-tones, never cool greys.
+**The Foil on Wood Rule.** The metallic gold foil (`.gold`, a vertical 5-stop gradient clipped to text) appears only on espresso or dark glass: the header wordmark, the hero "Cristiani", the order title, the stat numbers and the footer wordmark. On crema, gold becomes solid `oro` or `oro-scuro`.
 
-**The Brass Is Metal Rule.** Brass appears as metal does in the shop: hairline rails, the shelf lip, round fittings, outlines, stars, and the two pill surfaces (primary key, tab pill). Never as a section background or a text block colour on light rooms.
+**The One Gold Key Rule.** In any group of actions exactly one is solid oro; the others are line or ghost pills.
+
+**The Quoted Colour Rule.** Plaque and WhatsApp colours belong to the real objects they imitate and never leak into general UI.
 
 ## Typography
 
-**Display Font:** Bodoni Moda (with Didot, Bodoni 72, serif), optical sizing on
-**Body Font:** Figtree (with system-ui, sans-serif)
-**Plaque Font:** Petit Formal Script (with Snell Roundhand, cursive)
+**Display Font:** Bodoni Moda (optical sizes, normal and italic), with Didot, Bodoni 72, serif
+**Body Font:** Figtree, with system-ui, sans-serif
+**Script Font:** Petit Formal Script, with Snell Roundhand, cursive
 
-**Character:** A high-contrast Italian Bodoni speaks like the shop sign, often switching to italic for the family name; Figtree keeps reading friendly and modern. The script is the piping bag.
+**Character:** A high-contrast Didone with optical sizing gives the shop a boutique, confectioner's-label voice; Figtree keeps reading and tapping plain and friendly. The script is a prop, not a font of the site.
 
 ### Hierarchy
-- **Display** (600, clamp 3rem to 6rem, 0.92): the hero name only, "Pasticceria" roman over "Cristiani" italic, with a soft text shadow over the photo.
-- **Headline** (500, clamp 2.5rem to 4.75rem, 1.02): section titles, always followed by a brass rail (7rem wide, 20px below).
-- **Title** (500, clamp 2.1rem to 3.4rem): vitrine category titles; 2rem for card titles.
-- **Quote** (400, clamp 1.55rem to 2.6rem, 1.22): one review at a time, set large like a letter.
-- **Body** (400, 1.0625rem, 1.65) and **Lead** (1.12rem): prose capped at 60ch, intros at 44 to 48ch.
-- **Label** (600, 0.78rem, 0.14em, uppercase): locator lines, status lines, field labels, wordmark subtitle.
-- **Plaque** (400, 1.15 to 1.35rem): reviewer names, dedications, vitrine category tabs.
-
-Figures (opening facts) use Bodoni 600 at 3.6rem with tabular numerals on spinning reels and an italic Bodoni suffix.
+- **Display** (600 italic, `clamp(4.4rem, 18.5vw, 11rem)`, 0.92, -0.035em): only the hero "Cristiani" wordmark, gold foil, letters staggered; the footer repeats it at 23vw as a cropped gold signature. "Pasticceria" sits above it in italic oro-chiaro at `clamp(1.7rem, 4.4vw, 2.8rem)` as part of the same h1.
+- **Headline** (500, `clamp(2.9rem, 8vw, 5.6rem)` for the largest sections, scaling down to `clamp(2.15rem, 4.4vw, 3.9rem)` for longer titles, 1.02, -0.015em, balanced): section h2s, rising word by word. Italic plus gold foil on the order section.
+- **Title** (500, `clamp(1.7rem, 3vw, 2.3rem)`): wizard step titles, card and intro headings (up to `clamp(1.9rem, 3.2vw, 2.6rem)`), the timeline heading.
+- **Numeral** (600, `clamp(2.4rem, 4.6vw, 3.6rem)`, tabular): timeline hours, stat values, the stepper value (1.6rem).
+- **Lead** (400, 1.1–1.25rem, ~1.7): section intros and story paragraphs, max 40–52ch.
+- **Body** (400, 1.0625rem, 1.6): default text.
+- **Label** (600, 1rem): buttons, fieldset legends, field labels, nav (500, 0.95rem).
+- **Caption** (600, 0.82–0.92rem): open badge, photo category above captions, step names.
 
 ### Named Rules
-**The Hand-Piped Rule.** Petit Formal Script is used only for names the shop would pipe in chocolate: plaques, reviewer signatures, category tabs. Never for headings, body or buttons.
+**The Piped Hand Rule.** The script face is used only on the plaque, where the shop writes by hand. Never for headings, labels or decoration.
 
-**The Label Sits Below Rule.** The uppercase label is a locator or status line placed beneath or beside what it qualifies; it is never stacked above a heading as an eyebrow.
+**The Sentence Case Rule.** No uppercase tracked labels anywhere; hierarchy comes from Bodoni size and italic, not from small caps or kickers.
 
 ## Layout
 
-Single column of full-width rooms. Content sits in a 1360px container with 20px gutters on phones and 40px from md. Sections breathe at 96px vertical padding, 144px from md (dark rooms 128px from md). Two-column splits at lg use asymmetric fractions (1.1fr / 1fr, 1fr / 1.15fr) with 80px gaps, never equal halves.
+A single 1360px container (`mx-auto`, 1.25rem gutters, 2.5rem from md) on a 12-column grid at md/lg; headings usually take 5–7 columns with their intro aligned to the bottom of the remaining columns. Sections are generous: 5rem top / 7rem bottom on mobile, 7rem / 10rem from md. Each section after the hero is a sheet pulled up by -2.5rem (-3.5rem md) over the previous one.
 
-The hero is a pinned 250 to 270 viewport scroll stage: the counter photo scales toward the vitrine while the welcome lifts away, then the pastry counter crossfades forward. Copy anchors lower-left over a chocolate falloff; the open-now plaque sits top right.
-
-Vitrine photos run in shelves of four or five at their natural aspect ratios, sharing one row height (up to 250px, 210px on phones) computed from the row's summed ratios; on phones each shelf scrolls horizontally edge to edge. Captions sit under the lip, not over the photo.
-
-On phones a fixed bottom bar (wood "Chiama" + brass "WhatsApp") appears once the hero's own keys have scrolled away, respecting safe-area insets; the footer reserves 112px for it.
+The hero is full height (`100svh`), copy anchored to the bottom on mobile and centred on lg, with three floating product photos in a 5-column stage on lg only. Grids collapse to one column (or two-up photos) on mobile; the vitrine is 2 columns, 3 on lg, with an espresso intro card in the first cell and the first photo widened when the count is odd. Sticky elements: the story heading (top 8rem) and the wizard message preview (top 7rem) on lg. All tap targets are at least 44px (`min-h-11`); safe-area insets pad the header, hero, menu and footer. `scroll-padding-top: 6rem` clears the floating header.
 
 ## Elevation & Depth
 
-Depth is material, not floating UI: the shop's glass and wood catch light. Shadows are soft, warm-tinted (chocolate or mahogany, never black), and use negative spread so they pool beneath an object rather than outline it. Dark rooms convey depth through photo falloff gradients into fondente.
+Depth is mostly tonal (crema → panna card, espresso → espresso-2 panel) and structural (overlapping sheets), with soft, long, negative-spread shadows used only where an object floats. Dark surfaces use an inset 1px gold hairline instead of a border.
 
 ### Shadow Vocabulary
-- **Brass key** (`0 10px 24px -14px rgb(90 60 15 / 0.75)`): under the primary brass key.
-- **Wood key** (`inset 0 1px 0 rgb(255 210 170 / 0.2), 0 10px 26px -14px rgb(91 36 24 / 0.9)`): varnish highlight plus pooled shadow on the mahogany key.
-- **Glass shelf** (`0 1px 0 rgb(255 255 255 / 0.6) inset, 0 22px 40px -28px rgb(36 21 16 / 0.55)`): photo frames, with a top glass sheen and a 2px brass inner lip.
-- **Shelf lip** (`0 10px 18px -8px rgb(91 36 24 / 0.55)`): beneath the 3px brass lip of each vitrine shelf.
-- **Order card** (`0 1px 0 rgb(176 141 60 / 0.6), 0 30px 60px -40px rgb(36 21 16 / 0.5)`): the one raised paper surface.
-- **Brass ring** (`inset 0 0 0 1px rgb(176 141 60 / 0.6 to 0.7)`): round icon buttons on dark rooms; ghost keys use a currentColor ring.
+- **Gold hairline** (`box-shadow: inset 0 0 0 1px rgb(236 216 166 / 0.16)`, up to 0.25): wizard panel, review cards, map frame, chips, fields, stepper, plates.
+- **Floating plate** (`0 40px 80px -30px rgb(0 0 0 / 0.85)`): hero product photos; the wizard panel uses `0 40px 80px -50px rgb(0 0 0 / 0.9)`.
+- **Glass** (`inset 0 0 0 1px rgb(236 216 166 / 0.18), 0 18px 40px -22px rgb(0 0 0 / 0.7)` over `rgb(26 16 11 / 0.8)` with `backdrop-filter: blur(20px) saturate(1.5)`): the floating header, the mobile-menu shortcut bar, the photo viewer arrows.
+- **Chapter lift** (`0 30px 60px -45px rgb(58 38 25 / 0.6)`): panna story cards on crema.
+- **Plaque bevel** (`inset 0 2px 0 rgb(255 255 255 / 0.7), inset 0 -3px 0 rgb(150 110 60 / 0.35), 0 18px 34px -16px rgb(0 0 0 / 0.75)`): only the plaque.
+- **Glow** (a static blurred radial of oro at 38% → 12% → transparent): only behind the hero wordmark; never animated.
 
 ### Named Rules
-**The Pooled Shadow Rule.** Shadows always have negative spread and a warm tint; no hard offsets, no neutral black drop shadows.
+**The Glass Floats Rule.** Glass is used only for things that float over a photo or the page (header, menu shortcuts, viewer arrows), never for in-flow cards.
 
 ## Shapes
 
-Two families. Keys, tabs, fittings and status dots are full pills and circles (999px, tabs 48px), like brass fittings. Containers holding photography are nearly square-cornered (4px photo tops, 6px shelves, 10px map, 14px order card), like glass and wood panels. Plaques are softly rounded tablets (0.45em). Form fields are bare underlines with no radius. Hairline rails fade out at both ends.
+Everything is soft and generous. Controls are full pills (999px): buttons, chips, filter tabs, header bar, shortcuts, step bars, badges. Containers step up in radius with their size: plaque (0.9rem), fields (14px), wizard tiles and plaque stage (1.4rem), photo cards and fact cards (1.5rem), photos, reviews and intro cards (1.75rem), wizard panel and chapter cards (2rem), info card (2.25rem), section sheets (2.5rem, 3.5rem from md, top corners only). Inner photos nest inside cards with a smaller radius. Hero plates and the plaque are the only rotated objects (-6° to 4°; plaque -2.5°).
 
 ## Components
 
-### Buttons ("keys")
-Brass and mahogany keys with a round fitting for the icon.
-- **Shape:** full pill, min height 3.25rem (3.5rem in the mobile bar); text left, a 2.5rem circular fitting right carrying the icon.
-- **Brass (primary):** order by WhatsApp. Fitting is brass ink with brass-text icon.
-- **Wood (secondary):** call, show map, category order actions. Fitting is cream with mahogany icon.
-- **Ghost:** on photos and dark rooms; 1px currentColor ring, fitting filled with currentColor, icon tinted by a per-context ink (`--btn-ghost-ink`, set to the room colour).
-- **Hover / Active:** on hover-capable devices the fitting slides 3px right (320ms smooth-out) and brass warms; press scales to 0.97 (160ms). Focus is a 2px brass outline, 3px offset.
+### Buttons
+- **Shape:** full pill (999px), min-height 3.25rem, padding 0.5rem 1.5rem, Figtree 600 1rem, icon gap 0.7rem.
+- **Oro (primary):** oro fill, espresso text; hover `oro-hover`. With `btn-shine` a diagonal band of light crosses it on hover (700ms expo-out). Arrow icons nudge 4px right on hover.
+- **Line:** transparent, `inset 0 0 0 1.5px currentColor`, text panna or oro-chiaro on dark; hover tints oro at 14%.
+- **Motion:** hover lifts 2px, tap scales to 0.97. The final WhatsApp send is the oro button at min-height 4rem, 1.1rem.
 
-### Plaques
-- **Chocolate plaque:** script on a chocolate tablet; reviewer signatures and the "fatta a mano, con dedica" caption overlapping a photo edge.
-- **White plaque:** white-chocolate tablet with a brass hairline ring; carries the live open-now status in Figtree semibold with a breathing green or static red dot.
+### Chips
+- **Style:** pill, min-height 2.75rem, oro-chiaro text on 6% panna, gold hairline at 22%.
+- **Selected:** solid oro with espresso text; a check icon springs in from zero width. Used on espresso only (wizard options and pickup times).
 
-### Category Tabs (sliding brass pill)
-A translucent chocolate-tinted bar (6%) with 4px padding; tab labels in plaque script; a brass pill slides and resizes under the active tab (250ms smooth-out). Two-by-two grid with 26px radius on phones, inline row from sm.
+### Filter tabs (vitrine)
+Pill text tabs on crema, cacao at rest, espresso active; a single oro pill slides between them with a shared-layout spring (380/32). Arrow keys move between tabs.
+
+### Cards / Containers
+- **Photo tilt card:** 1.5rem radius, sabbia well, 4:5 photo zooming to 1.06 on hover (900ms), espresso gradient on the lower 60% with a caption; leans up to 8° toward the mouse with a following cream light (mouse only, springs). Opens a full-screen espresso viewer.
+- **Espresso card on crema:** vitrine intro, stat facts, info card; panna text, oro-chiaro headings, gold foil numbers.
+- **Review card:** espresso-2, 1.75rem, gold hairline, five oro stars, a round oro initial in Bodoni italic.
+- **Chapter card:** panna on crema, 2rem, inner photo with its own parallax and a caption on a dark gradient.
 
 ### Inputs / Fields
-- **Style:** transparent, underline only (1px inchiostro at 25%), uppercase label above in cacao at 0.72rem.
-- **Focus:** underline turns brass; no outline box.
-- **Error:** underline turns error red, the field shakes (6px, overshoot 4px, ~280ms), the message fades in and reverts after 3s.
-
-### Vitrine Shelf (signature)
-Rows of photos on a glass line (1px white with brass shadow) and a 3px brass lip; photos rise 26px in sequence (0.8s expo, 60ms stagger, 120ms per shelf) and scale 1.04 on hover over 900ms. Tapping opens a full-screen fondente viewer with arrows, keyboard and counter.
-
-### Reviews
-One review at a time: five pale-brass stars, the quote in Bodoni, a plaque signature. Turned by round brass-ringed arrows, brass progress dashes (active 40px, rest 20px) and swipe; slides 28px with fade.
+- **Style:** dark only. 14px radius, min-height 3.25rem, 7% panna fill, gold hairline at 22%, panna text, placeholder oro-chiaro 55%.
+- **Focus:** hairline thickens to 2px oro, fill to 10%. Global focus-visible elsewhere: 2px oro outline, 3px offset.
+- **Error:** 2px closed-red inset ring, message in error-on-dark with a short horizontal shake.
 
 ### Navigation
-Fixed header, 64px (80px md). Over the hero it is transparent with cream text over a fondente fade; past the hero it becomes solid panna with a brass hairline beneath. Wordmark is Bodoni italic "Cristiani" with a label subtitle. Desktop links in Figtree with underline on hover; a compact brass key appears once the hero keys are gone. Mobile menu is a full chocolate room with Bodoni links divided by brass hairlines and the brass and ghost keys at the bottom.
+A floating glass pill header (max 1280px), gold-foil italic "Cristiani" wordmark at left, Figtree 0.95rem links with a hover pill that springs between items (lg+), and three always-present shortcuts: WhatsApp (solid oro), Mappa and Chiama (ghost). Below xl the shortcuts collapse to 44px icon circles. On mobile a full-screen espresso menu opens as a circle reveal from the burger; links are Bodoni italic 2.6rem rising in sequence, with the shortcuts as large glass pills at the bottom.
 
-### Spinning Figures
-Opening-hours figures spin digit by digit on reels (1400ms expo, 90ms stagger) the first time they are seen.
+### Order wizard (signature)
+Four named steps with gold bars that grow; panels slide 48px in the direction of travel. Step one is four photo tiles (radio) with a ring and a springing check. A live WhatsApp bubble beside the panel (sticky on lg, inline on the last step on mobile) writes the message as choices are made. A rounded stepper with a rolling Bodoni value sets quantities.
+
+### Plaque preview (signature)
+On a radial roast-to-espresso stage, a white-chocolate plaque tilted -2.5° shows the typed dedication in the piped script, with the bevel shadow; the placeholder "Auguri Giulia" pipes in letter by letter.
+
+### Live open badge and day line
+A rounded badge (1.4rem) with a breathing green or static red dot reads today's hours in Rome time and reserves its width before hydration. The "day at the counter" timeline draws an oro line on scroll across four Bodoni hours, with a breathing verde "Adesso" marker placed at the current time.
+
+### Moving reviews
+Two rows of review cards drift in opposite directions (70s / 80s), masked at the edges, paused on hover or focus; under reduced motion they become a hand-scrolled row.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** follow every section headline with the brass rail (1px, fading gradient, 7rem wide).
-- **Do** alternate light rooms and dark rooms, using cream ink on dark and inchiostro or mogano on light.
-- **Do** pair every key with its round icon fitting, and keep the primary order action brass.
-- **Do** stand photography on vitrine shelves at natural aspect ratio with captions below the lip.
-- **Do** animate only transform and opacity, with expo or smooth-out easing, and provide a reduced-motion path.
-- **Do** keep shadows warm-tinted with negative spread.
+- **Do** alternate crema and espresso sheets, each overlapping the previous one with its rounded top (2.5rem, 3.5rem from md).
+- **Do** keep exactly one solid oro action per group; the rest are line pills.
+- **Do** use the gold foil only on espresso or glass, and solid `oro-scuro` when gold must sit on crema as text.
+- **Do** draw edges on dark surfaces with an inset 1px gold hairline at 16–25% alpha, not borders.
+- **Do** use `cubic-bezier(0.16, 1, 0.3, 1)` for entrances and transitions, springs for shared-layout pills, transform and opacity only, and a still fallback for reduced motion.
+- **Do** keep every control a pill and every tap target at least 44px.
 
 ### Don't:
-- **Don't** use neon, cool greys or colours outside the cream, wood, chocolate and brass family.
-- **Don't** use Petit Formal Script outside plaques, signatures and category tabs.
-- **Don't** set an uppercase label above a heading as an eyebrow.
-- **Don't** fill large surfaces with brass; it is metal, used as rails, lips, rings, fittings and the two pill surfaces.
-- **Don't** lay products out as a grid of equal cards or reviews as a row of testimonial cards.
-- **Don't** use hard offset shadows or black drop shadows.
+- **Don't** use the piped script anywhere but the plaque.
+- **Don't** add uppercase tracked labels or kickers above headings.
+- **Don't** use glass for in-flow cards; it is for what floats.
+- **Don't** animate the glow behind the hero wordmark.
+- **Don't** introduce saturated or neon colours; green and red exist only for the live open state and errors.
