@@ -7,29 +7,57 @@ const toMin = (t) => {
   const [h, m] = t.split(":").map(Number);
   return h * 60 + m;
 };
+const show = (t) => t.replace(/^0/, ""); // 07:30 → 7:30
+const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
 
-/** Reads the owner's hours in Rome time: open now, opening later, or closed today. */
+// Day and minute in Rome, read field by field (string re-parsing of a localized date fails on Safari).
+const romeFormat = new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Rome", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+function romeNow(date) {
+  const p = Object.fromEntries(romeFormat.formatToParts(date).map((x) => [x.type, x.value]));
+  return { day: DAYS[p.weekday], min: Number(p.hour) * 60 + Number(p.minute) };
+}
+
+function nextOpening(day) {
+  for (let i = 1; i <= 7; i++) {
+    const h = hours.find((x) => x.day === (day + i) % 7);
+    if (h.slots.length) return `${i === 1 ? "domani" : h.label.toLowerCase()} alle ${show(h.slots[0][0])}`;
+  }
+}
+
+/** The owner's hours read at a given moment, in Rome time. */
+export function openState(date = new Date()) {
+  const { day, min } = romeNow(date);
+  const today = hours.find((h) => h.day === day);
+  if (!today.slots.length) return { open: false, day, text: `${today.label} chiusi · riapriamo ${nextOpening(day)}` };
+  const open = today.slots.find(([a, b]) => min >= toMin(a) && min < toMin(b));
+  if (open) return { open: true, day, text: `Aperto ora · chiude alle ${show(open[1])}` };
+  const next = today.slots.find(([a]) => min < toMin(a));
+  if (next && next === today.slots[0]) return { open: false, day, text: `Apriamo oggi alle ${show(next[0])}` };
+  if (next) return { open: false, day, text: `Pausa pranzo · riapriamo alle ${show(next[0])}` };
+  return { open: false, day, text: `Chiuso per oggi · riapriamo ${nextOpening(day)}` };
+}
+
+/** Live: recomputed on every new minute and whenever the page comes back to the foreground. */
 export function useOpenState() {
   const [state, setState] = useState(null);
   useEffect(() => {
-    const compute = () => {
-      const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
-      const day = now.getDay();
-      const min = now.getHours() * 60 + now.getMinutes();
-      const today = hours.find((h) => h.day === day);
-      const open = today.slots.find(([a, b]) => min >= toMin(a) && min < toMin(b));
-      if (open) return setState({ open: true, day, text: `Aperto ora · chiude alle ${open[1]}` });
-      const next = today.slots.find(([a]) => min < toMin(a));
-      if (next) return setState({ open: false, day, text: `Chiuso ora · riapre alle ${next[0]}` });
-      for (let i = 1; i <= 7; i++) {
-        const d = (day + i) % 7;
-        const h = hours.find((x) => x.day === d);
-        if (h.slots.length) return setState({ open: false, day, text: `Chiuso ora · riapre ${i === 1 ? "domani" : h.label.toLowerCase()} alle ${h.slots[0][0]}` });
-      }
+    let timer;
+    const tick = () => {
+      setState(openState());
+      clearTimeout(timer);
+      timer = setTimeout(tick, 60_000 - (Date.now() % 60_000) + 50);
     };
-    compute();
-    const id = setInterval(compute, 60_000);
-    return () => clearInterval(id);
+    const wake = () => document.visibilityState === "visible" && tick();
+    tick();
+    document.addEventListener("visibilitychange", wake);
+    window.addEventListener("focus", tick);
+    window.addEventListener("pageshow", tick);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("visibilitychange", wake);
+      window.removeEventListener("focus", tick);
+      window.removeEventListener("pageshow", tick);
+    };
   }, []);
   return state;
 }
