@@ -8,13 +8,20 @@ const toMin = (t) => {
   return h * 60 + m;
 };
 const show = (t) => t.replace(/^0/, ""); // 07:30 → 7:30
-const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-
-// Day and minute in Rome, read field by field (string re-parsing of a localized date fails on Safari).
-const romeFormat = new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Rome", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
-function romeNow(date) {
-  const p = Object.fromEntries(romeFormat.formatToParts(date).map((x) => [x.type, x.value]));
-  return { day: DAYS[p.weekday], min: Number(p.hour) * 60 + Number(p.minute) };
+// Rome time computed from UTC with the EU summer-time rule (last Sunday of March to last Sunday of
+// October, switching at 01:00 UTC). No dependence on the browser's time-zone data, which some
+// in-app viewers ship incomplete.
+const lastSundayUTC = (year, month) => {
+  const d = new Date(Date.UTC(year, month + 1, 0, 1)); // last day of the month, 01:00 UTC
+  d.setUTCDate(d.getUTCDate() - d.getUTCDay());
+  return d.getTime();
+};
+export function romeNow(date) {
+  const t = date.getTime();
+  const y = date.getUTCFullYear();
+  const summer = t >= lastSundayUTC(y, 2) && t < lastSundayUTC(y, 9);
+  const rome = new Date(t + (summer ? 2 : 1) * 3_600_000);
+  return { day: rome.getUTCDay(), min: rome.getUTCHours() * 60 + rome.getUTCMinutes() };
 }
 
 function nextOpening(day) {
@@ -28,13 +35,14 @@ function nextOpening(day) {
 export function openState(date = new Date()) {
   const { day, min } = romeNow(date);
   const today = hours.find((h) => h.day === day);
-  if (!today.slots.length) return { open: false, day, text: `${today.label} chiusi · riapriamo ${nextOpening(day)}` };
+  const d = today.label;
+  if (!today.slots.length) return { open: false, day, text: `${d} · chiuso · riapriamo ${nextOpening(day)}` };
   const open = today.slots.find(([a, b]) => min >= toMin(a) && min < toMin(b));
-  if (open) return { open: true, day, text: `Aperto ora · chiude alle ${show(open[1])}` };
+  if (open) return { open: true, day, text: `${d} · aperto ora, chiude alle ${show(open[1])}` };
   const next = today.slots.find(([a]) => min < toMin(a));
-  if (next && next === today.slots[0]) return { open: false, day, text: `Apriamo oggi alle ${show(next[0])}` };
-  if (next) return { open: false, day, text: `Pausa pranzo · riapriamo alle ${show(next[0])}` };
-  return { open: false, day, text: `Chiuso per oggi · riapriamo ${nextOpening(day)}` };
+  if (next && next === today.slots[0]) return { open: false, day, text: `${d} · apriamo alle ${show(next[0])}` };
+  if (next) return { open: false, day, text: `${d} · pausa pranzo, riapriamo alle ${show(next[0])}` };
+  return { open: false, day, text: `${d} · chiuso per oggi, riapriamo ${nextOpening(day)}` };
 }
 
 /** Live: recomputed on every new minute and whenever the page comes back to the foreground. */
