@@ -53,3 +53,9 @@ export function InstagramIcon({ size = 20 }) {
     </svg>
   );
 }
+export const PlayIcon = (p) => (
+  <S {...p}><path d="M8 5.5v13l10.5-6.5L8 5.5Z" /></S>
+);
+export const ArrowDownIcon = (p) => (
+  <S {...p}><path d="M12 5v13.5M6.5 13 12 18.5 17.5 13" /></S>
+);

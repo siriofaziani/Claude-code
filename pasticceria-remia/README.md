@@ -51,21 +51,18 @@ solo per lastre sovrapposte, niente ombre né sfumature.
 
 ### L'ingresso (apertura)
 
-- **Video**: `public/video/ingresso.mp4` (+ `ingresso.webm` per i browser senza H.264) sono i primi 3,75 s
-  (fotogrammi 1–90) del video Kling, tagliati prima della dissolvenza, con la filigrana "KlingAI" tolta. Per rifarli:
+Nessuna animazione legata allo scorrimento. La pagina si apre sulla facciata a tutto schermo (100vh,
+`object-fit: cover`) con un solo invito, "Entra in pasticceria". Al clic parte il video d'ingresso (piano sequenza
+Hailuo dalla strada al bancone, 5,2 s, `playsinline` e `muted`, con "Salta"). Alla fine lo schermo resta sull'ultimo
+fotogramma, il bancone, e compare la hero: nome, "Produzione propria dal 1979", Via dei Frassini 25, telefono,
+stato di apertura e pulsanti (`src/components/Ingresso.jsx`). Con "riduci movimento" si va direttamente alla hero;
+se il video non può partire, idem.
 
-  ```bash
-  ffmpeg -i video_ingresso.mp4 -vf "select='lte(n\,89)',delogo=x=1116:y=666:w=146:h=38,setpts=N/24/TB" -an -r 24 \
-    -c:v libx264 -preset veryslow -crf 16 -pix_fmt yuv420p -g 4 -keyint_min 4 -sc_threshold 0 -movflags +faststart public/video/ingresso.mp4
-  ```
-
-  Un fotogramma chiave ogni 4 permette allo scorrimento di muovere il video avanti e indietro senza scatti.
-- **Come funziona** (`src/components/Walkthrough.jsx`): all'apertura il video parte da solo per 1,2 s, poi lo
-  scorrimento lo porta fino alla soglia. Da lì la camera continua (avvicinamento e rotazione verso l'inizio del
-  bancone) e la foto vera del bancone (`bancone-arrivo`, la foto inviata come fotogramma finale) entra da destra
-  dietro un bordo morbido che scorre con la panoramica, prima scaldata sui colori del video
-  (`bancone-arrivo-caldo`), poi con i suoi colori. Si ferma esattamente sulla foto, con i reparti da scegliere.
-  Solo transform, opacità e maschera; con "riduci movimento" diventa due immagini ferme.
+- `public/video/ingresso-desktop.*` (1920×870) e `ingresso-mobile.*` (612×1088, verticale) sono tagliati sopra la
+  filigrana "MINIMAX | Hailuo AI" (righe 0–1088 del video originale 2944×1248). La versione verticale non è un
+  ritaglio fisso: la finestra segue la porta d'ingresso fotogramma per fotogramma, così su telefono `object-fit:
+  cover` non perde mai la strada. Il sito sceglie la versione in base all'orientamento dello schermo.
+- `ingresso-*-inizio.webp` / `-fine.webp`: primo e ultimo fotogramma (copertina e arrivo).
 
 ### Orari in tempo reale
 

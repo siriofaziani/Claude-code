@@ -6,71 +6,11 @@ import images from "@/data/images.json";
 import { categories, shop } from "@/data/content";
 import Photo from "./Photo";
 import OrderActions from "./OrderActions";
-import { ChevronIcon, CloseIcon, ExpandIcon, PinIcon } from "./Icons";
+import { ChevronIcon, CloseIcon, ExpandIcon } from "./Icons";
 
-// Asymmetric mosaic in bands that always close to 12 columns (desktop). Wide slots (5+ columns)
-// take only photos at least 1000px wide, so no small phone photo is stretched across a big tile.
-const BANDS = [
-  { rows: 4, cols: [3, 5, 4] },
-  { rows: 5, cols: [7, 5] },
-  { rows: 4, cols: [4, 3, 5] },
-  { rows: 5, cols: [5, 7] },
-];
-const LAST = { 1: { rows: 5, cols: [12] }, 2: { rows: 5, cols: [7, 5] }, 3: { rows: 4, cols: [3, 5, 4] } };
-// Once the sharp photos run out, small bands only, uneven too: the 5-column slot takes the widest of
-// the small photos. A short last band is closed by a slab that sends people to the counter, so no
-// small photo is ever stretched across a wide tile and no band leaves a hole.
-const SMALL = [{ rows: 4, cols: [3, 5, 4] }, { rows: 5, cols: [5, 3, 4] }];
-const SMALL_LAST = { 1: { rows: 4, cols: [4], fill: 8 }, 2: { rows: 4, cols: [4, 4], fill: 4 }, 3: { rows: 4, cols: [3, 5, 4] } };
-const SMALL_FOUR = { rows: 4, cols: [3, 3, 3, 3] };
-const SHARP = 1000;
-const FIRST = 11;
-
-const sharp = (p) => images[p.name]?.width >= SHARP && !p.soft;
-const wideSlots = (band) => band.cols.filter((c) => c >= 5).length;
-
-function layout(list) {
-  const hi = list.filter(sharp);
-  const lo = list.filter((p) => !sharp(p));
-  const widest = () => {
-    if (!lo.length) return undefined;
-    const i = lo.reduce((best, p, k) => (images[p.name].width > images[lo[best].name].width ? k : best), 0);
-    return lo.splice(i, 1)[0];
-  };
-  const take = (wide) => (wide ? hi.shift() ?? widest() : lo.shift() ?? hi.shift());
-  const tiles = [];
-  // Desktop: the first band is the category slab (5 columns) beside the sharpest photo (7).
-  const first = take(true);
-  if (first) tiles.push({ ph: first, dc: 7, dr: 5 });
-  let b = 0;
-  while (hi.length + lo.length) {
-    const left = hi.length + lo.length;
-    let band = BANDS[b % BANDS.length];
-    if (left < band.cols.length) band = LAST[left];
-    if (hi.length < wideSlots(band)) {
-      const small = SMALL[b % 2];
-      band = left < small.cols.length ? SMALL_LAST[left] : left === small.cols.length + 1 ? SMALL_FOUR : small;
-    }
-    for (const c of band.cols) {
-      const ph = take(c >= 5);
-      if (ph) tiles.push({ ph, dc: c, dr: band.rows });
-    }
-    if (band.fill) tiles.push({ fill: true, dc: band.fill, dr: band.rows });
-    b++;
-  }
-  // Phone: sharp photos run full width; the others alternate a half-width pair and one full-width
-  // tile, so the column never settles into an even grid. A lone small one closes the row.
-  let order = 0, held = null, wideNext = false;
-  for (const t of tiles) {
-    if (t.fill) continue;
-    if (sharp(t.ph)) Object.assign(t, { mc: 6, mr: 5, mo: ++order });
-    else if (wideNext && !held) { Object.assign(t, { mc: 6, mr: 4, mo: ++order }); wideNext = false; }
-    else if (held) { Object.assign(held, { mc: 3, mr: 4, mo: ++order }); Object.assign(t, { mc: 3, mr: 4, mo: ++order }); held = null; wideNext = true; }
-    else held = t;
-  }
-  if (held) Object.assign(held, { mc: 6, mr: 4, mo: ++order });
-  return tiles.map((t, i) => ({ ...t, od: i + 1 }));
-}
+// A tidy, even grid: 2 columns on phones, 4 from tablets up. Every shelf holds a multiple of four
+// photos, so rows always close; twelve show first, the rest open on request.
+const FIRST = 12;
 
 export default function Vetrina() {
   const [active, setActive] = useState(categories[0].id);
@@ -80,7 +20,7 @@ export default function Vetrina() {
   const tabs = useRef({});
   const cat = categories.find((c) => c.id === active);
 
-  // "#vetrina-torte" (from the counter at the end of the walk) opens that shelf.
+  // A link to "#vetrina-torte" opens that shelf.
   useEffect(() => {
     const pick = () => {
       const m = location.hash.match(/^#vetrina-(\w+)/);
@@ -111,14 +51,14 @@ export default function Vetrina() {
   return (
     <section id="vetrina" aria-labelledby="vetrina-titolo" className="fondo relative scroll-mt-16 pb-20 pt-14 sm:pb-28 sm:pt-20">
       <div className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-10">
-        <div className="lastra max-w-3xl p-6 sm:p-9">
+        <div className="text-center">
           <h2 id="vetrina-titolo" className="titolo text-[2.4rem] text-cacao sm:text-[3.6rem]">La vetrina</h2>
-          <p className="testo mt-3 text-[1.08rem] text-inchiostro/80">
+          <p className="testo mx-auto mt-3 text-[1.08rem] text-inchiostro/80">
             Quello che trovate al bancone, fotografato da noi e dai nostri clienti. Per le torte e i rinfreschi chiamateci: le prepariamo nel nostro laboratorio.
           </p>
         </div>
 
-        <div role="tablist" aria-label="Reparti della vetrina" onKeyDown={onKey} className="strip -mx-4 mt-3 gap-1.5 px-4 sm:mx-0 sm:flex-wrap sm:px-0">
+        <div role="tablist" aria-label="Reparti della vetrina" onKeyDown={onKey} className="mt-8 grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:justify-center">
           {categories.map((c) => (
             <button
               key={c.id}
@@ -129,7 +69,7 @@ export default function Vetrina() {
               aria-selected={active === c.id}
               tabIndex={active === c.id ? 0 : -1}
               onClick={() => { setActive(c.id); setAll(false); }}
-              className="tessera flex min-h-[4.25rem] min-w-[9.5rem] flex-col items-start justify-center px-4 text-left sm:min-w-[11rem]"
+              className="tessera flex min-h-[4.25rem] flex-col items-center justify-center px-3 text-center last:col-span-2 sm:min-w-[11rem] sm:px-5"
             >
               <span className={`cond text-[1.2rem] ${active === c.id ? "text-white" : "text-cacao"}`}>{c.short}</span>
               <span className={`text-[0.86rem] ${active === c.id ? "text-miele-chiaro" : "text-tostato"}`}>{c.photos.length ? `${c.photos.length} foto` : "su ordinazione"}</span>
@@ -143,58 +83,41 @@ export default function Vetrina() {
             id={`pannello-${active}`}
             role="tabpanel"
             aria-labelledby={`tab-${active}`}
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 1 } : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-3"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduce ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6"
           >
             {photos.length ? (
               <>
-                <div className="lastra mb-1.5 flex flex-col gap-4 p-5 md:hidden">
-                  <h3 className="titolo text-[1.9rem] text-cacao sm:text-[2.4rem]">{cat.title}</h3>
-                  <p className="testo text-[1.06rem] text-inchiostro/85 md:text-[1.12rem]">{cat.text}</p>
-                  {cat.quote && (
-                    <p className="text-[0.95rem] text-tostato">
-                      «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
-                    </p>
-                  )}
-                  <a href={shop.phoneHref} className="mt-auto flex items-center justify-between gap-3 border-t border-filo pt-4 text-cacao hover:text-cacao-chiaro">
+                <div className="lastra grid gap-4 p-6 sm:p-8 md:grid-cols-12 md:items-end md:gap-10">
+                  <div className="md:col-span-7">
+                    <h3 className="titolo text-[1.9rem] text-cacao sm:text-[2.4rem]">{cat.title}</h3>
+                    <p className="testo mt-3 text-[1.06rem] text-inchiostro/85">{cat.text}</p>
+                    {cat.quote && (
+                      <p className="testo mt-3 text-[0.95rem] text-tostato">
+                        «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
+                      </p>
+                    )}
+                  </div>
+                  <a href={shop.phoneHref} className="flex items-center justify-between gap-3 border-t border-filo pt-4 text-cacao hover:text-cacao-chiaro md:col-span-5 md:border-l md:border-t-0 md:pl-8 md:pt-0">
                     <span>Ordinate al telefono</span>
                     <span className="tel text-[1.15rem]">Tel. {shop.phone}</span>
                   </a>
                 </div>
-                <ul className="grid auto-rows-[3.4rem] grid-cols-6 gap-1.5 md:auto-rows-[clamp(3.4rem,5.4vw,5.6rem)] md:grid-cols-12">
-                  <li className="lastra hidden flex-col gap-4 p-7 md:col-span-5 md:row-span-5 md:flex">
-                    <h3 className="titolo text-[1.9rem] text-cacao sm:text-[2.4rem]">{cat.title}</h3>
-                    <p className="testo text-[1.06rem] text-inchiostro/85 md:text-[1.12rem]">{cat.text}</p>
-                    {cat.quote && (
-                      <p className="text-[0.95rem] text-tostato">
-                        «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
-                      </p>
-                    )}
-                    <a href={shop.phoneHref} className="mt-auto flex items-center justify-between gap-3 border-t border-filo pt-4 text-cacao hover:text-cacao-chiaro">
-                      <span>Ordinate al telefono</span>
-                      <span className="tel text-[1.15rem]">Tel. {shop.phone}</span>
-                    </a>
-                  </li>
-                  {layout(shown).map(({ ph, fill, dc, dr, mc, mr, mo, od }) => {
-                    if (fill)
-                      return (
-                        <li key="banco" style={{ "--dc": dc, "--dr": dr, "--od": od }} className="lastra hidden flex-col justify-between gap-4 p-7 md:order-(--od) md:col-span-(--dc) md:row-span-(--dr) md:flex">
-                          <p className="titolo text-[1.9rem] text-cacao">Il resto è al bancone</p>
-                          <p className="testo text-tostato">Ogni giorno la vetrina cambia: venite a scegliere in Via dei Frassini 25, dal martedì alla domenica.</p>
-                          <a href={shop.directions} target="_blank" rel="noopener" className="btn btn-cacao self-start">Raggiungici <PinIcon /></a>
-                        </li>
-                      );
+
+                <ul className="mt-1.5 grid grid-cols-2 gap-1.5 md:grid-cols-4">
+                  {shown.map((ph, i) => {
                     const img = images[ph.name];
-                    const i = photos.indexOf(ph);
                     return (
-                      <li key={ph.name} style={{ "--dc": dc, "--dr": dr, "--mc": mc, "--mr": mr, "--mo": mo, "--od": od }} className="relative order-(--mo) col-span-(--mc) row-span-(--mr) md:order-(--od) md:col-span-(--dc) md:row-span-(--dr)">
-                        <button type="button" onClick={() => setViewer(i)} className="group absolute inset-0 overflow-hidden bg-filo text-left" aria-label={`${ph.caption}: apri la foto`}>
-                          <Photo name={ph.name} fill sizes={dc >= 7 ? "(min-width: 768px) 55vw, 100vw" : dc >= 5 ? "(min-width: 768px) 40vw, 100vw" : "(min-width: 768px) 30vw, 50vw"} alt={ph.caption} className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]" />
-                          <span className="lastra absolute bottom-0 left-0 max-w-[88%] px-3 py-2 text-[0.88rem] leading-snug sm:text-[0.92rem]">{ph.caption}</span>
-                          <span className="absolute right-2 top-2 grid h-9 w-9 place-items-center bg-crema/90 text-cacao opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"><ExpandIcon size={17} /></span>
+                      <li key={ph.name}>
+                        <button type="button" onClick={() => setViewer(i)} className="group flex h-full w-full flex-col bg-crema text-left" aria-label={`${ph.caption}: apri la foto`}>
+                          <span className="relative block aspect-[4/5] w-full overflow-hidden bg-filo">
+                            <Photo name={ph.name} fill sizes="(min-width: 768px) 24vw, 50vw" alt={ph.caption} className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]" />
+                            <span className="absolute right-2 top-2 grid h-9 w-9 place-items-center bg-crema/90 text-cacao opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"><ExpandIcon size={17} /></span>
+                          </span>
+                          <span className="titolo block border-t-2 border-miele px-3 pb-4 pt-3 text-[1.02rem] leading-snug text-cacao sm:px-4 sm:text-[1.15rem]">{ph.caption}</span>
                           {img?.by === "customer" && <span className="sr-only">Foto di un cliente</span>}
                         </button>
                       </li>
@@ -202,9 +125,11 @@ export default function Vetrina() {
                   })}
                 </ul>
                 {photos.length > FIRST && (
-                  <button type="button" onClick={() => setAll((v) => !v)} aria-expanded={all} className="tessera btn mt-1.5 w-full text-cacao sm:w-auto">
-                    <span className="cond text-[1.1rem]">{all ? "Mostra meno" : `Altre ${photos.length - FIRST} foto`}</span>
-                  </button>
+                  <div className="mt-3 text-center">
+                    <button type="button" onClick={() => setAll((v) => !v)} aria-expanded={all} className="tessera btn min-w-[14rem] text-cacao">
+                      <span className="cond text-[1.1rem]">{all ? "Mostra meno" : `Mostra tutte le ${photos.length} foto`}</span>
+                    </button>
+                  </div>
                 )}
               </>
             ) : (

@@ -759,5 +759,26 @@
    "Cibi e bevande",
    "cottura al forno"
   ]
+ },
+ "mignon-cioccolato-vetrina": {
+  "n": 142,
+  "file": "b106659766",
+  "url": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RCOHOSyUlhSDQDIMwRxM7FCAFNc_wxYaEav8n6AIMvKt6KZYIqdqK7OJOJgGZXsXdli0OuajN8N3y_xPXNphSkpLrCX7ceVGzcTb8WsYceDDsSSQXPGgZ0E6-i8rIVvC_Fsvxu",
+  "by": "customer",
+  "tabs": [
+   "cottura al forno"
+  ]
+ },
+ "ciambellone-intero": {
+  "n": 149,
+  "file": "b79ee09611",
+  "url": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RhxDphCnc0Ubv_yfkFmx76aiX--ubj4crCeih-FAYxEwOKHKP4xZG-6EUyNDim8CSTa3SKr-H92J46XojdteruhFxs-BIamkzH9FXGzaGqNE0W2Mfz1FTrtoFUPLUxL8oL9w8omQ",
+  "by": "customer",
+  "tabs": [
+   "Tutte",
+   "Cibi e bevande",
+   "cottura al forno",
+   "Torta"
+  ]
  }
 }

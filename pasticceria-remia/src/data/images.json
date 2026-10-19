@@ -17,8 +17,8 @@
  },
  "bancone": {
   "src": "/foto/bancone.webp",
-  "width": 2400,
-  "height": 1800,
+  "width": 3200,
+  "height": 2400,
   "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADQAQCdASoQAAwAA4BaJZgCdADjYVLvYgD+Jy+iTdvicRSocmUBEKrx3NeAaGFxetDlazFnkpnGzdlUyOtTXe+lKTgtnVaYY9LXKvL2tbBC1yoItFATwhgvElTiAsYitWgAAA==",
   "by": "customer",
   "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SUO99OJMAHWC8mqEomFriq4X6rFZTlwXR746OsmnUBFFHN_Jgc1cP5uGpXYmVSCbLmuJCarH8OZ_bFB422BLMPRscU508LZjjWcfG3tFfRBafrABNznuwBXsq3qyJJpxleNhhj"
@@ -567,13 +567,20 @@
   "by": "customer",
   "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Ru_ZD0TEqZpoW1tCX1faTrUSU7t1-72n2JIXuBLSAjujU6e2nMvaRJwndV8ww8eK_G2_qYyyNUKKr5X5YSASev5WBpiUfIztO88zIjVo_AccTcbAS3j3jdUn--zxm_F8K2yv0hJA"
  },
- "bancone-arrivo-caldo": {
-  "src": "/foto/bancone-arrivo-caldo.webp",
-  "width": 1800,
-  "height": 2400,
-  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoMABAAA4BaJZgCdADbaOah6WgA9Z2D2gQP5xjdb4IC/isrR50Rh0f9VXfs6JH/VZzqsR8UkrvVw6k6b+397WUdtg29cGfiBzPS3IemT9VeqWppKx3s9fAA",
+ "mignon-cioccolato-vetrina": {
+  "src": "/foto/mignon-cioccolato-vetrina.webp",
+  "width": 900,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoJABAAA4BaJYwCdAD0TpzypSAA/tz1q3JfefT0gmelXo389TiDypixBqsVpUp+FXClqg6p+aBz2kZnYmXWFZ45RFwqLQAA",
   "by": "customer",
-  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TKbRvNOMx3o08KTa9_e9zP3YTm9OgwaU4ZWZlELpLW8qlXuU6JcvrvnDNU2o6y7t0G1iDnRoOKQC_3tQhQYOXTH6Q9z1s-ft8sG9cuLX5SETdjmPTQ8h9hNgqBxxSa8HwZcQ4mIA",
-  "derived": "bancone-arrivo, warmed"
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RCOHOSyUlhSDQDIMwRxM7FCAFNc_wxYaEav8n6AIMvKt6KZYIqdqK7OJOJgGZXsXdli0OuajN8N3y_xPXNphSkpLrCX7ceVGzcTb8WsYceDDsSSQXPGgZ0E6-i8rIVvC_Fsvxu"
+ },
+ "ciambellone-intero": {
+  "src": "/foto/ciambellone-intero.webp",
+  "width": 1080,
+  "height": 1013,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAACQAgCdASoQAA8AA4BaJZACdAYv120gtI4YdyjiIAD+id6R3ZuM2VqwWTeaTyTHsnyfgU6tNA995CHaCQVyjedrNIF9nr/YIuupRyuaWG2oJeuGTRlkmkPDSUFyV+z/Aovyw4WfzWooaxtQa+R4ZMV2QREAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RhxDphCnc0Ubv_yfkFmx76aiX--ubj4crCeih-FAYxEwOKHKP4xZG-6EUyNDim8CSTa3SKr-H92J46XojdteruhFxs-BIamkzH9FXGzaGqNE0W2Mfz1FTrtoFUPLUxL8oL9w8omQ"
  }
 }

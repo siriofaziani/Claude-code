@@ -1,6 +1,12 @@
-// The entrance clip for the single-file preview: inlined, then turned into a Blob URL by the hero.
-import mp4 from "../public/video/ingresso.mp4?url";
-import poster from "../public/video/ingresso-inizio.webp?url";
-import last from "../public/video/ingresso-fine.webp?url";
+// The entrance video for the single-file preview: inlined; the hero turns it into a Blob URL.
+import wideMp4 from "./video/ingresso-desktop.mp4?url"; // lighter copy (1600px) for the single file
+import widePoster from "../public/video/ingresso-desktop-inizio.webp?url";
+import wideLast from "../public/video/ingresso-desktop-fine.webp?url";
+import tallMp4 from "../public/video/ingresso-mobile.mp4?url";
+import tallPoster from "../public/video/ingresso-mobile-inizio.webp?url";
+import tallLast from "../public/video/ingresso-mobile-fine.webp?url";
 
-export const ingresso = { sources: [{ src: mp4, type: 'video/mp4; codecs="avc1.640020"' }], poster, last, duration: 3.75, width: 1280, height: 720 };
+export const ingresso = {
+  wide: { sources: [{ src: wideMp4, type: 'video/mp4; codecs="avc1.640028"' }], poster: widePoster, last: wideLast },
+  tall: { sources: [{ src: tallMp4, type: 'video/mp4; codecs="avc1.64001f"' }], poster: tallPoster, last: tallLast },
+};

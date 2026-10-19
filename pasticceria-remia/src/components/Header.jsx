@@ -3,6 +3,7 @@ import Wordmark from "./Wordmark";
 import { PhoneIcon } from "./Icons";
 
 const nav = [
+  ["Chi siamo", "#chi-siamo"],
   ["La vetrina", "#vetrina"],
   ["Recensioni", "#recensioni"],
   ["Orari", "#orari"],
@@ -27,7 +28,7 @@ export default function Header() {
           </ul>
         </nav>
         <a href={shop.phoneHref} className="ml-auto flex min-h-11 items-center gap-2 lg:ml-2" aria-label={`Chiama la pasticceria: ${shop.phone}`}>
-          <span className="tel hidden text-[1.28rem] sm:inline">Tel. {shop.phoneSign}</span>
+          <span className="tel hidden text-[1.28rem] sm:inline">Tel. {shop.phone}</span>
           <span className="grid h-11 w-11 place-items-center rounded-[2px] bg-cacao text-white sm:hidden"><PhoneIcon /></span>
         </a>
       </div>

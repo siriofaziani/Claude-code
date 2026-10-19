@@ -42,7 +42,7 @@ Pasticceria F.lli Remia, a family pastry shop and in-house laboratory in Via dei
 
 - Name as on the sign: "Pasticceria F.lli Remia", script lettering in green on white.
 - Facts on the sign: "Produzione propria dal 1979", "Servizi per nozze e rinfreschi".
-- The user's brief pins the concept "Boutique Gourmet / Minimal Luxury", completely different from the sibling Cristiani site; a scroll-driven walkthrough from the street into the shop that stops in front of the counter; an asymmetric photo gallery in sections (Pasticceria fresca, Torte da cerimonia, Mignon, Lievitati, Salato & rinfreschi); CTAs "Ordina" / "Chiamata diretta" / "Raggiungici".
+- Current brief (third, pinned by the user): a click-to-play entrance. The page opens on the street front with one invitation, "Entra in pasticceria". A click plays the user's entrance video once, which settles on the counter with the hero (name, "Produzione propria dal 1979", Via dei Frassini, phone, CTAs). No scroll-linked animation. Below it: "Chi siamo / La nostra storia" with the whole counter shown large; a symmetric product-card grid (Mignon, Torte, Pasticceria da tè, Salato, then Pasticceria fresca); reviews as cream cards with fine honey borders. Look: cream ground #FDFBF7, cocoa and honey, a refined serif. CTAs "Ordina su WhatsApp" (once a number exists), "Chiama", "Raggiungici".
 
 ## Evidence on Hand
 

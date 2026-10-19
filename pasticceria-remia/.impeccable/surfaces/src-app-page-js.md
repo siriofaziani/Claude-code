@@ -36,3 +36,11 @@ The user pinned a new look and a new hero; these override OWN-WORLD and FIRST VI
 - Ground cream #FDFBF7; ink cocoa (#4a2c1d, #2e1e14); honey details (#c08a33, text #8a5e1e, on dark #ebcb8f); a refined serif for titles (Libre Caslon Display; Bodoni stays with the sibling Cristiani site). The terrazzo tiles are retired; slabs are cream (#f6efe4) on the cream ground. The sign's own green wordmark, condensed caps and red "Tel." stay, as the shop's identity.
 - Hero: the first 3.75 s (frames 1–90) of the user's Kling video, cut before its dissolve, with the watermark removed. It plays its first steps on opening, then the scroll walks it to the threshold. The camera carries on (push + pan) towards the near end of the counter, while the user's chosen final frame takes over with the same movement and settles on its own frame: the real counter photo 111 from the Google listing (public/foto/bancone-arrivo.webp). No blur.
 - CTAs: "Ordina su WhatsApp" (shown as soon as a number exists; there is none yet), "Chiama", "Raggiungici".
+
+## Third brief (pinned by the user): click-to-play entrance, no scroll animation
+
+Overrides the hero described above.
+- No scroll-driven animation anywhere. The page opens on a full-screen (100vh, object-fit: cover) still of the street front with one centred invitation, "Entra in pasticceria". A click plays the user's Hailuo single take (5.2 s, street → counter) once, playsinline and muted, with a "Salta" control. On its end the screen settles on the last frame: the HERO panel with the name, the payoff "Produzione propria dal 1979", Via dei Frassini, the phone and the CTAs.
+- The video ships in two framings: wide (1920×870) and vertical for phones (612×1088, a window that follows the door). Both are cut above the generator's watermark.
+- Below it, with normal scrolling: "Chi siamo / La nostra storia", with the whole counter (photo 136, 3200px) shown large; the sign slab; an even, symmetric product-card grid (Pasticceria, Mignon, Torte, Pasticceria da tè, Salato); reviews as a slider of cream cards with a fine honey border and large stars; hours and the map.
+- Reviews: only verbatim five-star reviews that carry no author typos.

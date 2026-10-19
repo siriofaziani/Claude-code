@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-19T14:28:05+00:00",
+  "generatedAt": "2026-10-19T15:44:04+00:00",
   "title": "Design System: Pasticceria F.lli Remia",
   "extensions": {
     "colorMeta": {
@@ -139,6 +139,21 @@
           "#faf4eb"
         ]
       },
+      "miele-scuro": {
+        "role": "secondary",
+        "displayName": "Miele Scuro",
+        "canonical": "#8a5e1e",
+        "tonalRamp": [
+          "#2a1c08",
+          "#47300e",
+          "#664514",
+          "#8a5e1e",
+          "#a8772d",
+          "#c79a52",
+          "#e2c48f",
+          "#f6ead3"
+        ]
+      },
       "miele-chiaro": {
         "role": "secondary",
         "displayName": "Miele Chiaro",
@@ -203,7 +218,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The hero headline on its honey-framed slab."
+        "purpose": "The shop name on the arrival slab, the page's one h1."
       },
       "headline": {
         "displayName": "Headline",
@@ -211,7 +226,11 @@
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Slab and category titles; walk captions."
+        "purpose": "Slab and shelf titles, quoted voices, the entrance button label."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Product captions and reviewer names, in Caslon."
       },
       "figure": {
         "displayName": "Figure",
@@ -223,11 +242,11 @@
       },
       "body-light": {
         "displayName": "Body Light",
-        "purpose": "Jost 300 for the address and 'dal 1979'."
+        "purpose": "Jost 300 for 'dal 1979' in the sign slab."
       },
       "label": {
         "displayName": "Sign Caps",
-        "purpose": "Sign-grammar labels: nav, tiles, states, times. Never a kicker."
+        "purpose": "Sign-grammar labels: nav, tiles, payoff, states, times. Never a kicker."
       },
       "tel": {
         "displayName": "Tel.",
@@ -255,12 +274,12 @@
       {
         "name": "ease-out-expo",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Photo hover zoom (scale 1.035 over 700ms)."
+        "purpose": "Product photo hover zoom (scale 1.035 over 700ms)."
       },
       {
         "name": "ease-smooth",
         "value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "Button press, tile sheen, gallery panel swap (380ms)."
+        "purpose": "Button press, tile sheen, entrance slab transitions, gallery panel swap (250ms fade)."
       },
       {
         "name": "button-color",
@@ -283,9 +302,24 @@
         "purpose": "Breathing ring of the open-now dot."
       },
       {
-        "name": "walk",
-        "value": "scroll-scrubbed; transform, opacity, mask and clip time only",
-        "purpose": "Hero: clip to threshold, push-and-pan hand-over, right-to-left soft-edge wipe into the warmed counter photo, then neutral."
+        "name": "ingresso-porta-exit",
+        "value": "500ms ease-smooth; opacity to 0, scale 0.98",
+        "purpose": "The invitation slab leaves when the take starts."
+      },
+      {
+        "name": "ingresso-arrivo",
+        "value": "700ms ease-smooth; opacity in, translateY 24px to 0",
+        "purpose": "The arrival slab rises once the take settles on its last frame."
+      },
+      {
+        "name": "ingresso-slide-phone",
+        "value": "1000ms ease-smooth; translateY 0 to -30%",
+        "purpose": "On phones the last frame slides up so the counter stays visible above the slab."
+      },
+      {
+        "name": "slider-dot",
+        "value": "300ms; width 8px to 20px",
+        "purpose": "Current review dot stretches to a pill."
       }
     ],
     "breakpoints": [
@@ -332,9 +366,9 @@
       "name": "Tessera Tabs",
       "kind": "chip",
       "refersTo": "tessera",
-      "description": "Vitrine menu tiles: crema at rest, cocoa with a honey underline and a one-pass sheen when chosen.",
+      "description": "Vitrine menu tiles, centred: crema at rest, cocoa with a honey underline and a one-pass sheen when chosen. 2-column grid on phones.",
       "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tessera\" role=\"tab\" aria-selected=\"true\"><span class=\"ds-cond\">Pasticceria</span><span class=\"ds-n\">12 foto</span></button><button class=\"ds-tessera\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-cond\">Torte</span><span class=\"ds-n\">9 foto</span></button><button class=\"ds-tessera\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-cond\">Salato</span><span class=\"ds-n\">su ordinazione</span></button></div>",
-      "css": ".ds-tabs{display:flex;gap:6px;flex-wrap:wrap}.ds-tessera{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:4.25rem;min-width:11rem;padding:0 1rem;border:0;border-radius:0;text-align:left;cursor:pointer;background:#f6efe4;color:#4a2c1d;box-shadow:inset 0 0 0 1px #e7dccb;transition:background-color 280ms ease,color 280ms ease}.ds-tessera:hover:not([aria-selected=true]){background:#fdfbf7}.ds-tessera[aria-selected=true]{background:#4a2c1d;color:#fdfbf7;box-shadow:inset 0 -3px 0 #c08a33}.ds-tessera:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:1.2rem;line-height:1.05}.ds-n{font-family:Jost,sans-serif;font-size:.86rem;color:#6e5646}.ds-tessera[aria-selected=true] .ds-n{color:#ebcb8f}"
+      "css": ".ds-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.ds-tessera{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:4.25rem;min-width:11rem;padding:0 1rem;border:0;border-radius:0;text-align:center;cursor:pointer;background:#f6efe4;color:#4a2c1d;box-shadow:inset 0 0 0 1px #e7dccb;transition:background-color 280ms ease,color 280ms ease}.ds-tessera:hover:not([aria-selected=true]){background:#fdfbf7}.ds-tessera[aria-selected=true]{background:#4a2c1d;color:#fdfbf7;box-shadow:inset 0 -3px 0 #c08a33}.ds-tessera:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:1.2rem;line-height:1.05}.ds-n{font-family:Jost,sans-serif;font-size:.86rem;color:#6e5646}.ds-tessera[aria-selected=true] .ds-n{color:#ebcb8f}@media (prefers-reduced-motion:no-preference){.ds-tessera{transition:background-color 280ms ease,color 280ms ease}}"
     },
     {
       "name": "Lastra",
@@ -345,12 +379,20 @@
       "css": ".ds-ground{background:#fdfbf7;padding:1.5rem}.ds-lastra{background:#f6efe4;color:#2e1e14;padding:1.75rem;max-width:28rem;font-family:Jost,Futura,sans-serif}.ds-lastra h3{margin:0;font-family:'Libre Caslon Display','Big Caslon',Georgia,serif;font-weight:400;font-size:2.2rem;line-height:1.06;letter-spacing:-.01em;color:#4a2c1d}.ds-lastra p{margin:1rem 0;font-size:1.06rem;line-height:1.6;color:rgb(46 30 20 / .85)}.ds-lastra a{display:flex;justify-content:space-between;gap:.75rem;border-top:1px solid #e7dccb;padding-top:1rem;color:#4a2c1d;text-decoration:none}.ds-lastra a:hover{color:#6b4430}.ds-tel{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;letter-spacing:.04em;color:#c1252d;font-variant-numeric:tabular-nums;font-size:1.15rem}"
     },
     {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "product-card",
+      "description": "A 4:5 counter photo on a crema card, a 2px honey rule, the caption in Caslon.",
+      "html": "<div class=\"ds-grid\"><button class=\"ds-prod\"><span class=\"ds-ph\"></span><span class=\"ds-cap\">Cannoli siciliani con ricotta</span></button><button class=\"ds-prod\"><span class=\"ds-ph\"></span><span class=\"ds-cap\">Maritozzi con la panna</span></button></div>",
+      "css": ".ds-grid{display:grid;grid-template-columns:repeat(2,minmax(0,12rem));gap:6px;background:#fdfbf7;padding:1rem}.ds-prod{display:flex;flex-direction:column;border:0;border-radius:0;padding:0;background:#f6efe4;text-align:left;cursor:pointer}.ds-ph{display:block;aspect-ratio:4/5;background:#e7dccb;transition:transform 700ms cubic-bezier(.16,1,.3,1)}.ds-prod:hover .ds-ph{transform:scale(1.035)}.ds-prod{overflow:hidden}.ds-prod:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-cap{display:block;border-top:2px solid #c08a33;padding:.75rem 1rem 1rem;font-family:'Libre Caslon Display','Big Caslon',Georgia,serif;font-size:1.15rem;line-height:1.375;letter-spacing:-.01em;color:#4a2c1d}"
+    },
+    {
       "name": "Review Card",
       "kind": "card",
-      "refersTo": "lastra",
-      "description": "A verbatim Google review: panna card with a 2px honey top edge on a crema section.",
-      "html": "<div class=\"ds-sec\"><figure class=\"ds-rev\"><span class=\"ds-stars\">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p>La mia pasticceria di fiducia da una vita.</p><figcaption><b>Veronica R.</b><span>Google · 2023</span></figcaption></figure></div>",
-      "css": ".ds-sec{background:#f6efe4;padding:1.5rem}.ds-rev{margin:0;max-width:26rem;background:#fdfbf7;border-top:2px solid #c08a33;padding:1.6rem;font-family:Jost,sans-serif;color:#2e1e14}.ds-stars{color:#c08a33;letter-spacing:2px}.ds-rev p{font-size:1.06rem;line-height:1.6}.ds-rev figcaption{display:flex;justify-content:space-between;border-top:1px solid #e7dccb;padding-top:1rem}.ds-rev b{font-weight:500;color:#4a2c1d}.ds-rev span{font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:.9rem;color:#6e5646}"
+      "refersTo": "review-card",
+      "description": "A verbatim Google review: square panna card with a 1px honey border, stars, a Caslon opening quote mark.",
+      "html": "<div class=\"ds-sec\"><figure class=\"ds-rev\"><span class=\"ds-stars\" role=\"img\" aria-label=\"5 stelle su 5\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg></span><blockquote><span class=\"ds-q\" aria-hidden=\"true\">“</span><p>La mia pasticceria di fiducia da una vita.</p></blockquote><figcaption><b>Veronica R.</b><span>Google · 2023</span></figcaption></figure></div>",
+      "css": ".ds-sec{background:#fdfbf7;padding:1.5rem}.ds-rev{margin:0;max-width:25rem;display:flex;flex-direction:column;gap:1.25rem;background:#fdfbf7;border:1px solid rgb(192 138 51 / .7);padding:1.75rem;font-family:Jost,sans-serif;color:#2e1e14}.ds-stars{display:flex;gap:4px;color:#c08a33}.ds-rev blockquote{position:relative;margin:0}.ds-q{position:absolute;left:-4px;top:-1rem;font-family:'Libre Caslon Display',Georgia,serif;font-size:3.2rem;line-height:1;color:rgb(192 138 51 / .6)}.ds-rev p{position:relative;margin:0;padding-top:1rem;font-size:1.06rem;line-height:1.65}.ds-rev figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;border-top:1px solid rgb(74 44 29 / .15);padding-top:1rem}.ds-rev b{font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:1.2rem;color:#4a2c1d}.ds-rev span:last-child{font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:.9rem;color:#6e5646}"
     },
     {
       "name": "Header",
@@ -367,17 +409,26 @@
       "description": "Live state of the shop's hours: breathing green dot when open, red when closed.",
       "html": "<p class=\"ds-open\"><span class=\"ds-dot\"><i></i><i></i></span><b>Aperto ora</b><span>fino alle 20:30</span></p>",
       "css": ".ds-open{display:flex;align-items:center;gap:.625rem;font-family:Jost,sans-serif}.ds-dot{position:relative;width:10px;height:10px}.ds-dot i{position:absolute;inset:0;border-radius:9999px;background:#1d9a7c}.ds-dot i:first-child{animation:ds-respiro 2.6s ease-out infinite}@keyframes ds-respiro{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(2.2);opacity:0}}@media (prefers-reduced-motion:reduce){.ds-dot i:first-child{animation:none}}.ds-open b{font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:1.08rem;color:#4a2c1d}.ds-open span:last-child{font-size:.98rem;color:#6e5646}"
+    },
+    {
+      "name": "Ingresso Invitation",
+      "kind": "custom",
+      "refersTo": "lastra",
+      "description": "The entrance's one invitation: a crema slab in a 3px honey frame over the street-front still.",
+      "html": "<div class=\"ds-door\"><div class=\"ds-frame\"><div class=\"ds-inv\"><p class=\"ds-pay\">Produzione propria dal 1979 · Via dei Frassini 25</p><button class=\"ds-enter\"><span>Entra in pasticceria</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" aria-hidden=\"true\"><path d=\"M8 5l11 7-11 7z\"/></svg></button><a href=\"#\">oppure scorri la pagina</a></div></div></div>",
+      "css": ".ds-door{background:#2b1a10;padding:3rem 1rem;display:grid;place-items:center}.ds-frame{background:#c08a33;padding:3px;width:100%;max-width:30rem}.ds-inv{background:#f6efe4;padding:2.25rem;text-align:center;font-family:Jost,sans-serif}.ds-pay{margin:0;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:1.05rem;color:#8a5e1e}.ds-enter{margin-top:1.25rem;width:100%;display:flex;justify-content:space-between;align-items:center;min-height:3.8rem;padding:.6rem 1.25rem;border:0;border-radius:2px;background:#4a2c1d;color:#fdfbf7;font-family:'Libre Caslon Display',Georgia,serif;font-size:1.45rem;cursor:pointer;transition:background-color 220ms ease}.ds-enter:hover{background:#6b4430}.ds-enter:focus-visible,.ds-inv a:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-inv a{display:inline-block;margin-top:1rem;font-size:.95rem;color:#6e5646;text-underline-offset:.24em}.ds-inv a:hover{color:#4a2c1d}"
     }
   ],
   "narrative": {
     "northStar": "La vetrina sotto l'insegna",
-    "overview": "A bright pastry-shop boutique: a cream ground (panna) with cream slabs (crema) laid on it, cocoa ink, honey details, and a fine Caslon serif as the voice of the shop. Over it sits the one thing that is not invented: the shop's own sign, painted on the facade in 1979, kept exactly as it is. Its green script wordmark, its bold condensed capitals and its red \"Tel.\" are the identity; everything around them is quiet, warm and laid flat, like the paper and board of a pastry box.\n\nThe page is a walk. The hero is the entrance clip scrubbed by the scroll from the street to the threshold, then the real counter photo takes over with the same movement and settles on its own frame. After that, every section is a flat slab on cream or a cocoa band, joined by thin 6px seams. Photography carries the appetite; the system around it stays flat, unshadowed and almost square.\n\nDensity is generous on the ground (80 to 112px between sections) and tight inside the mosaics (6px seams), so the gallery reads as a laid case of tiles and the prose reads as a calm boutique.",
+    "overview": "A bright pastry-shop boutique: a cream ground (panna) with cream slabs (crema) laid on it, cocoa ink, honey details, and a fine Caslon serif as the voice of the shop. Over it sits the one thing that is not invented: the shop's own sign, painted on the facade in 1979, kept exactly as it is. Its green script wordmark, its bold condensed capitals and its red \"Tel.\" are the identity; everything around them is quiet, warm and laid flat, like the paper and board of a pastry box.\n\nThe page opens at the door. A full-screen still of the street front carries one honey-framed cream slab that invites you in; a click plays the single take from the street to the counter once, and the screen settles on its last frame with the shop's name, address, phone and order actions on a slab. Nothing moves with the scroll. Below the entrance every section is a calm, even arrangement: flat crema slabs on the panna ground, photographs laid edge to edge on 6px seams, a symmetric product grid, a centred review slider, then the cocoa band of hours and place. Photography carries the appetite; the system around it stays flat, unshadowed and almost square.\n\nDensity is generous between sections (80 to 112px) and tight inside them (6px seams), so the gallery reads as a tidy shop case and the prose reads as a calm boutique.",
     "keyCharacteristics": [
-      "Cream on cream: crema slabs laid on the panna ground, cocoa bands for the dark sections and the footer.",
+      "Cream on cream: crema slabs laid on the panna ground, cocoa bands for the dark sections, fondente for the footer.",
       "The sign is the only borrowed identity: green script wordmark, condensed caps, red \"Tel.\".",
-      "Caslon Display for every title, Jost for every sentence, Barlow Condensed only for sign-grammar labels and numbers.",
-      "Depth only by laid slabs and seams: no drop shadows, no glass, no decorative gradients, no blur.",
-      "Corners are cut, not rounded (2px on controls, square elsewhere)."
+      "Caslon Display for every title and caption, Jost for every sentence, Barlow Condensed only for sign-grammar labels and numbers.",
+      "Depth only by laid slabs, seams and hairlines: no drop shadows, no glass, no decorative gradients, no blur.",
+      "Corners are cut, not rounded (2px on controls, square elsewhere).",
+      "Motion answers a click or a state change, never the scroll position."
     ],
     "rules": [
       {
@@ -387,38 +438,40 @@
       },
       {
         "name": "The Honey Is a Thread Rule",
-        "body": "Miele is drawn in lines and points (a 2 to 3px edge, a star, a focus ring), never as a field. On dark grounds the honey speaks as Miele Chiaro.",
+        "body": "Miele is drawn in lines and points (a 1 to 3px edge, a star, a quote mark, a focus ring), never as a field. When honey has to be read as words on cream it speaks as Miele Scuro; on dark grounds it speaks as Miele Chiaro.",
         "section": "colors"
       },
       {
         "name": "The Sign Grammar Rule",
-        "body": "Condensed caps are for what the sign itself would say: names of things, states, times, numbers. They never sit above a heading as a kicker or eyebrow.",
+        "body": "Condensed caps are for what the sign itself would say: names of things, states, times, numbers, the payoff. They may follow a title as its subline; they never sit above a heading as a kicker or eyebrow.",
         "section": "typography"
       },
       {
         "name": "The One Serif Rule",
-        "body": "Every title is Caslon Display at weight 400. No bold serif, no italic display, no second serif (Bodoni belongs to the sibling Cristiani site).",
+        "body": "Every title and caption is Caslon Display at weight 400. No bold serif, no italic display, no second serif (Bodoni belongs to the sibling Cristiani site).",
         "section": "typography"
       },
       {
         "name": "The Laid Slab Rule",
-        "body": "A surface is raised by being a different cream, not by a shadow. If an element needs separation, give it a slab or a 1px filo hairline.",
+        "body": "A surface is raised by being a different cream, not by a shadow. If an element needs separation, give it a slab, a 1px filo hairline or a thin honey edge.",
         "section": "elevation"
       }
     ],
     "dos": [
       "**Do** lay crema (#f6efe4) slabs on the panna (#fdfbf7) ground and join blocks on 6px seams.",
-      "**Do** set every title in Libre Caslon Display 400 and every sentence in Jost, with prose capped at 62ch.",
+      "**Do** set every title and caption in Libre Caslon Display 400 and every sentence in Jost, with prose capped at 62ch.",
       "**Do** print every phone number as \"Tel.\" in Barlow Condensed 700, rosso on cream, Miele Chiaro inside a cocoa button.",
       "**Do** keep the sign's wordmark in insegna green (#1d9a7c) and use green otherwise only for the open state.",
-      "**Do** draw honey as lines and points: 2 to 3px edges, stars, focus rings.",
-      "**Do** keep a reduced-motion path for every moving thing (the walk, the tile sheen, the breathing dot)."
+      "**Do** draw honey as lines and points: 1 to 3px edges, stars, quote marks, focus rings; set honey-coloured words in Miele Scuro (#8a5e1e) on cream.",
+      "**Do** keep product grids even: 4:5 cards, 2 columns on phones and 4 from md, rows that close.",
+      "**Do** keep a reduced-motion path for every moving thing (the entrance, the tile sheen, the breathing dot, the slider)."
     ],
     "donts": [
-      "**Don't** add drop shadows, glass, blur or decorative gradients; separation is a slab or a filo hairline.",
-      "**Don't** round corners beyond the 2px cut on controls.",
+      "**Don't** add drop shadows, glass, blur or decorative gradients; separation is a slab or a hairline.",
+      "**Don't** round corners beyond the 2px cut on controls; dots are the only round forms.",
       "**Don't** use green, red or bordeaux as generic accents or button fills; they belong to the sign.",
       "**Don't** put condensed caps above a heading as a kicker or eyebrow.",
+      "**Don't** tie animation to the scroll position; motion starts from a click or a state change.",
       "**Don't** bring back the retired terrazzo tiles or Bodoni."
     ]
   }
