@@ -41,9 +41,9 @@ export const walk = {
   title: "La pasticceria di Centocelle, dal 1979",
   lede: "Produzione propria, servizi per nozze e rinfreschi. Paste, mignon, torte e salato dal nostro laboratorio, dal martedì alla domenica.",
   steps: [
-    { at: 0.32, text: "Si entra dalla porta di destra." },
-    { at: 0.56, text: "Produzione propria, dal 1979." },
-    { at: 0.8, text: "Il bancone. Scegliete dalla vetrina." },
+    { at: 0.24, text: "Via dei Frassini 25: si entra." },
+    { at: 0.5, text: "Produzione propria, dal 1979." },
+    { at: 0.86, text: "Il bancone. Scegliete dalla vetrina." },
   ],
 };
 
@@ -51,7 +51,7 @@ export const categories = [
   {
     id: "fresca",
     title: "Pasticceria fresca",
-    short: "Paste",
+    short: "Pasticceria",
     text: "Bignè, cannoli, maritozzi con la panna, sfogliatelle, babà: le paste grandi di una volta, in vetrina dalle 7:30.",
     photos: [
       { name: "vetrina-paste", caption: "La vetrina delle paste: babà, sfogliatelle, girelle, napoletane" },
@@ -61,6 +61,12 @@ export const categories = [
       { name: "bigne-cioccolato", caption: "Bignè al cioccolato" },
       { name: "cannoli-vassoio", caption: "Cannoli con lo zucchero a velo" },
       { name: "eclair-pistacchio", caption: "Éclair glassati" },
+      { name: "bancone-paste", caption: "Il bancone delle paste" },
+      { name: "maritozzi-vassoio", caption: "Maritozzi con la panna" },
+      { name: "eclair-cioccolato", caption: "Éclair al cioccolato", soft: true },
+      { name: "bigne-granella", caption: "Bignè con la granella di zucchero" },
+      { name: "vetrina-bigne", caption: "Bignè al pistacchio e sfogliatelle in vetrina" },
+      { name: "bigne-vassoio", caption: "Bignè" },
     ],
   },
   {
@@ -89,6 +95,14 @@ export const categories = [
       { name: "torta-filippo", caption: "Il bosco di Filippo" },
       { name: "torta-cacao-placca", caption: "Torta al cacao con la placchetta" },
       { name: "vetrina-torte", caption: "La vetrina refrigerata delle torte" },
+      { name: "torte-mimosa", caption: "Torte mimosa" },
+      { name: "torta-angelica", caption: "«Auguri Angelica»" },
+      { name: "torta-ernest-paul", caption: "«Ernest Paul», 1 anno" },
+      { name: "torte-5-6-anni", caption: "Torte per i 5 e i 6 anni, con un vassoio di mignon" },
+      { name: "torta-sonic", caption: "«Auguri Patrizio», con Sonic" },
+      { name: "torta-adele-cacao", caption: "«Auguri Adele», al cacao" },
+      { name: "torta-uomo-ragno", caption: "Torta con l'Uomo Ragno" },
+      { name: "vetrina-torte-2", caption: "La vetrina delle torte" },
     ],
   },
   {
@@ -105,6 +119,12 @@ export const categories = [
       { name: "crostatine-marmellata", caption: "Crostatine alla marmellata" },
       { name: "mignon-cioccolato", caption: "Quadrotti al cioccolato e panna" },
       { name: "biscotti-cioccolato", caption: "Frollini intinti nel cioccolato" },
+      { name: "vetrina-mignon", caption: "Mignon in vetrina: bignè e crostatine" },
+      { name: "quadrotti-amarena", caption: "Quadrotti alla panna con l'amarena" },
+      { name: "crostatine-vetrina", caption: "Crostatine alla frutta in vetrina" },
+      { name: "tartellette-vetrina", caption: "Tartellette al cioccolato in vetrina" },
+      { name: "barchette-vetrina", caption: "Barchette alla crema in vetrina" },
+      { name: "biscotti-ciliegia-vetrina", caption: "Biscotti con la ciliegia in vetrina" },
     ],
   },
   {
@@ -122,6 +142,9 @@ export const categories = [
       { name: "crostata-grata", caption: "Crostata con la grata" },
       { name: "ciambelle-zucchero", caption: "Ciambelle fritte" },
       { name: "biscotti-codette", caption: "Biscotti con le codette" },
+      { name: "bomboloni-vetrina", caption: "Bomboloni alla crema in vetrina" },
+      { name: "crostata-arancia", caption: "Crostata all'arancia" },
+      { name: "crostata-marmellata", caption: "Crostata di marmellata" },
     ],
   },
   {

@@ -29,3 +29,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 - Red also marks the closed state ("Oggi chiuso", the closed dot, "Chiuso" in the table): it is the one piece of information as urgent as the phone number, and the sign's red is the page's only alarm colour. Open states use the sign green.
 - On the bottle-green primary button the Tel. number is a light rose (#ffd2d0): sign red on bottle green fails contrast (about 2:1).
 - Mobile facade: at 390px wide the full lettering "F.lli Remia" and the right-hand door cannot share the frame (they span 27% of the photo; the phone shows 26%). The crop keeps the door the walk enters, and the header carries the full wordmark.
+
+## Restyle pinned by the user (second brief)
+
+The user pinned a new look and a new hero; these override OWN-WORLD and FIRST VIEWPORT above where they conflict.
+- Ground cream #FDFBF7; ink cocoa (#4a2c1d, #2e1e14); honey details (#c08a33, text #8a5e1e, on dark #ebcb8f); a refined serif for titles (Libre Caslon Display; Bodoni stays with the sibling Cristiani site). The terrazzo tiles are retired; slabs are cream (#f6efe4) on the cream ground. The sign's own green wordmark, condensed caps and red "Tel." stay, as the shop's identity.
+- Hero: the first 3.75 s (frames 1–90) of the user's Kling video, cut before its dissolve, with the watermark removed. It plays its first steps on opening, then the scroll walks it to the threshold. The camera carries on (push + pan) towards the near end of the counter, while the user's chosen final frame takes over with the same movement and settles on its own frame: the real counter photo 111 from the Google listing (public/foto/bancone-arrivo.webp). No blur.
+- CTAs: "Ordina su WhatsApp" (shown as soon as a number exists; there is none yet), "Chiama", "Raggiungici".

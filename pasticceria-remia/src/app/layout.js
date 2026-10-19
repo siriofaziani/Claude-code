@@ -1,8 +1,9 @@
-import { Jost, Barlow_Condensed } from "next/font/google";
+import { Jost, Barlow_Condensed, Libre_Caslon_Display } from "next/font/google";
 import { shop, hours } from "@/data/content";
 import "./globals.css";
 
 const jost = Jost({ subsets: ["latin"], weight: "variable", variable: "--font-jost", display: "swap" });
+const caslon = Libre_Caslon_Display({ subsets: ["latin"], weight: "400", variable: "--font-caslon", display: "swap" });
 const barlow = Barlow_Condensed({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-barlow", display: "swap" });
 
 export const metadata = {
@@ -18,7 +19,7 @@ export const metadata = {
   },
 };
 
-export const viewport = { themeColor: "#0d5546", width: "device-width", initialScale: 1, viewportFit: "cover" };
+export const viewport = { themeColor: "#4a2c1d", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const jsonLd = {
@@ -39,7 +40,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="it" className={`${jost.variable} ${barlow.variable}`}>
+    <html lang="it" className={`${jost.variable} ${barlow.variable} ${caslon.variable}`}>
       <body className="min-h-dvh overflow-x-clip">
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

@@ -10,7 +10,7 @@ import MobileBar from "@/components/MobileBar";
 export default function Home() {
   return (
     <>
-      <a href="#vetrina" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:bg-pietra focus:p-3">Vai alla vetrina</a>
+      <a href="#vetrina" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:bg-crema focus:p-3">Vai alla vetrina</a>
       <Header />
       <main>
         <Walkthrough />

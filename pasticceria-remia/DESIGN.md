@@ -1,46 +1,54 @@
 ---
 name: Pasticceria F.lli Remia
-description: The family pasticceria of Centocelle since 1979, built from the shop's own surfaces; terrazzo floor, honed stone slabs, bottle green and the painted sign.
+description: The family pasticceria of Centocelle since 1979, a cream boutique in cocoa and honey that keeps the shop's own painted sign true.
 colors:
-  pietra: "#f5f3ee"
-  graniglia: "#e9e5de"
-  vena: "#d9d3c9"
+  panna: "#fdfbf7"
+  crema: "#f6efe4"
+  filo: "#e7dccb"
+  cacao: "#4a2c1d"
+  cacao-chiaro: "#6b4430"
+  fondente: "#2b1a10"
+  inchiostro: "#2e1e14"
+  tostato: "#6e5646"
+  miele: "#c08a33"
+  miele-chiaro: "#ebcb8f"
   insegna: "#1d9a7c"
-  verde: "#0d5546"
-  verde-hover: "#0a4639"
-  verde-notte: "#082f27"
-  verde-testo: "#136b57"
-  menta: "#bfe3d6"
   rosso: "#c1252d"
-  tel-on-verde: "#ffd2d0"
   bordeaux: "#8a2c2c"
-  grigio: "#55585b"
-  inchiostro: "#1a2320"
-  white: "#ffffff"
 typography:
   display:
-    fontFamily: "Jost, Futura, Century Gothic, system-ui, sans-serif"
-    fontSize: "clamp(2.15rem, 4vw, 3.4rem)"
-    fontWeight: 300
-    lineHeight: 1.04
-    letterSpacing: "-0.02em"
+    fontFamily: "Libre Caslon Display, Big Caslon, Libre Caslon Text, Georgia, serif"
+    fontSize: "clamp(2.25rem, 4vw, 3.5rem)"
+    fontWeight: 400
+    lineHeight: 1.06
+    letterSpacing: "-0.01em"
   headline:
-    fontFamily: "Jost, Futura, Century Gothic, system-ui, sans-serif"
+    fontFamily: "Libre Caslon Display, Big Caslon, Libre Caslon Text, Georgia, serif"
     fontSize: "clamp(2.4rem, 5vw, 3.6rem)"
-    fontWeight: 300
-    lineHeight: 1.04
-    letterSpacing: "-0.02em"
+    fontWeight: 400
+    lineHeight: 1.06
+    letterSpacing: "-0.01em"
   title:
-    fontFamily: "Jost, Futura, Century Gothic, system-ui, sans-serif"
+    fontFamily: "Libre Caslon Display, Big Caslon, Libre Caslon Text, Georgia, serif"
     fontSize: "clamp(1.9rem, 3vw, 2.4rem)"
-    fontWeight: 300
-    lineHeight: 1.04
-    letterSpacing: "-0.02em"
+    fontWeight: 400
+    lineHeight: 1.06
+    letterSpacing: "-0.01em"
+  figure:
+    fontFamily: "Libre Caslon Display, Big Caslon, Georgia, serif"
+    fontSize: "clamp(4.8rem, 8vw, 6rem)"
+    fontWeight: 400
+    lineHeight: 0.8
   body:
     fontFamily: "Jost, Futura, Century Gothic, system-ui, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.6
+  body-light:
+    fontFamily: "Jost, Futura, Century Gothic, system-ui, sans-serif"
+    fontSize: "clamp(1.5rem, 2.5vw, 1.8rem)"
+    fontWeight: 300
+    lineHeight: 1.1
   label:
     fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
     fontSize: "1.05rem"
@@ -53,216 +61,206 @@ typography:
     fontWeight: 700
     letterSpacing: "0.04em"
     fontFeature: "tnum"
-  figure:
-    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "clamp(4.6rem, 7vw, 5.6rem)"
-    fontWeight: 600
-    lineHeight: 0.8
 rounded:
   none: "0px"
-  slab-edge: "2px"
+  cut: "2px"
+  dot: "9999px"
 spacing:
-  joint: "6px"
-  joint-wide: "8px"
-  slab-sm: "24px"
-  slab-md: "36px"
+  seam: "6px"
+  stack: "10px"
   gutter-sm: "16px"
   gutter-md: "24px"
   gutter-lg: "40px"
-  section: "80px"
+  slab-pad: "28px"
+  section-sm: "80px"
   section-lg: "112px"
+  container: "1500px"
 components:
-  button-verde:
-    backgroundColor: "{colors.verde}"
-    textColor: "{colors.white}"
-    rounded: "{rounded.slab-edge}"
-    padding: "9.6px 21.6px"
+  button-cacao:
+    backgroundColor: "{colors.cacao}"
+    textColor: "{colors.panna}"
+    rounded: "{rounded.cut}"
+    padding: "10px 22px"
     height: "54px"
-  button-verde-hover:
-    backgroundColor: "{colors.verde-hover}"
-  button-pietra:
-    backgroundColor: "{colors.pietra}"
-    textColor: "{colors.verde}"
-    rounded: "{rounded.slab-edge}"
-    padding: "9.6px 21.6px"
+  button-cacao-hover:
+    backgroundColor: "{colors.cacao-chiaro}"
+    textColor: "{colors.panna}"
+  button-crema:
+    backgroundColor: "{colors.crema}"
+    textColor: "{colors.cacao}"
+    rounded: "{rounded.cut}"
+    padding: "10px 22px"
     height: "54px"
-  button-pietra-hover:
-    backgroundColor: "{colors.white}"
+  button-crema-hover:
+    backgroundColor: "{colors.panna}"
   button-chiaro:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.verde}"
-    rounded: "{rounded.slab-edge}"
-    padding: "9.6px 21.6px"
+    backgroundColor: "{colors.panna}"
+    textColor: "{colors.cacao}"
+    rounded: "{rounded.cut}"
+    padding: "10px 22px"
     height: "54px"
   button-chiaro-hover:
-    backgroundColor: "{colors.menta}"
-  tab-levigata:
-    backgroundColor: "{colors.pietra}"
-    textColor: "{colors.verde}"
+    backgroundColor: "{colors.miele-chiaro}"
+  tessera:
+    backgroundColor: "{colors.crema}"
+    textColor: "{colors.cacao}"
+    typography: "{typography.label}"
     rounded: "{rounded.none}"
     padding: "0 16px"
     height: "68px"
-  tab-levigata-selected:
-    backgroundColor: "{colors.verde}"
-    textColor: "{colors.white}"
-  slab:
-    backgroundColor: "{colors.pietra}"
+  tessera-selected:
+    backgroundColor: "{colors.cacao}"
+    textColor: "{colors.panna}"
+  lastra:
+    backgroundColor: "{colors.crema}"
     textColor: "{colors.inchiostro}"
     rounded: "{rounded.none}"
-    padding: "{spacing.slab-sm}"
+    padding: "{spacing.slab-pad}"
   header:
-    backgroundColor: "{colors.pietra}"
-    textColor: "{colors.grigio}"
+    backgroundColor: "{colors.crema}"
+    textColor: "{colors.tostato}"
+    typography: "{typography.label}"
     height: "64px"
-  hours-row-today:
-    backgroundColor: "{colors.menta}"
-    textColor: "{colors.verde}"
 ---
 
 # Design System: Pasticceria F.lli Remia
 
 ## Overview
 
-**Creative North Star: "Graniglia & Insegna Verde"**
+**Creative North Star: "La vetrina sotto l'insegna"**
 
-The site is made of what the shop on Via dei Frassini is made of: the terrazzo floor (graniglia), honed stone slabs laid on it, bottle-green fields, and the sign painted on the facade in 1979. Every section is a slab of stone-white laid on a terrazzo ground or a whole bottle-green band. Slabs sit edge to edge with a narrow joint of terrazzo between them, the way floor tiles meet. Depth comes only from one slab overlapping another or overlapping a photo. Nothing floats, glows or blurs.
+A bright pastry-shop boutique: a cream ground (panna) with cream slabs (crema) laid on it, cocoa ink, honey details, and a fine Caslon serif as the voice of the shop. Over it sits the one thing that is not invented: the shop's own sign, painted on the facade in 1979, kept exactly as it is. Its green script wordmark, its bold condensed capitals and its red "Tel." are the identity; everything around them is quiet, warm and laid flat, like the paper and board of a pastry box.
 
-Type follows the sign. The traced sign lettering is the only script, always in sign green. Grey bold condensed capitals carry labels, as the sign's lower panels do, and red is kept for "Tel." and the number. Jost Light carries the voice: headlines are thin, wide and quiet, and the photography of the real counter does the shouting.
+The page is a walk. The hero is the entrance clip scrubbed by the scroll from the street to the threshold, then the real counter photo takes over with the same movement and settles on its own frame. After that, every section is a flat slab on cream or a cocoa band, joined by thin 6px seams. Photography carries the appetite; the system around it stays flat, unshadowed and almost square.
 
-Density is generous on the outside (80–112px between sections) and tight inside the stone (6px joints, 24–36px slab padding). The page is premium by restraint: few colours, no ornament that the shop does not already own.
+Density is generous on the ground (80 to 112px between sections) and tight inside the mosaics (6px seams), so the gallery reads as a laid case of tiles and the prose reads as a calm boutique.
 
 **Key Characteristics:**
-- Terrazzo ground with stone-white slabs laid on it, separated by 6px joints of floor.
-- Bottle green as the field colour for whole bands, primary buttons and selected controls.
-- The traced sign wordmark as the only script; condensed grey caps for labels; red only for the phone and closed state.
-- Flat material: no shadows, gradients, glass or blur. Depth by overlap only.
-- Controls are slabs: honed (veiled) at rest, polished (bare green) when chosen, with a single sheen.
+- Cream on cream: crema slabs laid on the panna ground, cocoa bands for the dark sections and the footer.
+- The sign is the only borrowed identity: green script wordmark, condensed caps, red "Tel.".
+- Caslon Display for every title, Jost for every sentence, Barlow Condensed only for sign-grammar labels and numbers.
+- Depth only by laid slabs and seams: no drop shadows, no glass, no decorative gradients, no blur.
+- Corners are cut, not rounded (2px on controls, square elsewhere).
 
 ## Colors
 
-A stone palette (warm whites and greys) with one deep bottle green carrying the weight and two sign colours, green and red, used as signals.
+A warm confectioner's palette: cream and cocoa do the work, honey marks the detail, and the sign's green and red appear only where the sign itself would.
 
 ### Primary
-- **Bottle Green** (verde): the field colour. Whole bands (hours and location), primary buttons, the selected tab, the active walk station, headline text on stone, icon tiles. It is the shop's paintwork, not an accent.
-- **Bottle Green Pressed** (verde-hover): the primary button's hover only.
-- **Night Green** (verde-notte): the deepest surface, behind the walk stage, the photo viewer and the footer; also the html background so overscroll stays in the world.
-- **Leaf Text Green** (verde-testo): hover on green text links on stone.
+- **Cacao** (#4a2c1d): the primary action colour (the call-to-order button), titles on cream, selected gallery tiles, and the hours-and-place band. The site's theme colour.
+- **Cacao Chiaro** (#6b4430): hover state of cocoa buttons and cocoa links only.
 
 ### Secondary
-- **Sign Green** (insegna): the painted sign's own green. The wordmark, review stars, the open dot, focus rings, selection and the scrollbar thumb. It is a mark colour, never body or label text on stone (about 3.3:1).
-- **Mint** (menta): the light voice on bottle green (secondary text, captions, the footer tagline) and the highlight of today's row in the hours table; hover of the white button.
+- **Miele** (#c08a33): honey detail. The 3px frame around the hero slab, review stars, the 2px top edge of review cards, the selected tile's 3px underline, focus rings and the caret. Never body text on cream.
+- **Miele Chiaro** (#ebcb8f): honey on dark. Secondary text on cacao and fondente, the Tel. number inside a cocoa button, today's row in the hours table, text selection, the hover of light buttons.
 
 ### Tertiary
-- **Sign Red** (rosso): "Tel." and the number wherever they appear, and the closed state ("Oggi chiuso", the closed dot, "Chiuso" in the table). Nothing else.
-- **Rose Tel** (tel-on-verde): the phone number inside the bottle-green primary button, where sign red would fail contrast.
-- **Bordeaux** (bordeaux): only "Produzione propria dal 1979" on the sign slab, as painted on the facade's left panel.
+- **Insegna** (#1d9a7c): the sign's green. The wordmark (header, sign slab, footer) and the open-now dot. Nothing else.
+- **Rosso** (#c1252d): the sign's red. "Tel." and the phone number in condensed caps, plus the closed state ("Oggi chiuso", the closed dot, "Chiuso" in the table).
+- **Bordeaux** (#8a2c2c): the sign's left panel ("Produzione propria dal 1979") in the sign slab.
 
 ### Neutral
-- **Honed Stone** (pietra): every slab, the header, the mobile bar, the hours table, caption plates, the secondary button.
-- **Terrazzo Ground** (graniglia): the floor colour under the chip pattern; body background.
-- **Vein** (vena): hairline dividers inside slabs (header bottom, figcaption rules, table rows, the sign slab's divider) and the photo placeholder.
-- **Sign Grey** (grigio): condensed labels, nav, secondary meta text on stone.
-- **Ink** (inchiostro): body text on stone, at full strength or 80–85% for ledes.
-- **White** (white): text on bottle green, the light button, the polished hover of the stone button.
+- **Panna** (#fdfbf7): the page ground, review cards, light buttons, text on cocoa.
+- **Crema** (#f6efe4): the slab colour. Header, mobile bar, every lastra, captions on photos, idle gallery tiles, the hours table.
+- **Filo** (#e7dccb): hairlines. Slab dividers, table rules, the 1px inset edge of idle tiles, the placeholder under photos.
+- **Inchiostro** (#2e1e14): body text, often at 80 to 85% opacity for ledes.
+- **Tostato** (#6e5646): secondary text on cream: nav labels, metadata, review sources, captions.
+- **Fondente** (#2b1a10): the darkest ground. Behind the hero video, the photo viewer, the footer and the html overscroll.
 
 ### Named Rules
-**The Sign's Red Rule.** Red marks the phone number and the closed state, nothing else. It is the page's only alarm colour; on bottle green the number turns rose.
+**The Sign Keeps Its Colours Rule.** Green, red and bordeaux belong to the sign. Green is the wordmark and "open"; red is "Tel." and "closed"; bordeaux is "dal 1979". They never become generic accents, fills or button backgrounds.
 
-**The Painted Field Rule.** Bottle green fills whole slabs or bands; it is never a thin line, a tint or a gradient.
+**The Honey Is a Thread Rule.** Miele is drawn in lines and points (a 2 to 3px edge, a star, a focus ring), never as a field. On dark grounds the honey speaks as Miele Chiaro.
 
 ## Typography
 
-**Display Font:** Jost, variable (with Futura, Century Gothic, system-ui)
-**Body Font:** Jost (same family)
-**Label Font:** Barlow Condensed 500/600/700 (with Arial Narrow)
-**Script:** the traced sign wordmark, an SVG mask; no script font is loaded.
+**Display Font:** Libre Caslon Display (with Big Caslon, Libre Caslon Text, Georgia)
+**Body Font:** Jost variable (with Futura, Century Gothic, system-ui)
+**Label Font:** Barlow Condensed 500 to 700 (with Arial Narrow)
 
-**Character:** A thin geometric sans for the voice against the sign's bold condensed grey caps. The light headline and the heavy condensed label sit next to each other the way the sign's script sits over its block capitals.
+**Character:** A high-contrast Caslon gives the boutique its voice; geometric Jost keeps the sentences plain and friendly; the condensed caps are lifted straight from the painted sign and used only in its grammar.
 
 ### Hierarchy
-- **Display** (Jost 300, 2.15rem → 2.9rem → 3.4rem, line-height 1.04, -0.02em, balanced): the first-viewport headline on the hero slab, and the walk captions (1.7rem → 2.8rem) set on stone slabs.
-- **Headline** (Jost 300, 2.4rem → 3.6rem, 1.04): section titles, in bottle green on stone or white on green.
-- **Title** (Jost 300, 1.9rem → 2.4rem, 1.04): category titles in the gallery; pull quotes at 1.45–1.9rem.
-- **Body** (Jost 400, 1.0625rem, 1.6, max 62ch, pretty wrap): all running text; ledes 1.02–1.12rem in ink at 80%. Never below 16px for reading text; captions go to 0.86–0.95rem.
-- **Label** (Barlow Condensed 600, 0.85–1.2rem, 1.05, +0.03em, uppercase): nav, tab names, the open-now state, station markers, review sources, hours values (tabular).
-- **Tel** (Barlow Condensed 700, 0.9–1.7rem, +0.04em, tabular numerals, sign red): every "Tel." and phone number, sized to its context.
-- **Figure** (Barlow Condensed 600, 4.6–5.6rem, line-height 0.8): the single rating numeral.
+- **Display** (400, 2.25rem to 3.5rem, 1.06, -0.01em, balanced): the hero headline on its slab.
+- **Headline** (400, 2.4rem to 3.6rem, 1.06): section titles ("La vetrina", "Lo dice il quartiere", "Orari", "Dove siamo").
+- **Title** (400, 1.9rem to 2.4rem, 1.06): slab titles inside sections and gallery categories; walk captions run 1.7rem to 2.7rem on the same face.
+- **Figure** (400, 4.8rem to 6rem, 0.8): the review score, the one oversized numeral.
+- **Body** (400, 1.0625rem, 1.6): all prose, max 62ch, pretty-wrapped. Jost Light (300) at 1.5 to 1.8rem for the address and "dal 1979".
+- **Label** (Barlow Condensed 600, about 0.85 to 1.2rem, 0.03em, uppercase): nav, tile names, open-now state, metadata, hours figures (tabular).
+- **Tel** (Barlow Condensed 700, 0.04em, tabular figures, rosso): every printed phone number.
 
 ### Named Rules
-**The One Script Rule.** The only script on the page is the traced sign wordmark, in sign green, on stone or on night green. No script or display fonts are added.
+**The Sign Grammar Rule.** Condensed caps are for what the sign itself would say: names of things, states, times, numbers. They never sit above a heading as a kicker or eyebrow.
 
-**The Sign Grammar Rule.** Labels are grey condensed capitals, as on the sign's lower panels. Headlines stay Jost Light; no heavy Jost display weights.
+**The One Serif Rule.** Every title is Caslon Display at weight 400. No bold serif, no italic display, no second serif (Bodoni belongs to the sibling Cristiani site).
 
 ## Layout
 
-One centred container (max 1500px) with side gutters of 16px, 24px from 640px and 40px from 1024px. Sections are full-bleed bands, alternately terrazzo floor, a stone slab band, and bottle green, with 80px of vertical padding (112px from 640px).
+Mobile first. A centred 1500px container with 16 / 24 / 40px gutters (phone / tablet / desktop). Sections are separated by 80px on phones and 112px from sm upward; the hero is a pinned stage 380svh tall on phones and 420svh from md.
 
-Inside a band, slabs are laid on a 12-column grid with 6px joints (8px in the review strip and the still walk). The gallery is a band mosaic: rows of photo tiles whose column spans always close to 12 (3/5/4, 7/5, 4/3/5, 5/7), the first band pairing the 5-column category slab with a 7-column photo; on phones a 6-column grid alternates full-width tiles with half-width pairs. A short last band leaves a deliberate terrazzo void rather than stretching a photo.
+Inside sections, blocks join on a 6px seam: slabs, photo tiles and the sign slab sit 6px apart so the ground shows as a thin joint. Button groups stack with 10px gaps and lay out in a row from sm. Two-column splits use a 12-column grid (7/5 for the sign story and the salato, 5/7 for the reviews header, 7/5 for hours and place).
 
-Horizontal collections (review slabs, gallery tabs on phones) are snap strips with hidden scrollbars. The header is fixed at 64px; on phones a stone bottom bar carries call and map once the hero actions have scrolled away. The hours table leaves a right margin for the photographed door sign, which overlaps its edge from 640px.
+The gallery is a band mosaic: 6 columns on phones, 12 from md, with fixed row heights (3.4rem, then clamp(3.4rem, 5.4vw, 5.6rem)) and per-photo column/row spans, so a category reads as one laid case with its text slab occupying the first 5 columns. Reviews run as a horizontal snap strip of cards 86vw to 30rem wide. On phones a crema action bar stays under the thumb once the hero slab has left.
 
 ## Elevation & Depth
 
-Flat. There are no drop shadows, gradients, blurs or glass. Depth is conveyed only by flat slabs overlapping: the hero slab overlaps the facade photo, the door-sign photo overlaps the hours table, caption plates sit on the corner of gallery photos, walk captions sit on stone over the scene. A slab on terrazzo reads as raised because the floor's chips stop at its edge, not because of a shadow.
-
-The one inset box-shadow in the build (1px, bottle green at 35%) is the stone button's hairline edge, used as a border, not as elevation.
+Flat. Depth comes from slabs laid on ground (crema on panna, panna on crema, cream slabs over full-bleed photography) and from cocoa bands, never from cast shadows. The only box-shadows in the system are inset hairlines that act as borders: the 1px tile edge and the 3px honey underline of a selected tile. Photography supplies the only real depth.
 
 ### Named Rules
-**The Laid Slab Rule.** A surface rises only by overlapping another flat surface. If it needs a shadow to separate, put a terrazzo joint (6px) or a vein hairline under it instead.
+**The Laid Slab Rule.** A surface is raised by being a different cream, not by a shadow. If an element needs separation, give it a slab or a 1px filo hairline.
 
 ## Shapes
 
-Rectilinear stone. Slabs, tiles, photos, tabs and the dialog have square corners (0). Buttons and the header's phone tile take a barely softened 2px edge, like cut stone that has been handled. The only circles are the open-now dot and its breathing ring. Hairline borders are vein on stone and white at 15–20% on green. Framed elements (review slabs, the hero slab, the door-sign photo) are wrapped in a 6–8px band of terrazzo or stone, like a slab set into the floor.
+Square and cut. Slabs, tiles, photos, the hours table and review cards are square-cornered (0px). Buttons and the phone icon chip take a barely cut corner (2px). The only round forms are the open-now dot and its breathing ring. Edges are drawn as 1px filo hairlines, a 2px honey top edge on review cards, or the 3px honey frame around the hero slab (flush to the screen edge on phones).
 
 ## Components
 
 ### Buttons
-Slabs too: rectangular, flat, cut clean.
-- **Shape:** near-square (2px), minimum height 54px (52px in the mobile bar, 48px for chips), padding 10px 22px, icon on the right with the label justified apart.
-- **Primary (verde):** bottle green, white Jost 500 1rem label; a second line in condensed bold rose carries "Tel." and the number.
-- **Stone (pietra):** honed stone with a bottle-green 35% hairline edge, bottle-green label; hover polishes it to white.
-- **Light (chiaro):** white on bottle-green bands, bottle-green label; hover turns mint. On green, social links use white at 10% (20% on hover).
-- **Press:** 1px downward translate (160ms). Colour transitions 220ms. Focus: 2px sign-green outline, 3px offset.
+Flat slabs, cut clean.
+- **Shape:** 2px corners, minimum 54px tall (52px in the mobile bar), Jost 500 at 1rem, icon on the right with the label justified apart.
+- **Cacao (primary):** cocoa slab, panna text, its Tel. line in Miele Chiaro condensed caps. Used for the single order action.
+- **Crema (secondary):** crema slab with a 1px cocoa inset edge at 30%; hovers to panna. "Raggiungici", "Leggile su Google", "Mappa".
+- **Chiaro (on dark):** panna slab on cocoa bands; hovers to Miele Chiaro.
+- **Hover / Active:** colour shift over 220ms on hover-capable devices only; a 1px press-down on active. Focus is the global 2px honey outline at 3px offset.
+- **Ghost on dark:** white at 10% fill, 20% on hover, for social links in the cocoa band.
 
-### Chips and Tabs (honed and polished)
-The signature control. A terrazzo slab under a stone veil at 88%: honed. Hover thins the veil to 62% so the chips show through. Selected, the veil becomes bottle green and stops 5px short of the bottom, leaving a strip of floor showing, the text turns white (meta in mint), and a single white sheen (22%, skewed -18°) crosses it once over 900ms. Labels are condensed caps 1.1–1.2rem with a Jost meta line. Used for the gallery tabs, the category chips laid on the counter at the end of the walk, and "show more".
+### Chips (Tessera)
+A tile of the vitrine menu, used for the gallery tabs, the hero's category chips and "Altre foto".
+- **Style:** crema with a 1px filo inset edge, condensed caps name, Jost count beneath in tostato.
+- **State:** selected turns cocoa with panna text and a 3px honey underline, and a honey sheen crosses it once (900ms); idle tiles hover to panna. The sheen is off under reduced motion.
 
-### Cards / Containers (slabs)
-- **Corner Style:** square (0).
-- **Background:** honed stone on terrazzo, or bottle green for the one featured slab in a group (the salato story).
-- **Shadow Strategy:** none; see Elevation.
-- **Border:** none outside; vein hairlines inside to separate a footer row (review author, "Ordinate al telefono").
-- **Internal Padding:** 24px, 28–36px from 640px; caption plates 8px 12px.
+### Cards / Containers (Lastra)
+- **Corner Style:** square.
+- **Background:** crema on the panna ground; review cards invert to panna on a crema section.
+- **Shadow Strategy:** none (see Elevation & Depth).
+- **Border:** none, or a filo hairline dividing a slab's footer; review cards carry a 2px honey top edge.
+- **Internal Padding:** 20 to 40px, typically 24px on phones and 28 to 36px on desktop.
 
 ### Navigation
-The header is a stone slab with a vein bottom hairline: sign wordmark (26–30px tall) left, grey condensed nav links (bottle green on hover) from 1024px, and the red "Tel." number right. On phones the number becomes a 44px bottle-green tile with a phone icon. The mobile bottom bar repeats the stone slab with primary and stone buttons.
+A crema bar 64px tall with a filo bottom hairline, fixed. The green wordmark sits left; condensed caps nav links in tostato hover to cacao (desktop only); the red "Tel." number sits right, collapsing to a 44px cocoa phone chip on phones.
 
-### Open-now readout
-A 10px dot (sign green open, breathing at 2.6s; red closed, still), the state in condensed caps (bottle green or red; white on green bands), then when it changes in Jost grey or mint. Recomputed every minute in Rome time.
+### Open-Now Readout
+A live 10px dot (insegna and breathing when open, rosso when closed), the state in condensed caps, then when it changes in Jost. On cocoa the state turns panna and the tail Miele Chiaro.
 
-### Hours table
-A stone slab on the bottle-green band; vein row rules; day names in Jost, slots in condensed semibold tabular bottle green, "Chiuso" in red. Today's row turns mint with a condensed "oggi" tag.
+### The Walk (signature hero)
+The entrance clip plays its first steps on load, then the scroll scrubs it to the threshold while the camera follows the door. The camera then pushes on toward the near end of the counter and the real counter photo takes over behind a soft edge that sweeps right to left with the pan; it arrives warmed to the clip's light and settles back to its own colours. Captions appear on crema slabs in Caslon; the hero slab sits in a honey frame. Only transform, opacity, mask position and the clip's time change per frame. Reduced motion shows the poster and the counter photo as two still frames.
 
-### Signature: the walk in
-A pinned scroll scene on night green: the facade photo pushes toward the right-hand door, the interior appears through the door's glass rectangle as a clip, widens to full frame, and crossfades to the counter, where category chips are laid. Only transform, opacity and clip-path move; reduced motion shows the three photographs as a still sequence. Station markers (stone, condensed grey; bottle green when current) track the walk.
-
-### Icons
-One 24px grid, 1.6 stroke, round caps and joins, inheriting colour; brand marks and stars are filled.
+### Sign Slab (Insegna)
+The facade's three panels set again on one crema slab: bordeaux "Produzione propria dal 1979", the green wordmark full width, and "Servizi per nozze e rinfreschi" with the red live Tel.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** lay every content block as a stone slab on terrazzo or as a bottle-green band, with 6px terrazzo joints between slabs.
-- **Do** set every "Tel." and phone number in condensed bold sign red (rose on bottle green), with tabular numerals.
-- **Do** use honed/polished slabs for any choice control: veiled terrazzo at rest, bare bottle green when selected, one sheen on selection.
-- **Do** keep headlines in Jost Light (300) and labels in grey Barlow Condensed caps.
-- **Do** put text over photographs on a stone slab or caption plate, never bare.
-- **Do** honour reduced motion: the walk becomes stills, the sheen and the breathing dot stop.
+- **Do** lay crema (#f6efe4) slabs on the panna (#fdfbf7) ground and join blocks on 6px seams.
+- **Do** set every title in Libre Caslon Display 400 and every sentence in Jost, with prose capped at 62ch.
+- **Do** print every phone number as "Tel." in Barlow Condensed 700, rosso on cream, Miele Chiaro inside a cocoa button.
+- **Do** keep the sign's wordmark in insegna green (#1d9a7c) and use green otherwise only for the open state.
+- **Do** draw honey as lines and points: 2 to 3px edges, stars, focus rings.
+- **Do** keep a reduced-motion path for every moving thing (the walk, the tile sheen, the breathing dot).
 
 ### Don't:
-- **Don't** use drop shadows, gradients, glass or blur; depth is overlap only.
-- **Don't** add a script or decorative display font; the sign wordmark is the only script.
-- **Don't** use red for anything except the phone number and the closed state.
-- **Don't** set body or label text in sign green on stone; it is a mark colour.
-- **Don't** round slabs or photos; corners are square, buttons 2px at most.
-- **Don't** add small uppercase labels above headings; condensed caps label things, they do not introduce sections.
+- **Don't** add drop shadows, glass, blur or decorative gradients; separation is a slab or a filo hairline.
+- **Don't** round corners beyond the 2px cut on controls.
+- **Don't** use green, red or bordeaux as generic accents or button fills; they belong to the sign.
+- **Don't** put condensed caps above a heading as a kicker or eyebrow.
+- **Don't** bring back the retired terrazzo tiles or Bodoni.

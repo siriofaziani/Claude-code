@@ -13,7 +13,7 @@ const t = (s) => s.replace(/^0/, "");
 export default function QuandoDove() {
   const s = useOpenState();
   return (
-    <section aria-label="Orari e indirizzo" className="bg-verde text-white">
+    <section aria-label="Orari e indirizzo" className="bg-cacao text-white">
       <div className="mx-auto grid max-w-[1500px] gap-14 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-12 lg:gap-10 lg:px-10">
         <div id="orari" className="scroll-mt-20 lg:col-span-7">
           <h2 className="titolo text-[2.4rem] sm:text-[3.6rem]">Orari</h2>
@@ -26,14 +26,14 @@ export default function QuandoDove() {
                 {hours.map((h) => {
                   const today = s?.day === h.day;
                   return (
-                    <tr key={h.day} aria-current={today ? "date" : undefined} className={`border-b border-vena last:border-0 ${today ? "bg-menta" : ""}`}>
+                    <tr key={h.day} aria-current={today ? "date" : undefined} className={`border-b border-filo last:border-0 ${today ? "bg-miele-chiaro" : ""}`}>
                       <th scope="row" className="py-3.5 pl-5 pr-3 font-normal sm:pl-6">
-                        <span className={`text-[1.05rem] ${today ? "font-medium text-verde" : ""}`}>{h.label}</span>
-                        {today && <span className="cond ml-2 text-[0.85rem] text-verde">oggi</span>}
+                        <span className={`text-[1.05rem] ${today ? "font-medium text-cacao" : ""}`}>{h.label}</span>
+                        {today && <span className="cond ml-2 text-[0.85rem] text-cacao">oggi</span>}
                       </th>
                       <td className="py-3.5 pr-5 text-right sm:pr-6">
                         {h.slots.length ? (
-                          <span className="cond text-[1.22rem] font-semibold tabular-nums text-verde">
+                          <span className="cond text-[1.22rem] font-semibold tabular-nums text-cacao">
                             {h.slots.map(([a, b]) => `${t(a)}–${t(b)}`).join("  ·  ")}
                           </span>
                         ) : (
@@ -46,22 +46,22 @@ export default function QuandoDove() {
               </tbody>
             </table>
             <figure className="relative ml-auto mt-3 w-[62%] max-w-[15rem] sm:absolute sm:-right-2 sm:top-14 sm:mt-0 sm:w-48 lg:w-56">
-              <div className="bg-pietra p-1.5">
+              <div className="bg-crema p-1.5">
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <Photo name="cartello-orari" fill sizes="240px" alt="Il cartello degli orari sulla porta: dal martedì al venerdì 7:30–13:30 e 15:00–20:30, sabato e domenica orario continuato 7:30–20:30, lunedì chiuso" className="object-cover" />
                 </div>
-                <figcaption className="cond px-1 pb-0.5 pt-1.5 text-[0.85rem] text-grigio">Il cartello sulla porta</figcaption>
+                <figcaption className="cond px-1 pb-0.5 pt-1.5 text-[0.85rem] text-tostato">Il cartello sulla porta</figcaption>
               </div>
             </figure>
           </div>
-          <p className="testo mt-6 text-[1rem] text-menta">Sabato e domenica orario continuato. La domenica c'è più fila: per torte e vassoi conviene ordinare prima, al telefono.</p>
+          <p className="testo mt-6 text-[1rem] text-miele-chiaro">Sabato e domenica orario continuato. La domenica c'è più fila: per torte e vassoi conviene ordinare prima, al telefono.</p>
         </div>
 
         <div id="dove" className="scroll-mt-20 lg:col-span-5">
           <h2 className="titolo text-[2.4rem] sm:text-[3.6rem]">Dove siamo</h2>
           <address className="mt-4 not-italic">
             <span className="block text-[1.5rem] font-light sm:text-[1.8rem]">{shop.address}</span>
-            <span className="block text-[1.06rem] text-menta">{shop.city} · {shop.area}, vicino alla fermata Mirti della metro C</span>
+            <span className="block text-[1.06rem] text-miele-chiaro">{shop.city} · {shop.area}, vicino alla fermata Mirti della metro C</span>
           </address>
           <div className="mt-6 grid gap-2 sm:grid-cols-2">
             <a href={shop.directions} target="_blank" rel="noopener" className="btn btn-chiaro justify-between">Indicazioni <PinIcon /></a>

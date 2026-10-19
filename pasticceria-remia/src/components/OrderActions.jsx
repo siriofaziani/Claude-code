@@ -11,11 +11,11 @@ export default function OrderActions({ className = "", stacked = false, directio
   return (
     <div className={wrap}>
       {hasWhatsapp && (
-        <a href={whatsappHref()} target="_blank" rel="noopener" className={`btn ${light ? "btn-chiaro" : "btn-verde"} justify-between`}>
+        <a href={whatsappHref()} target="_blank" rel="noopener" className={`btn ${light ? "btn-chiaro" : "btn-cacao"} justify-between`}>
           Ordina su WhatsApp <WhatsAppIcon />
         </a>
       )}
-      <a href={shop.phoneHref} className={`btn ${hasWhatsapp || light ? "btn-chiaro" : "btn-verde"} justify-between`}>
+      <a href={shop.phoneHref} className={`btn ${hasWhatsapp || light ? "btn-chiaro" : "btn-cacao"} justify-between`}>
         <span className="flex flex-col items-start leading-tight">
           <span>{hasWhatsapp ? "Chiamata diretta" : "Chiama per ordinare"}</span>
           <span className="tel text-[0.92rem]">Tel. {shop.phone}</span>
@@ -23,7 +23,7 @@ export default function OrderActions({ className = "", stacked = false, directio
         <PhoneIcon />
       </a>
       {directions && (
-        <a href={shop.directions} target="_blank" rel="noopener" className={`btn ${light ? "btn-chiaro" : "btn-pietra"} justify-between`}>
+        <a href={shop.directions} target="_blank" rel="noopener" className={`btn ${light ? "btn-chiaro" : "btn-crema"} justify-between`}>
           Raggiungici <PinIcon />
         </a>
       )}

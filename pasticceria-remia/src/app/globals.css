@@ -1,29 +1,31 @@
 @import "tailwindcss";
 @source "../";
 
-/* ── Pasticceria F.lli Remia ─────────────────────────────────────────
-   Built from the shop's own surfaces: the terrazzo floor (graniglia),
-   stone-white slabs, the bottle green and the painted sign: green script,
-   grey condensed capitals, and the red "Tel.". Depth only by slabs
-   overlapping; no shadows, no gradients. */
+/* ── Pasticceria F.lli Remia · Boutique Gourmet ──────────────────────
+   A bright cream ground (#FDFBF7), cocoa ink, honey details and a fine
+   serif, with the shop's own painted sign kept true: its green script,
+   its condensed capitals and its red "Tel.". Depth only by laid slabs:
+   no shadows, no gradients, no glass. */
 
 @theme {
+  --font-serif: var(--font-caslon), "Big Caslon", "Libre Caslon Text", Georgia, serif;
   --font-sans: var(--font-jost), "Futura", "Century Gothic", system-ui, sans-serif;
   --font-cond: var(--font-barlow), "Arial Narrow", sans-serif;
 
-  --color-pietra: #f5f3ee;
-  --color-graniglia: #e9e5de;
-  --color-vena: #d9d3c9;
+  --color-panna: #fdfbf7;
+  --color-crema: #f6efe4;
+  --color-filo: #e7dccb;
+  --color-cacao: #4a2c1d;
+  --color-cacao-chiaro: #6b4430;
+  --color-fondente: #2b1a10;
+  --color-miele: #c08a33;
+  --color-miele-scuro: #8a5e1e;
+  --color-miele-chiaro: #ebcb8f;
+  --color-tostato: #6e5646;
+  --color-inchiostro: #2e1e14;
   --color-insegna: #1d9a7c;
-  --color-verde: #0d5546;
-  --color-verde-notte: #082f27;
-  --color-verde-testo: #136b57;
-  --color-menta: #bfe3d6;
   --color-rosso: #c1252d;
-  --color-grigio: #55585b;
-  --color-marmo: #b9693c;
   --color-bordeaux: #8a2c2c;
-  --color-inchiostro: #1a2320;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
@@ -34,14 +36,14 @@
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
     scroll-padding-top: 4.5rem;
-    background: var(--color-verde-notte);
-    scrollbar-color: var(--color-insegna) var(--color-graniglia);
+    background: var(--color-fondente);
+    scrollbar-color: var(--color-miele) var(--color-panna);
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
   body {
-    background: var(--color-graniglia);
+    background: var(--color-panna);
     color: var(--color-inchiostro);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
@@ -49,28 +51,21 @@
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     text-rendering: optimizeLegibility;
-    caret-color: var(--color-insegna);
+    caret-color: var(--color-miele);
   }
-  ::selection { background: var(--color-insegna); color: #fff; }
-  :focus-visible { outline: 2px solid var(--color-insegna); outline-offset: 3px; }
+  ::selection { background: var(--color-miele-chiaro); color: var(--color-fondente); }
+  :focus-visible { outline: 2px solid var(--color-miele); outline-offset: 3px; }
   a { text-underline-offset: 0.24em; text-decoration-thickness: 1px; }
-  img { -webkit-user-drag: none; }
+  img, video { -webkit-user-drag: none; }
 }
 
 @layer components {
-  /* The floor: terrazzo chips on stone. */
-  .graniglia {
-    background-color: var(--color-graniglia);
-    background-image: url("./graniglia.svg");
-    background-size: 420px 420px;
-  }
-  .graniglia-fitta {
-    background-color: var(--color-graniglia);
-    background-image: url("./graniglia-fitta.svg");
-    background-size: 300px 300px;
-  }
-  /* A slab of honed stone laid on the floor. */
-  .lastra { background: var(--color-pietra); color: var(--color-inchiostro); }
+  /* The page ground and the slabs laid on it. */
+  .fondo { background-color: var(--color-panna); }
+  .fondo-crema { background-color: var(--color-crema); }
+  .lastra { background: var(--color-crema); color: var(--color-inchiostro); }
+  /* A honey frame: the thin gold edge of a pastry box. */
+  .cornice { background: var(--color-miele); }
 
   /* The sign, painted on the facade in 1979, vectorised from the photo. */
   .insegna {
@@ -81,7 +76,7 @@
     mask: url("./insegna.svg") center / contain no-repeat;
   }
 
-  /* The sign's grey condensed capitals. */
+  /* The sign's condensed capitals. */
   .cond {
     font-family: var(--font-cond);
     font-weight: 600;
@@ -91,15 +86,17 @@
   }
   .tel { font-family: var(--font-cond); font-weight: 700; letter-spacing: 0.04em; color: var(--color-rosso); font-variant-numeric: tabular-nums; }
 
+  /* Caslon display: the voice of the boutique. */
   .titolo {
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.04;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.06;
     text-wrap: balance;
   }
   .testo { max-width: 62ch; text-wrap: pretty; }
 
-  /* Buttons are slabs too: rectangular, flat, cut clean. */
+  /* Buttons: flat slabs, cut clean. */
   .btn {
     position: relative;
     display: inline-flex;
@@ -118,53 +115,45 @@
     overflow: hidden;
   }
   .btn:active { transform: translateY(1px); }
-  .btn-verde { background: var(--color-verde); color: #fff; }
-  .btn-verde .tel { color: #ffd2d0; }
-  .btn-pietra { background: var(--color-pietra); color: var(--color-verde); box-shadow: inset 0 0 0 1px rgb(13 85 70 / 0.35); }
-  .btn-chiaro { background: #fff; color: var(--color-verde); }
+  .btn-cacao { background: var(--color-cacao); color: var(--color-panna); }
+  .btn-cacao .tel { color: var(--color-miele-chiaro); }
+  .btn-crema { background: var(--color-crema); color: var(--color-cacao); box-shadow: inset 0 0 0 1px rgb(74 44 29 / 0.3); }
+  .btn-chiaro { background: var(--color-panna); color: var(--color-cacao); }
   @media (hover: hover) {
-    .btn-verde:hover { background: #0a4639; }
-    .btn-pietra:hover { background: #fff; }
-    .btn-chiaro:hover { background: var(--color-menta); }
+    .btn-cacao:hover { background: var(--color-cacao-chiaro); }
+    .btn-crema:hover { background: var(--color-panna); }
+    .btn-chiaro:hover { background: var(--color-miele-chiaro); }
   }
 
-  /* Honed → polished: a terrazzo slab with a matte veil; the chosen one is polished bare,
-     and a sheen crosses it once when it is chosen. */
-  .levigata {
+  /* A tile of the vitrine menu: cream at rest, cocoa when chosen, and a honey sheen
+     crosses it once when it is chosen. */
+  .tessera {
     position: relative;
     isolation: isolate;
-    background-color: var(--color-graniglia);
-    background-image: url("./graniglia-fitta.svg");
-    background-size: 300px 300px;
+    background: var(--color-crema);
+    color: var(--color-cacao);
+    box-shadow: inset 0 0 0 1px var(--color-filo);
     overflow: hidden;
+    transition: background-color 280ms ease, color 280ms ease;
   }
-  .levigata::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: rgb(245 243 238 / 0.88);
-    transition: background-color 320ms ease;
-  }
-  .levigata[aria-selected="true"]::before,
-  .levigata[aria-pressed="true"]::before { background: var(--color-verde); inset: 0 0 5px; }
-  .levigata[aria-selected="true"] { color: #fff; }
-  .levigata::after {
+  .tessera[aria-selected="true"],
+  .tessera[aria-pressed="true"] { background: var(--color-cacao); color: var(--color-panna); box-shadow: inset 0 -3px 0 var(--color-miele); }
+  .tessera::after {
     content: "";
     position: absolute;
     inset: -20% auto -20% -40%;
     width: 30%;
     z-index: -1;
-    background: rgb(255 255 255 / 0.22);
+    background: rgb(235 203 143 / 0.28);
     transform: translateX(-120%) skewX(-18deg);
     pointer-events: none;
   }
-  .levigata[aria-selected="true"]::after { animation: lucidatura 900ms var(--ease-smooth) 1; }
+  .tessera[aria-selected="true"]::after { animation: lucidatura 900ms var(--ease-smooth) 1; }
   @keyframes lucidatura {
     to { transform: translateX(560%) skewX(-18deg); }
   }
   @media (hover: hover) {
-    .levigata:not([aria-selected="true"]):hover::before { background: rgb(245 243 238 / 0.62); }
+    .tessera:not([aria-selected="true"]):hover { background: var(--color-panna); }
   }
 
   .strip {
@@ -186,5 +175,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .levigata::after { animation: none !important; }
+  .tessera::after { animation: none !important; }
 }

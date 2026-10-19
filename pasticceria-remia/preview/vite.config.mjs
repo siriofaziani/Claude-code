@@ -25,6 +25,7 @@ export default defineConfig({
   plugins: [jsxInJs, react(), tailwindcss(), viteSingleFile()],
   resolve: {
     alias: {
+      "@/data/media": here("./media.js"),
       "@": here("../src"),
       "next/image": here("./shims/image.jsx"),
       

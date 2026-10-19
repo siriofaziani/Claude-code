@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "images": "node scripts/prepare-images.mjs",
-    "graniglia": "node scripts/graniglia.mjs",
     "preview:file": "vite build --config preview/vite.config.mjs && cp out/preview/index.html anteprima.html"
   },
   "dependencies": {
@@ -19,6 +18,7 @@
   "devDependencies": {
     "@fontsource-variable/jost": "^5.3.0",
     "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/libre-caslon-display": "^5.3.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.1.2",

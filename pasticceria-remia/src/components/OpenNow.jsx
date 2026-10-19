@@ -79,8 +79,8 @@ export default function OpenNow({ tone = "light", className = "" }) {
         {s?.open && <span className={`absolute inset-0 rounded-full ${dot} animate-[respiro_2.6s_ease-out_infinite] motion-reduce:animate-none`} />}
         <span className={`relative h-2.5 w-2.5 rounded-full ${dot}`} />
       </span>
-      <span className={`cond text-[1.08rem] ${tone === "dark" ? "text-white" : s?.open ? "text-verde" : "text-rosso"}`}>{s?.head ?? "Orari"}</span>
-      <span className={`text-[0.98rem] ${tone === "dark" ? "text-menta" : "text-grigio"}`}>{s?.tail ?? ""}</span>
+      <span className={`cond text-[1.08rem] ${tone === "dark" ? "text-white" : s?.open ? "text-cacao" : "text-rosso"}`}>{s?.head ?? "Orari"}</span>
+      <span className={`text-[0.98rem] ${tone === "dark" ? "text-miele-chiaro" : "text-tostato"}`}>{s?.tail ?? ""}</span>
     </p>
   );
 }
