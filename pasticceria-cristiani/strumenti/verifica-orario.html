@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verifica orario · Pasticceria Cristiani</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #f5ede0; color: #2a1a13; font: 17px/1.5 system-ui, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 20px 48px; }
+  h1 { font: 600 1.6rem/1.2 Georgia, serif; color: #5b2418; margin: 0 0 6px; }
+  p.note { color: #5c4636; margin: 0 0 24px; }
+  dl { margin: 0; border-top: 1px solid #b08d3c; }
+  div.row { display: grid; grid-template-columns: 11rem 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgb(176 141 60 / 0.45); }
+  dt { color: #5c4636; }
+  dd { margin: 0; font-weight: 600; }
+  .ok { color: #2f6b2a; } .ko { color: #a5321c; }
+  @media (max-width: 480px) { div.row { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Verifica orario</h1>
+  <p class="note">Questa pagina mostra l'ora che il sito legge da questo dispositivo e la confronta con l'ora presa da internet.</p>
+  <dl id="out"></dl>
+</main>
+<script>
+const DAYS = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+const lastSundayUTC = (y, m) => { const d = new Date(Date.UTC(y, m + 1, 0, 1)); d.setUTCDate(d.getUTCDate() - d.getUTCDay()); return d.getTime(); };
+function rome(t) {
+  const y = new Date(t).getUTCFullYear();
+  const summer = t >= lastSundayUTC(y, 2) && t < lastSundayUTC(y, 9);
+  const r = new Date(t + (summer ? 2 : 1) * 3600000);
+  return `${DAYS[r.getUTCDay()]} ${r.getUTCDate()}/${r.getUTCMonth() + 1}/${r.getUTCFullYear()}, ${String(r.getUTCHours()).padStart(2, "0")}:${String(r.getUTCMinutes()).padStart(2, "0")}`;
+}
+const out = document.getElementById("out");
+const row = (k, v, cls = "") => { const d = document.createElement("div"); d.className = "row"; d.innerHTML = `<dt>${k}</dt><dd class="${cls}">${v}</dd>`; out.appendChild(d); return d; };
+const now = Date.now();
+row("Orologio del dispositivo", new Date(now).toString());
+row("Fuso del dispositivo", Intl.DateTimeFormat().resolvedOptions().timeZone || "sconosciuto");
+row("Ora di Roma per il sito", rome(now));
+const net = row("Ora di Roma da internet", "in verifica…");
+const show = (t) => {
+  const diff = Math.round((now - t) / 60000);
+  net.querySelector("dd").textContent = rome(t);
+  row("Differenza", Math.abs(diff) < 3 ? "nessuna: l'orologio è giusto" : `l'orologio del dispositivo è ${diff > 0 ? "avanti" : "indietro"} di ${Math.abs(diff) >= 1440 ? Math.round(Math.abs(diff) / 1440) + " giorno/i" : Math.abs(diff) + " minuti"}`, Math.abs(diff) < 3 ? "ok" : "ko");
+};
+fetch("https://worldtimeapi.org/api/timezone/Etc/UTC", { cache: "no-store" })
+  .then((r) => r.json()).then((j) => show(Date.parse(j.utc_datetime)))
+  .catch(() => fetch("https://timeapi.io/api/Time/current/zone?timeZone=UTC", { cache: "no-store" })
+    .then((r) => r.json()).then((j) => show(Date.parse(j.dateTime + "Z")))
+    .catch(() => { net.querySelector("dd").textContent = "non disponibile (questa finestra non può collegarsi a internet)"; }));
+</script>
+</body>
+</html>
