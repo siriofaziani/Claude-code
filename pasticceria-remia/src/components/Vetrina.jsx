@@ -18,15 +18,21 @@ const BANDS = [
 ];
 const LAST = { 1: { rows: 5, cols: [12] }, 2: { rows: 5, cols: [7, 5] }, 3: { rows: 4, cols: [3, 5, 4] } };
 // Once the sharp photos run out, small bands only; a short last band leaves a deliberate terrazzo void.
-const SMALL = [{ rows: 5, cols: [4, 4, 4] }, { rows: 4, cols: [3, 3, 3, 3] }];
-const SMALL_LAST = { 1: { rows: 5, cols: [4] }, 2: { rows: 5, cols: [4, 4] }, 3: { rows: 5, cols: [4, 4, 4] } };
+// Uneven too: the 5-column slot takes the widest of the small photos, so nothing is stretched much.
+const SMALL = [{ rows: 4, cols: [3, 5, 4] }, { rows: 5, cols: [5, 3, 4] }];
+const SMALL_LAST = { 1: { rows: 4, cols: [5] }, 2: { rows: 4, cols: [5, 4] }, 3: { rows: 4, cols: [3, 5, 4] } };
 const SHARP = 1000;
 const FIRST = 11;
 
 function layout(list) {
   const hi = list.filter((p) => images[p.name]?.width >= SHARP);
   const lo = list.filter((p) => !(images[p.name]?.width >= SHARP));
-  const take = (wide) => (wide ? hi.shift() ?? lo.shift() : lo.shift() ?? hi.shift());
+  const widest = () => {
+    if (!lo.length) return undefined;
+    const i = lo.reduce((best, p, k) => (images[p.name].width > images[lo[best].name].width ? k : best), 0);
+    return lo.splice(i, 1)[0];
+  };
+  const take = (wide) => (wide ? hi.shift() ?? widest() : lo.shift() ?? hi.shift());
   const tiles = [];
   // Desktop: the first band is the category slab (5 columns) beside the sharpest photo (7).
   const first = take(true);
@@ -45,11 +51,13 @@ function layout(list) {
     }
     b++;
   }
-  // Phone: sharp photos run full width, the others in pairs; a lone small one closes the row.
-  let order = 0, held = null;
+  // Phone: sharp photos run full width; the others alternate a half-width pair and one full-width
+  // tile, so the column never settles into an even grid. A lone small one closes the row.
+  let order = 0, held = null, wideNext = false;
   for (const t of tiles) {
     if (images[t.ph.name]?.width >= SHARP) Object.assign(t, { mc: 6, mr: 5, mo: ++order });
-    else if (held) { Object.assign(held, { mc: 3, mr: 4, mo: ++order }); Object.assign(t, { mc: 3, mr: 4, mo: ++order }); held = null; }
+    else if (wideNext && !held) { Object.assign(t, { mc: 6, mr: 4, mo: ++order }); wideNext = false; }
+    else if (held) { Object.assign(held, { mc: 3, mr: 4, mo: ++order }); Object.assign(t, { mc: 3, mr: 4, mo: ++order }); held = null; wideNext = true; }
     else held = t;
   }
   if (held) Object.assign(held, { mc: 6, mr: 4, mo: ++order });
@@ -135,8 +143,21 @@ export default function Vetrina() {
           >
             {photos.length ? (
               <>
+                <div className="lastra mb-1.5 flex flex-col gap-4 p-5 md:hidden">
+                  <h3 className="titolo text-[1.9rem] text-verde sm:text-[2.4rem]">{cat.title}</h3>
+                  <p className="testo text-[1.06rem] text-inchiostro/85 md:text-[1.12rem]">{cat.text}</p>
+                  {cat.quote && (
+                    <p className="text-[0.95rem] text-grigio">
+                      «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
+                    </p>
+                  )}
+                  <a href={shop.phoneHref} className="mt-auto flex items-center justify-between gap-3 border-t border-vena pt-4 text-verde hover:text-verde-testo">
+                    <span>Ordinate al telefono</span>
+                    <span className="tel text-[1.15rem]">Tel. {shop.phone}</span>
+                  </a>
+                </div>
                 <ul className="grid auto-rows-[3.4rem] grid-cols-6 gap-1.5 md:auto-rows-[clamp(3.4rem,5.4vw,5.6rem)] md:grid-cols-12">
-                  <li className="lastra col-span-6 row-span-4 flex flex-col gap-4 p-5 sm:p-7 md:col-span-5 md:row-span-5">
+                  <li className="lastra hidden flex-col gap-4 p-7 md:col-span-5 md:row-span-5 md:flex">
                     <h3 className="titolo text-[1.9rem] text-verde sm:text-[2.4rem]">{cat.title}</h3>
                     <p className="testo text-[1.06rem] text-inchiostro/85 md:text-[1.12rem]">{cat.text}</p>
                     {cat.quote && (
@@ -144,7 +165,7 @@ export default function Vetrina() {
                         «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
                       </p>
                     )}
-                    <a href={shop.phoneHref} className="mt-auto hidden items-center justify-between gap-3 border-t border-vena pt-4 text-verde hover:text-verde-testo md:flex">
+                    <a href={shop.phoneHref} className="mt-auto flex items-center justify-between gap-3 border-t border-vena pt-4 text-verde hover:text-verde-testo">
                       <span>Ordinate al telefono</span>
                       <span className="tel text-[1.15rem]">Tel. {shop.phone}</span>
                     </a>
