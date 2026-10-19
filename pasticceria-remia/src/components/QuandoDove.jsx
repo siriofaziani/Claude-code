@@ -46,12 +46,12 @@ export default function QuandoDove() {
               </tbody>
             </table>
             <figure className="relative ml-auto mt-3 w-[62%] max-w-[15rem] sm:absolute sm:-right-2 sm:top-14 sm:mt-0 sm:w-48 lg:w-56">
-              <div className="relative aspect-[4/3] bg-pietra p-1.5">
-                <div className="relative h-full w-full overflow-hidden">
+              <div className="bg-pietra p-1.5">
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <Photo name="cartello-orari" fill sizes="240px" alt="Il cartello degli orari sulla porta: dal martedì al venerdì 7:30–13:30 e 15:00–20:30, sabato e domenica orario continuato 7:30–20:30, lunedì chiuso" className="object-cover" />
                 </div>
+                <figcaption className="cond px-1 pb-0.5 pt-1.5 text-[0.85rem] text-grigio">Il cartello sulla porta</figcaption>
               </div>
-              <figcaption className="cond mt-1.5 text-[0.85rem] text-menta">Il cartello sulla porta</figcaption>
             </figure>
           </div>
           <p className="testo mt-6 text-[1rem] text-menta">Sabato e domenica orario continuato. La domenica c'è più fila: per torte e vassoi conviene ordinare prima, al telefono.</p>

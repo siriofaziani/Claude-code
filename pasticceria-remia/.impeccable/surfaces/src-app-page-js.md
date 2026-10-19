@@ -22,3 +22,10 @@ FIRST VIEWPORT: The full-bleed facade photo with the sign. Overlapping its lower
 FORM: Graniglia & insegna verde; position 5 on the grounded list (the shop's stone surfaces); seed key 0d854537.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+
+## Recorded deviations (finish review, round 1)
+
+- Walk captions sit on stone slabs, not as bare thin type: the counter photo is bright and busy, and bare type over it fails contrast at phone sizes. The slab is the world's own device; the type on it stays Jost Light.
+- Red also marks the closed state ("Oggi chiuso", the closed dot, "Chiuso" in the table): it is the one piece of information as urgent as the phone number, and the sign's red is the page's only alarm colour. Open states use the sign green.
+- On the bottle-green primary button the Tel. number is a light rose (#ffd2d0): sign red on bottle green fails contrast (about 2:1).
+- Mobile facade: at 390px wide the full lettering "F.lli Remia" and the right-hand door cannot share the frame (they span 27% of the photo; the phone shows 26%). The crop keeps the door the walk enters, and the header carries the full wordmark.

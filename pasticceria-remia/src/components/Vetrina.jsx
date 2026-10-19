@@ -3,17 +3,58 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import images from "@/data/images.json";
-import { categories } from "@/data/content";
+import { categories, shop } from "@/data/content";
 import Photo from "./Photo";
 import OrderActions from "./OrderActions";
 import { ChevronIcon, CloseIcon, ExpandIcon } from "./Icons";
 
-// Asymmetric mosaic: [columns, rows] per tile on a 12-column grid (desktop) and 6 columns (phone).
-const WIDE = [[7, 6], [5, 4], [5, 5], [4, 4], [3, 4], [5, 4], [3, 3], [4, 5], [5, 4], [3, 4]];
-const NARROW = [[6, 6], [3, 4], [3, 5], [3, 4], [6, 4], [3, 5], [3, 4]];
+// Asymmetric mosaic in bands that always close to 12 columns (desktop). Wide slots (5+ columns)
+// take only photos at least 1000px wide, so no small phone photo is stretched across a big tile.
+const BANDS = [
+  { rows: 4, cols: [3, 5, 4] },
+  { rows: 5, cols: [7, 5] },
+  { rows: 4, cols: [4, 3, 5] },
+  { rows: 5, cols: [5, 7] },
+];
+const LAST = { 1: { rows: 5, cols: [12] }, 2: { rows: 5, cols: [7, 5] }, 3: { rows: 4, cols: [3, 5, 4] } };
+// Once the sharp photos run out, small bands only; a short last band leaves a deliberate terrazzo void.
+const SMALL = [{ rows: 5, cols: [4, 4, 4] }, { rows: 4, cols: [3, 3, 3, 3] }];
+const SMALL_LAST = { 1: { rows: 5, cols: [4] }, 2: { rows: 5, cols: [4, 4] }, 3: { rows: 5, cols: [4, 4, 4] } };
+const SHARP = 1000;
 const FIRST = 11;
 
-const span = (list, i) => list[i % list.length];
+function layout(list) {
+  const hi = list.filter((p) => images[p.name]?.width >= SHARP);
+  const lo = list.filter((p) => !(images[p.name]?.width >= SHARP));
+  const take = (wide) => (wide ? hi.shift() ?? lo.shift() : lo.shift() ?? hi.shift());
+  const tiles = [];
+  // Desktop: the first band is the category slab (5 columns) beside the sharpest photo (7).
+  const first = take(true);
+  if (first) tiles.push({ ph: first, dc: 7, dr: 5 });
+  let b = 0;
+  while (hi.length + lo.length) {
+    const left = hi.length + lo.length;
+    const wide = BANDS[b % BANDS.length];
+    const wideNeed = wide.cols.filter((c) => c >= 5).length;
+    let band;
+    if (hi.length >= wideNeed) band = left < wide.cols.length ? LAST[left] : wide;
+    else { const small = SMALL[b % 2]; band = left < small.cols.length ? SMALL_LAST[left] : small; }
+    for (const c of band.cols) {
+      const ph = take(c >= 5);
+      if (ph) tiles.push({ ph, dc: c, dr: band.rows });
+    }
+    b++;
+  }
+  // Phone: sharp photos run full width, the others in pairs; a lone small one closes the row.
+  let order = 0, held = null;
+  for (const t of tiles) {
+    if (images[t.ph.name]?.width >= SHARP) Object.assign(t, { mc: 6, mr: 5, mo: ++order });
+    else if (held) { Object.assign(held, { mc: 3, mr: 4, mo: ++order }); Object.assign(t, { mc: 3, mr: 4, mo: ++order }); held = null; }
+    else held = t;
+  }
+  if (held) Object.assign(held, { mc: 6, mr: 4, mo: ++order });
+  return tiles.map((t, i) => ({ ...t, od: i + 1 }));
+}
 
 export default function Vetrina() {
   const [active, setActive] = useState(categories[0].id);
@@ -74,8 +115,8 @@ export default function Vetrina() {
               onClick={() => { setActive(c.id); setAll(false); }}
               className="levigata flex min-h-[4.25rem] min-w-[9.5rem] flex-col items-start justify-center px-4 text-left sm:min-w-[11rem]"
             >
-              <span className="cond text-[1.2rem] text-verde">{c.short}</span>
-              <span className="text-[0.86rem] text-grigio">{c.photos.length ? `${c.photos.length} foto` : "su ordinazione"}</span>
+              <span className={`cond text-[1.2rem] ${active === c.id ? "text-white" : "text-verde"}`}>{c.short}</span>
+              <span className={`text-[0.86rem] ${active === c.id ? "text-menta" : "text-grigio"}`}>{c.photos.length ? `${c.photos.length} foto` : "su ordinazione"}</span>
             </button>
           ))}
         </div>
@@ -94,26 +135,27 @@ export default function Vetrina() {
           >
             {photos.length ? (
               <>
-                <ul className="grid auto-rows-[3.4rem] grid-cols-6 gap-1.5 [grid-auto-flow:dense] md:auto-rows-[clamp(3.4rem,5.4vw,5.6rem)] md:grid-cols-12">
-                  <li className="lastra col-span-6 row-span-4 flex flex-col justify-between gap-4 p-5 sm:p-7 md:col-span-5 md:row-span-4">
+                <ul className="grid auto-rows-[3.4rem] grid-cols-6 gap-1.5 md:auto-rows-[clamp(3.4rem,5.4vw,5.6rem)] md:grid-cols-12">
+                  <li className="lastra col-span-6 row-span-4 flex flex-col gap-4 p-5 sm:p-7 md:col-span-5 md:row-span-5">
                     <h3 className="titolo text-[1.9rem] text-verde sm:text-[2.4rem]">{cat.title}</h3>
-                    <div>
-                      <p className="testo text-[1.06rem] text-inchiostro/85 md:text-[1.12rem]">{cat.text}</p>
-                      {cat.quote && (
-                        <p className="mt-3 border-t border-vena pt-3 text-[0.95rem] text-grigio">
-                          «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
-                        </p>
-                      )}
-                    </div>
+                    <p className="testo text-[1.06rem] text-inchiostro/85 md:text-[1.12rem]">{cat.text}</p>
+                    {cat.quote && (
+                      <p className="text-[0.95rem] text-grigio">
+                        «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
+                      </p>
+                    )}
+                    <a href={shop.phoneHref} className="mt-auto hidden items-center justify-between gap-3 border-t border-vena pt-4 text-verde hover:text-verde-testo md:flex">
+                      <span>Ordinate al telefono</span>
+                      <span className="tel text-[1.15rem]">Tel. {shop.phone}</span>
+                    </a>
                   </li>
-                  {shown.map((ph, i) => {
-                    const [wc, wr] = span(WIDE, i);
-                    const [nc, nr] = span(NARROW, i);
+                  {layout(shown).map(({ ph, dc, dr, mc, mr, mo, od }) => {
                     const img = images[ph.name];
+                    const i = photos.indexOf(ph);
                     return (
-                      <li key={ph.name} style={{ "--wc": wc, "--wr": wr, "--nc": nc, "--nr": nr }} className="relative col-span-[var(--nc)] row-span-[var(--nr)] md:col-span-[var(--wc)] md:row-span-[var(--wr)]">
+                      <li key={ph.name} style={{ "--dc": dc, "--dr": dr, "--mc": mc, "--mr": mr, "--mo": mo, "--od": od }} className="relative order-(--mo) col-span-(--mc) row-span-(--mr) md:order-(--od) md:col-span-(--dc) md:row-span-(--dr)">
                         <button type="button" onClick={() => setViewer(i)} className="group absolute inset-0 overflow-hidden bg-vena text-left" aria-label={`${ph.caption}: apri la foto`}>
-                          <Photo name={ph.name} fill sizes={wc >= 6 ? "(min-width: 768px) 55vw, 100vw" : "(min-width: 768px) 30vw, 50vw"} alt={ph.caption} className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]" />
+                          <Photo name={ph.name} fill sizes={dc >= 7 ? "(min-width: 768px) 55vw, 100vw" : dc >= 5 ? "(min-width: 768px) 40vw, 100vw" : "(min-width: 768px) 30vw, 50vw"} alt={ph.caption} className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]" />
                           <span className="lastra absolute bottom-0 left-0 max-w-[88%] px-3 py-2 text-[0.88rem] leading-snug sm:text-[0.92rem]">{ph.caption}</span>
                           <span className="absolute right-2 top-2 grid h-9 w-9 place-items-center bg-pietra/90 text-verde opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"><ExpandIcon size={17} /></span>
                           {img?.by === "customer" && <span className="sr-only">Foto di un cliente</span>}

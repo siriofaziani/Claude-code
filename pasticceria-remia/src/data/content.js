@@ -39,7 +39,7 @@ export const hours = [
 
 export const walk = {
   title: "La pasticceria di Centocelle, dal 1979",
-  lede: "Produzione propria, servizi per nozze e rinfreschi. Paste, mignon, torte e salato, ogni giorno dal nostro laboratorio.",
+  lede: "Produzione propria, servizi per nozze e rinfreschi. Paste, mignon, torte e salato dal nostro laboratorio, dal martedì alla domenica.",
   steps: [
     { at: 0.32, text: "Si entra dalla porta di destra." },
     { at: 0.56, text: "Produzione propria, dal 1979." },

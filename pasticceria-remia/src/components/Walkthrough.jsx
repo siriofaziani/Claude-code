@@ -60,7 +60,7 @@ export default function Walkthrough() {
       const H = stage.current.clientHeight;
       let iw, ih;
       if (W / H > A) { iw = W; ih = W / A; } else { ih = H; iw = H * A; }
-      const fx = W < 768 ? 0.6 : 0.5;
+      const fx = W < 768 ? 0.555 : 0.5;
       const left = clamp(W / 2 - fx * iw, W - iw, 0);
       const top = (H - ih) / 2;
       const f = facade.current.style;
@@ -145,12 +145,14 @@ export default function Walkthrough() {
   }, [still]);
 
   const introSlab = (
-    <div ref={intro} className="lastra absolute inset-x-0 bottom-0 z-20 px-5 pb-[max(env(safe-area-inset-bottom),20px)] pt-6 will-change-transform sm:inset-x-auto sm:bottom-8 sm:left-6 sm:w-[min(36rem,calc(100%-3rem))] sm:p-8 lg:left-10 lg:bottom-10 lg:p-10">
+    <div ref={intro} className="graniglia-fitta absolute inset-x-0 bottom-0 z-20 p-1.5 pb-0 will-change-transform sm:inset-x-auto sm:bottom-8 sm:left-6 sm:w-[min(37rem,calc(100%-3rem))] sm:p-2 lg:bottom-10 lg:left-10">
+      <div className="lastra px-5 pb-[max(env(safe-area-inset-bottom),20px)] pt-6 sm:p-8 lg:p-10">
       <OpenNow className="mb-3" />
       <h1 className="titolo text-[2.15rem] text-verde sm:text-[2.9rem] lg:text-[3.4rem]">{walk.title}</h1>
       <p className="testo mt-3 text-[1.02rem] text-inchiostro/80 sm:text-[1.08rem]">{walk.lede}</p>
       <div data-hero-cta>
         <OrderActions className="mt-5" />
+      </div>
       </div>
     </div>
   );
@@ -179,13 +181,13 @@ export default function Walkthrough() {
 
         <div ref={inside} className="absolute inset-0 opacity-0 will-change-[clip-path,opacity]" style={{ clipPath: "inset(50%)" }}>
           <div ref={insideImg} className="absolute inset-0 will-change-transform">
-            <Photo name="interno-bancone" fill sizes="100vw" alt="" className="object-cover object-[50%_60%]" />
+            <Photo name="interno-bancone" fill sizes="(orientation: portrait) 170vw, 100vw" alt="" className="object-cover object-[50%_60%]" />
           </div>
         </div>
 
         <div ref={counter} className="absolute inset-0 opacity-0 will-change-[opacity]">
           <div ref={counterImg} className="absolute inset-0 will-change-transform">
-            <Photo name="bancone" fill sizes="100vw" alt="Il bancone: paste, mignon, frappe, meringhe e biscotti" className="object-cover object-[45%_center]" />
+            <Photo name="bancone" fill sizes="(orientation: portrait) 300vw, 100vw" alt="Il bancone: paste, mignon, frappe, meringhe e biscotti" className="object-cover object-[45%_center]" />
           </div>
         </div>
 

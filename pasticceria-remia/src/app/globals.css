@@ -143,18 +143,19 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: rgb(245 243 238 / 0.82);
+    background: rgb(245 243 238 / 0.88);
     transition: background-color 320ms ease;
   }
   .levigata[aria-selected="true"]::before,
-  .levigata[aria-pressed="true"]::before { background: rgb(245 243 238 / 0.42); }
+  .levigata[aria-pressed="true"]::before { background: var(--color-verde); inset: 0 0 5px; }
+  .levigata[aria-selected="true"] { color: #fff; }
   .levigata::after {
     content: "";
     position: absolute;
     inset: -20% auto -20% -40%;
     width: 30%;
     z-index: -1;
-    background: rgb(255 255 255 / 0.55);
+    background: rgb(255 255 255 / 0.22);
     transform: translateX(-120%) skewX(-18deg);
     pointer-events: none;
   }
@@ -170,6 +171,7 @@
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
