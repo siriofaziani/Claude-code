@@ -23,7 +23,13 @@ export default function Home() {
       <main>
         <Hero />
 
-        <section id="vetrine" aria-label="La vetrina" className={`${sheet} bg-crema pb-28 pt-20 md:pb-40 md:pt-28`}>
+        <section id="chi-siamo" aria-label="La nostra storia a Centocelle" className={`${sheet} bg-crema pb-28 pt-20 md:pb-40 md:pt-28`}>
+          <div className={wrap}>
+            <Storia />
+          </div>
+        </section>
+
+        <section id="vetrine" aria-label="La vetrina" className={`${sheet} bg-panna pb-28 pt-20 md:pb-40 md:pt-28`}>
           <div className={wrap}>
             <Vetrina />
           </div>
@@ -44,13 +50,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="chi-siamo" aria-label="La nostra storia a Centocelle" className={`${sheet} bg-crema pb-28 pt-20 md:pb-40 md:pt-28`}>
-          <div className={wrap}>
-            <Storia />
-          </div>
-        </section>
-
-        <section id="recensioni" aria-labelledby="recensioni-titolo" className={`${sheet} bg-espresso pb-28 pt-20 text-panna md:pb-36 md:pt-28`}>
+        <section id="recensioni" aria-labelledby="recensioni-titolo" className={`${sheet} bg-espresso-2 pb-28 pt-20 text-panna md:pb-36 md:pt-28`}>
           <div className={`${wrap} mb-12 grid gap-6 md:mb-16 md:grid-cols-12 md:items-end`}>
             <div className="md:col-span-7">
               <StaggerText as="h2" text="Chi ci conosce, torna" className="serif block text-[clamp(2.7rem,7vw,5rem)] text-panna" />

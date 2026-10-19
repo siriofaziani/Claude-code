@@ -52,7 +52,7 @@ export default function Header() {
 
   return (
     <>
-      <a href="#vetrine" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-panna focus:px-4 focus:py-2">Vai al contenuto</a>
+      <a href="#chi-siamo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-panna focus:px-4 focus:py-2">Vai al contenuto</a>
       <motion.header
         initial={reduce ? false : { y: -24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

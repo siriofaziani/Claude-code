@@ -240,7 +240,7 @@ A warm, low-saturation bakery palette of cream, brass and roasted brown, with gr
 
 ## Layout
 
-A single 1360px container (`mx-auto`, 1.25rem gutters, 2.5rem from md) on a 12-column grid at md/lg; headings usually take 5–7 columns with their intro aligned to the bottom of the remaining columns. Sections are generous: 5rem top / 7rem bottom on mobile, 7rem / 10rem from md. Each section after the hero is a sheet pulled up by -2.5rem (-3.5rem md) over the previous one.
+A single 1360px container (`mx-auto`, 1.25rem gutters, 2.5rem from md) on a 12-column grid at md/lg; headings usually take 5–7 columns with their intro aligned to the bottom of the remaining columns. Sections are generous: 5rem top / 7rem bottom on mobile, 7rem / 10rem from md. Each section after the hero is a sheet pulled up by -2.5rem (-3.5rem md) over the previous one. Order and grounds: hero (espresso), story and day timeline (crema), vitrine (panna), order wizard (espresso), reviews (espresso-2, cards in espresso), contacts (crema), footer (espresso); neighbouring sheets always differ by at least one tone step.
 
 The hero is full height (`100svh`), copy anchored to the bottom on mobile and centred on lg, with three floating product photos in a 5-column stage on lg only. Grids collapse to one column (or two-up photos) on mobile; the vitrine is 2 columns, 3 on lg, with an espresso intro card in the first cell and the first photo widened when the count is odd. Sticky elements: the story heading (top 8rem) and the wizard message preview (top 7rem) on lg. All tap targets are at least 44px (`min-h-11`); safe-area insets pad the header, hero, menu and footer. `scroll-padding-top: 6rem` clears the floating header.
 

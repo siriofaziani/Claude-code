@@ -4,7 +4,7 @@ import { Star, TripadvisorIcon } from "./Icons";
 
 function Card({ r, copy }) {
   return (
-    <figure className="flex h-full w-[min(84vw,25rem)] flex-col justify-between gap-6 rounded-[1.75rem] bg-espresso-2 p-6 shadow-[inset_0_0_0_1px_rgb(236_216_166/0.16)] md:w-[27rem] md:p-7">
+    <figure className="flex h-full w-[min(84vw,25rem)] flex-col justify-between gap-6 rounded-[1.75rem] bg-espresso p-6 shadow-[inset_0_0_0_1px_rgb(236_216_166/0.16)] md:w-[27rem] md:p-7">
       <div>
         <span className="flex gap-1 text-oro" role="img" aria-label={copy ? undefined : "5 stelle su 5"}>
           {Array.from({ length: 5 }, (_, k) => <Star key={k} size={17} />)}

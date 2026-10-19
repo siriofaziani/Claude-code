@@ -37,6 +37,8 @@ vassoio nuovo sul bancone (fogli con gli angoli arrotondati).
 - **Apertura**: "Cristiani" in foglia d'oro, lettera per lettera, con una luce calda dietro; fascio di luce in
   stile Aceternity Spotlight; tre torte vere che fluttuano e seguono il mouse; badge "aperto ora" in tempo reale;
   pulsanti verso il wizard d'ordine e la vetrina.
+- **La storia** (subito dopo l'apertura): i tre paragrafi su schede con foto in parallasse e, sotto, "Una giornata al bancone": la linea
+  d'oro si disegna scorrendo e un punto verde segna l'ora di adesso (ora di Roma) fra apertura, pausa e chiusura.
 - **La vetrina**: filtro animato (Tutto, Mignon, Torte su misura, Salato, Festività) senza ricaricare la pagina,
   con layout animato; card 3D che si inclinano verso il mouse con un riflesso di luce (Aceternity 3D card);
   ogni foto si apre a schermo intero. Il pulsante di ogni reparto apre il wizard già impostato.
@@ -45,8 +47,6 @@ vassoio nuovo sul bancone (fogli con gli angoli arrotondati).
   torte la dedica compare scritta sulla placchetta. Il lunedì non si può scegliere (chiuso) e gli orari di ritiro
   vengono dagli orari reali del giorno scelto. Un clic su "Invia su WhatsApp" apre la chat al 333 617 7105 con il
   messaggio formattato (grassetti WhatsApp), senza server.
-- **La storia**: i tre paragrafi su schede con foto in parallasse e, sotto, "Una giornata al bancone": la linea
-  d'oro si disegna scorrendo e un punto verde segna l'ora di adesso (ora di Roma) fra apertura, pausa e chiusura.
 - **Recensioni**: due file di schede che scorrono all'infinito in direzioni opposte (Aceternity infinite moving
   cards), si fermano sotto il mouse.
 - **Vieni a trovarci**: scheda con indirizzo, stato in tempo reale, orari con il giorno di oggi evidenziato,
