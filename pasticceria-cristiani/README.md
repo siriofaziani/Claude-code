@@ -32,9 +32,11 @@ e lascia il posto ai pasticcini veri. Poi le vetrine diventano la pagina.
 
 - Colori del locale: panna, mogano del banco, cioccolato, ottone solo per filetti e finiture.
 - Titoli in Bodoni Moda (il bodoni italiano delle insegne), testo in Figtree, e la "placchetta di cioccolato"
-  in corsivo (Petit Formal Script) come sulle torte con dedica: nomi delle recensioni, didascalie speciali.
+  in corsivo (Petit Formal Script) come sulle torte con dedica: nomi delle vetrine e firme delle recensioni.
+- Le vetrine sono ripiani: le foto stanno alla stessa altezza su un bordino d'ottone, con le didascalie sotto
+  come cartellini; su telefono ogni ripiano si sfoglia col dito.
 - Animazioni solo con transform e opacità: zoom del bancone, entrate a cascata, pillola dorata che scorre fra
   le vetrine (transitions.dev tabs sliding), cifre che girano (spinning counter), errore del modulo (error shake),
-  recensioni che scorrono come un espositore (Aceternity UI infinite moving cards, si fermano al tocco).
+  recensioni una alla volta, grandi, con frecce e tacche d'ottone (si sfogliano anche col dito).
   Con "riduci movimento" del sistema tutto resta fermo.
 - Modulo ordini: compone il messaggio e lo apre su WhatsApp, senza server.

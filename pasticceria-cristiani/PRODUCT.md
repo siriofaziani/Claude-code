@@ -24,13 +24,13 @@ The neighbourhood's own pasticceria: classic Roman pastry made by a family for d
 
 ## Operating Context
 
-Orders and custom cakes by phone (06 2323 2058) or WhatsApp (333 617 7105). Facebook page facebook.com/pasticc.cristiani.1958, Instagram @pasticceriacristianicentocelle, TripAdvisor listing. Opening hours: pending from the owner, not published until supplied.
+Orders and custom cakes by phone (06 2323 2058) or WhatsApp (333 617 7105). Facebook page facebook.com/pasticc.cristiani.1958, Instagram @pasticceriacristianicentocelle, TripAdvisor listing. Opening hours from the owner: Monday closed; Tuesday to Saturday 7:30-13:00 and 15:30-20:00; Sunday 7:30-13:00 and 15:30-18:30.
 
 ## Capabilities and Constraints
 
 - Sections: hero (counter photo, scroll zoom into the vitrines), Chi siamo, Le vetrine del gusto (4 categories), Recensioni, Ordina ora & contatti.
 - No online shop or payments; ordering happens by WhatsApp/phone.
-- Pending from the owner: opening hours, TripAdvisor photo 2 of 11 (counter of pastries), holiday products photos (panettoni, colombe), confirmation of email and founding year.
+- Pending from the owner: holiday products photos (panettoni, colombe), confirmation of email (two different addresses online) and of the founding year. The TripAdvisor photo 2 of 11 (counter of pastry biscuits) is in use.
 
 ## Brand Commitments
 

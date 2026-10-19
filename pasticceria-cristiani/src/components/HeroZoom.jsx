@@ -23,10 +23,8 @@ export default function HeroZoom() {
   const shade = useTransform(p, [0, 0.6], [0.0, 0.5]);
   const copyY = useTransform(p, [0, 0.28], [0, -70]);
   const copyOpacity = useTransform(p, [0, 0.22], [1, 0]);
-  const lineOpacity = useTransform(p, [0.3, 0.42, 0.78, 0.9], [0, 1, 1, 0]);
-  const lineY = useTransform(p, [0.3, 0.42], [24, 0]);
   const vitrineOpacity = useTransform(p, [0.5, 0.74], [0, 1]);
-  const vitrineScale = useTransform(p, [0.5, 1], [1.28, 1]);
+  const vitrineScale = useTransform(p, [0.5, 1], [1.12, 1]);
 
   return (
     <section ref={ref} id="inizio" className={reduce ? "relative" : "relative h-[250svh] md:h-[270vh]"} aria-label="Benvenuti">
@@ -51,14 +49,18 @@ export default function HeroZoom() {
 
         {/* the pastries on the counter come forward */}
         {reduce ? null : (
-          <motion.div className="absolute inset-0 will-change-transform" style={{ opacity: vitrineOpacity, scale: vitrineScale }}>
-            <Photo
-              name={hero.zoomImage}
-              alt="Il bancone dei pasticcini da tè: stelline alla vaniglia, lunette al cioccolato, fiamme e ferri di cavallo"
-              fill
-              sizes="100vw"
-              className="object-cover"
-            />
+          <motion.div className="absolute inset-0 bg-fondente will-change-transform" style={{ opacity: vitrineOpacity, scale: vitrineScale }}>
+            {/* on a phone the landscape vitrine stays whole, as a pane of glass, instead of being stretched */}
+            <div className="absolute inset-x-0 top-1/2 aspect-[16/9] -translate-y-[62%] md:inset-0 md:aspect-auto md:translate-y-0">
+              <Photo
+                name={hero.zoomImage}
+                alt="Il bancone dei pasticcini da tè: stelline alla vaniglia, lunette al cioccolato, fiamme e ferri di cavallo"
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+              <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] bg-ottone md:hidden" />
+            </div>
             <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(23_13_9/0.35),transparent_35%,transparent_60%,rgb(23_13_9/0.75))]" />
           </motion.div>
         )}
@@ -67,7 +69,7 @@ export default function HeroZoom() {
           className="absolute inset-x-0 bottom-0 mx-auto max-w-[1360px] px-5 pb-[max(7rem,env(safe-area-inset-bottom))] md:px-10 md:pb-16"
           style={reduce ? undefined : { y: copyY, opacity: copyOpacity }}
         >
-          <h1 className="serif text-[clamp(3rem,13vw,7.25rem)] font-[600] leading-[0.92] text-[#fff7ea] [text-shadow:0_2px_24px_rgb(23_13_9/0.6)]">
+          <h1 className="serif text-[clamp(3rem,13vw,6rem)] font-[600] leading-[0.92] text-[#fff7ea] [text-shadow:0_2px_24px_rgb(23_13_9/0.6)]">
             <span className="block">Pasticceria</span>
             <span className="block italic">Cristiani</span>
           </h1>
@@ -89,15 +91,6 @@ export default function HeroZoom() {
           <OpenNow />
         </div>
 
-        {reduce ? null : (
-          <motion.p
-            aria-hidden="true"
-            className="serif absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 text-center text-[clamp(2.4rem,9vw,5.5rem)] italic text-[#fff7ea] [text-shadow:0_4px_30px_rgb(0_0_0/0.45)]"
-            style={{ opacity: lineOpacity, y: lineY }}
-          >
-            {hero.zoomLine}
-          </motion.p>
-        )}
       </div>
     </section>
   );

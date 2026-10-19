@@ -44,8 +44,9 @@ export default function Header() {
   return (
     <>
       <a href="#chi-siamo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:bg-panna focus:px-4 focus:py-2">Vai al contenuto</a>
-      <header className={`fixed inset-x-0 top-0 z-50 transition-[background-color,color,box-shadow] duration-500 ${light ? "text-[#fbf2e4]" : "bg-panna/95 text-inchiostro shadow-[0_1px_0_rgb(176_141_60/0.45)]"}`}>
-        <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between gap-4 px-5 md:h-20 md:px-10">
+      <header className={`fixed inset-x-0 top-0 z-50 transition-[background-color,color,box-shadow] duration-500 ${light ? "text-[#fbf2e4]" : "bg-panna text-inchiostro shadow-[0_1px_0_rgb(176_141_60/0.45)]"}`}>
+        <div aria-hidden="true" className={`pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgb(23_13_9/0.7),transparent)] transition-opacity duration-500 ${light && !open ? "opacity-100" : "opacity-0"}`} />
+        <div className="relative mx-auto flex h-16 max-w-[1360px] items-center justify-between gap-4 px-5 md:h-20 md:px-10">
           <a href="#inizio" className="flex items-baseline gap-2" aria-label="Pasticceria Cristiani, torna all'inizio">
             <span className="serif text-[1.45rem] font-[600] italic md:text-[1.7rem]">Cristiani</span>
             <span className="label hidden text-[0.68rem] opacity-80 sm:inline">Pasticceria · Centocelle</span>

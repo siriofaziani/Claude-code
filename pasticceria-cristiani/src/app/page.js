@@ -104,28 +104,12 @@ export default function Home() {
         <section id="contatti" className="scroll-mt-16 bg-mogano py-24 text-[#fbf2e4] md:py-32">
           <div className="mx-auto max-w-[1360px] px-5 md:px-10">
             <Reveal><Title light>Vieni a trovarci</Title></Reveal>
-            <Stagger className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-              {[
-                { href: shop.phoneHref, label: "Chiama", sub: shop.phone, icon: <Phone size={22} /> },
-                { href: whatsappHref(), label: "WhatsApp", sub: shop.whatsappLabel, icon: <WhatsAppIcon size={22} />, ext: true },
-                { href: mapsHref, label: "Indicazioni", sub: "Google Maps", icon: <MapPin size={22} />, ext: true },
-                { href: shop.facebook, label: "Facebook", sub: "La nostra pagina", icon: <FacebookIcon size={22} />, ext: true },
-              ].map((b) => (
-                <StaggerItem key={b.label}>
-                  <a
-                    href={b.href}
-                    {...(b.ext ? { target: "_blank", rel: "noopener" } : {})}
-                    className="group flex h-full min-h-[8.5rem] flex-col justify-between rounded-[12px] bg-[#6d2c1d] p-5 shadow-[inset_0_1px_0_rgb(255_210_170/0.15),0_20px_40px_-30px_rgb(0_0_0/0.8)] transition-[transform,background-color] duration-300 active:scale-[0.98] md:p-6 [@media(hover:hover)]:hover:bg-[#7b3622]"
-                  >
-                    <span className="grid h-11 w-11 place-items-center rounded-full bg-[linear-gradient(180deg,#d6b56a,#b08d3c)] text-[#22140d] transition-transform duration-300 group-hover:-translate-y-0.5">{b.icon}</span>
-                    <span>
-                      <span className="serif block text-[1.5rem]">{b.label}</span>
-                      <span className="block text-[0.9rem] text-[#e6cdb2]">{b.sub}</span>
-                    </span>
-                  </a>
-                </StaggerItem>
-              ))}
-            </Stagger>
+            <Reveal className="mt-10 flex flex-wrap gap-3">
+              <a href={whatsappHref()} target="_blank" rel="noopener" className="btn btn-brass">Ordina su WhatsApp · {shop.whatsappLabel}<span className="btn-fit"><WhatsAppIcon /></span></a>
+              <a href={shop.phoneHref} className="btn btn-ghost text-[#fbf2e4] [--btn-ghost-ink:#5b2418]">Chiama {shop.phone}<span className="btn-fit"><Phone size={17} /></span></a>
+              <a href={mapsHref} target="_blank" rel="noopener" className="btn btn-ghost text-[#fbf2e4] [--btn-ghost-ink:#5b2418]">Indicazioni stradali<span className="btn-fit"><MapPin size={17} /></span></a>
+              <a href={shop.facebook} target="_blank" rel="noopener" className="btn btn-ghost text-[#fbf2e4] [--btn-ghost-ink:#5b2418]">Facebook<span className="btn-fit"><FacebookIcon /></span></a>
+            </Reveal>
             <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
               <Reveal>
                 <address className="serif text-[1.9rem] not-italic leading-tight">{shop.address}<br />{shop.city}</address>
