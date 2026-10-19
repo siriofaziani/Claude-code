@@ -1,0 +1,184 @@
+{
+ "bancone": {
+  "src": "/foto/bancone.webp",
+  "width": 2000,
+  "height": 1000,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoQAAgAA4BaJQBOgCBf90gj6AD8p3jnqXwa3cnY6i3JcAMJx0yz4tAPxm4iujujpGbZqHlsq3skaCMb9fmIx7pB8mQP+cAA",
+  "origin": "chat/1.jpg (hero banner supplied in chat; bottom strip with the old lettering cropped)"
+ },
+ "pasticcini-da-te-bancone": {
+  "src": "/foto/pasticcini-da-te-bancone.webp",
+  "width": 960,
+  "height": 540,
+  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAQAgCdASoQAAkAA4BaJYwCdADhmXA4IlkAAP5WAz6BlnM7knDn3dr3EoZ5bZpRJEk4vts/C14UTx4Bxn5p4VB0bo5/QaM5iFhXxBgfvAAAAA==",
+  "origin": "tripadvisor: https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/15/fa/4b/pasticcini-da-the-13.jpg (photo 2 of 11)"
+ },
+ "torta-mont-blanc": {
+  "src": "/foto/torta-mont-blanc.webp",
+  "width": 1080,
+  "height": 1438,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABwAgCdASoMABAAA4BaJZgCdAYrJbSUp3plMI2AAP5hPf/5ijEkJg62HN7YBXcGRXv1eXCmuPL6hOrrEw7cRcLG6PmBwIYeNij03rfMnX0u1s89dtzZdbB2/FEUDwAA",
+  "origin": "drive/FB_IMG_1792365367035.jpg"
+ },
+ "torta-crema-fragole-macarons": {
+  "src": "/foto/torta-crema-fragole-macarons.webp",
+  "width": 1080,
+  "height": 1059,
+  "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAQAgCdASoQABAAA4BaJbACdAYvXIseF6UAAP7WEdRdAuSOemz2MkPnQ5Qv2IjKWAXsMyw+jC6/5JK6qZzSq6nNcZlP4KsOdm2crph8PTudP86cAVS83v2vpr9LA75tjMAGj3GAC5kTFZRQat6GQAAA",
+  "origin": "drive/FB_IMG_1792365404598.jpg"
+ },
+ "torta-fiori-macarons": {
+  "src": "/foto/torta-fiori-macarons.webp",
+  "width": 1080,
+  "height": 1417,
+  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAQAgCdASoMABAAA4BaJZgCdAELgmt3pfXgAP3qCF6gbNiHjLAVXJrIpoIYyHM9R2SJEUlU8dND2baTGNETGE3vMRm6HmQf0WbX/ZMJ9QaOiQR9nSEgAA==",
+  "origin": "drive/FB_IMG_1792365412195.jpg"
+ },
+ "vassoio-tramezzini-mignon": {
+  "src": "/foto/vassoio-tramezzini-mignon.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoMABAAA4BaJYgCdAEWYC4FW5IgAP6hbbTpwPmUnlSCWmpyXmRJ/QBaBdRpltlgnnsSWaS65H8iRO6BlAXXEsw2gXx8wWHQfjCSPNxFAAA=",
+  "origin": "drive/FB_IMG_1792365427891.jpg"
+ },
+ "torta-tartarughe": {
+  "src": "/foto/torta-tartarughe.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoMABAAA4BaJYgCdAYsZbHXGBF3QADLCdBmHnivr1lSRdiQksVtbab+/IvAcue6NunwtM7jE7W2nLw1dJmyYmOeXzb2PnWytga2NBB9VpIA9DxA+MXwAAAA",
+  "origin": "drive/FB_IMG_1792365436827.jpg"
+ },
+ "pizzette-sfoglia": {
+  "src": "/foto/pizzette-sfoglia.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADQAQCdASoMABAAA4BaJZgCdAYuRYiMIAD+rDS46r1mmLGeVsv3KNpvqAzs0NJWBd5uQiptL4P5gMbWAABAo/33zs2k5phnNMLDMkur7K5pgu1XupKjmhXhJlpdtoDbaQAAAA==",
+  "origin": "drive/FB_IMG_1792365443164.jpg"
+ },
+ "torta-laurea": {
+  "src": "/foto/torta-laurea.webp",
+  "width": 2000,
+  "height": 1498,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAgCdASoQAAwAA4BaJQBOgMWC1ZTqEdrvAAD+113JJR+esIcmWsbp1AO3sAJZ1741PivjRLhQqi3J5rzwSQDVYdA/eFm/Ht22HSfPGyDy7QxCsN6HobM+/BC9+cqAQRuAC5MpwrpyAAAA",
+  "origin": "drive/FB_IMG_1792365450089.jpg"
+ },
+ "bigne-cannoli-vetrina": {
+  "src": "/foto/bigne-cannoli-vetrina.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoMABAAA4BaJaACdAERA5AbAkAA/ZwapxQXd9MV+EfgdCeL70+zT4DRymeqJU2+Du+Vm/UuCISBzhtAMqn8en06en3JWphHgAA=",
+  "origin": "drive/FB_IMG_1792365460902.jpg"
+ },
+ "vetrina-torte-semifreddi": {
+  "src": "/foto/vetrina-torte-semifreddi.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAQAgCdASoMABAAA4BaJQBOgMXNsPwSfOrcAP0sJnPwPy7lirWRN5xzB+1ReoWaHipNG6fYp9cp+amSpKemQy+ltQkKaTKwC+OFsYkf+YgeWLGi1ANDy0sibn0AAA==",
+  "origin": "drive/FB_IMG_1792365469137.jpg"
+ },
+ "crostate-frutta-fresca": {
+  "src": "/foto/crostate-frutta-fresca.webp",
+  "width": 2000,
+  "height": 1500,
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwAgCdASoQAAwAA4BaJYgCdAYuRngnEB3gAADNmuUiUbSujwunRGlq/dt1X1VJyh3WJ3TBds70Wd+Pz5RfHOvvNu+yIL+8+OOM6/2A4rwg141/24omonyg+L7ZIfOtEsdExcoA",
+  "origin": "drive/FB_IMG_1792365482783.jpg"
+ },
+ "maritozzo": {
+  "src": "/foto/maritozzo.webp",
+  "width": 1498,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoMABAAA4BaJQBOgCPOnFYsNHAA+ONTF15RV/wG7MlfRVeRqwDAoYjBvWrqme51YJ/4vOSjoYutkeNI5yMI4gU3ihhI3K87CxPLwxGpEAA=",
+  "origin": "drive/FB_IMG_1792365636176.jpg"
+ },
+ "bigne-fritti-zucchero": {
+  "src": "/foto/bigne-fritti-zucchero.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQAgCdASoMABAAA4BaJZQCdAYv/kehFrbIHAAA/kDCQBqU8xoS0y23GqNSX7zfOxJqC1IVY6Jmo4JqADGvx0CYa4mtnq1G+Vx+QObTgq7FFwn3LOOzREUBpv9a+Zh9UAA=",
+  "origin": "drive/FB_IMG_1792365648690.jpg"
+ },
+ "cornetti-salati": {
+  "src": "/foto/cornetti-salati.webp",
+  "width": 1500,
+  "height": 1504,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAwAgCdASoQABAAA4BaJQBOgMWq1N4sdF8IYAD+prQKBkURXacfniObY+DJGywraI4eRN2YFJpaad6MEKPdhEictJy2uJwv2Vwl1INp3q4AxCZg01Foi51dR0mbS9PbX/UzNcaNupJMH6NsAAbcRtIACqYAAA==",
+  "origin": "drive/FB_IMG_1792365689981.jpg"
+ },
+ "torta-panna-fiori": {
+  "src": "/foto/torta-panna-fiori.webp",
+  "width": 1600,
+  "height": 1200,
+  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAQAgCdASoQAAwAA4BaJZwCw7D6fKQ5EK0AAPz8DihV7tr8AgXRd3VneWTD10QFwJ19XrKU3OfDv4kcsAwOTWg6j8XRKyCjNSLEwTTS32vIAA==",
+  "origin": "drive/FB_IMG_1792365858613.jpg"
+ },
+ "crostata-frutta-rettangolare": {
+  "src": "/foto/crostata-frutta-rettangolare.webp",
+  "width": 2000,
+  "height": 1500,
+  "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAwAgCdASoQAAwAA4BaJbACdAYtzWOqA83oAAD2VsPa7IsNLulgdUxkvvbkEegcvi4XpJ4JXjqO3RG9UkbWzF5LxaEbvKkkb47zDSERs93hazcfzeFsHCzy+h2N/DSFjyJMAy7hKlLc09QQcQaXf4AA",
+  "origin": "drive/FB_IMG_1792365884220.jpg"
+ },
+ "tramezzini": {
+  "src": "/foto/tramezzini.webp",
+  "width": 1080,
+  "height": 565,
+  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoQAAgAA4BaJaACdAC6g6E0AAD9w/aF0S+Oc4u2HbypdYYdyGZULXjnGrxIx7FQfL7YHtLH8UMRid6h1rUvXPQUUQ+GT6VemuYAAA==",
+  "origin": "drive/FB_IMG_1792365917893.jpg"
+ },
+ "torta-cioccolato-biscotti": {
+  "src": "/foto/torta-cioccolato-biscotti.webp",
+  "width": 960,
+  "height": 688,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABwAgCdASoQAAsAA4BaJbACdDBACIpMuzQr3w4AAPg/wiwlsM0Qrku794nTvorFpW9rd1B1Tu83GNR0sHi78nGigNn+dn5hwNjqcmCO7n0MDOx403egVD9r6FeD3/1k6eBX/peKlwAAAA==",
+  "origin": "drive/FB_IMG_1792365933677.jpg"
+ },
+ "tramezzini-rustici": {
+  "src": "/foto/tramezzini-rustici.webp",
+  "width": 2000,
+  "height": 1500,
+  "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoQAAwAA4BaJZACdAEfliEUR7+gAAD+5vH9QIlA2nfMJcgnrPqBvMZwV0+FKpxAhNCe7SMeoQZm4IrgaED/cats+qH+HoXU+Q18bzPDCMQ4hFEPNIrsCZeIAgAAAA==",
+  "origin": "drive/FB_IMG_1792366021028.jpg"
+ },
+ "crostata-fragole": {
+  "src": "/foto/crostata-fragole.webp",
+  "width": 1200,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoMABAAA4BaJbACdADcZkwe/NcgANzMK/ux2/0v/tgtn8xP87npj5tqClyqnny3b6cVZ92620MugLI4a1+5FDXeKjy2OnAUegDIIkAlde00RaHqBpeGPhrWXi7Tydl8MJlwAA==",
+  "origin": "drive/FB_IMG_1792366035542.jpg"
+ },
+ "torta-pistacchio": {
+  "src": "/foto/torta-pistacchio.webp",
+  "width": 1200,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQAgCdASoMABAAA4BaJZACdAEDpaPVmRPWRAAA9gMiR+a9H+b1c2p+DdPVm6QMy7CPhkUVboYGtjgBPuMkajluwuditE7+4IqODDKYERo/x01ZQPCVICLre+9A7EAAAAA=",
+  "origin": "drive/FB_IMG_1792366085514.jpg"
+ },
+ "torta-gattini": {
+  "src": "/foto/torta-gattini.webp",
+  "width": 1200,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAQAgCdASoMABAAA4BaJZgCdAYwTZ/7DIQAAM39BfhmL9YQvKgDU4uiOsp80qfkQ+5ehvGZ66eFDSzCRSral45W0J59iy3ezJBk1j8+j5i9XUAQ2vKs6ShVBcZ7/D5vAAA=",
+  "origin": "drive/FB_IMG_1792366094896.jpg"
+ },
+ "torta-rosa": {
+  "src": "/foto/torta-rosa.webp",
+  "width": 1200,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoMABAAA4BaJZgCdAYsZkfKgiWnEAD+NEMtAmJIbPoCxqqvPieHX59HrsI7Wc9JlHcov2STXeNjuE4Fwx760rlRfURMIaFYYq2GU8ztBUKCbBZ0dZ2i0sAA",
+  "origin": "drive/FB_IMG_1792366103525.jpg"
+ },
+ "bigne-granella": {
+  "src": "/foto/bigne-granella.webp",
+  "width": 1500,
+  "height": 2000,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAwAgCdASoMABAAA4BaJQBOgMXrz6NSTuWhwAD7pUtlBMx2IR51cY4ov8jFOALrviz07l7lH+EFVnA0SRRum8/6O/zFqkA9jfmRHKVtirjXZDhIAAA=",
+  "origin": "drive/FB_IMG_1792366114159.jpg"
+ },
+ "pizza-rossa-teglie": {
+  "src": "/foto/pizza-rossa-teglie.webp",
+  "width": 2000,
+  "height": 1500,
+  "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQAgCdASoQAAwAA4BaJbACdAYubizLFB4AAP4nOb1RwLm5kV/In9qdrNe0rqCC/HKB8Pztf8phhizcTQ7ckiX10I49x55aq6ZsBW27MPnRenNVYkWHpReH73Uv94msYDCeR0D/wivHqHmH5igAAA==",
+  "origin": "drive/FB_IMG_1792366129398.jpg"
+ }
+}
