@@ -1,27 +1,32 @@
 @import "tailwindcss";
 @source "../";
 
-/* ── Pasticceria Cristiani ───────────────────────────────────────────
-   The shop's own materials: panna walls, the mahogany counter, dark
-   chocolate, brass rails, the glass of the vitrines, and the hand-piped
-   chocolate plaques of their cakes. */
+/* ── Pasticceria Cristiani · "Boutique della Pasticceria Romana" ──────
+   Crema for the walls and the paper, oro for the brass of the counter
+   and the gold foil of the cake boards, espresso for the dark wood and
+   the chocolate plaques. Bodoni for the shop's voice, Figtree to read,
+   the piped script only where the shop really writes by hand. */
 
 @theme {
   --font-serif: var(--font-bodoni), "Didot", "Bodoni 72", serif;
   --font-sans: var(--font-figtree), system-ui, sans-serif;
   --font-script: var(--font-plaque), "Snell Roundhand", cursive;
 
-  --color-panna: #f5ede0;
-  --color-crema: #ebdcc4;
-  --color-biscotto: #d8c3a0;
-  --color-mogano: #5b2418;
-  --color-mogano-chiaro: #7b3622;
-  --color-cioccolato: #241510;
-  --color-fondente: #170d09;
-  --color-ottone: #b08d3c;
-  --color-ottone-chiaro: #d9bd78;
-  --color-inchiostro: #2a1a13;
+  --color-panna: #fcf8f1;
+  --color-crema: #f5ecdf;
+  --color-sabbia: #eadcc6;
+  --color-biscotto: #d9c3a0;
+  --color-oro: #c9a257;
+  --color-oro-chiaro: #ecd8a6;
+  --color-oro-scuro: #8a6828;
+  --color-espresso: #1a100b;
+  --color-espresso-2: #241710;
+  --color-tostato: #3a2619;
+  --color-inchiostro: #2a1a12;
   --color-cacao: #5c4636;
+  --color-mogano: #5b2418;
+  --color-verde: #5f8f4a;
+  --color-rosso: #b5432a;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
@@ -31,288 +36,195 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    background: var(--color-fondente);
-    scrollbar-color: var(--color-ottone) transparent;
+    scroll-padding-top: 6rem;
+    background: var(--color-espresso);
+    scrollbar-color: var(--color-oro) var(--color-espresso);
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
   body {
-    background: var(--color-panna);
+    background: var(--color-crema);
     color: var(--color-inchiostro);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
-    line-height: 1.65;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     text-rendering: optimizeLegibility;
   }
-  ::selection { background: var(--color-ottone-chiaro); color: var(--color-cioccolato); }
-  :focus-visible { outline: 2px solid var(--color-ottone); outline-offset: 3px; border-radius: 2px; }
+  ::selection { background: var(--color-oro-chiaro); color: var(--color-espresso); }
+  :focus-visible { outline: 2px solid var(--color-oro); outline-offset: 3px; border-radius: 6px; }
   a { text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
   img { -webkit-user-drag: none; }
+  button { cursor: pointer; }
 }
 
 @layer components {
-  /* Italian Bodoni: the voice of the shop sign. */
   .serif {
     font-family: var(--font-serif);
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     line-height: 1.02;
     text-wrap: balance;
     font-optical-sizing: auto;
   }
-  .label {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .prose-shop { max-width: 60ch; text-wrap: pretty; }
+  .script { font-family: var(--font-script); font-weight: 400; }
+  .prose-shop { max-width: 62ch; text-wrap: pretty; }
   .prose-shop p + p { margin-top: 1.05em; }
 
-  /* The chocolate plaque: hand-piped writing on a chocolate tablet, as on their cakes. */
-  .plaque {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.35em 0.9em 0.45em;
-    border-radius: 0.45em;
-    font-family: var(--font-script);
-    font-size: 1.15rem;
-    line-height: 1.1;
-    color: #f3dfb5;
-    background: #2e1a12;
+  /* Gold foil, as on the cake boards: a vertical metallic fill per glyph, so it survives letter staggers. */
+  .gold {
+    background-image: linear-gradient(180deg, #f3dc9f 0%, #e6c987 30%, #c9a257 56%, #9d7632 80%, #d9b56d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
-  .plaque-white {
-    color: #6b3a1e;
-    background: #f7eedf;
-    box-shadow: 0 0 0 1px rgb(176 141 60 / 0.55);
+  /* The warm light behind the title: a static blurred field, never animated. */
+  .glow {
+    background: radial-gradient(closest-side, rgb(201 162 87 / 0.38), rgb(201 162 87 / 0.12) 55%, transparent);
+    filter: blur(8px);
   }
 
-  /* Brass rail: the hairline that runs along the counter. */
-  .rail {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-ottone) 12%, var(--color-ottone-chiaro) 50%, var(--color-ottone) 88%, transparent);
+  /* Glass: only where it floats over the photo or the page (header, hero badge, hero CTAs). */
+  .glass {
+    background: rgb(26 16 11 / 0.62);
+    box-shadow: inset 0 0 0 1px rgb(236 216 166 / 0.18), 0 18px 40px -22px rgb(0 0 0 / 0.7);
+  }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: rgb(26 16 11 / 0.8);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      backdrop-filter: blur(20px) saturate(1.5);
+    }
   }
 
-  /* Buttons: brass and mahogany keys with a round fitting for the icon. */
+  /* Buttons: pill keys, one fill each. */
   .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.85rem;
+    justify-content: center;
+    gap: 0.7rem;
     min-height: 3.25rem;
-    padding: 0.35rem 0.4rem 0.35rem 1.3rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 999px;
     font-weight: 600;
-    font-size: 0.98rem;
-    letter-spacing: 0.01em;
-    transition: transform 160ms var(--ease-smooth), box-shadow 240ms ease, background-color 240ms ease, color 240ms ease;
+    font-size: 1rem;
+    letter-spacing: 0.005em;
+    white-space: nowrap;
     touch-action: manipulation;
     user-select: none;
+    transition: background-color 240ms ease, color 240ms ease, box-shadow 240ms ease;
   }
-  .btn:active { transform: scale(0.97); }
-  .btn-brass {
-    background: #c39a45;
-    color: #22140d;
-    box-shadow: 0 10px 24px -14px rgb(90 60 15 / 0.75);
-  }
-  .btn-brass .btn-fit { background: #22140d; color: #e9cf8e; }
-  .btn-wood {
-    background: var(--color-mogano);
-    color: #f8ecd8;
-    box-shadow: inset 0 1px 0 rgb(255 210 170 / 0.2), 0 10px 26px -14px rgb(91 36 24 / 0.9);
-  }
-  .btn-wood .btn-fit { background: #f3e3c4; color: var(--color-mogano); }
-  .btn-ghost {
-    color: inherit;
-    box-shadow: inset 0 0 0 1px currentColor;
-  }
-  .btn-ghost .btn-fit { background: currentColor; }
-  .btn-ghost .btn-fit > * { color: var(--btn-ghost-ink, #22140d); }
-  .btn-fit {
-    display: grid;
-    place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 999px;
-    transition: transform 320ms var(--ease-smooth);
-  }
+  .btn-oro { background: var(--color-oro); color: var(--color-espresso); }
+  .btn-espresso { background: var(--color-espresso); color: var(--color-panna); }
+  .btn-line { color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
+  .btn-glass { color: var(--color-panna); }
   @media (hover: hover) {
-    .btn:hover .btn-fit { transform: translateX(3px); }
-    .btn-brass:hover { background: #cfa752; }
+    .btn-oro:hover { background: #d6b268; }
+    .btn-espresso:hover { background: var(--color-tostato); }
+    .btn-line:hover { background: rgb(201 162 87 / 0.14); }
   }
 
-  /* Glass shelf of a vitrine: a soft top highlight and a brass lip. */
-  .shelf {
-    position: relative;
-    border-radius: 6px;
-    overflow: hidden;
-    background: var(--color-crema);
-    box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 22px 40px -28px rgb(36 21 16 / 0.55);
-  }
-  .shelf::after {
+  /* A band of light crosses the gold button on hover. */
+  .btn-shine { overflow: hidden; isolation: isolate; }
+  .btn-shine::after {
     content: "";
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.16), transparent 22%);
-    box-shadow: inset 0 -2px 0 rgb(176 141 60 / 0.55);
-    border-radius: inherit;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 246 222 / 0.55) 50%, transparent 65%);
+    transform: translateX(-110%);
+    transition: transform 700ms var(--ease-out-expo);
+  }
+  @media (hover: hover) {
+    .btn-shine:hover::after { transform: translateX(110%); }
   }
 
-  .strip {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
+  /* Chips and stepper of the order wizard. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.75rem;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.97rem;
+    font-weight: 500;
+    color: var(--color-oro-chiaro);
+    background: rgb(252 248 241 / 0.06);
+    box-shadow: inset 0 0 0 1px rgb(236 216 166 / 0.22);
+    transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
   }
-  .strip::-webkit-scrollbar { display: none; }
-  .strip > * { scroll-snap-align: start; flex: none; }
+  .chip[aria-pressed="true"], .chip[aria-checked="true"] {
+    color: var(--color-espresso);
+    background: var(--color-oro);
+    box-shadow: inset 0 0 0 1px var(--color-oro);
+  }
+  @media (hover: hover) {
+    .chip:not([aria-pressed="true"]):not([aria-checked="true"]):hover { background: rgb(252 248 241 / 0.12); }
+  }
 
   .field {
     width: 100%;
+    min-height: 3.25rem;
+    border-radius: 14px;
     border: 0;
-    border-bottom: 1px solid rgb(42 26 19 / 0.25);
-    background: transparent;
-    padding: 0.85rem 0 0.65rem;
-    color: inherit;
+    background: rgb(252 248 241 / 0.07);
+    box-shadow: inset 0 0 0 1px rgb(236 216 166 / 0.22);
+    padding: 0.8rem 1rem;
+    color: var(--color-panna);
     font-size: 1rem;
-    border-radius: 0;
+    color-scheme: dark;
+    transition: box-shadow 200ms ease, background-color 200ms ease;
   }
-  .field::placeholder { color: rgb(92 70 54 / 0.75); }
-  .field:focus { outline: none; border-bottom-color: var(--color-ottone); }
-  select.field { appearance: none; background: transparent; }
-  .t-input.is-error .field { border-bottom-color: #a5321c; }
+  .field::placeholder { color: rgb(236 216 166 / 0.55); }
+  .field:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-oro); background: rgb(252 248 241 / 0.1); }
+  .field[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #e0775e; }
+
+  /* The white-chocolate plaque their cakes carry, piped by hand in dark chocolate. */
+  .plaque {
+    background: #f4e6c9;
+    color: #5b2a17;
+    box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.7), inset 0 -3px 0 rgb(150 110 60 / 0.35), 0 18px 34px -16px rgb(0 0 0 / 0.75);
+  }
+
+  /* Infinite moving cards: the track moves by half its length, CSS only, paused on hover. */
+  .marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--marquee-dur, 60s) linear infinite;
+    animation-direction: var(--marquee-dir, normal);
+    will-change: transform;
+  }
+  @media (hover: hover) {
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+  }
+  .marquee:focus-within .marquee-track { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { -webkit-mask-image: none; mask-image: none; overflow-x: auto; }
+    .marquee-track { animation: none; }
+    .marquee-track > [aria-hidden="true"] { display: none; }
+  }
 }
 
-/* ── transitions.dev: motion tokens + the snippets this site uses ──── */
-:root {
-  --duration-stagger: 40ms;
-  --duration-fast: 250ms;
-  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Tabs sliding (vitrine categories) */
-  --tabs-dur: 250ms;
-  --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --tabs-text-muted: #5c4636;
-  --tabs-text-active: #22140d;
-  --tabs-bar-bg: rgb(36 21 16 / 0.06);
-  --tabs-pill-bg: #c39a45;
-
-  /* Spinning counter (opening facts) */
-  --reel-dur: 1400ms;
-  --reel-cell: 1em;
-  --reel-stagger: 90ms;
-  --reel-ease: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Error state shake (order form) */
-  --shake-distance: 6px;
-  --shake-overshoot: 4px;
-  --shake-dur-a: 80ms;
-  --shake-dur-b: 60ms;
-  --shake-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --revert-hold: 3000ms;
-  --revert-dur: 280ms;
+@keyframes marquee {
+  to { transform: translate3d(-50%, 0, 0); }
 }
-
-/* Tabs sliding */
-.t-tabs {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 4px;
-  border-radius: 48px;
-  background: var(--tabs-bar-bg);
-}
-.t-tab {
-  position: relative;
-  appearance: none;
-  border: 0;
-  background: transparent;
-  height: 40px;
-  padding: 4px 16px;
-  color: var(--tabs-text-muted);
-  cursor: pointer;
-  border-radius: 48px;
-  z-index: 1;
-  white-space: nowrap;
-  transition: color var(--tabs-dur) var(--tabs-ease);
-}
-.t-tab:not([aria-selected="true"]):hover,
-.t-tab[aria-selected="true"] {
-  color: var(--tabs-text-active);
-}
-.t-tabs-pill {
-  position: absolute;
-  top: 4px;
-  left: 0;
-  height: 40px;
-  width: 0;
-  background: var(--tabs-pill-bg);
-  border-radius: 48px;
-  transform: translateX(0);
-  transition:
-    transform var(--tabs-dur) var(--tabs-ease),
-    width     var(--tabs-dur) var(--tabs-ease);
-  will-change: transform, width;
-  z-index: 0;
-  pointer-events: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .t-tabs-pill, .t-tab { transition: none !important; }
-}
-
-/* Spinning counter */
-.t-reel { display: inline-flex; align-items: center; height: var(--reel-cell); font-variant-numeric: tabular-nums; }
-.t-reel-col {
-  position: relative; height: var(--reel-cell); overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
-}
-.t-reel-strip { display: flex; flex-direction: column; will-change: transform; }
-.t-reel-digit { height: var(--reel-cell); display: flex; align-items: center; justify-content: center; }
-@media (prefers-reduced-motion: reduce) {
-  .t-reel-strip { transition: none !important; filter: none !important; }
-}
-
-/* Error state shake */
-.t-input { transition: border-color 150ms ease-out; will-change: transform; }
-.t-input.is-error { transition: border-color var(--revert-dur, 280ms) ease-out; }
-.t-error-msg {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--revert-dur, 280ms) ease-out, visibility 0s linear var(--revert-dur, 280ms);
-}
-.t-input-wrap.is-error .t-error-msg {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity var(--revert-dur, 280ms) ease-out, visibility 0s linear 0s;
-}
-.t-input.is-shaking {
-  animation: t-input-shake calc(var(--shake-dur-a) * 2 + var(--shake-dur-b) * 2) linear;
-}
-@keyframes t-input-shake {
-  0%      { transform: translateX(0);                                 animation-timing-function: var(--shake-ease); }
-  28.57%  { transform: translateX(var(--shake-distance));             animation-timing-function: var(--shake-ease); }
-  57.14%  { transform: translateX(calc(var(--shake-distance) * -1)); animation-timing-function: var(--shake-ease); }
-  78.57%  { transform: translateX(var(--shake-overshoot));            animation-timing-function: var(--shake-ease); }
-  100%    { transform: translateX(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .t-input { animation: none !important; transform: none !important; }
-}
-
-/* Live dot on the open-now plaque */
 @keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.6); opacity: 0.35; }
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(2.2); opacity: 0; }
 }
-
-/* A vitrine shelf: photos stand on a brass lip, under a line of glass. */
-.vshelf { position: relative; padding: 14px 0 0; }
-.vshelf::before { content: ""; position: absolute; inset: 0 0 auto; height: 1px; background: rgb(255 255 255 / 0.85); box-shadow: 0 1px 0 rgb(176 141 60 / 0.25); }
-.vshelf-lip { height: 3px; background: #b08d3c; border-radius: 2px; box-shadow: 0 10px 18px -8px rgb(91 36 24 / 0.55); }
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+}

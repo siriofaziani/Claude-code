@@ -6,6 +6,7 @@ import figtree from "@fontsource-variable/figtree/files/figtree-latin-wght-norma
 import plaque from "@fontsource/petit-formal-script/files/petit-formal-script-latin-400-normal.woff2?url";
 import "../src/app/globals.css";
 import Home from "../src/app/page.js";
+import MotionRoot from "../src/components/MotionRoot.jsx";
 
 // next/font does this on the real site: the faces, inlined.
 const style = document.createElement("style");
@@ -20,6 +21,8 @@ document.body.className = "min-h-dvh overflow-x-clip";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Home />
+    <MotionRoot>
+      <Home />
+    </MotionRoot>
   </StrictMode>
 );

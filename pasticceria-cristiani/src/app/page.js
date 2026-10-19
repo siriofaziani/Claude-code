@@ -1,144 +1,102 @@
-import { Phone, MapPin } from "lucide-react";
-import { about, order, shop } from "@/data/content";
+import { order, shop } from "@/data/content";
 import { whatsappHref, mapsHref } from "@/lib";
 import Header from "@/components/Header";
-import HeroZoom from "@/components/HeroZoom";
-import Reveal, { Stagger, StaggerItem } from "@/components/Reveal";
-import Photo from "@/components/Photo";
-import Reel from "@/components/Reel";
-import Vetrine from "@/components/Vetrine";
+import { links } from "@/components/links";
+import Hero from "@/components/Hero";
+import Vetrina from "@/components/Vetrina";
+import OrderWizard from "@/components/OrderWizard";
+import Storia from "@/components/Storia";
 import Reviews from "@/components/Reviews";
-import OrderForm from "@/components/OrderForm";
-import Hours from "@/components/Hours";
-import MapEmbed from "@/components/MapEmbed";
-import MobileBar from "@/components/MobileBar";
-import { FacebookIcon, InstagramIcon, WhatsAppIcon } from "@/components/Icons";
+import Info from "@/components/Info";
+import Reveal from "@/components/Reveal";
+import StaggerText from "@/components/ui/StaggerText";
+import { FacebookIcon, InstagramIcon, TripadvisorIcon } from "@/components/Icons";
 
-function Title({ children, className = "", light = false }) {
-  return (
-    <div className={className}>
-      <h2 className={`serif text-[clamp(2.5rem,7vw,4.75rem)] ${light ? "text-[#fbf2e4]" : "text-mogano"}`}>{children}</h2>
-      <div className="rail mt-5 w-28" aria-hidden="true" />
-    </div>
-  );
-}
+// Each section after the hero slides up over the one before, like a new tray on the counter.
+const sheet = "relative -mt-10 rounded-t-[2.5rem] md:-mt-14 md:rounded-t-[3.5rem]";
+const wrap = "mx-auto max-w-[1360px] px-5 md:px-10";
 
 export default function Home() {
   return (
     <>
       <Header />
       <main>
-        <HeroZoom />
+        <Hero />
 
-        {/* ── Chi siamo ── */}
-        <section id="chi-siamo" className="relative scroll-mt-16 bg-panna py-24 md:py-36">
-          <div className="mx-auto grid max-w-[1360px] gap-14 px-5 md:px-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-20">
-            <div>
-              <Reveal><Title>{about.title}</Title></Reveal>
-              <Reveal delay={0.08} className="prose-shop mt-8 text-[1.12rem] text-cacao">
-                {about.paragraphs.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
-              </Reveal>
-              <Stagger className="mt-12 flex flex-wrap gap-x-14 gap-y-8">
-                {about.facts.map((f) => (
-                  <StaggerItem key={f.value} className="flex flex-col">
-                    <span className="flex items-baseline gap-2">
-                      <Reel value={f.value} className="serif text-[3.6rem] font-[600] leading-none text-mogano" />
-                      <span className="serif text-[1.35rem] italic text-mogano">{f.suffix}</span>
-                    </span>
-                    <span className="mt-2 text-[0.95rem] text-cacao">{f.label}</span>
-                  </StaggerItem>
-                ))}
-              </Stagger>
-            </div>
-            <Reveal delay={0.1} className="relative mx-auto w-full max-w-[520px]">
-              <div className="shelf aspect-[4/5]">
-                <Photo name={about.image} alt="Torta di castagne con la medaglia di cioccolato Cristiani e la placchetta «Auguri Giulia»" fill sizes="(min-width: 1024px) 40vw, 92vw" className="object-cover" />
+        <section id="vetrine" aria-label="La vetrina" className={`${sheet} bg-crema pb-28 pt-20 md:pb-40 md:pt-28`}>
+          <div className={wrap}>
+            <Vetrina />
+          </div>
+        </section>
+
+        <section id="ordina" aria-labelledby="ordina-titolo" className={`${sheet} bg-espresso pb-28 pt-20 text-panna md:pb-40 md:pt-28`}>
+          <div className={wrap}>
+            <div className="mb-12 grid gap-6 md:mb-16 lg:grid-cols-12 lg:items-end lg:gap-12">
+              <div className="lg:col-span-5">
+                <StaggerText as="h2" text={order.title} className="serif block text-[clamp(3rem,8vw,5.6rem)] italic" itemClassName="gold" />
               </div>
-              <span className="plaque absolute -bottom-5 left-6 text-[1.35rem]">fatta a mano, con dedica</span>
-            </Reveal>
+              <Reveal delay={0.1} className="lg:col-span-7">
+                <p className="max-w-[52ch] text-[1.15rem] leading-relaxed text-panna/90">{order.text}</p>
+                <p className="mt-3 text-[1.02rem] text-oro-chiaro">Scegliete, componete, inviate: il messaggio arriva già scritto sul nostro WhatsApp.</p>
+              </Reveal>
+            </div>
+            <OrderWizard />
           </div>
         </section>
 
-        {/* ── Le vetrine del gusto ── */}
-        <section id="vetrine" className="scroll-mt-16 bg-crema/60 py-24 md:py-36">
-          <div className="mx-auto max-w-[1360px] px-5 md:px-10">
-            <Reveal className="mb-12 grid gap-6 md:grid-cols-[1.2fr_1fr] md:items-end">
-              <Title>Le vetrine del gusto</Title>
-              <p className="max-w-[44ch] text-[1.08rem] text-cacao">Quello che vedete qui è quello che trovate sul nostro bancone: scegliete una vetrina e toccate una foto per vederla da vicino.</p>
-            </Reveal>
-            <Vetrine />
+        <section id="chi-siamo" aria-label="La nostra storia a Centocelle" className={`${sheet} bg-crema pb-28 pt-20 md:pb-40 md:pt-28`}>
+          <div className={wrap}>
+            <Storia />
           </div>
         </section>
 
-        {/* ── Recensioni ── */}
-        <section id="recensioni" className="scroll-mt-16 bg-cioccolato py-24 text-[#fbf2e4] md:py-32">
-          <Reveal className="mx-auto mb-12 max-w-[1360px] px-5 md:px-10">
-            <Title light>Chi ci conosce, torna</Title>
-            <p className="mt-6 max-w-[48ch] text-[1.08rem] text-[#d9c7aa]">Le parole di alcuni dei nostri clienti affezionati.</p>
-          </Reveal>
+        <section id="recensioni" aria-labelledby="recensioni-titolo" className={`${sheet} bg-espresso pb-28 pt-20 text-panna md:pb-36 md:pt-28`}>
+          <div className={`${wrap} mb-12 grid gap-6 md:mb-16 md:grid-cols-12 md:items-end`}>
+            <div className="md:col-span-7">
+              <StaggerText as="h2" text="Chi ci conosce, torna" className="serif block text-[clamp(2.7rem,7vw,5rem)] text-panna" />
+            </div>
+            <Reveal delay={0.1} className="md:col-span-5">
+              <p className="text-[1.12rem] text-panna/85 md:text-right">Le parole di alcuni dei nostri clienti affezionati.</p>
+            </Reveal>
+          </div>
           <Reviews />
         </section>
 
-        {/* ── Ordina ora ── */}
-        <section id="ordina" className="scroll-mt-16 bg-panna py-24 md:py-36">
-          <div className="mx-auto grid max-w-[1360px] gap-14 px-5 md:px-10 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
-            <Reveal>
-              <Title>{order.title}</Title>
-              <p className="prose-shop mt-8 text-[1.12rem] text-cacao">{order.text}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href={shop.phoneHref} className="btn btn-wood">Chiama {shop.phone}<span className="btn-fit"><Phone size={17} /></span></a>
-              </div>
-              <div className="shelf mt-12 hidden aspect-[16/10] lg:block">
-                <Photo name="crostate-frutta-fresca" alt="Crostate di frutta fresca con le placchette di dedica" fill sizes="40vw" className="object-cover" />
-              </div>
-            </Reveal>
-            <Reveal delay={0.08} className="rounded-[14px] bg-[#fbf6ec] p-6 shadow-[0_1px_0_rgb(176_141_60/0.6),0_30px_60px_-40px_rgb(36_21_16/0.5)] md:p-10">
-              <h3 className="serif text-[2rem] text-mogano">La tua ordinazione</h3>
-              <p className="mt-2 text-cacao">Compila e si apre WhatsApp con il messaggio già scritto.</p>
-              <div className="mt-8"><OrderForm /></div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ── Contatti ── */}
-        <section id="contatti" className="scroll-mt-16 bg-mogano py-24 text-[#fbf2e4] md:py-32">
-          <div className="mx-auto max-w-[1360px] px-5 md:px-10">
-            <Reveal><Title light>Vieni a trovarci</Title></Reveal>
-            <Reveal className="mt-10 flex flex-wrap gap-3">
-              <a href={whatsappHref()} target="_blank" rel="noopener" className="btn btn-brass">Ordina su WhatsApp · {shop.whatsappLabel}<span className="btn-fit"><WhatsAppIcon /></span></a>
-              <a href={shop.phoneHref} className="btn btn-ghost text-[#fbf2e4] [--btn-ghost-ink:#5b2418]">Chiama {shop.phone}<span className="btn-fit"><Phone size={17} /></span></a>
-              <a href={mapsHref} target="_blank" rel="noopener" className="btn btn-ghost text-[#fbf2e4] [--btn-ghost-ink:#5b2418]">Indicazioni stradali<span className="btn-fit"><MapPin size={17} /></span></a>
-              <a href={shop.facebook} target="_blank" rel="noopener" className="btn btn-ghost text-[#fbf2e4] [--btn-ghost-ink:#5b2418]">Facebook<span className="btn-fit"><FacebookIcon /></span></a>
-            </Reveal>
-            <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
-              <Reveal>
-                <address className="serif text-[1.9rem] not-italic leading-tight">{shop.address}<br />{shop.city}</address>
-                <p className="mt-2 text-[#e6cdb2]">Centocelle</p>
-                <div className="mt-10"><Hours /></div>
-                <a href={shop.instagram} target="_blank" rel="noopener" className="mt-8 inline-flex items-center gap-2 text-[#f3dfc2] underline"><InstagramIcon />{shop.instagramHandle}</a>
-              </Reveal>
-              <Reveal delay={0.08}><MapEmbed /></Reveal>
-            </div>
+        <section id="contatti" aria-label="Contatti, orari e mappa" className={`${sheet} bg-crema py-16 md:py-28`}>
+          <div className={wrap}>
+            <Info />
           </div>
         </section>
       </main>
 
-      <footer className="bg-fondente pb-28 pt-14 text-[#d9c7aa] md:pb-14">
-        <div className="mx-auto flex max-w-[1360px] flex-wrap items-end justify-between gap-8 px-5 md:px-10">
-          <div>
-            <p className="serif text-[2.2rem] italic text-[#fbf2e4]">Cristiani</p>
-            <p className="mt-1">Pasticceria · {shop.address}, {shop.city}</p>
-            <p className="mt-1">Tel. <a href={shop.phoneHref} className="underline">{shop.phone}</a> · WhatsApp <a href={whatsappHref()} target="_blank" rel="noopener" className="underline">{shop.whatsappLabel}</a></p>
-          </div>
-          <div className="flex gap-3">
-            <a href={shop.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="grid h-11 w-11 place-items-center rounded-full shadow-[inset_0_0_0_1px_rgb(176_141_60/0.6)] text-[#e9cf8e]"><FacebookIcon /></a>
-            <a href={shop.instagram} target="_blank" rel="noopener" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full shadow-[inset_0_0_0_1px_rgb(176_141_60/0.6)] text-[#e9cf8e]"><InstagramIcon /></a>
+      <footer className="overflow-hidden bg-espresso pb-[max(env(safe-area-inset-bottom),2.5rem)] pt-20 text-panna/80">
+        <div className={wrap}>
+          <div className="grid gap-10 md:grid-cols-12">
+            <div className="md:col-span-5">
+              <p className="text-[1.05rem] text-panna">Pasticceria · {shop.address}, {shop.city}</p>
+              <p className="mt-2">
+                Tel. <a href={shop.phoneHref} className="text-oro-chiaro underline">{shop.phone}</a> · WhatsApp{" "}
+                <a href={whatsappHref()} target="_blank" rel="noopener" className="text-oro-chiaro underline">{shop.whatsappLabel}</a>
+              </p>
+              <p className="mt-2"><a href={mapsHref} target="_blank" rel="noopener" className="text-oro-chiaro underline">Apri in Google Maps</a></p>
+            </div>
+            <nav aria-label="Sezioni" className="md:col-span-4">
+              <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
+                {links.map(([h, t]) => (
+                  <li key={h}><a href={h} className="inline-flex min-h-11 items-center hover:text-panna">{t}</a></li>
+                ))}
+              </ul>
+            </nav>
+            <div className="flex gap-2 md:col-span-3 md:justify-end">
+              <a href={shop.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-oro-chiaro transition-colors hover:bg-white/10"><FacebookIcon size={20} /></a>
+              <a href={shop.instagram} target="_blank" rel="noopener" aria-label={`Instagram ${shop.instagramHandle}`} className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-oro-chiaro transition-colors hover:bg-white/10"><InstagramIcon size={20} /></a>
+              <a href={shop.tripadvisor} target="_blank" rel="noopener" aria-label="Tripadvisor" className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-oro-chiaro transition-colors hover:bg-white/10"><TripadvisorIcon size={20} /></a>
+            </div>
           </div>
         </div>
-        <div className="rail mx-auto mt-10 max-w-[1360px]" aria-hidden="true" />
-        <p className="mx-auto mt-6 max-w-[1360px] px-5 text-[0.85rem] md:px-10">© Pasticceria Cristiani · Centocelle, Roma</p>
+        <p aria-hidden="true" className="serif gold mt-14 select-none whitespace-nowrap text-center text-[23vw] font-[600] italic leading-[0.8] tracking-[-0.04em]">Cristiani</p>
+        <p className={`${wrap} mt-6 text-[0.9rem]`}>© Pasticceria Cristiani · Centocelle, Roma</p>
       </footer>
-      <MobileBar />
     </>
   );
 }

@@ -70,15 +70,19 @@ export function useOpenState() {
   return state;
 }
 
+/** Live badge: green while the counter is open, red while it is closed; it reserves its width so nothing shifts. */
 export default function OpenNow({ className = "" }) {
   const s = useOpenState();
   return (
-    <span className={`plaque-white plaque min-h-9 gap-2 font-sans text-[0.85rem] font-semibold transition-opacity duration-500 ${s ? "opacity-100" : "opacity-0"} ${className}`} aria-live="polite">
-      <span className="relative inline-flex h-2 w-2">
-        <span className={`absolute inset-0 rounded-full ${s?.open ? "bg-[#4f7a3a] animate-[breathe_2.4s_ease-in-out_infinite]" : "bg-[#a5321c]"}`} />
-        <span className={`relative h-2 w-2 rounded-full ${s?.open ? "bg-[#4f7a3a]" : "bg-[#a5321c]"}`} />
+    <span
+      className={`inline-flex min-h-10 max-w-full items-center gap-2.5 rounded-[1.4rem] px-4 py-2 text-[0.92rem] leading-snug font-semibold transition-opacity duration-500 ${s ? "opacity-100" : "opacity-0"} ${className}`}
+      aria-live="polite"
+    >
+      <span className="relative inline-flex h-2.5 w-2.5 shrink-0">
+        {s?.open ? <span className="absolute inset-0 rounded-full bg-[#7fc062] animate-[breathe_2.4s_ease-out_infinite]" /> : null}
+        <span className={`relative h-2.5 w-2.5 rounded-full ${s?.open ? "bg-[#7fc062]" : "bg-[#e0775e]"}`} />
       </span>
-      <span>{s?.text ?? "Orari"}</span>
+      <span>{s?.text ?? "Orari di oggi"}</span>
     </span>
   );
 }

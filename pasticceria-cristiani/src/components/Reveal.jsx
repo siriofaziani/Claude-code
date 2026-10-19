@@ -1,12 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import useReduce from "./ui/useReduce";
 
 const ease = [0.16, 1, 0.3, 1];
 
 /** Rises into place once, the first time it enters the screen. */
 export default function Reveal({ as = "div", delay = 0, y = 28, className, children, ...rest }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduce();
   const Tag = motion[as];
   if (reduce) {
     const Plain = as;
@@ -29,7 +30,7 @@ export default function Reveal({ as = "div", delay = 0, y = 28, className, child
 
 /** Children enter one after another (40ms apart, transitions.dev stagger token × 2). */
 export function Stagger({ as = "div", className, children, gap = 0.08, ...rest }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduce();
   const Tag = motion[as];
   if (reduce) {
     const Plain = as;

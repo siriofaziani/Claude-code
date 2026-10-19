@@ -36,6 +36,8 @@ Orders and custom cakes by phone (06 2323 2058) or WhatsApp (333 617 7105). Face
 
 Name "Pasticceria Cristiani" (Centocelle, Roma). Brief from the user: classy & gourmet, cream/panna tones, warm wood, discreet gold details and dark contrasts, no neon or odd colours; elegant serif headings with modern sans text; hero zoom into the counter on scroll; 60fps on phones.
 
+Current brief (experimental full restyle, pinned by the user): "Boutique della Pasticceria Romana" in cream, gold and espresso; Awwwards / transitions.dev motion with Framer Motion for every transition and gesture, Aceternity UI / shadcn / Tailwind components; glass floating header with WhatsApp, Mappa, Chiama shortcuts; animated gold gradient/glow title; live open badge; product cards with 3D tilt and an animated category filter (Mignon, Torte su misura, Salato, Festività); an order wizard (Torte personalizzate, Mignon, Vassoio colazione, Festività) that sends a formatted WhatsApp message in one click; story with timeline/parallax; infinite moving review cards; info card with hours, embedded Google Map, click-to-call and WhatsApp. 60fps on phones, no layout shift, all real data unchanged. Glass and gradient text are explicitly requested here and override the usual no-glass/no-gradient-text rule.
+
 ## Evidence on Hand
 
 - Counter/shop photo supplied in chat (hero).
