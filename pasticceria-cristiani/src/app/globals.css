@@ -306,20 +306,6 @@
   .t-input { animation: none !important; transform: none !important; }
 }
 
-/* Aceternity UI "infinite moving cards": the reviews glide along like a turning display. */
-@keyframes scroll-cards {
-  to { transform: translate3d(calc(-50% - 0.75rem), 0, 0); }
-}
-.moving-cards {
-  animation: scroll-cards var(--cards-dur, 70s) linear infinite;
-  will-change: transform;
-}
-.moving-cards-wrap:hover .moving-cards,
-.moving-cards-wrap:focus-within .moving-cards { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) {
-  .moving-cards { animation: none; }
-}
-
 /* Live dot on the open-now plaque */
 @keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 1; }
