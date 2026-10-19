@@ -1,0 +1,378 @@
+{
+ "facciata": {
+  "src": "/foto/facciata.webp",
+  "width": 2400,
+  "height": 1351,
+  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoQAAkAA4BaJZQC7ADG5Kfb8AD8pUde7l+AaJyco4WJ1cdH6lKYheGtPnJwOpBuLpHcQRJgKawTVBMhcRAAAA==",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RkAOlJL5SI0bBkgee46P01dwBVh0e3b9vLKcBraflPh_V4yKii76MhBocjkpKeGt235bgQC2fzuI79MYuy7SeSoUnRCrEyFB_bnYBbBRpC2r15D2CyGWe6syplmJQYaBdD0vHZ443OD0K2"
+ },
+ "interno-bancone": {
+  "src": "/foto/interno-bancone.webp",
+  "width": 1800,
+  "height": 2400,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAQAgCdASoMABAAA4BaJYgCdAEWO/vuO8kAAP6qEEO8LOX8HXfSrYHwgq+0iZ7ETSWhd0g7ubhCWPM3CeGFi3BXLL+Nil45Rit7qLB9sx3B4N1JcPhIxX4kcEwZMqAAAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QhReA_I4D2ycs2tDhowS7NTLFUXCnZx0c2dHse4dXP8zKJYjUD0LAHmRbqogzsu65eFwtn0vgPvy3rwjUbq5jRXuE6bopleWtmQ73YuoJVk9oRMt3VV0Sxk9d9402f3vDI-MyY"
+ },
+ "bancone": {
+  "src": "/foto/bancone.webp",
+  "width": 2400,
+  "height": 1800,
+  "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADQAQCdASoQAAwAA4BaJZgCdADjYVLvYgD+Jy+iTdvicRSocmUBEKrx3NeAaGFxetDlazFnkpnGzdlUyOtTXe+lKTgtnVaYY9LXKvL2tbBC1yoItFATwhgvElTiAsYitWgAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SUO99OJMAHWC8mqEomFriq4X6rFZTlwXR746OsmnUBFFHN_Jgc1cP5uGpXYmVSCbLmuJCarH8OZ_bFB422BLMPRscU508LZjjWcfG3tFfRBafrABNznuwBXsq3qyJJpxleNhhj"
+ },
+ "cartello-orari": {
+  "src": "/foto/cartello-orari.webp",
+  "width": 640,
+  "height": 480,
+  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoQAAwAA4BaJZQCdAEPDTzvwvYsAAD946uQX0vxjuXDfU5EtP05+UY2yKp+12cDDZQ7YbyeRrwxPKHdDi741kTezA3s87wIP64AAA==",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QRFqWe5nq_qPkVxiVqbb6YSLe0S-BdweObVEXdXaMC1oglfnm3_ix51es_tpjxO8fUfubq94JTm51jRHEOHwW9ZSSOs4HUBmytOjKAVixwffcpTuOq6ZzrxBDCvay56NGf3Cm0xPpUcOrJ"
+ },
+ "vetrina-paste": {
+  "src": "/foto/vetrina-paste.webp",
+  "width": 2400,
+  "height": 1800,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoQAAwAA4BaJbACdADpls/QDQAA3lRNOg141qjUkOF+ciYX1LBdk/drlHtwFmk/Geil0TafOWwehgwJp4Kee5epf680L4cPJ4NbcGVgAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SDG38n-Ts69kEB5jD42GM8OQ597roTA_gehiLqqy7lEEAb00V4T3s2e32Ab6mrfggOev7t6XGODQh8T5ftD9DXYeuPxwDhbyzfZDapjoaV3VVPW7crC8DhFhY8IUtfPMjx9tYw"
+ },
+ "maritozzi-panna": {
+  "src": "/foto/maritozzi-panna.webp",
+  "width": 670,
+  "height": 399,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAQCdASoQAAoAA4BaJZQAAi/N1OAq+GAA/eO/XmLmaKGq86M3afeTAyFTugj74yLr/UncJsRSR23AUQfy06Xa3rP42fF9xaU4wr740xyPK8C/jLJg5paofRrxnK2pxAhEzZ9a1BQAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SeDj6quRBQbYcKEXKHOKPadmBTtFUQ6AgOAUueiMZH8Hud2eiTXYWBQ41HHo0_tr6BmKBihDZt1ORNs6KrxjUnMpHGkTL5zDUzZOYCjYI9Nadpyb__O9Y06YxfpIl4p4FXFfde8g"
+ },
+ "cannoli-vassoio": {
+  "src": "/foto/cannoli-vassoio.webp",
+  "width": 530,
+  "height": 579,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoPABAAA4BaJZQCdAYv08ifhAD2pol3XqhqT35/F/oRYQzvNkcuEd+b3qXo3omXKcQsQ84z2pGXNYBXOm1REn505IyoaNquV3nnfbgdj5zC70HMgCAJ+S3aTnK0k0ZS6AAAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TJ4Osy-X0Z_Z5QLt26yd7iplU-SPrOoqSB5Eydg1uKFaSAKmEITy820CZaJEyz_9I4KD2LjwgI9v9jdKbUaebLeD76aQS3d9DoI0JDoBPFqf0HmtXjOJ_s_gB0Z5ehrCnXDhM"
+ },
+ "bigne-pistacchio": {
+  "src": "/foto/bigne-pistacchio.webp",
+  "width": 672,
+  "height": 881,
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADQAQCdASoMABAAA4BaJZgCdADZemxQAADifodIXyl1IKWbHTN67rlQlZgPxxb3VRwZR3DztOCmqXEM2yQ7clU8mzPvmDpkpHZdXtb15/KhMcbIm+WZpbzLR7QAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S__Q4x-owWKFvGaQZa2oBgpKA61VaSDc-k37LKfvQUATAj90hw5FAofssKfx-DoIMpKUOTf6qrNzOXKjh8j1Vioi7mBYbLhILZrfKGRIGBHg_nG5g1qS_OitJDA5MzYnUTuFZB0g"
+ },
+ "eclair-pistacchio": {
+  "src": "/foto/eclair-pistacchio.webp",
+  "width": 544,
+  "height": 416,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAQAgCdASoQAAwAA4BaJagCdAD6OptmYOEAAPqddLBXc1hboxBrXFsBE/KcQg5wbzZtxDV+m6jsetPND1Q3dE3F1Awj4dfBNl6sY3Gn8WnTZFib6vKiGN/AD0Y7X8Peh9CJqQfTGoXAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QrU4qz00eyZPq0IVA9cXbXPbGwMcvgX-Ds8DMR1CvCXpBlCCD8wMjGlCROAeuwtHClaMHqzhj6FEE2SPlhgrOb6HPIe8OQWjMXsY9HM64q3K8e-ai-EKecphDEo1_Go5kTJec"
+ },
+ "bigne-cioccolato": {
+  "src": "/foto/bigne-cioccolato.webp",
+  "width": 680,
+  "height": 767,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAwAgCdASoOABAAA4BaJQBOgMVVm/wLnzLAAADeS0lc44+Px4drqTrQS4+ZCBAj79qpKA+3gGM+QrBztu9U2Rvlj7LoHOgDzN/F3ubPmlmiS0+ZhJAFUpm4kwdyqNmCHd84HnCZrgeBK7ZtDdLq2kotWEAAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SJghdr8oxJs4mXkX1uesqqUNP2YDwSTqN-Y17DhWsC8dTm0stJTLPBpxsh2K0A73k9AduaVGXb5tNitvxuFNTPzYdBnbH_PH0CmNf14FtRctdAJsfAqPl0HAKfVhesUPdmB3XZYw"
+ },
+ "sfogliatelle": {
+  "src": "/foto/sfogliatelle.webp",
+  "width": 563,
+  "height": 859,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADQAQCdASoKABAAA4BaJYwCdAYuHYIcAAD7+5JhGV30DWsvaI+/n1gvyXXWPYJcM1orn/9aA5MrgVadtRLFzzWCqJWBLQsSxEPITFVApqqfUwSW2/dqYKWl0fuUgAAA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RrsBHn8GFUs8tjwRQSnyUhbzc4QVlLZQpbTzmT43Z1hMdcS_AX9b3AjjafWiS__n50JeE884zu_RSA2hTwZt5nlyTxM_xV9nRwHeM2TYW2ShnF9OK1Ou5m6pu-oui6MCOxxHE"
+ },
+ "torta-scaglie-cioccolato": {
+  "src": "/foto/torta-scaglie-cioccolato.webp",
+  "width": 640,
+  "height": 480,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABQAgCdASoQAAwAA4BaJYwCdAEfBiZS0bQr+IAA/ofwj4c3US0yns+2y+qV2lALp6hYtSy6nD8eXL3evPpv7HWKNBbcpXMXaLC6gQAA",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RjrYP7wDNEqUIWJNGLmr0fN6KEA3f2Dt4FxmEYudCTAM43bRnjpG68aaNWxiMeU5YQ5a3eyNwceAHC3eGg064qYOccECSwptA3MiUwbbHXzbDXjxaszEjdKd6_4hKDi9XRQQUxoa8AiPRu"
+ },
+ "torta-stitch-angel": {
+  "src": "/foto/torta-stitch-angel.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAABQAgCdASoMABAAA4BaJaACdIExE7pa9zkE1AAA/qadiEMYIcq5lRQMuXmOcUjgQUVHrZi+vgnfwBjw8FlXbgeWU9Lc73vrBfeu22fAksaIKbAAAAA=",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9ShrwTlgHF9b9dd5UKAnqF5HBtPi-hAGD3SEXi1H-h-AYw8k37M2GGOUB8rPm0geR1GTFfcBicUDrNYDdEu5QraaDNkbDFThCJYF_nqCVps0I71ypYRtNwGIwHv8d5ZVmUTYl-E5Oig11o"
+ },
+ "torta-auguri-nicole": {
+  "src": "/foto/torta-auguri-nicole.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoMABAAA4BaJYgCdAEWYBdHM/IAAP2ZjI5MF2yDObDlIFYnYGp3T+PVxrgMpOv1Iblza6DHPwkx8lT6f0tozImK06kTMrdVbzqpVAAA",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SvDGR3Vl9Wu7Pr9fvhsUcgG84xB5u_XLGCaFjrDcCqOOEJaaWdz-KI7BgOVI_Elw65RG0ZtvAgMqq0owO_CP2kd6ZzkYj1z7KsmNrqcniGw7T2ObQS5N569v48kvOHXW20h5mPSJMEACo"
+ },
+ "torta-cuori-cioccolato": {
+  "src": "/foto/torta-cuori-cioccolato.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoMABAAA4BaJYgCdAEXZIoefxUAAP7Q97cB+a+p5REmM8cN+8nuQGd6w9XsYg7+rDjNV4KcrwZFkspSbK6UN2PJtqNLUQAA",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TruEnJrzdVzy0jf46yDp7oQG48eTR6QQnt78UPSmKNqfrGlfqgrZnMDOPvrSqNV90aE6CkiP1Saqay6KlxynjxjGDcaW41fRqL9mNxgKI5HD4MKGXeYh6lz1xXwUZtjoC4_n2yrfq_U7w"
+ },
+ "torta-gaia": {
+  "src": "/foto/torta-gaia.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAABQAgCdASoMABAAA4BaJZACdAYvDFM5sgcN+gAA/odPjKf85Wsj/MW4Npz0avMUUXcHRvEKZa7fuKfeImVAy8IGMM5boPYP4s9/87BciJ5Io5ymoZMuIY2oPGl0oAX9P23vGDmkSAA=",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9ThZ1zFtrYVnn9qYwtKzPWXXTPP0-Wqi-e_-2IvWnrXBmXlVKhcbXcpS5D37ekLymtwTfMFMBpXLA1IQF619iaihvuYeQwuX5YQtO3SBzLCs1EfwD5rpvJRct9fEl9eC9xUP8cAYV73mB-z"
+ },
+ "torta-mandorle": {
+  "src": "/foto/torta-mandorle.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADQAQCdASoMABAAA4BaJQBOgBss8K0wEADN3JZhsRqLaGv0vB5PcYQJ4Ucyw2LT7amR4prf/Ef53ESbUDU/rCl74KmTKAHJ4dhBgpiizt96IQ1AH+1G6AAA",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QJ3VZBCRafkM8M--bz90wCFiRX--LqXOUeDlsMLkG6cQhYD-wAvAyz1lzTQZDUEpwVfcCKZLGAiuLWrnhrLdDCMsj3cKUBzn1Ka2ojI-9YlA8fVVuKTaL8mmjN41sbOLsiqxlVTLJjuOn0"
+ },
+ "torta-placca-remia": {
+  "src": "/foto/torta-placca-remia.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoMABAAA4BaJZgCdAYu5wfqdP9eAAD9eDRAS+rppzbMKd7qo8Ojk5GiaunUPJQJ3UEAsiaFxc9wMrdDliTHdrTKiz8DQ6408IqckvpyOr0EN6Tt0lDAAA==",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T1x25-2sCDx5ruLGBD-2zcgKsE9LqDLOUe-i7DV2oFEeXb8MIm7Y3jF-CKGQ1S59K5zDv-lmcNp0yHfB5PZ7PlKnHvRjTm9JdpAbQr0-Gmefk6es6LCFwzX3k88KUfYWajOTMrlLl5w5By"
+ },
+ "torta-minnie": {
+  "src": "/foto/torta-minnie.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoMABAAA4BaJQBOgCIaWj2IBX5QAP4ht/xA6KlUKPoyeSPPs18L8Tk41YS8FTUHfnQywu3gpuXr+jJzCoENxrNxSg75p3YbWifMEyAAAAA=",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SIAgTC9dU64z-wef74N-1kWx_kveTJq13aM5WFLc6Z5kor8YIoA1CFKhITOgrvf7g7Ig5i0RF9qGnWjmMSVFET8cwiweSUM_7iln8fK8dT9O2Vw5YCfyW1d3MNMbJroUZiG93jF2jqXX0"
+ },
+ "torta-cacao-placca": {
+  "src": "/foto/torta-cacao-placca.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoMABAAA4BaJYgCdADbaiiqGAAA/idYeV3LQ+2KHuzLZBcO5F2NH5ElbAxFFkr//vNPmGqVVIfB5c6sk4SAri2AFXI2Pe01EMmoAAAA",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TxJfM6YV3IRSd2djYrp9dp1u2MTHlX43u1ogZzGqEl0HrWSP0gA1HwuEFz3QRvMqhzsMjQyuFrBAH57S_4sn2YB_Rc5zdXzd_tEyAEy7Aq0dSoy7xw1-yeMddYdU1G2TannHSzkJZ911S5"
+ },
+ "torta-specchio-rossa": {
+  "src": "/foto/torta-specchio-rossa.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoMABAAA4BaJZgCdADI1AKX+AAA/oXqkDEU6SJpcTprpfvIRTyMdA+T6fmNXdrtZHye8kNjOjXUDbVkLLm0ulK/el3IH4hcAAA=",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TNcPMo1wJF107tol--2ByqP2zKkmTQVMB3L7wFruf6AtTxVSLahO82bHtIzi4rNNrOlLEVxrZWVQzec8v2sMbFxTlQV5WBO-VlsCSkzprSgmftVJh-xMnwPqXza89VRej39JJfc-tMthY"
+ },
+ "torta-specchio-verde": {
+  "src": "/foto/torta-specchio-verde.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoMABAAA4BaJbACdADbOzf8PAD+zNAn9zXhmNw1bNUZdyXCwaOdenCytMeTftcuGROpir2qu2x0Hp4UcGH8lF512sbHPIAAAAA=",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Szf7LcylAubVYO1f_UD_FBPTnC79j-YOzzYm18CGCAtMKnWuFLEN4bc4OtWf2qCyLpAVW7T91cTvPZ7-gajMcmF03rx08zIJBAbrQPyQknzmj03wiCFGykIGgSCFzv6Xg6E_WUqYdk7ZMd"
+ },
+ "torta-specchio-ambra": {
+  "src": "/foto/torta-specchio-ambra.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAQAgCdASoMABAAA4BaJagCdAEVk9cOTNSgAP7w+xyK4YLrJX9ZicKUGNEKf5VN9qJobgN/GSjCBknwgDvteZ4zmXpYyrhy3Ki7yMqJkuQ1ifkc+cn3HXMNAAA=",
+  "by": "owner",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TkIXc8DSn5lhjmY6tILKLVuAqnDn19RkIBq7gUB7O_sC0zhOmde8hdlZeB7YNGlI5a7am-186cdnvhDoyl4Y4YqAT_681tkWy_r-QpRhsWubLaJcx3NRCJM_MTMYXyBAcuhV5W7OXgtPrc"
+ },
+ "torta-numero": {
+  "src": "/foto/torta-numero.webp",
+  "width": 1439,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABQAgCdASoOABAAA4BaJbACdAywTlRYResGRwAA/tvI29oOL6QBcLUXLXWd7H8vbRBaf+ATe3rnJ6GvbGDpe8H9KUS65mkRPm/P+Fc2wnMFE4PbAHMVYPfllRsXA/Z0tbP7/GsXxiM84WFodhHu1x+S17AAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TIqzRvScyadRaFghcQM4WQ0wku6topaDgXpI7op8n5cK-vS6E63mhatGqUXKaVKXP7m1USfowrPWydBb-By5BsM3UwgHakFkV1Sc6bprYWgkFOpo07RRcP8adqCLCRVmioelqU"
+ },
+ "torta-unicorno": {
+  "src": "/foto/torta-unicorno.webp",
+  "width": 1200,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAAAwAgCdASoMABAAA4BaJbACdAYwnuKnO2PmoAD786ix6roPoNts7EMySoM9+Gd6PryOomoeOpU90CHhL00a1Lxo+GCnOHuZQVulMcmFSas/s5QZJn457uMYCft1QsQTtrgIjajSDPB1alyOYrnnQzuGwAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RcNz5pjm5NJkkAbTLwQigzTjhCuD_KpWm9IRfZBuIzMqfDUG_r1Fme5zAKCdDcpFuOZSPjdbhKR55P-hVmgAH_TXSf8D1BTuwK40aD96yKG0khHslwVStL-COLrYseKTZu7diqlg"
+ },
+ "torta-cecilia": {
+  "src": "/foto/torta-cecilia.webp",
+  "width": 1600,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAABwAgCdASoQABAAA4BaJbACdAdwLe+rAGNHBtCAAP7vaGGvCXvJ5YZKnjy/0BKST4YBO4CdVMgXc/2+SHKumrLJ1+xMjUVSi1RfuSBgJyQctluwpu7G1WLjbcJInZ46sG2wtkt31Ue50pxSlvwhRVC1G9QBx9VJ//ecOgQxQdn+ubRrYRQuj+vg6LlTuhjhPskynAAA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Se5wXCqmXQ3gt8NYw2jkPoFA9vgyHI3zkBFLbRMXco6XZB0Tftm1jJTJ6PbOSUMC8E3Zh4DyDiPnSfeyKaw3sEnxq51y7Db3sh-73SQ2_ruPGvxSamn_ER6emM02zi2r7O1gTrjA8YH-v7"
+ },
+ "torta-adele": {
+  "src": "/foto/torta-adele.webp",
+  "width": 1080,
+  "height": 1350,
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAwAgCdASoNABAAA4BaJYgCdAYuRbZcZwOUAAD9+ih8Sjq7dHB54XSEDouV9T19l9cmOtDK4I33idPEWSJDEJGeNQrNaHIlnnffGP74SqAr3ZPe38RQ90Nl5HV1DhxoIpKMZuKD6M1ybsDAAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R6b-H5Q3a_uG9cT3hmjXvwWjzptbtOSC8eAAoz0E4WCFVTx58ioSjGPpKD3vG62XLgKnZruMI3SE3Rq2Tynk_DS251UbHCcdbXMH6CoOyIUqMqMk1HYsQBw6rbg7UpyqbJ7pUe"
+ },
+ "torta-filippo": {
+  "src": "/foto/torta-filippo.webp",
+  "width": 1600,
+  "height": 1200,
+  "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoQAAwAA4BaJYwCdAEO1B5vAAD30pvyLdqohAXeB41wqicbi+YwlMLC1YR7jXiScOmyBIaJEq3VGWaOK9Hy8316kz8AAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sy8MxCEzakq-UiH3NHgYqkZHu71V9Fbau9_eaf3d5FxJnkc_uTB-sC0oU8twoP-9okI3yj2JyFG39Oh1TZTilcgLrpKrqbs5UNfW4S2f3eZ3Z4x9NgShKZ1WQAwUrastccHMqTmaTKJ-ar"
+ },
+ "torta-super-mamma": {
+  "src": "/foto/torta-super-mamma.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAABQAgCdASoMABAAA4BaJQBOkCYi4EOKUKal9dgA/O8Txwv17hZtHiiCVxGgafRr0Zg6qWBdta4OmXE6XJ2XkL0q6ViCw95QFxn7KVaVtFXvel3bsO2Vdm1+KAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9THpGOeHsUqPQyUjbxWcMEs5el6JT6O5EGlN-ynZImLhR8paPyr9xCNpMKw1vdQ0Y_3noEf-S3F_f_JXL8QjJf4qmq5MGfOTLL766Z35E7jGD8pI3Lih2Ehy8-QTtUSIeIkr0FHDDYFNLPg"
+ },
+ "torta-cuore-15-anni": {
+  "src": "/foto/torta-cuore-15-anni.webp",
+  "width": 480,
+  "height": 640,
+  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAQAgCdASoMABAAA4BaJYwCdAEedS7jv0oAAP6YDRGgA5iHmcDjdGsRSUB9sgsAmYRj79mWZ8BFwhnFN09gicbuwrwpya3PqaJXO5OSiwAAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q1_miWFMehDAcrL8FywTOh7q9CLzkT4Mqy2PZk9HSnaOfcEVBIbg-FvtV3pKf1zA9lwmMgMuMF-g5mJ00b07jaBwpo6se8TAoN-iEO7QIK1bmB4k9NspL82QQcnmik8xV7N7jbSD1jRVQJ"
+ },
+ "vetrina-torte": {
+  "src": "/foto/vetrina-torte.webp",
+  "width": 1800,
+  "height": 2400,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACwAQCdASoMABAAA4BaJZACdADCcK4AAP3V/uS2xjrV1XZYwafsTb6f5R5bC8USvUcnxceOVfOEFMfO4usKjoaFbqfl1aX1e9mpOj/PhDsNMvhQl/mFCHQB4rPnAEAAAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QxsdErn_BN6ZAbWNLJOWzMKtOgrXvH3eb-EHhf62Y6KQiMI567jbnEo0jG1M4qH54cxJIo0Gl-9ptFcTRBi18utYJo3SivSXUnW9JIxYEXoWsBl1qBTRM0xRrSKTAGo5cgfsjI"
+ },
+ "mignon-cioccolato": {
+  "src": "/foto/mignon-cioccolato.webp",
+  "width": 594,
+  "height": 883,
+  "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQAgCdASoLABAAA4BaJZQCdAYvrczQhUoAAP6pUQ7d/n60PccLb+I5SFwqnuCDx2salhnSr/Qq2kP7JFRgfDh6+QUicJLF+T3hx6Pfg+mcsfUGp8OBSzcPxzrKrwXXnsu0jCXUbirEBm7EY4AAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SCGHfXF-Fyy_i4vdVu8_u32AdhIWhPzdAh-6iAjtPaK8ARoKZnWBwumfJlxgMsqIFZ20J61Su3aiGi1-ICWojajRvma-jaIRIZ5Mb1HO22nejxcFyRlVNJQgM4ZozxRl6bNbj93Q"
+ },
+ "tartellette-cioccolato": {
+  "src": "/foto/tartellette-cioccolato.webp",
+  "width": 1080,
+  "height": 1160,
+  "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAAAwAgCdASoPABAAA4BaJYwCdAdwLeWyiu8S4AD+To0hJ83KbaTbOK8B3PvbC148MVoHtWY0Ev9C27qTNl8wAO0J9wpL9n0KRSeyALCsLPbHG0XysT5kcMFlz+8K1j6Nf2kSWTIoiF7bqylchaDLYiZbgAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RC9IoFGfixKMahGjhGtmviSFU4POyKBOIPOTnl6GXaBIw1aXSxxm_H1znTuEuWnEirGqaElcEwtj2VfZ7NWBvwebx4dfPdPgJe2LnWkhUmszbv4DDb2G19-iQ_HxFohZuhGJCU"
+ },
+ "crostatine-frutta": {
+  "src": "/foto/crostatine-frutta.webp",
+  "width": 567,
+  "height": 921,
+  "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwAgCdASoKABAAA4BaJbACdEfqi1uba6CuTdl2PAAA/uX1gbWU5qjTp7bX7jhyi0kaURP/tAZmYS/Ex0JFWr9OmlwwRYhDtFY2cj6siRa60ZchafMUL2INq5EVXrUuyLMSs6yd2h/7UGtGV6c0WXQA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QO3e43KaOPap98FoCs0hBrRZZerdnL22_kxEqPhua5m04xeJ11DUzcDsQJ6OugM3LoZsHlk_we0DaH-7c8d2K2qgkXLAqs_h0eHakvR30nmtBcsNurznsYEm6zlXCDxY3rG986"
+ },
+ "barchette": {
+  "src": "/foto/barchette.webp",
+  "width": 1080,
+  "height": 1032,
+  "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAQAgCdASoQAA8AA4BaJQBOgMXwyM0rrhcAAM3znDW962ntxz26+ox4NkyRWzmYw7TXMsBunJVrwcFOO4YPzwxqdLp1vVzELgxwlML+H/r5fS7BVb5PIXtrqvZI5/cfkIbU51zEpNMMU7Fo2Xb/iEBEKVroASAA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RHtjKkQBClFOCqkvoCCzAolRgl-Wrgfy6pxja_csT2xyzuXmyHsh2cQ7z-1I2Ewhw_wqF3iLzQDUA4ei9bWq_djGY7JGVx_oYtThLKHVvDIYfZ_yl1TYUSW3jM-2QRIDvW8nhh"
+ },
+ "crostatine-marmellata": {
+  "src": "/foto/crostatine-marmellata.webp",
+  "width": 1056,
+  "height": 962,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAQAgCdASoQAA8AA4BaJZACdAYrnwRU0V4AAP6UMMLkO4Rmq0sn784EjjMvcZNtuJ2qlbHe+j2Toa3Ii5/+uNI2ESpdYylTE9ijJ5kgYcIeWJcMper2J3swXrQ6APRtDkyJikuQObJ/ZgAA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R5J6kjBHaKUCnRbJ2hFcCIjRgmwc374QpGtQv7nM2UeqvsYxMJPB6jekL40BiRSF6nfhYEXst5mAhAaLsFrva8CFS6AUwdWDUrq_kENvNre-e0J3cXbWK82r3Q_ObSK5yVwhmk"
+ },
+ "biscotti-ciliegia": {
+  "src": "/foto/biscotti-ciliegia.webp",
+  "width": 1078,
+  "height": 785,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAgCdASoQAAwAA4BaJZgCdAYtfbMzrfG7sADiemND8cRaat8ZWsb7eG7zFkKtP3A06qbtSNJEYrAOGvbp968EMjA+mVeW5NCY/E6d873gdYrSefpbC2PI+llYILWKlmNgjrQlcA4FDQAA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SUVFXmcNcJhHP2VuUx_IFWoOO5onfI4lfs1qyyUeUAh0weaa8gHFLwxEawA8Ct4nxgba7hh_dRIXRLvNwLXDmruoD2zppmvdpg9BVcJm5UJB6Wm7yXCMo_pT3_iOSKgpr3OGKh"
+ },
+ "mignon-vassoio": {
+  "src": "/foto/mignon-vassoio.webp",
+  "width": 900,
+  "height": 1600,
+  "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAwAgCdASoJABAAA4BaJYwCdADdqrIVRpNYAAD2ccov21kH2VhIc0H0ASzdOCWvUecpMFyztwhz0vhSW1/VMtqovknhN/2sg6AAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S18IK6wqDJu6azwqgDeDxkXgwl2ElhqC01qD-719L_SB1xjrb4M3_4i_vp5TN6m6AWHoL_sGcKzHgkrET8ONKEOq16BgZACwHLX31ilCFLjrOZAWQ3InzpBYSOvCFBRCbQhhMUtA"
+ },
+ "biscotti-cioccolato": {
+  "src": "/foto/biscotti-cioccolato.webp",
+  "width": 842,
+  "height": 937,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAQCdASoOABAAA4BaJagCdAYstMJXleYA/mYfhEnP0M0ztD2gdn0TzIg50rG9cCDjrJxzRJXS1/EsmPx0+jijHogLkFjQJ393i/cI5goXsBvX00YytoKja3O4fjNV8E5O88T31h07Nn/qsNbC1+xQmWUAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R9Fm_2-0ZpCKHeDHkv_og_VbhH7vja_fGRYppzhdPq-U2JHg3iEwtEg_AwWgWLzbawWv42lG8skRa0up_8D8sYzRVBCV6KTWuYmpX8v1ri7bSqBDTi7g107LvxOVixZv2V8YMJKw"
+ },
+ "ciambellone": {
+  "src": "/foto/ciambellone.webp",
+  "width": 1080,
+  "height": 975,
+  "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAAAQAgCdASoQAA4AA4BaJZACdAD1jMrVLwgAAP7KlU9D8DU/dz2Q4+1Nh4TFL3T52Ul2DSmcwlS/C3XQTa8G/kiXMZZXCskopoZcGVDKpMNfQNqCvEeRbob/MxuRwR56QVJPS9cVIejuAYvWr5mk0caAAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RzVOCeKu_848KOdyLLA_lA5j8V8AZgnnv9lPpw6HZXrQRzeRzmJ8NbI9S8PKYhqiCPf_MOAzGNL9QR5838OLjk4bGhru-qRMnf85o-RWcPhuDZJITwGdURBhh6DfsMdm5o4uKH"
+ },
+ "cornetti": {
+  "src": "/foto/cornetti.webp",
+  "width": 1213,
+  "height": 622,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoQAAgAA4BaJYgCdAEQ0scg7vgAAM4zhocGYodk8VgvmdYkL3ByN6TXKUcNuEvGsdy9dKmNQrfCOT7FLMok/1xOuLz2Ngj3u68sneIAAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QDe6_EorOmv_rluDYNZJr6T-ONKCGizOYmcdr5Jire_6xMI6DCTIaFCLXkkTIdfaPcBFQGnwgB4HBBDHjn6H1xcMEcSinqSj0rav5AsUKvVo-i1RVKismy1EUlvoqX_brLLEV_"
+ },
+ "plumcake": {
+  "src": "/foto/plumcake.webp",
+  "width": 1080,
+  "height": 834,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoQAAwAA4BaJYwCw7EVYaenIgAA/cefNv83IyseaJ7R72RpZwLuE5nHNZ5lLQ6bO3AwGCPmL1RAdU/Y9zIbMMSvDAPi831XU8qVW4hvGAaJ1G8jUfvIAAAA",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TjByqQ_0svOf9h31Vt3YgOBYMbAMkck9ykwUiWgNtoQinjllMjpMtn8p3QOcq3ewt3G9BX4j6mpKq_uOL8R27eEoPPmx5d2Du0SJ_PSPpd0SyTAN-8ZDbkGiWhPU2TY2L6Wd7g"
+ },
+ "bomboloni": {
+  "src": "/foto/bomboloni.webp",
+  "width": 730,
+  "height": 892,
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAADwAQCdASoNABAAA4BaJbACdADdjJ46auAA/kod8qCBHj/YFp7vFFozRqAmrbNRg1MmVdSP6pE9xXybAK55owTEcb2Dun/QtaBH/tDAvd4Q3EwjnvFlpLZhrjAtkpo/FGbiDtXkH1gISq0gAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QOj5ujuPEEs7rGSGY2JCDW3k3LkeEgTRcnV7J603DqmCOAvDNWZAWFUVewEXImlWJAHbj3kTPdXjEy9r1jEj-qIUsQCBihmWjBQ4Q8u3cuwuAXN_iBEKmHF5rlopzaz9goCqROmA"
+ },
+ "crostata-ricotta-visciole": {
+  "src": "/foto/crostata-ricotta-visciole.webp",
+  "width": 454,
+  "height": 715,
+  "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoKABAAA4BaJYwCdAEfbRFyW1ccAAD+r8o8YQFRcWEDUsFnmbv6Hv6Ul4NMb+DUDodetH8k0HCXbjw3NobQWqxzLPr7n5n9hWRQAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T2KAdceVlNtbf-_LMOxuwl77zMhIM0Aysdw4a6dyamosJ4ZZQh44PYEsOk9KpgfXq4X02UY7Rg3El95O-ceevvrSOUVVys_Mekrl8EujD71GlFk6on9jg7KytzQ666lR_Ww4Ms"
+ },
+ "ciambelle-zucchero": {
+  "src": "/foto/ciambelle-zucchero.webp",
+  "width": 1600,
+  "height": 900,
+  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAQCdASoQAAkAA4BaJQBOgCDcmc6QAPt2WNwqFUkBFRatb44LWklXhz2Ipf5HGGyC0afg0WUsjKPy1EhrNc0gXAAAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TTxOZBAgdaPnkkIS7SV73rUvDLWER8PPFFtqXuF9FPDChoq0fdk47K9z5RnXbIJIw5yo-jkjSNxmZ1Xa7OeaZHx74BYmN0vgBJnugWSr6be22Lhw_2QrsEJWCN_mS5Me6K3vQcLQ"
+ },
+ "crostata-grata": {
+  "src": "/foto/crostata-grata.webp",
+  "width": 945,
+  "height": 724,
+  "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABQAgCdASoQAAwAA4BaJYwCdAYsPv5pRmtSZAAAzjl1szWWFzZ7KXzrFJ5YxnWZlHzfCcbX8aym9kdFPo1PuApi6q7AKejJllKbXLANPv2xgRpZK37YJN/zzTBSSka4jMAAAA==",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TF0Ba9r616mgIHS3goiuyoKGSKxAvqtNuCyjfVvHSHFMxkueysfTGK9gJTsdc6HLSTr85fuRZsv2UA7TFIr9mGFq-IKrhy6PFzNyKwJ0Y3S54N3F7K_03gxEGUpjnrM8Ew1S_Ecw"
+ },
+ "biscotti-codette": {
+  "src": "/foto/biscotti-codette.webp",
+  "width": 1080,
+  "height": 693,
+  "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAAAQAgCdASoQAAoAA4BaJYgCdADp+lAbP/WAAP6tPSq2LNcScUMYXZU0UfHUcrHh55cp9XQVhIqE0Rc4dRDdXTIlA6ApbFq6X7YsWl4AAAA=",
+  "by": "customer",
+  "source": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RQ2NVROpMjfJEDu0a4QqspG1yzefW5rD8uFjvKNkNQvCcFhcha9fkbyYUH9JbTzDcn-gyvuL9wy7CmqNDv66dNo9Sh24Y8Rx8b4dgxJecHo6k3zz3rz7kilFFEf3lRP7AVLEGR"
+ }
+}

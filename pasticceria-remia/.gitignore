@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+.vercel
+.impeccable/review
+.impeccable/ref
+*.tsbuildinfo
+next-env.d.ts
