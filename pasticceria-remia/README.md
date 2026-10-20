@@ -18,9 +18,12 @@ Pubblicazione: su Vercel basta importare la cartella `pasticceria-remia` come pr
 
 ## Da fare prima di pubblicare
 
-- **WhatsApp**: il negozio non ha ancora un numero WhatsApp, quindi i pulsanti WhatsApp sono nascosti e l'ordine è
-  una telefonata. Quando c'è il numero basta scriverlo in `src/data/content.js` (`whatsapp: "39333..."`): compaiono
-  da soli "Ordina su WhatsApp" in apertura, nella barra del telefono e nel salato.
+- **Link degli ordini**: il pulsante "Invia la richiesta" della sezione Ordini e prenotazioni usa la costante
+  `ORDER_REDIRECT_URL` in `src/data/order.js`. Finché è vuota, la richiesta si apre in una finestra pronta da
+  copiare o da leggere al telefono (con il pulsante Chiama). Quando arriva il link definitivo basta scriverlo lì,
+  mettendo `{message}` dove va il testo dell'ordine, ad esempio `https://wa.me/39333XXXXXXX?text={message}`
+  per WhatsApp o un modulo/sistema di prenotazione. In alternativa, con il numero WhatsApp scritto in
+  `src/data/content.js` (`whatsapp: "39333..."`) l'ordine va su WhatsApp e compaiono i pulsanti WhatsApp.
 - **Foto dei clienti**: 14 foto sono del proprietario, le altre sono state caricate dai clienti su Google Maps
   (`scripts/image-sources.json`, campo `by`). Prima di andare online vanno sostituite con foto del negozio o
   autorizzate. Il visore indica per ogni foto se è "della pasticceria" o "di un cliente".
@@ -42,27 +45,46 @@ Pubblicazione: su Vercel basta importare la cartella `pasticceria-remia` come pr
 - Foto: 71 scelte tra le 216 della scheda (66 nella vetrina); ogni file in `public/foto` ha accanto un `.json` con l'URL di origine.
   `npm run images -- <cartella con gli originali>` le rigenera.
 
-## Design: "Boutique Gourmet"
+## Design: "Champagne e cioccolato" (restyling sperimentale)
 
-Fondo panna (#FDFBF7), testi cacao, dettagli miele, titoli in Libre Caslon Display; testi in Jost.
-Dell'insegna del negozio restano la scritta verde (vettorializzata dalla foto della facciata, `src/app/insegna.svg`),
-le maiuscole condensate (Barlow Condensed) e il rosso del "Tel.". I contenuti stanno su lastre crema; profondità
-solo per lastre sovrapposte, niente ombre né sfumature.
+Crema profondo, avorio e sabbia per i fondi, oro champagne per i dettagli e i pulsanti, cioccolato fondente per le
+schede scure. Titoli in Cormorant Garamond, testo in Manrope. La scritta dell'insegna (vettorializzata dalla foto
+della facciata, `src/app/insegna.svg`) resta la firma, ora in foglia champagne nell'header e nel footer. Ogni
+sezione sale sopra la precedente come un vassoio nuovo.
 
-### L'ingresso (apertura)
+Ordine delle sezioni: ingresso, Chi siamo, La vetrina, Ordini e prenotazioni, Recensioni, Orari e mappa.
 
-Nessuna animazione legata allo scorrimento. La pagina si apre sulla facciata a tutto schermo (100vh,
-`object-fit: cover`) con un solo invito, "Entra in pasticceria". Al clic parte il video d'ingresso (piano sequenza
-Hailuo dalla strada al bancone, 5,2 s, `playsinline` e `muted`, con "Salta"). Alla fine lo schermo resta sull'ultimo
-fotogramma, il bancone, e compare la hero: nome, "Produzione propria dal 1979", Via dei Frassini 25, telefono,
-stato di apertura e pulsanti (`src/components/Ingresso.jsx`). Con "riduci movimento" si va direttamente alla hero;
-se il video non può partire, idem.
+- **Ingresso**: lo stesso video di prima (piano sequenza dalla strada al bancone, tagli orizzontale e verticale)
+  ora parte da solo all'apertura (`autoplay`, `muted`, `playsinline`), una volta, con un filo champagne che
+  segna l'avanzamento e "Salta l'ingresso". Durante la camminata compare il nome, lettera per lettera in foglia
+  champagne; arrivati al bancone salgono il testo, "Ordina e prenota", "Scopri la vetrina", lo stato aperto/chiuso
+  in tempo reale, indirizzo e telefono, e "Rivedi l'ingresso". Se il browser blocca l'autoplay o è attivo
+  "riduci movimento", si va diretti al bancone.
+- **Header**: barra in vetro sospesa con l'insegna, le sezioni e le scorciatoie Mappa e Chiama (e WhatsApp quando
+  ci sarà il numero); su telefono un menu a schermo intero.
+- **Chi siamo**: "F.lli vuol dire fratelli", tre capitoli (l'insegna di Via dei Frassini, il laboratorio dietro il
+  bancone, da padre in figlio) con foto incorniciate in parallasse e una fascia di numeri reali (1979, 4,6 su 599
+  recensioni, 6 giorni su 7, 7:30) che contano al passaggio.
+- **La vetrina**: filtro animato (Tutto, Mignon, Torte, Paste e lievitati, Da tè, Salato) senza ricaricare la
+  pagina; banner del reparto con il pulsante che apre l'ordine già impostato; griglia sempre simmetrica (2 colonne
+  su telefono, 4 da tablet in su, otto foto e poi "Mostra tutte") di card con passe-partout avorio, angoli
+  morbidi, ombra lunga e inclinazione 3D al passaggio del mouse; ogni foto si apre a schermo intero. Il salato non
+  ha foto: lo raccontano le recensioni.
+- **Ordini e prenotazioni**: quattro tipi di richiesta (Torte per eventi, Pasticceria e mignon, Salato e
+  rinfreschi, Colazioni e festività), dettagli con scelte e contatori, per le torte la dedica scritta dal vivo
+  sulla placchetta di cioccolato; poi giorno (il lunedì è bloccato, sabato e domenica segnalano l'orario
+  continuato), fascia oraria, nome e telefono. A sinistra il "biglietto d'ordine" si compila da solo; l'invio va
+  al link di `ORDER_REDIRECT_URL` (vedi sopra).
+- **Recensioni**: le 10 recensioni Google a 5 stelle, parola per parola, su due file che scorrono all'infinito in
+  direzioni opposte e si fermano sotto il mouse.
+- **Orari e mappa**: scheda con orari (oggi evidenziato), il cartello della porta, mappa Google integrata e i
+  pulsanti Chiama, Indicazioni, Facebook, Instagram.
 
-- `public/video/ingresso-desktop.*` (1920×870) e `ingresso-mobile.*` (612×1088, verticale) sono tagliati sopra la
-  filigrana "MINIMAX | Hailuo AI" (righe 0–1088 del video originale 2944×1248). La versione verticale non è un
-  ritaglio fisso: la finestra segue la porta d'ingresso fotogramma per fotogramma, così su telefono `object-fit:
-  cover` non perde mai la strada. Il sito sceglie la versione in base all'orientamento dello schermo.
-- `ingresso-*-inizio.webp` / `-fine.webp`: primo e ultimo fotogramma (copertina e arrivo).
+Tecnica: Motion (Framer Motion) per tutte le transizioni e i gesti; componenti in stile Aceternity/shadcn in
+`src/components/ui/` (TiltCard, InfiniteMovingCards, StaggerText, CountUp, helper `cn` con clsx +
+tailwind-merge). Solo transform e opacità, spazi riservati per foto e video (niente spostamenti di layout).
+Con "riduci movimento" restano le dissolvenze e spariscono gli spostamenti (`MotionConfig reducedMotion="user"`,
+`useReduce` sicuro per l'hydration).
 
 ### Orari in tempo reale
 

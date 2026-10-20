@@ -33,7 +33,7 @@ Pasticceria F.lli Remia, a family pastry shop and in-house laboratory in Via dei
 ## Capabilities and Constraints
 
 - Contact actions: call, directions/map, Facebook, Instagram.
-- WhatsApp: no number exists yet. The user chose to hide WhatsApp for now; the order action is "Chiama per ordinare". Enabling it later must be one line of configuration.
+- WhatsApp: no number exists yet, so WhatsApp stays hidden. Orders are composed on the site and sent to `ORDER_REDIRECT_URL` (src/data/order.js); while it is empty the request opens ready to copy or read out on the phone. Enabling WhatsApp or another destination is one line of configuration.
 - Email: none. Do not show one.
 - Website pasticceriaflliremia.it is listed on Google but unreachable; this site replaces it.
 - Italian only.
@@ -42,7 +42,7 @@ Pasticceria F.lli Remia, a family pastry shop and in-house laboratory in Via dei
 
 - Name as on the sign: "Pasticceria F.lli Remia", script lettering in green on white.
 - Facts on the sign: "Produzione propria dal 1979", "Servizi per nozze e rinfreschi".
-- Current brief (third, pinned by the user): a click-to-play entrance. The page opens on the street front with one invitation, "Entra in pasticceria". A click plays the user's entrance video once, which settles on the counter with the hero (name, "Produzione propria dal 1979", Via dei Frassini, phone, CTAs). No scroll-linked animation. Below it: "Chi siamo / La nostra storia" with the whole counter shown large; a symmetric product-card grid (Mignon, Torte, Pasticceria da tè, Salato, then Pasticceria fresca); reviews as cream cards with fine honey borders. Look: cream ground #FDFBF7, cocoa and honey, a refined serif. CTAs "Ordina su WhatsApp" (once a number exists), "Chiama", "Raggiungici".
+- Current brief (fourth, experimental full restyle pinned by the user): an elite, luxury-warm landing page, "Champagne e cioccolato" (deep cream, champagne gold, chocolate), Framer Motion for every transition, Aceternity/shadcn/Tailwind components, 60fps on phones, no layout shift. Keep every real fact and the same entrance video, now autoplaying (muted, inline). Sections in fixed order: hero with the entrance video, glass floating navbar with contacts and map, animated title, live open badge, CTAs; Chi siamo and the Remia family tradition right after the hero; the vitrine with category filter and orderly 3D-tilt product cards; an elegant orders and bookings section whose confirm button points at one configurable constant (`ORDER_REDIRECT_URL`) until the shop gives a definitive link; infinite moving review cards; hours, embedded map and quick call. Glass and gold gradient text are explicitly requested and override the usual rule against them.
 
 ## Evidence on Hand
 

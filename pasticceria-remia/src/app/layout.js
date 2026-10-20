@@ -1,10 +1,10 @@
-import { Jost, Barlow_Condensed, Libre_Caslon_Display } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { shop, hours } from "@/data/content";
+import MotionRoot from "@/components/MotionRoot";
 import "./globals.css";
 
-const jost = Jost({ subsets: ["latin"], weight: "variable", variable: "--font-jost", display: "swap" });
-const caslon = Libre_Caslon_Display({ subsets: ["latin"], weight: "400", variable: "--font-caslon", display: "swap" });
-const barlow = Barlow_Condensed({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-barlow", display: "swap" });
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 
 export const metadata = {
   title: "Pasticceria F.lli Remia · Centocelle, Roma · dal 1979",
@@ -19,7 +19,7 @@ export const metadata = {
   },
 };
 
-export const viewport = { themeColor: "#4a2c1d", width: "device-width", initialScale: 1, viewportFit: "cover" };
+export const viewport = { themeColor: "#170e0a", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const jsonLd = {
@@ -40,9 +40,9 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="it" className={`${jost.variable} ${barlow.variable} ${caslon.variable}`}>
+    <html lang="it" className={`${cormorant.variable} ${manrope.variable}`}>
       <body className="min-h-dvh overflow-x-clip">
-        {children}
+        <MotionRoot>{children}</MotionRoot>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
     </html>

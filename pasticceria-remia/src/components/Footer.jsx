@@ -1,26 +1,34 @@
 import { shop } from "@/data/content";
 import Wordmark from "./Wordmark";
+import { links } from "./links";
+import { FacebookIcon, InstagramIcon } from "./Icons";
 
 export default function Footer() {
   return (
-    <footer className="bg-fondente pb-28 pt-16 text-white md:pb-12">
-      <div className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-10">
-        <Wordmark className="w-[min(100%,46rem)] text-insegna" />
-        <p className="cond mt-4 text-[1rem] text-miele-chiaro">Produzione propria dal {shop.since} · Servizi per nozze e rinfreschi</p>
-        <div className="mt-10 grid gap-8 border-t border-white/15 pt-8 text-[1rem] sm:grid-cols-3">
-          <p>{shop.address}<br />{shop.city} · {shop.area}</p>
-          <p>
-            <a href={shop.phoneHref} className="hover:underline">Tel. {shop.phone}</a><br />
-            <span className="text-miele-chiaro">Lunedì chiuso</span>
-          </p>
-          <p className="flex gap-5">
-            <a href={shop.facebook} target="_blank" rel="noopener" className="hover:underline">Facebook</a>
-            <a href={shop.instagram} target="_blank" rel="noopener" className="hover:underline">Instagram</a>
-            <a href={shop.maps} target="_blank" rel="noopener" className="hover:underline">Google Maps</a>
-          </p>
+    <footer className="overflow-hidden bg-fondente pb-[max(env(safe-area-inset-bottom),2.5rem)] pt-20 text-avorio/80">
+      <div className="mx-auto max-w-[1360px] px-5 md:px-10">
+        <div className="grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="text-[1.05rem] text-avorio">{shop.address}, {shop.city} · {shop.area}</p>
+            <p className="mt-2">Tel. <a href={shop.phoneHref} className="text-champagne-chiaro underline">{shop.phone}</a> · Lunedì chiuso</p>
+            <p className="mt-2"><a href={shop.maps} target="_blank" rel="noopener" className="text-champagne-chiaro underline">Apri in Google Maps</a></p>
+          </div>
+          <nav aria-label="Sezioni" className="md:col-span-4">
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
+              {links.map(([h, t]) => (
+                <li key={h}><a href={h} className="inline-flex min-h-11 items-center hover:text-avorio">{t}</a></li>
+              ))}
+            </ul>
+          </nav>
+          <div className="flex gap-2 md:col-span-3 md:justify-end">
+            <a href={shop.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-champagne-chiaro transition-colors hover:bg-white/10"><FacebookIcon size={20} /></a>
+            <a href={shop.instagram} target="_blank" rel="noopener" aria-label={`Instagram ${shop.instagramHandle}`} className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-champagne-chiaro transition-colors hover:bg-white/10"><InstagramIcon size={20} /></a>
+          </div>
         </div>
-        <p className="mt-10 text-[0.9rem] text-miele-chiaro/80">
-          Foto dalla scheda Google Maps della pasticceria, scattate dal negozio e dai clienti. Recensioni da Google, riportate testualmente.
+        <Wordmark foil className="mt-16 w-full" />
+        <p className="serif mt-4 text-[1.4rem] italic text-champagne-chiaro">Produzione propria dal {shop.since} · Servizi per nozze e rinfreschi</p>
+        <p className="mt-8 max-w-[70ch] text-[0.88rem] text-avorio/60">
+          Foto dalla scheda Google Maps della pasticceria, scattate dal negozio e dai clienti. Recensioni da Google, riportate testualmente. © Pasticceria F.lli Remia
         </p>
       </div>
     </footer>

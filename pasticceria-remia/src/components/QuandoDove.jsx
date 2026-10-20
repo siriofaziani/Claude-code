@@ -1,79 +1,100 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { MapPin, Phone } from "lucide-react";
 import { hours, shop } from "@/data/content";
-import { useOpenState } from "./OpenNow";
+import { hasWhatsapp, whatsappHref } from "@/lib";
+import { useOpenState, show } from "./OpenNow";
 import OpenNow from "./OpenNow";
 import Photo from "./Photo";
-import MapEmbed from "./MapEmbed";
-import { FacebookIcon, InstagramIcon, PhoneIcon, PinIcon } from "./Icons";
+import StaggerText from "./ui/StaggerText";
+import useReduce from "./ui/useReduce";
+import { FacebookIcon, InstagramIcon, WhatsAppIcon } from "./Icons";
 
-const t = (s) => s.replace(/^0/, "");
+const ease = [0.16, 1, 0.3, 1];
 
-/** Hours as a precise, always-current readout, and the way to the shop. */
+/** Hours with today lit, the sign on the door, the live map and the call, on one card. */
 export default function QuandoDove() {
+  const ref = useRef(null);
+  const reduce = useReduce();
   const s = useOpenState();
-  return (
-    <section aria-label="Orari e indirizzo" className="bg-cacao text-white">
-      <div className="mx-auto grid max-w-[1500px] gap-14 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-12 lg:gap-10 lg:px-10">
-        <div id="orari" className="scroll-mt-20 lg:col-span-7">
-          <h2 className="titolo text-[2.4rem] sm:text-[3.6rem]">Orari</h2>
-          <OpenNow tone="dark" className="mt-4" />
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 35%"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
 
-          <div className="relative mt-7 sm:pr-40 lg:pr-48">
-            <table className="lastra w-full border-collapse text-left">
-              <caption className="sr-only">Orari di apertura settimanali</caption>
-              <tbody>
-                {hours.map((h) => {
-                  const today = s?.day === h.day;
-                  return (
-                    <tr key={h.day} aria-current={today ? "date" : undefined} className={`border-b border-filo last:border-0 ${today ? "bg-miele-chiaro" : ""}`}>
-                      <th scope="row" className="py-3.5 pl-5 pr-3 font-normal sm:pl-6">
-                        <span className={`text-[1.05rem] ${today ? "font-medium text-cacao" : ""}`}>{h.label}</span>
-                        {today && <span className="cond ml-2 text-[0.85rem] text-cacao">oggi</span>}
-                      </th>
-                      <td className="py-3.5 pr-5 text-right sm:pr-6">
-                        {h.slots.length ? (
-                          <span className="cond text-[1.22rem] font-semibold tabular-nums text-cacao">
-                            {h.slots.map(([a, b]) => `${t(a)}–${t(b)}`).join("  ·  ")}
-                          </span>
-                        ) : (
-                          <span className="cond text-[1.22rem] text-rosso">Chiuso</span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <figure className="relative ml-auto mt-3 w-[62%] max-w-[15rem] sm:absolute sm:-right-2 sm:top-14 sm:mt-0 sm:w-48 lg:w-56">
-              <div className="bg-crema p-1.5">
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Photo name="cartello-orari" fill sizes="240px" alt="Il cartello degli orari sulla porta: dal martedì al venerdì 7:30–13:30 e 15:00–20:30, sabato e domenica orario continuato 7:30–20:30, lunedì chiuso" className="object-cover" />
+  return (
+    <motion.div ref={ref} style={reduce ? undefined : { scale }} className="overflow-hidden rounded-[2.25rem] bg-cioccolato text-avorio will-change-transform">
+      <div className="grid gap-10 p-6 sm:p-9 lg:grid-cols-12 lg:gap-12 lg:p-12">
+        <div className="lg:col-span-5">
+          <StaggerText as="h2" text="Orari e mappa" className="serif block text-[clamp(2.8rem,5.6vw,4.6rem)] text-avorio" />
+          <OpenNow className="mt-5 bg-white/5 text-avorio shadow-[inset_0_0_0_1px_rgb(236_220_188/0.18)]" />
+
+          <dl className="mt-7 grid gap-0.5">
+            {hours.map((h) => {
+              const today = s?.day === h.day;
+              return (
+                <div key={h.day} className={`relative grid grid-cols-[7.5rem_1fr] items-center gap-3 rounded-2xl px-4 py-2.5 sm:grid-cols-[8.5rem_1fr] ${today ? "text-fondente" : "text-avorio/85"}`}>
+                  {today ? <motion.span layoutId="oggi" aria-hidden="true" className="absolute inset-0 rounded-2xl bg-champagne" transition={{ type: "spring", stiffness: 300, damping: 30 }} /> : null}
+                  <dt className={`relative ${today ? "font-semibold" : ""}`}>
+                    {h.label}
+                    {today ? <span className="sr-only"> (oggi)</span> : null}
+                  </dt>
+                  <dd className="relative flex flex-wrap gap-x-4 tabular-nums">
+                    {h.slots.length ? h.slots.map(([a, b]) => <span key={a} className="whitespace-nowrap">{show(a)}–{show(b)}</span>) : <span>Chiuso</span>}
+                    {h.slots.length === 1 ? <span className={today ? "" : "text-champagne-chiaro/70"}>continuato</span> : null}
+                  </dd>
                 </div>
-                <figcaption className="cond px-1 pb-0.5 pt-1.5 text-[0.85rem] text-tostato">Il cartello sulla porta</figcaption>
-              </div>
-            </figure>
-          </div>
-          <p className="testo mt-6 text-[1rem] text-miele-chiaro">Sabato e domenica orario continuato. La domenica c'è più fila: per torte e vassoi conviene ordinare prima, al telefono.</p>
+              );
+            })}
+          </dl>
+
+          <figure className="mt-6 flex items-center gap-4 rounded-[1.4rem] bg-cioccolato-2 p-3">
+            <div className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden rounded-[0.9rem] sm:w-32">
+              <Photo name="cartello-orari" fill sizes="128px" alt="Il cartello degli orari sulla porta: dal martedì al venerdì 7:30–13:30 e 15:00–20:30, sabato e domenica orario continuato 7:30–20:30, lunedì chiuso" className="object-cover" />
+            </div>
+            <figcaption className="text-[0.98rem] leading-snug text-avorio/85">Gli stessi orari del cartello sulla porta. La domenica c'è più fila: per torte e vassoi conviene prenotare.</figcaption>
+          </figure>
         </div>
 
-        <div id="dove" className="scroll-mt-20 lg:col-span-5">
-          <h2 className="titolo text-[2.4rem] sm:text-[3.6rem]">Dove siamo</h2>
-          <address className="mt-4 not-italic">
-            <span className="block text-[1.5rem] font-light sm:text-[1.8rem]">{shop.address}</span>
-            <span className="block text-[1.06rem] text-miele-chiaro">{shop.city} · {shop.area}, vicino alla fermata Mirti della metro C</span>
+        <div id="dove" className="flex scroll-mt-28 flex-col gap-5 lg:col-span-7">
+          <address className="not-italic">
+            <span className="serif block text-[clamp(1.9rem,3vw,2.6rem)] text-champagne-chiaro">{shop.address}</span>
+            <span className="mt-1 block text-[1.04rem] text-avorio/85">{shop.city} · {shop.area}, vicino alla fermata Mirti della metro C</span>
           </address>
-          <div className="mt-6 grid gap-2 sm:grid-cols-2">
-            <a href={shop.directions} target="_blank" rel="noopener" className="btn btn-chiaro justify-between">Indicazioni <PinIcon /></a>
-            <a href={shop.phoneHref} className="btn btn-chiaro justify-between"><span className="tel text-[1.15rem]">Tel. {shop.phone}</span> <PhoneIcon /></a>
-            <a href={shop.facebook} target="_blank" rel="noopener" className="btn justify-between bg-white/10 text-white hover:bg-white/20">Facebook <FacebookIcon /></a>
-            <a href={shop.instagram} target="_blank" rel="noopener" className="btn justify-between bg-white/10 text-white hover:bg-white/20">Instagram <InstagramIcon /></a>
+          <div className="relative min-h-[22rem] flex-1 overflow-hidden rounded-[1.75rem] bg-cioccolato-2 shadow-[inset_0_0_0_1px_rgb(236_220_188/0.14)] lg:min-h-[28rem]">
+            <iframe
+              title={`Mappa: ${shop.name}, ${shop.address}, ${shop.city}`}
+              src={shop.mapEmbed}
+              className="absolute inset-0 h-full w-full border-0 [filter:sepia(0.2)_saturate(0.85)]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
           </div>
-          <div className="mt-2">
-            <MapEmbed />
-          </div>
+          <motion.ul
+            className="grid gap-3 sm:grid-cols-2"
+            initial="hidden"
+            whileInView="shown"
+            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+            variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.07 } } }}
+          >
+            {[
+              { href: shop.phoneHref, label: `Chiama ${shop.phone}`, icon: <Phone size={18} aria-hidden="true" />, cls: "btn-champagne btn-shine" },
+              { href: shop.directions, label: "Indicazioni stradali", icon: <MapPin size={18} aria-hidden="true" />, cls: "btn-line text-avorio", ext: true },
+              ...(hasWhatsapp ? [{ href: whatsappHref(), label: "WhatsApp", icon: <WhatsAppIcon size={19} />, cls: "btn-line text-avorio", ext: true }] : []),
+              { href: shop.facebook, label: "Facebook", icon: <FacebookIcon size={19} />, cls: "btn-line text-avorio", ext: true },
+              { href: shop.instagram, label: "Instagram", icon: <InstagramIcon size={19} />, cls: "btn-line text-avorio", ext: true },
+            ].map((a) => (
+              <motion.li key={a.label} variants={{ hidden: { opacity: 0, y: 14 }, shown: { opacity: 1, y: 0, transition: { duration: 0.6, ease } } }}>
+                <motion.a href={a.href} {...(a.ext ? { target: "_blank", rel: "noopener" } : {})} whileHover={reduce ? undefined : { y: -2 }} whileTap={{ scale: 0.97 }} className={`btn w-full ${a.cls}`}>
+                  {a.icon}
+                  {a.label}
+                </motion.a>
+              </motion.li>
+            ))}
+          </motion.ul>
         </div>
       </div>
-    </section>
+    </motion.div>
   );
 }

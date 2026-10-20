@@ -1,49 +1,46 @@
 @import "tailwindcss";
 @source "../";
 
-/* ── Pasticceria F.lli Remia · Boutique Gourmet ──────────────────────
-   A bright cream ground (#FDFBF7), cocoa ink, honey details and a fine
-   serif, with the shop's own painted sign kept true: its green script,
-   its condensed capitals and its red "Tel.". Depth only by laid slabs:
-   no shadows, no gradients, no glass. */
+/* ── Pasticceria F.lli Remia · "Champagne e cioccolato" ───────────────
+   Deep cream for the paper of the pastry trays, champagne gold for the
+   cake boards and the ribbon, dark chocolate for the glaze. The sign's
+   lettering, traced from the 1979 facade, stays the shop's signature,
+   now in champagne. Cormorant for the voice, Manrope to read. */
 
 @theme {
-  --font-serif: var(--font-caslon), "Big Caslon", "Libre Caslon Text", Georgia, serif;
-  --font-sans: var(--font-jost), "Futura", "Century Gothic", system-ui, sans-serif;
-  --font-cond: var(--font-barlow), "Arial Narrow", sans-serif;
+  --font-serif: var(--font-cormorant), "Cormorant", "Garamond", serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
 
-  --color-panna: #fdfbf7;
-  --color-crema: #f6efe4;
-  --color-filo: #e7dccb;
-  --color-cacao: #4a2c1d;
-  --color-cacao-chiaro: #6b4430;
-  --color-fondente: #2b1a10;
-  --color-miele: #c08a33;
-  --color-miele-scuro: #8a5e1e;
-  --color-miele-chiaro: #ebcb8f;
-  --color-tostato: #6e5646;
-  --color-inchiostro: #2e1e14;
-  --color-insegna: #1d9a7c;
-  --color-rosso: #c1252d;
-  --color-bordeaux: #8a2c2c;
+  --color-avorio: #f8f1e4;
+  --color-crema: #efe3cf;
+  --color-sabbia: #e2d1b5;
+  --color-champagne: #cdae7a;
+  --color-champagne-chiaro: #ecdcbc;
+  --color-champagne-scuro: #7c5e2c;
+  --color-cioccolato: #2b1a12;
+  --color-cioccolato-2: #3a251a;
+  --color-fondente: #170e0a;
+  --color-inchiostro: #2b1a12;
+  --color-tostato: #674b38;
+  --color-verde: #7cbf67;
+  --color-rosso: #e07a62;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    scroll-padding-top: 4.5rem;
+    scroll-padding-top: 6rem;
     background: var(--color-fondente);
-    scrollbar-color: var(--color-miele) var(--color-panna);
+    scrollbar-color: var(--color-champagne) var(--color-fondente);
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
   body {
-    background: var(--color-panna);
+    background: var(--color-crema);
     color: var(--color-inchiostro);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
@@ -51,23 +48,33 @@
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     text-rendering: optimizeLegibility;
-    caret-color: var(--color-miele);
   }
-  ::selection { background: var(--color-miele-chiaro); color: var(--color-fondente); }
-  :focus-visible { outline: 2px solid var(--color-miele); outline-offset: 3px; }
+  ::selection { background: var(--color-champagne-chiaro); color: var(--color-fondente); }
+  :focus-visible { outline: 2px solid var(--color-champagne); outline-offset: 3px; border-radius: 6px; }
   a { text-underline-offset: 0.24em; text-decoration-thickness: 1px; }
   img, video { -webkit-user-drag: none; }
+  button { cursor: pointer; }
 }
 
 @layer components {
-  /* The page ground and the slabs laid on it. */
-  .fondo { background-color: var(--color-panna); }
-  .fondo-crema { background-color: var(--color-crema); }
-  .lastra { background: var(--color-crema); color: var(--color-inchiostro); }
-  /* A honey frame: the thin gold edge of a pastry box. */
-  .cornice { background: var(--color-miele); }
+  .serif {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    line-height: 1;
+    text-wrap: balance;
+  }
 
-  /* The sign, painted on the facade in 1979, vectorised from the photo. */
+  /* Champagne foil, as on the cake boards: a vertical metallic fill, per glyph. */
+  .foil {
+    background-image: linear-gradient(180deg, #f3e3c0 0%, #e2c792 32%, #c09a5c 60%, #94723c 82%, #d8bb83 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* The sign, painted on the facade in 1979, vectorised from the photo. Colour follows currentColor. */
   .insegna {
     display: inline-block;
     aspect-ratio: 6513 / 771;
@@ -75,105 +82,151 @@
     -webkit-mask: url("./insegna.svg") center / contain no-repeat;
     mask: url("./insegna.svg") center / contain no-repeat;
   }
+  /* …or the same lettering in champagne foil. */
+  .insegna-foil { background-color: transparent; background-image: linear-gradient(180deg, #f3e3c0 0%, #e2c792 35%, #c09a5c 65%, #9a7841 100%); }
 
-  /* The sign's condensed capitals. */
-  .cond {
-    font-family: var(--font-cond);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    line-height: 1.05;
+  /* Glass: only on what floats (the header, the menu, the photo viewer controls). */
+  .glass {
+    background: rgb(23 14 10 / 0.72);
+    box-shadow: inset 0 0 0 1px rgb(236 220 188 / 0.16), 0 18px 40px -22px rgb(0 0 0 / 0.7);
   }
-  .tel { font-family: var(--font-cond); font-weight: 700; letter-spacing: 0.04em; color: var(--color-rosso); font-variant-numeric: tabular-nums; }
-
-  /* Caslon display: the voice of the boutique. */
-  .titolo {
-    font-family: var(--font-serif);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.06;
-    text-wrap: balance;
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: rgb(23 14 10 / 0.8);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      backdrop-filter: blur(20px) saturate(1.4);
+    }
   }
-  .testo { max-width: 62ch; text-wrap: pretty; }
 
-  /* Buttons: flat slabs, cut clean. */
+  /* A photo in a passe-partout: an ivory mat, a soft radius, a long low shadow. */
+  .frame {
+    background: var(--color-avorio);
+    padding: 0.45rem;
+    border-radius: 1.4rem;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 28px 50px -32px rgb(43 26 18 / 0.55), 0 6px 14px -8px rgb(43 26 18 / 0.18);
+  }
+  .frame-dark {
+    background: var(--color-cioccolato-2);
+    box-shadow: inset 0 0 0 1px rgb(236 220 188 / 0.12), 0 30px 60px -36px rgb(0 0 0 / 0.9);
+  }
+
+  /* Buttons: pills with one fill each. */
   .btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.7rem;
-    min-height: 3.4rem;
-    padding: 0.6rem 1.35rem;
-    font-weight: 500;
+    gap: 0.65rem;
+    min-height: 3.25rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
     font-size: 1rem;
-    letter-spacing: 0.005em;
-    border-radius: 2px;
-    transition: background-color 220ms ease, color 220ms ease, transform 160ms var(--ease-smooth);
+    white-space: nowrap;
     touch-action: manipulation;
     user-select: none;
-    overflow: hidden;
+    transition: background-color 240ms ease, color 240ms ease, box-shadow 240ms ease;
   }
-  .btn:active { transform: translateY(1px); }
-  .btn-cacao { background: var(--color-cacao); color: var(--color-panna); }
-  .btn-cacao .tel { color: var(--color-miele-chiaro); }
-  .btn-crema { background: var(--color-crema); color: var(--color-cacao); box-shadow: inset 0 0 0 1px rgb(74 44 29 / 0.3); }
-  .btn-chiaro { background: var(--color-panna); color: var(--color-cacao); }
+  .btn-champagne { background: var(--color-champagne); color: var(--color-fondente); }
+  .btn-cioccolato { background: var(--color-cioccolato); color: var(--color-avorio); }
+  .btn-line { color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
   @media (hover: hover) {
-    .btn-cacao:hover { background: var(--color-cacao-chiaro); }
-    .btn-crema:hover { background: var(--color-panna); }
-    .btn-chiaro:hover { background: var(--color-miele-chiaro); }
+    .btn-champagne:hover { background: #dbbe8c; }
+    .btn-cioccolato:hover { background: var(--color-cioccolato-2); }
+    .btn-line:hover { background: rgb(205 174 122 / 0.14); }
   }
-
-  /* A tile of the vitrine menu: cream at rest, cocoa when chosen, and a honey sheen
-     crosses it once when it is chosen. */
-  .tessera {
-    position: relative;
-    isolation: isolate;
-    background: var(--color-crema);
-    color: var(--color-cacao);
-    box-shadow: inset 0 0 0 1px var(--color-filo);
-    overflow: hidden;
-    transition: background-color 280ms ease, color 280ms ease;
-  }
-  .tessera[aria-selected="true"],
-  .tessera[aria-pressed="true"] { background: var(--color-cacao); color: var(--color-panna); box-shadow: inset 0 -3px 0 var(--color-miele); }
-  .tessera::after {
+  /* A band of light crosses the champagne button on hover. */
+  .btn-shine { overflow: hidden; isolation: isolate; }
+  .btn-shine::after {
     content: "";
     position: absolute;
-    inset: -20% auto -20% -40%;
-    width: 30%;
+    inset: 0;
     z-index: -1;
-    background: rgb(235 203 143 / 0.28);
-    transform: translateX(-120%) skewX(-18deg);
-    pointer-events: none;
-  }
-  .tessera[aria-selected="true"]::after { animation: lucidatura 900ms var(--ease-smooth) 1; }
-  @keyframes lucidatura {
-    to { transform: translateX(560%) skewX(-18deg); }
+    background: linear-gradient(105deg, transparent 35%, rgb(255 248 228 / 0.6) 50%, transparent 65%);
+    transform: translateX(-110%);
+    transition: transform 700ms var(--ease-out-expo);
   }
   @media (hover: hover) {
-    .tessera:not([aria-selected="true"]):hover { background: var(--color-panna); }
+    .btn-shine:hover::after { transform: translateX(110%); }
   }
 
-  .strip {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 1rem;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
+  /* Choices of the order form, on chocolate. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.75rem;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.97rem;
+    font-weight: 500;
+    color: var(--color-champagne-chiaro);
+    background: rgb(248 241 228 / 0.06);
+    box-shadow: inset 0 0 0 1px rgb(236 220 188 / 0.22);
+    transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
   }
-  .strip::-webkit-scrollbar { display: none; }
-  .strip > * { scroll-snap-align: start; flex: none; }
+  .chip[aria-pressed="true"] {
+    color: var(--color-fondente);
+    background: var(--color-champagne);
+    box-shadow: inset 0 0 0 1px var(--color-champagne);
+  }
+  @media (hover: hover) {
+    .chip:not([aria-pressed="true"]):hover { background: rgb(248 241 228 / 0.12); }
+  }
+  .field {
+    width: 100%;
+    min-height: 3.25rem;
+    border-radius: 14px;
+    border: 0;
+    background: rgb(248 241 228 / 0.07);
+    box-shadow: inset 0 0 0 1px rgb(236 220 188 / 0.22);
+    padding: 0.8rem 1rem;
+    color: var(--color-avorio);
+    font-size: 1rem;
+    color-scheme: dark;
+    transition: box-shadow 200ms ease, background-color 200ms ease;
+  }
+  .field::placeholder { color: rgb(236 220 188 / 0.55); }
+  .field:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-champagne); background: rgb(248 241 228 / 0.1); }
+  .field[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--color-rosso); }
+
+  /* The chocolate plaque on their cakes: dark chocolate, piped in white. */
+  .plaque {
+    background: #3d2316;
+    color: #fbf0dc;
+    box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.1), inset 0 -3px 0 rgb(0 0 0 / 0.3), 0 18px 34px -16px rgb(0 0 0 / 0.8);
+  }
+
+  /* Infinite moving cards: the track moves by half its length, CSS only, paused on hover. */
+  .marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--marquee-dur, 60s) linear infinite;
+    animation-direction: var(--marquee-dir, normal);
+    will-change: transform;
+  }
+  @media (hover: hover) {
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+  }
+  .marquee:focus-within .marquee-track { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { -webkit-mask-image: none; mask-image: none; overflow-x: auto; }
+    .marquee-track { animation: none; }
+    .marquee-track > [aria-hidden="true"] { display: none; }
+  }
 }
 
-/* Live dot of the open-now readout */
-@keyframes respiro {
+@keyframes marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 0.9; }
   50% { transform: scale(2.2); opacity: 0; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .tessera::after { animation: none !important; }
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
 }

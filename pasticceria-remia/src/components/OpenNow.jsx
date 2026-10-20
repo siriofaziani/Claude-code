@@ -69,18 +69,16 @@ export function useOpenState() {
   return state;
 }
 
-/** The readout: a live dot, the state in condensed capitals, then when it changes. */
-export default function OpenNow({ tone = "light", className = "" }) {
+/** Live badge: green while the counter is open, coral while it is closed. */
+export default function OpenNow({ className = "" }) {
   const s = useOpenState();
-  const dot = s?.open ? "bg-insegna" : "bg-rosso";
   return (
-    <p className={`flex min-h-6 items-center gap-2.5 transition-opacity duration-500 ${s ? "opacity-100" : "opacity-0"} ${className}`} aria-live="polite">
+    <span className={`inline-flex min-h-10 max-w-full items-center gap-2.5 rounded-[1.4rem] px-4 py-2 text-[0.94rem] leading-snug transition-opacity duration-500 ${s ? "opacity-100" : "opacity-0"} ${className}`} aria-live="polite">
       <span className="relative inline-flex h-2.5 w-2.5 shrink-0">
-        {s?.open && <span className={`absolute inset-0 rounded-full ${dot} animate-[respiro_2.6s_ease-out_infinite] motion-reduce:animate-none`} />}
-        <span className={`relative h-2.5 w-2.5 rounded-full ${dot}`} />
+        {s?.open ? <span className="absolute inset-0 rounded-full bg-verde animate-[breathe_2.4s_ease-out_infinite]" /> : null}
+        <span className={`relative h-2.5 w-2.5 rounded-full ${s?.open ? "bg-verde" : "bg-rosso"}`} />
       </span>
-      <span className={`cond text-[1.08rem] ${tone === "dark" ? "text-white" : s?.open ? "text-cacao" : "text-rosso"}`}>{s?.head ?? "Orari"}</span>
-      <span className={`text-[0.98rem] ${tone === "dark" ? "text-miele-chiaro" : "text-tostato"}`}>{s?.tail ?? ""}</span>
-    </p>
+      <span><strong className="font-semibold">{s?.head ?? "Orari di oggi"}</strong>{s?.tail ? ` · ${s.tail}` : ""}</span>
+    </span>
   );
 }

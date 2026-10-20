@@ -1,218 +1,278 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+import { ArrowRight, ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
+import Image from "next/image";
 import images from "@/data/images.json";
-import { categories, shop } from "@/data/content";
+import { categories } from "@/data/content";
 import Photo from "./Photo";
-import OrderActions from "./OrderActions";
-import { ChevronIcon, CloseIcon, ExpandIcon } from "./Icons";
+import TiltCard from "./ui/TiltCard";
+import StaggerText from "./ui/StaggerText";
+import useReduce from "./ui/useReduce";
+import { cn } from "./ui/cn";
+import { askOrder } from "./orderBus";
 
-// A tidy, even grid: 2 columns on phones, 4 from tablets up. Every shelf holds a multiple of four
-// photos, so rows always close; twelve show first, the rest open on request.
-const FIRST = 12;
+const ease = [0.16, 1, 0.3, 1];
+const byId = Object.fromEntries(categories.map((c) => [c.id, c]));
+// Rows of four on wide screens, of two on phones: eight first, the rest on request.
+const FIRST = 8;
+
+// The counter at a glance: a bit of every shelf.
+const tasting = [
+  ["torte", "torta-numero"],
+  ["fresca", "maritozzi-panna"],
+  ["mignon", "tartellette-cioccolato"],
+  ["te", "crostata-ricotta-visciole"],
+  ["torte", "torta-specchio-rossa"],
+  ["fresca", "sfogliatelle"],
+  ["mignon", "crostatine-frutta"],
+  ["fresca", "bigne-pistacchio"],
+  ["torte", "torta-cuori-cioccolato"],
+  ["te", "biscotti-ciliegia"],
+  ["mignon", "barchette"],
+  ["fresca", "bomboloni"],
+];
+
+const filters = [
+  { id: "tutto", label: "Tutto", title: "Il nostro bancone", text: "Quello che trovate in vetrina, fotografato da noi e dai nostri clienti: toccate una foto per vederla da vicino." },
+  { id: "mignon", label: "Mignon", kind: "pasticceria", preset: { assortimento: "Mignon misti" } },
+  { id: "torte", label: "Torte", kind: "torte" },
+  { id: "fresca", label: "Paste e lievitati", kind: "colazioni" },
+  { id: "te", label: "Da tè", kind: "pasticceria", preset: { assortimento: "Pasticceria da tè" } },
+  { id: "salato", label: "Salato", kind: "salato" },
+];
+const orderLabel = { mignon: "Ordina un vassoio", torte: "Prenota la tua torta", fresca: "Ordina la colazione", te: "Ordina la pasticceria da tè", salato: "Prenota il rinfresco" };
+
+function itemsFor(id) {
+  if (id === "tutto") return tasting.map(([cat, name]) => ({ cat, ...byId[cat].photos.find((p) => p.name === name) }));
+  return byId[id].photos.map((p) => ({ cat: id, ...p }));
+}
 
 export default function Vetrina() {
-  const [active, setActive] = useState(categories[0].id);
+  const [active, setActive] = useState("tutto");
   const [all, setAll] = useState(false);
   const [viewer, setViewer] = useState(null);
-  const reduce = useReducedMotion();
+  const reduce = useReduce();
   const tabs = useRef({});
-  const cat = categories.find((c) => c.id === active);
+  const items = useMemo(() => itemsFor(active), [active]);
+  const shown = all ? items : items.slice(0, FIRST);
+  const f = filters.find((x) => x.id === active);
+  const cat = byId[active];
 
-  // A link to "#vetrina-torte" opens that shelf.
+  const choose = (id) => {
+    setActive(id);
+    setAll(false);
+  };
+
+  // A link to "#vetrina-torte" (and the like) opens that shelf.
   useEffect(() => {
     const pick = () => {
       const m = location.hash.match(/^#vetrina-(\w+)/);
-      if (m && categories.some((c) => c.id === m[1])) {
-        setActive(m[1]);
-        setAll(false);
-        document.getElementById("vetrina")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      if (m && filters.some((x) => x.id === m[1])) {
+        choose(m[1]);
+        document.getElementById("vetrina")?.scrollIntoView();
       }
     };
     pick();
     window.addEventListener("hashchange", pick);
     return () => window.removeEventListener("hashchange", pick);
-  }, [reduce]);
+  }, []);
 
   const onKey = (e) => {
-    const i = categories.findIndex((c) => c.id === active);
+    const i = filters.findIndex((x) => x.id === active);
     const n = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : null;
     if (n === null) return;
-    const next = categories[(n + categories.length) % categories.length];
-    setActive(next.id);
-    setAll(false);
+    const next = filters[(n + filters.length) % filters.length];
+    choose(next.id);
     tabs.current[next.id]?.focus();
   };
 
-  const photos = cat.photos;
-  const shown = all ? photos : photos.slice(0, FIRST);
-
   return (
-    <section id="vetrina" aria-labelledby="vetrina-titolo" className="fondo relative scroll-mt-16 pb-20 pt-14 sm:pb-28 sm:pt-20">
-      <div className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-10">
-        <div className="text-center">
-          <h2 id="vetrina-titolo" className="titolo text-[2.4rem] text-cacao sm:text-[3.6rem]">La vetrina</h2>
-          <p className="testo mx-auto mt-3 text-[1.08rem] text-inchiostro/80">
-            Quello che trovate al bancone, fotografato da noi e dai nostri clienti. Per le torte e i rinfreschi chiamateci: le prepariamo nel nostro laboratorio.
-          </p>
+    <div>
+      <div className="grid gap-6 md:grid-cols-12 md:items-end">
+        <div className="min-w-0 md:col-span-6">
+          <StaggerText as="h2" text="La vetrina" className="serif block text-[clamp(3rem,8vw,5.8rem)] text-cioccolato" />
+          <p className="mt-4 max-w-[44ch] text-[1.1rem] text-tostato">Mignon, torte, paste e lievitati, pasticceria da tè e salato: tutto dal nostro laboratorio.</p>
         </div>
-
-        <div role="tablist" aria-label="Reparti della vetrina" onKeyDown={onKey} className="mt-8 grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:justify-center">
-          {categories.map((c) => (
-            <button
-              key={c.id}
-              ref={(el) => (tabs.current[c.id] = el)}
-              role="tab"
-              id={`tab-${c.id}`}
-              aria-controls={`pannello-${c.id}`}
-              aria-selected={active === c.id}
-              tabIndex={active === c.id ? 0 : -1}
-              onClick={() => { setActive(c.id); setAll(false); }}
-              className="tessera flex min-h-[4.25rem] flex-col items-center justify-center px-3 text-center last:col-span-2 sm:min-w-[11rem] sm:px-5"
-            >
-              <span className={`cond text-[1.2rem] ${active === c.id ? "text-white" : "text-cacao"}`}>{c.short}</span>
-              <span className={`text-[0.86rem] ${active === c.id ? "text-miele-chiaro" : "text-tostato"}`}>{c.photos.length ? `${c.photos.length} foto` : "su ordinazione"}</span>
-            </button>
-          ))}
+        <div className="min-w-0 md:col-span-6 md:justify-self-end">
+          <LayoutGroup id="vetrina-filtro">
+            <div role="tablist" aria-label="Reparti della vetrina" onKeyDown={onKey} className="flex flex-wrap gap-1 rounded-[1.75rem] bg-sabbia/70 p-1 md:justify-end">
+              {filters.map((x) => {
+                const on = x.id === active;
+                return (
+                  <button
+                    key={x.id}
+                    ref={(el) => (tabs.current[x.id] = el)}
+                    role="tab"
+                    type="button"
+                    id={`tab-${x.id}`}
+                    aria-selected={on}
+                    aria-controls="vetrina-griglia"
+                    tabIndex={on ? 0 : -1}
+                    onClick={() => choose(x.id)}
+                    className={cn("relative min-h-11 shrink-0 rounded-full px-4 text-[0.97rem] font-semibold transition-colors duration-300", on ? "bg-cioccolato text-avorio delay-200" : "text-tostato hover:text-cioccolato")}
+                  >
+                    {on ? <motion.span layoutId="vetrina-pill" className="absolute inset-0 rounded-full bg-cioccolato" transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 32 }} /> : null}
+                    <span className="relative">{x.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </LayoutGroup>
         </div>
+      </div>
 
+      <div id="vetrina-griglia" role="tabpanel" aria-labelledby={`tab-${active}`} className="mt-10">
+        {/* the shelf's own label */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={active}
-            id={`pannello-${active}`}
-            role="tabpanel"
-            aria-labelledby={`tab-${active}`}
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={reduce ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8, transition: { duration: 0.18 } }}
+            transition={{ duration: 0.5, ease }}
+            className="grid gap-6 rounded-[1.75rem] bg-cioccolato p-6 text-avorio md:grid-cols-12 md:items-center md:gap-10 md:p-9"
           >
-            {photos.length ? (
-              <>
-                <div className="lastra grid gap-4 p-6 sm:p-8 md:grid-cols-12 md:items-end md:gap-10">
-                  <div className="md:col-span-7">
-                    <h3 className="titolo text-[1.9rem] text-cacao sm:text-[2.4rem]">{cat.title}</h3>
-                    <p className="testo mt-3 text-[1.06rem] text-inchiostro/85">{cat.text}</p>
-                    {cat.quote && (
-                      <p className="testo mt-3 text-[0.95rem] text-tostato">
-                        «{cat.quote.text}» <span className="cond text-[0.85rem]">{cat.quote.source}</span>
-                      </p>
-                    )}
-                  </div>
-                  <a href={shop.phoneHref} className="flex items-center justify-between gap-3 border-t border-filo pt-4 text-cacao hover:text-cacao-chiaro md:col-span-5 md:border-l md:border-t-0 md:pl-8 md:pt-0">
-                    <span>Ordinate al telefono</span>
-                    <span className="tel text-[1.15rem]">Tel. {shop.phone}</span>
-                  </a>
-                </div>
-
-                <ul className="mt-1.5 grid grid-cols-2 gap-1.5 md:grid-cols-4">
-                  {shown.map((ph, i) => {
-                    const img = images[ph.name];
-                    return (
-                      <li key={ph.name}>
-                        <button type="button" onClick={() => setViewer(i)} className="group flex h-full w-full flex-col bg-crema text-left" aria-label={`${ph.caption}: apri la foto`}>
-                          <span className="relative block aspect-[4/5] w-full overflow-hidden bg-filo">
-                            <Photo name={ph.name} fill sizes="(min-width: 768px) 24vw, 50vw" alt={ph.caption} className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]" />
-                            <span className="absolute right-2 top-2 grid h-9 w-9 place-items-center bg-crema/90 text-cacao opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"><ExpandIcon size={17} /></span>
-                          </span>
-                          <span className="titolo block border-t-2 border-miele px-3 pb-4 pt-3 text-[1.02rem] leading-snug text-cacao sm:px-4 sm:text-[1.15rem]">{ph.caption}</span>
-                          {img?.by === "customer" && <span className="sr-only">Foto di un cliente</span>}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-                {photos.length > FIRST && (
-                  <div className="mt-3 text-center">
-                    <button type="button" onClick={() => setAll((v) => !v)} aria-expanded={all} className="tessera btn min-w-[14rem] text-cacao">
-                      <span className="cond text-[1.1rem]">{all ? "Mostra meno" : `Mostra tutte le ${photos.length} foto`}</span>
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <Salato cat={cat} />
-            )}
+            <div className="md:col-span-7">
+              <h3 className="serif text-[clamp(1.9rem,3.2vw,2.7rem)] text-champagne-chiaro">{cat ? cat.title : f.title}</h3>
+              <p className="mt-3 max-w-[54ch] text-[1.05rem] text-avorio/85">{cat ? cat.text : f.text}</p>
+              {cat?.quote ? (
+                <p className="mt-4 max-w-[54ch] text-[0.98rem] italic text-champagne-chiaro/90">
+                  «{cat.quote.text}» <span className="not-italic text-avorio/60">{cat.quote.source}</span>
+                </p>
+              ) : null}
+            </div>
+            <div className="flex flex-wrap items-center gap-3 md:col-span-5 md:justify-end">
+              <a href="#ordina" onClick={() => f.kind && askOrder(f.kind, f.preset)} className="btn btn-champagne btn-shine group">
+                {f.kind ? orderLabel[active] : "Ordina e prenota"}
+                <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+              {items.length ? <span className="text-[0.95rem] text-champagne-chiaro/80">{items.length} foto</span> : null}
+            </div>
           </motion.div>
         </AnimatePresence>
-      </div>
-      <Viewer photos={photos} index={viewer} onClose={() => setViewer(null)} onIndex={setViewer} />
-    </section>
-  );
-}
 
-/** The salato has no photos on the listing: it is told in the shop's words and its customers'. */
-function Salato({ cat }) {
-  return (
-    <div className="grid gap-1.5 md:grid-cols-12">
-      <div className="bg-cacao p-6 text-white sm:p-10 md:col-span-7">
-        <h3 className="titolo text-[2rem] sm:text-[2.8rem]">{cat.title}</h3>
-        <p className="testo mt-4 text-[1.06rem] text-miele-chiaro">{cat.text}</p>
-        <blockquote className="mt-7 border-t border-white/20 pt-6">
-          <p className="titolo text-[1.45rem] sm:text-[1.9rem]">«{cat.quote.text}»</p>
-          <footer className="cond mt-3 text-[0.95rem] text-miele-chiaro">{cat.quote.source}</footer>
-        </blockquote>
-        <OrderActions light directions={false} className="mt-8" />
+        {items.length ? (
+          <>
+            <motion.ul layout={!reduce} className="mt-4 grid grid-cols-2 gap-3 md:mt-5 md:grid-cols-4 md:gap-5">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {shown.map((it, i) => (
+                  <motion.li
+                    key={`${active}-${it.name}`}
+                    layout={!reduce}
+                    initial={{ opacity: 0, scale: 0.95, y: 18 }}
+                    animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.55, ease, delay: Math.min(i % FIRST, 7) * 0.045 } }}
+                    exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.18 } }}
+                  >
+                    <TiltCard className="h-full rounded-[1.4rem]" innerClassName="rounded-[1.4rem]" max={7}>
+                      <button
+                        type="button"
+                        onClick={() => setViewer({ list: items, index: i })}
+                        className="frame group flex h-full w-full flex-col text-left"
+                        aria-label={`${it.caption}: apri la foto`}
+                      >
+                        <span className="relative block aspect-[4/5] w-full overflow-hidden rounded-[1rem] bg-sabbia">
+                          <Photo name={it.name} alt={it.caption} fill sizes="(min-width: 768px) 23vw, 46vw" className="object-cover transition-transform duration-[900ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.06]" />
+                          <span className="absolute right-2.5 top-2.5 hidden h-9 w-9 place-items-center rounded-full bg-cioccolato/70 text-avorio opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:grid">
+                            <Expand size={15} aria-hidden="true" />
+                          </span>
+                        </span>
+                        <span className="flex flex-1 flex-col px-1.5 pb-1.5 pt-3">
+                          <span className="text-[0.86rem] font-semibold text-champagne-scuro">{filters.find((x) => x.id === it.cat).label}</span>
+                          <span className="serif mt-0.5 line-clamp-2 text-[1.12rem] font-[600] leading-tight text-cioccolato md:text-[1.22rem]">{it.caption}</span>
+                        </span>
+                      </button>
+                    </TiltCard>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </motion.ul>
+            {items.length > FIRST ? (
+              <div className="mt-8 text-center">
+                <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={() => setAll((v) => !v)} aria-expanded={all} className="btn btn-line text-cioccolato">
+                  {all ? "Mostra meno" : `Mostra tutte le ${items.length} foto`}
+                </motion.button>
+              </div>
+            ) : null}
+          </>
+        ) : (
+          <ul className="mt-4 grid gap-3 md:mt-5 md:grid-cols-3 md:gap-5">
+            {cat.voices.map((v, i) => (
+              <motion.li
+                key={v.name}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0, transition: { duration: 0.55, ease, delay: i * 0.08 } }}
+                className="frame flex flex-col justify-between gap-5 p-6"
+              >
+                <p className="serif text-[1.6rem] italic leading-snug text-cioccolato">«{v.text}»</p>
+                <p className="text-[0.95rem] text-tostato">{v.name} · recensione Google a 5 stelle</p>
+              </motion.li>
+            ))}
+          </ul>
+        )}
       </div>
-      <ul className="grid gap-1.5 md:col-span-5">
-        {cat.voices.map((v) => (
-          <li key={v.name} className="lastra flex flex-col justify-between gap-4 p-6 sm:p-7">
-            <p className="text-[1.15rem] leading-snug">«{v.text}»</p>
-            <p className="cond text-[0.95rem] text-tostato">{v.name} · recensione Google a 5 stelle</p>
-          </li>
-        ))}
-      </ul>
+
+      <Viewer state={viewer} onClose={() => setViewer(null)} onMove={(d) => setViewer((v) => ({ ...v, index: (v.index + d + v.list.length) % v.list.length }))} />
     </div>
   );
 }
 
-/** Full-screen view of one photo, with its caption and who took it. */
-function Viewer({ photos, index, onClose, onIndex }) {
+function Viewer({ state, onClose, onMove }) {
   const dialog = useRef(null);
   const startX = useRef(null);
-  const open = index !== null && photos[index];
-
   useEffect(() => {
     const d = dialog.current;
     if (!d) return;
-    if (open && !d.open) d.showModal();
-    if (!open && d.open) d.close();
-  }, [open]);
-
-  const go = (dir) => onIndex((index + dir + photos.length) % photos.length);
-  const ph = open ? photos[index] : null;
-  const img = ph ? images[ph.name] : null;
-
+    if (state && !d.open) d.showModal();
+    if (!state && d.open) d.close();
+  }, [state]);
+  useEffect(() => {
+    if (!state) return;
+    const k = (e) => (e.key === "ArrowRight" ? onMove(1) : e.key === "ArrowLeft" ? onMove(-1) : null);
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [state, onMove]);
+  const ph = state?.list[state.index];
+  const img = ph && images[ph.name];
   return (
     <dialog
       ref={dialog}
       onClose={onClose}
-      onKeyDown={(e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); }}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
       onPointerDown={(e) => (startX.current = e.clientX)}
-      onPointerUp={(e) => { if (startX.current !== null && Math.abs(e.clientX - startX.current) > 50) go(e.clientX < startX.current ? 1 : -1); startX.current = null; }}
-      className="m-0 h-dvh max-h-none w-screen max-w-none bg-fondente p-0 text-white backdrop:bg-fondente"
+      onPointerUp={(e) => {
+        if (startX.current !== null && Math.abs(e.clientX - startX.current) > 60) onMove(e.clientX < startX.current ? 1 : -1);
+        startX.current = null;
+      }}
+      className="m-0 h-[100dvh] max-h-none w-screen max-w-none bg-fondente p-0 text-avorio backdrop:bg-black/80"
       aria-label={ph ? ph.caption : "Foto"}
     >
-      {ph && (
+      {img ? (
         <div className="flex h-full flex-col">
-          <div className="relative min-h-0 flex-1">
-            <Photo key={ph.name} name={ph.name} fill sizes="100vw" alt={ph.caption} placeholder="empty" style={{ objectFit: "contain" }} className="object-contain" />
+          <div className="flex items-center justify-between px-4 pb-2 pt-[max(env(safe-area-inset-top),0.75rem)]">
+            <span className="text-[0.95rem] text-champagne-chiaro">{state.index + 1} di {state.list.length}</span>
+            <button type="button" onClick={onClose} className="flex h-11 items-center gap-2 rounded-full px-4 text-avorio shadow-[inset_0_0_0_1px_rgb(236_220_188/0.35)]"><X size={18} aria-hidden="true" />Chiudi</button>
           </div>
-          <div className="flex items-center gap-3 bg-cacao px-4 py-3 pb-[max(env(safe-area-inset-bottom),12px)] sm:px-6">
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-[1.02rem]">{ph.caption}</p>
-              <p className="cond text-[0.85rem] text-miele-chiaro">
-                {index + 1} / {photos.length} · {img?.by === "owner" ? "Foto della pasticceria" : "Foto di un cliente"} su Google Maps
-              </p>
-            </div>
-            <button type="button" onClick={() => go(-1)} className="grid h-12 w-12 place-items-center bg-white/10 hover:bg-white/20" aria-label="Foto precedente"><ChevronIcon dir="left" /></button>
-            <button type="button" onClick={() => go(1)} className="grid h-12 w-12 place-items-center bg-white/10 hover:bg-white/20" aria-label="Foto successiva"><ChevronIcon /></button>
-            <button type="button" onClick={onClose} className="grid h-12 w-12 place-items-center bg-crema text-cacao" aria-label="Chiudi"><CloseIcon /></button>
+          <div className="relative min-h-0 flex-1">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div key={ph.name} className="absolute inset-0" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.4, ease }}>
+                <Image src={img.src} alt={ph.caption} fill sizes="100vw" quality={80} className="object-contain" placeholder="empty" style={{ objectFit: "contain" }} />
+              </motion.div>
+            </AnimatePresence>
+            {state.list.length > 1 ? (
+              <>
+                <button type="button" onClick={() => onMove(-1)} aria-label="Foto precedente" className="glass absolute left-3 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full"><ChevronLeft aria-hidden="true" /></button>
+                <button type="button" onClick={() => onMove(1)} aria-label="Foto successiva" className="glass absolute right-3 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full"><ChevronRight aria-hidden="true" /></button>
+              </>
+            ) : null}
+          </div>
+          <div className="px-5 pb-[max(env(safe-area-inset-bottom),1rem)] pt-4 text-center">
+            <p className="text-[1.02rem] text-avorio/90">{ph.caption}</p>
+            <p className="mt-1 text-[0.85rem] text-champagne-chiaro/80">{img.by === "owner" ? "Foto della pasticceria" : "Foto di un cliente"} su Google Maps</p>
           </div>
         </div>
-      )}
+      ) : null}
     </dialog>
   );
 }

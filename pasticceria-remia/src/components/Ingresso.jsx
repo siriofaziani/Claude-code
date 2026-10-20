@@ -1,23 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValue } from "motion/react";
+import { ArrowRight, MapPin, Phone, RotateCcw } from "lucide-react";
 import { hero, shop } from "@/data/content";
 import { ingresso } from "@/data/media";
-import Wordmark from "./Wordmark";
 import OpenNow from "./OpenNow";
-import OrderActions from "./OrderActions";
-import { ArrowDownIcon, PinIcon, PlayIcon } from "./Icons";
+import StaggerText from "./ui/StaggerText";
+import useReduce from "./ui/useReduce";
+
+const ease = [0.16, 1, 0.3, 1];
+const rise = (delay) => ({ out: { opacity: 0, y: 22 }, in: { opacity: 1, y: 0, transition: { duration: 0.9, ease, delay } } });
 
 /**
- * The way in. The page opens on the shop's street front with one invitation; a click plays the
- * single take from the street to the counter, once, and the screen settles on its last frame with
- * the shop's name, address, phone and order actions. Nothing here is tied to the scroll.
+ * The way in. The page opens on the shop's street front and the single take walks in by itself
+ * (muted, inline, autoplay), from the street to the counter, once. It settles on the last frame,
+ * the counter, and the name, the payoff, the live hours and the actions arrive over it.
  */
 export default function Ingresso() {
   const video = useRef(null);
-  const [fase, setFase] = useState("porta"); // porta → cammino → dentro
-  const [cut, setCut] = useState(ingresso.wide);
+  const [fase, setFase] = useState("cammino"); // cammino → dentro
+  const [cut, setCut] = useState(null); // known only in the browser: wide or tall
   const [src, setSrc] = useState(null);
+  const progress = useMotionValue(0);
+  const reduce = useReduce();
+  const dentro = fase === "dentro";
 
   // Phones and other portrait screens get the vertical framing that follows the door.
   useEffect(() => {
@@ -30,6 +37,7 @@ export default function Ingresso() {
 
   // The first source this browser plays; an inlined video (single-file preview) as a Blob URL.
   useEffect(() => {
+    if (!cut) return;
     const probe = document.createElement("video");
     const s = cut.sources.find((x) => probe.canPlayType(x.type)) ?? cut.sources[0];
     if (!s.src.startsWith("data:")) return setSrc(s.src);
@@ -44,80 +52,130 @@ export default function Ingresso() {
       v.pause();
       if (v.duration) v.currentTime = Math.max(0, v.duration - 0.04);
     }
+    progress.set(1);
     setFase("dentro");
   };
 
-  const enter = () => {
+  // Autoplay once the source is known; if the browser refuses (low-power mode, reduced motion),
+  // go straight to the counter.
+  useEffect(() => {
     const v = video.current;
-    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return arrive();
-    setFase("cammino");
+    if (!v || !src || fase !== "cammino") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return arrive();
+    const p = v.play();
+    if (p) p.catch((e) => e?.name !== "AbortError" && arrive()); // a source swap is not a refusal
+    const guard = setTimeout(() => v.currentTime < 0.05 && arrive(), 3500);
+    let raf;
+    const tick = () => {
+      if (v.duration) progress.set(v.currentTime / v.duration);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      clearTimeout(guard);
+      cancelAnimationFrame(raf);
+    };
+  }, [src, fase]);
+
+  const replay = () => {
+    const v = video.current;
+    if (!v || reduce) return;
+    progress.set(0);
     v.currentTime = 0;
-    const play = v.play();
-    if (play) play.catch(arrive);
+    setFase("cammino");
   };
 
-  const porta = fase === "porta", cammino = fase === "cammino", dentro = fase === "dentro";
-
   return (
-    <section id="ingresso" aria-label="Pasticceria F.lli Remia, l'ingresso" className="relative h-screen min-h-[560px] overflow-hidden bg-fondente supports-[height:100svh]:h-svh">
+    <section id="ingresso" aria-label="Pasticceria F.lli Remia, l'ingresso" className="relative h-screen min-h-[600px] overflow-hidden bg-fondente text-avorio supports-[height:100svh]:h-svh">
       <video
         ref={video}
         src={src ?? undefined}
-        poster={dentro ? cut.last : cut.poster}
+        poster={(cut ?? ingresso.wide)[dentro ? "last" : "poster"]}
         muted
         playsInline
+        autoPlay
         preload="auto"
         disablePictureInPicture
         onEnded={arrive}
         aria-label="Dalla strada al bancone: l'ingresso nella Pasticceria F.lli Remia in Via dei Frassini 25"
-        className={`absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-[var(--ease-smooth)] motion-reduce:transition-none ${dentro ? "max-sm:-translate-y-[30%]" : ""}`}
+        className={`absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-[var(--ease-out-expo)] motion-reduce:transition-none ${dentro ? "max-sm:-translate-y-[28%]" : ""}`}
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,rgb(23_14_10/0.55),transparent)]" />
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_8%,rgb(23_14_10/0.72)_34%,rgb(23_14_10/0.96)_72%)] sm:bg-[linear-gradient(180deg,transparent_35%,rgb(23_14_10/0.85)_100%),linear-gradient(90deg,rgb(23_14_10/0.85),rgb(23_14_10/0.4)_45%,transparent_72%)]"
+        initial={false}
+        animate={{ opacity: dentro ? 1 : 0.6 }}
+        transition={{ duration: 1.1, ease }}
       />
 
-      {/* The street front: one invitation. */}
-      <div className={`absolute inset-0 grid place-items-center p-4 transition-[opacity,transform] duration-500 ease-[var(--ease-smooth)] motion-reduce:transition-none ${porta ? "opacity-100" : "pointer-events-none scale-[0.98] opacity-0"}`} inert={!porta}>
-        <div className="cornice w-full max-w-[22rem] p-[3px] sm:max-w-[26rem] lg:max-w-[30rem]">
-          <div className="lastra px-6 py-7 text-center sm:px-9 sm:py-9">
-            <Wordmark className="w-full text-insegna sm:hidden" />
-            <p className="cond mt-3 text-[0.98rem] text-miele-scuro sm:mt-0 sm:text-[1.05rem]">
-              <span className="block sm:inline">{hero.payoff}</span>
-              <span className="hidden sm:inline"> · </span>
-              <span className="block sm:inline">Via dei Frassini 25</span>
-            </p>
-            <button type="button" onClick={enter} className="btn btn-cacao mt-6 w-full justify-between px-5 sm:mt-5 sm:min-h-[3.8rem]">
-              <span className="titolo text-[1.3rem] sm:text-[1.45rem]">{hero.enter}</span>
-              <PlayIcon />
+      {/* While walking in: a champagne thread that fills with the take, and a way to skip it. */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 z-[60] h-[3px] origin-left bg-champagne"
+        style={{ scaleX: progress }}
+        animate={{ opacity: dentro ? 0 : 1 }}
+        transition={{ duration: 0.6 }}
+      />
+      <motion.button
+        type="button"
+        onClick={arrive}
+        tabIndex={dentro ? -1 : 0}
+        aria-hidden={dentro || undefined}
+        initial={{ opacity: 0, y: 10 }}
+        animate={dentro ? { opacity: 0, y: 10, pointerEvents: "none" } : { opacity: 1, y: 0, pointerEvents: "auto", transition: { delay: 0.8, duration: 0.6 } }}
+        className="absolute right-4 top-24 min-h-11 rounded-full bg-fondente/75 px-5 text-[0.95rem] font-semibold text-avorio sm:right-6 md:top-28"
+      >
+        Salta l'ingresso
+      </motion.button>
+
+      {/* The name arrives with the walk; at the counter the rest follows: the live hours and the way to order. */}
+      <div className="absolute inset-x-0 bottom-0 z-10 mx-auto max-w-[1360px] px-5 pb-16 md:px-10 md:pb-24">
+        <motion.div layout={!reduce} transition={{ layout: { duration: 0.9, ease } }}>
+          <h1 aria-label="Pasticceria F.lli Remia" className="serif text-[clamp(3.6rem,13vw,8.5rem)] leading-[0.92] drop-shadow-[0_2px_24px_rgb(0_0_0/0.5)]">
+            <span aria-hidden="true" className="block">
+              <StaggerText text="Pasticceria" onMount delay={0.35} className="serif block text-[clamp(1.6rem,3.6vw,2.6rem)] italic text-champagne-chiaro" />
+              <StaggerText text="F.lli Remia" by="letter" onMount delay={0.5} duration={1.1} itemClassName="foil" className="serif block font-[600] italic tracking-[-0.02em]" />
+            </span>
+          </h1>
+          <StaggerText text={hero.payoff} onMount delay={1.1} className="serif mt-3 block text-[clamp(1.45rem,3vw,2.1rem)] italic text-avorio" />
+        </motion.div>
+
+        <AnimatePresence initial={false}>
+          {dentro ? (
+            <motion.div key="banco" initial="out" animate="in" exit={{ opacity: 0, transition: { duration: 0.2 } }}>
+        <motion.p variants={rise(0.1)} className="mt-3 max-w-[36rem] text-[1.06rem] leading-relaxed text-avorio/90 md:text-[1.18rem]">{hero.lede}</motion.p>
+
+        <motion.div variants={rise(0.22)} className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <motion.a href="#ordina" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} className="btn btn-champagne btn-shine group">
+            Ordina e prenota
+            <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
+          </motion.a>
+          <motion.a href="#vetrina" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }} className="btn btn-line text-avorio">
+            Scopri la vetrina
+          </motion.a>
+        </motion.div>
+
+        <motion.div variants={rise(0.34)} className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.98rem] text-champagne-chiaro">
+          <OpenNow className="-ml-1 bg-white/8 text-avorio shadow-[inset_0_0_0_1px_rgb(236_220_188/0.2)]" />
+          <a href={shop.directions} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1.5 hover:underline">
+            <MapPin size={16} aria-hidden="true" />
+            {shop.address}, {shop.area}
+          </a>
+          <a href={shop.phoneHref} className="inline-flex min-h-11 items-center gap-1.5 hover:underline">
+            <Phone size={16} aria-hidden="true" />
+            {shop.phone}
+          </a>
+          {!reduce ? (
+            <button type="button" onClick={replay} className="inline-flex min-h-11 items-center gap-1.5 text-avorio/70 hover:text-avorio">
+              <RotateCcw size={15} aria-hidden="true" />
+              Rivedi l'ingresso
             </button>
-            <a href="#chi-siamo" className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-[0.95rem] text-tostato underline hover:text-cacao">
-              oppure scorri la pagina <ArrowDownIcon size={16} />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* While walking in. */}
-      <button type="button" onClick={arrive} className={`lastra cond absolute bottom-[max(env(safe-area-inset-bottom),20px)] right-4 min-h-11 px-4 text-[1rem] text-cacao transition-opacity duration-300 sm:right-6 ${cammino ? "opacity-100" : "pointer-events-none opacity-0"}`} tabIndex={cammino ? 0 : -1} aria-hidden={!cammino}>
-        Salta
-      </button>
-
-      {/* At the counter: who, where, and how to order. */}
-      <div className={`absolute inset-x-0 bottom-0 z-10 transition-[opacity,transform] duration-700 ease-[var(--ease-smooth)] motion-reduce:transition-none sm:inset-x-auto sm:bottom-8 sm:left-6 sm:w-[min(38rem,calc(100%-3rem))] lg:bottom-10 lg:left-10 ${dentro ? "opacity-100" : "pointer-events-none translate-y-6 opacity-0"}`} inert={!dentro}>
-        <div className="cornice p-[3px] pb-0 sm:pb-[3px]">
-          <div className="lastra px-5 pb-[max(env(safe-area-inset-bottom),16px)] pt-5 sm:p-8 lg:p-10">
-            <h1 className="titolo text-[2.3rem] text-cacao sm:text-[3.1rem] lg:text-[3.6rem]">Pasticceria F.lli Remia</h1>
-            <p className="cond mt-2 text-[1.08rem] text-miele-scuro">{hero.payoff}</p>
-            <p className="testo mt-3 hidden text-[1.06rem] text-inchiostro/80 sm:block">{hero.lede}</p>
-            <p className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-[1rem]">
-              <a href={shop.directions} target="_blank" rel="noopener" className="inline-flex min-h-9 items-center gap-1.5 text-cacao underline-offset-4 hover:underline">
-                <PinIcon size={17} /> {shop.address}, {shop.area}
-              </a>
-              <a href={shop.phoneHref} className="tel hidden min-h-9 text-[1.12rem] leading-9 sm:inline">Tel. {shop.phone}</a>
-            </p>
-            <div data-hero-cta className="mt-3 border-t border-filo pt-3 sm:mt-4 sm:pt-4">
-              <OpenNow className="mb-3" />
-              <OrderActions />
-            </div>
-          </div>
-        </div>
+          ) : null}
+        </motion.div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </section>
   );
