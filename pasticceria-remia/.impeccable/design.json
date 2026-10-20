@@ -1,325 +1,321 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-19T15:44:04+00:00",
+  "generatedAt": "2026-10-20T09:53:54.360Z",
   "title": "Design System: Pasticceria F.lli Remia",
   "extensions": {
     "colorMeta": {
-      "panna": {
+      "avorio": {
         "role": "neutral",
-        "displayName": "Panna",
-        "canonical": "#fdfbf7",
+        "displayName": "Avorio",
+        "canonical": "#f8f1e4",
         "tonalRamp": [
-          "#3d2e0f",
-          "#6a501b",
-          "#977126",
-          "#c49331",
-          "#d5ab58",
-          "#e0c285",
-          "#eddab6",
-          "#faf5eb"
+          "#2c2311",
+          "#51401f",
+          "#7a602e",
+          "#a6823f",
+          "#c3a060",
+          "#d5bd90",
+          "#e6d7bc",
+          "#f7f2e9"
         ]
       },
       "crema": {
         "role": "neutral",
         "displayName": "Crema",
-        "canonical": "#f6efe4",
+        "canonical": "#efe3cf",
         "tonalRamp": [
-          "#392a13",
-          "#634a21",
-          "#8e692f",
-          "#b8883d",
-          "#cba262",
-          "#d9bb8c",
-          "#e8d6ba",
-          "#f9f4ec"
+          "#2c2211",
+          "#513e1f",
+          "#7a5e2e",
+          "#a6803f",
+          "#c39e60",
+          "#d5bb90",
+          "#e6d6bc",
+          "#f7f1e9"
         ]
       },
-      "filo": {
+      "sabbia": {
         "role": "neutral",
-        "displayName": "Filo",
-        "canonical": "#e7dccb",
+        "displayName": "Sabbia",
+        "canonical": "#e2d1b5",
         "tonalRamp": [
-          "#342918",
-          "#5b482a",
-          "#81663c",
-          "#a7844d",
-          "#bd9f70",
-          "#cfb996",
-          "#e2d5c0",
-          "#f7f3ee"
+          "#2c2211",
+          "#513e20",
+          "#795d2f",
+          "#a57f41",
+          "#c19d61",
+          "#d4bb91",
+          "#e5d6bd",
+          "#f6f1e9"
         ]
       },
-      "cacao": {
+      "champagne": {
         "role": "primary",
-        "displayName": "Cacao",
-        "canonical": "#4a2c1d",
+        "displayName": "Champagne",
+        "canonical": "#cdae7a",
         "tonalRamp": [
-          "#372116",
-          "#5f3925",
-          "#885135",
-          "#b06945",
-          "#c48769",
-          "#d4a791",
-          "#e5cabd",
-          "#f8f0ed"
+          "#2c2211",
+          "#513e1f",
+          "#7a5e2e",
+          "#a6803f",
+          "#c39e60",
+          "#d5bb90",
+          "#e6d6bc",
+          "#f7f1e9"
         ]
       },
-      "cacao-chiaro": {
+      "champagne-chiaro": {
         "role": "primary",
-        "displayName": "Cacao Chiaro",
-        "canonical": "#6b4430",
+        "displayName": "Champagne Light",
+        "canonical": "#ecdcbc",
         "tonalRamp": [
-          "#352218",
-          "#5c3a29",
-          "#82533a",
-          "#a96b4c",
-          "#be8a6f",
+          "#2c2311",
+          "#51411f",
+          "#7a612e",
+          "#a6843f",
+          "#c3a260",
+          "#d5be90",
+          "#e6d8bc",
+          "#f7f2e9"
+        ]
+      },
+      "champagne-scuro": {
+        "role": "primary",
+        "displayName": "Champagne Deep",
+        "canonical": "#7c5e2c",
+        "tonalRamp": [
+          "#2c2211",
+          "#513e1f",
+          "#7a5e2e",
+          "#a6803f",
+          "#c39e60",
+          "#d5bb90",
+          "#e6d6bc",
+          "#f7f1e9"
+        ]
+      },
+      "cioccolato": {
+        "role": "neutral",
+        "displayName": "Cioccolato",
+        "canonical": "#2b1a12",
+        "tonalRamp": [
+          "#2b1a12",
+          "#4f3021",
+          "#774832",
+          "#a26244",
+          "#be8164",
+          "#d2a793",
+          "#e4cabe",
+          "#f6ede9"
+        ]
+      },
+      "cioccolato-2": {
+        "role": "neutral",
+        "displayName": "Cioccolato 2",
+        "canonical": "#3a251a",
+        "tonalRamp": [
+          "#2a1b13",
+          "#4d3123",
+          "#744a34",
+          "#9e6547",
+          "#bb8468",
           "#d0a995",
-          "#e3cbc0",
-          "#f7f1ed"
+          "#e3ccc0",
+          "#f6eeea"
         ]
       },
       "fondente": {
         "role": "neutral",
         "displayName": "Fondente",
-        "canonical": "#2b1a10",
+        "canonical": "#170e0a",
         "tonalRamp": [
-          "#382215",
-          "#613a24",
-          "#8a5333",
-          "#b26c42",
-          "#c68a67",
-          "#d6a98f",
-          "#e6ccbc",
-          "#f8f1ec"
+          "#2b1a13",
+          "#4e3022",
+          "#754733",
+          "#a06146",
+          "#bd8166",
+          "#d1a794",
+          "#e3cabf",
+          "#f6edea"
         ]
       },
       "inchiostro": {
         "role": "neutral",
         "displayName": "Inchiostro",
-        "canonical": "#2e1e14",
+        "canonical": "#2b1a12",
         "tonalRamp": [
-          "#352317",
-          "#5c3c28",
-          "#845639",
-          "#ab6f4a",
-          "#c08d6d",
-          "#d1ac94",
-          "#e3cdbf",
-          "#f7f1ed"
+          "#2b1a12",
+          "#4f3021",
+          "#774832",
+          "#a26244",
+          "#be8164",
+          "#d2a793",
+          "#e4cabe",
+          "#f6ede9"
         ]
       },
       "tostato": {
         "role": "neutral",
         "displayName": "Tostato",
-        "canonical": "#6e5646",
+        "canonical": "#674b38",
         "tonalRamp": [
-          "#2f251e",
-          "#513f34",
-          "#735a49",
-          "#96755f",
-          "#ae927f",
-          "#c3afa2",
-          "#dbcfc7",
-          "#f5f2ef"
+          "#281d16",
+          "#493528",
+          "#6d4f3b",
+          "#956c51",
+          "#b28b71",
+          "#c9ae9c",
+          "#dfcfc4",
+          "#f4efeb"
         ]
       },
-      "miele": {
-        "role": "secondary",
-        "displayName": "Miele",
-        "canonical": "#c08a33",
+      "verde": {
+        "role": "status",
+        "displayName": "Verde",
+        "canonical": "#7cbf67",
         "tonalRamp": [
-          "#3c2b10",
-          "#694b1c",
-          "#956b28",
-          "#c18b33",
-          "#d3a55a",
-          "#dfbd86",
-          "#ecd7b6",
-          "#faf4eb"
-        ]
-      },
-      "miele-scuro": {
-        "role": "secondary",
-        "displayName": "Miele Scuro",
-        "canonical": "#8a5e1e",
-        "tonalRamp": [
-          "#2a1c08",
-          "#47300e",
-          "#664514",
-          "#8a5e1e",
-          "#a8772d",
-          "#c79a52",
-          "#e2c48f",
-          "#f6ead3"
-        ]
-      },
-      "miele-chiaro": {
-        "role": "secondary",
-        "displayName": "Miele Chiaro",
-        "canonical": "#ebcb8f",
-        "tonalRamp": [
-          "#412e0c",
-          "#715014",
-          "#a0721d",
-          "#d09425",
-          "#dfad4e",
-          "#e8c37d",
-          "#f1dbb1",
-          "#fbf5e9"
-        ]
-      },
-      "insegna": {
-        "role": "tertiary",
-        "displayName": "Insegna",
-        "canonical": "#1d9a7c",
-        "tonalRamp": [
-          "#0c4034",
-          "#15705a",
-          "#1e9f80",
-          "#27cea6",
-          "#4fdebc",
-          "#7ee7ce",
-          "#b2f0e1",
-          "#eafbf7"
+          "#182b12",
+          "#2c4f21",
+          "#427632",
+          "#5aa244",
+          "#7abe65",
+          "#a2d293",
+          "#c7e4be",
+          "#ecf6e9"
         ]
       },
       "rosso": {
-        "role": "tertiary",
+        "role": "status",
         "displayName": "Rosso",
-        "canonical": "#c1252d",
+        "canonical": "#e07a62",
         "tonalRamp": [
-          "#400c0f",
-          "#6f151a",
-          "#9e1e25",
-          "#cd2730",
-          "#dd5057",
-          "#e67f84",
-          "#f0b2b5",
-          "#fbeaea"
-        ]
-      },
-      "bordeaux": {
-        "role": "tertiary",
-        "displayName": "Bordeaux",
-        "canonical": "#8a2c2c",
-        "tonalRamp": [
-          "#3a1212",
-          "#652020",
-          "#8f2e2e",
-          "#ba3b3b",
-          "#cc6060",
-          "#da8b8b",
-          "#e9b9b9",
-          "#f9ecec"
+          "#2c1611",
+          "#51281f",
+          "#7a3d2e",
+          "#a6533f",
+          "#c37360",
+          "#d59d90",
+          "#e6c4bc",
+          "#f7ebe9"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The shop name on the arrival slab, the page's one h1."
+        "purpose": "The shop name in the entrance, italic 600 in champagne foil, staggered by letter."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Section titles."
+        "purpose": "One section title per sheet, staggered by word on scroll."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Slab and shelf titles, quoted voices, the entrance button label."
+        "purpose": "Chapter titles, order step titles, shelf banner, dialog title."
       },
-      "caption": {
-        "displayName": "Caption",
-        "purpose": "Product captions and reviewer names, in Caslon."
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Foil numbers in the numbers band and the rating, count-up once."
       },
-      "figure": {
-        "displayName": "Figure",
-        "purpose": "The review score, the one oversized numeral."
+      "quote": {
+        "displayName": "Quote",
+        "purpose": "Italic customer quotes in guillemets."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "All prose, max 62ch."
+        "purpose": "Running text, 44 to 54ch."
       },
-      "body-light": {
-        "displayName": "Body Light",
-        "purpose": "Jost 300 for 'dal 1979' in the sign slab."
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Section ledes and chapter paragraphs."
       },
       "label": {
-        "displayName": "Sign Caps",
-        "purpose": "Sign-grammar labels: nav, tiles, payoff, states, times. Never a kicker."
-      },
-      "tel": {
-        "displayName": "Tel.",
-        "purpose": "Every printed phone number, in the sign's red."
+        "displayName": "Label",
+        "purpose": "Buttons, tabs, legends, step names, card category tags. Sentence case."
       }
     },
     "shadows": [
       {
-        "name": "hairline-inset",
-        "value": "inset 0 0 0 1px #e7dccb",
-        "purpose": "Edge of an idle tessera tile; a border, not a lift."
+        "name": "passe-partout",
+        "value": "0 1px 0 rgb(255 255 255 / 0.7) inset, 0 28px 50px -32px rgb(43 26 18 / 0.55), 0 6px 14px -8px rgb(43 26 18 / 0.18)",
+        "purpose": "Framed photos and quote cards."
       },
       {
-        "name": "hairline-cacao",
-        "value": "inset 0 0 0 1px rgb(74 44 29 / 0.3)",
-        "purpose": "Edge of the crema button."
+        "name": "lifted-card",
+        "value": "0 40px 80px -50px rgb(43 26 18 / 0.9)",
+        "purpose": "The order form card."
       },
       {
-        "name": "honey-underline",
-        "value": "inset 0 -3px 0 #c08a33",
-        "purpose": "Selected tessera tile."
+        "name": "paper-on-dark",
+        "value": "0 30px 60px -36px rgb(0 0 0 / 0.9)",
+        "purpose": "The ticket."
+      },
+      {
+        "name": "soft-quote",
+        "value": "0 20px 40px -32px rgb(43 26 18 / 0.5)",
+        "purpose": "Chi siamo blockquote."
+      },
+      {
+        "name": "glass",
+        "value": "inset 0 0 0 1px rgb(236 220 188 / 0.16), 0 18px 40px -22px rgb(0 0 0 / 0.7)",
+        "purpose": "Floating header, menu tray, viewer controls; with rgb(23 14 10 / 0.8) and blur(20px) saturate(1.4)."
+      },
+      {
+        "name": "hairline",
+        "value": "inset 0 0 0 1px rgb(236 220 188 / 0.14)",
+        "purpose": "Edges on chocolate: review cards, map well, chips, fields (0.12 to 0.22 alpha)."
+      },
+      {
+        "name": "plaque",
+        "value": "inset 0 2px 0 rgb(255 255 255 / 0.1), inset 0 -3px 0 rgb(0 0 0 / 0.3), 0 18px 34px -16px rgb(0 0 0 / 0.8)",
+        "purpose": "The chocolate dedication plaque."
       }
     ],
     "motion": [
       {
         "name": "ease-out-expo",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Product photo hover zoom (scale 1.035 over 700ms)."
+        "purpose": "Every reveal, layout change, and hover zoom."
       },
       {
-        "name": "ease-smooth",
-        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "Button press, tile sheen, entrance slab transitions, gallery panel swap (250ms fade)."
+        "name": "reveal",
+        "value": "0.9s ease-out-expo, y 28px",
+        "purpose": "Blocks entering on scroll."
       },
       {
-        "name": "button-color",
-        "value": "220ms ease",
-        "purpose": "Button background and colour on hover."
+        "name": "stagger-text",
+        "value": "0.9s per word or letter, y 110% out of a mask",
+        "purpose": "Headlines and the shop name."
       },
       {
-        "name": "tile-color",
-        "value": "280ms ease",
-        "purpose": "Tessera state change."
+        "name": "pill-spring",
+        "value": "spring stiffness 380 to 420, damping 32 to 34",
+        "purpose": "Shared sliding pill in nav, tabs, and today's hours row (300/30)."
       },
       {
-        "name": "lucidatura",
-        "value": "900ms ease-smooth, once",
-        "purpose": "Honey sheen crossing a tile when it is chosen."
+        "name": "tilt-spring",
+        "value": "spring stiffness 260, damping 24, mass 0.5; max 7deg",
+        "purpose": "3D tilt of vetrina cards, mouse only."
       },
       {
-        "name": "respiro",
-        "value": "2.6s ease-out infinite",
-        "purpose": "Breathing ring of the open-now dot."
+        "name": "shine",
+        "value": "700ms ease-out-expo",
+        "purpose": "Light band across champagne buttons on hover."
       },
       {
-        "name": "ingresso-porta-exit",
-        "value": "500ms ease-smooth; opacity to 0, scale 0.98",
-        "purpose": "The invitation slab leaves when the take starts."
+        "name": "marquee",
+        "value": "75s and 85s linear, opposite directions",
+        "purpose": "Review rows; paused on hover or focus."
       },
       {
-        "name": "ingresso-arrivo",
-        "value": "700ms ease-smooth; opacity in, translateY 24px to 0",
-        "purpose": "The arrival slab rises once the take settles on its last frame."
+        "name": "breathe",
+        "value": "2.4s ease-out infinite",
+        "purpose": "Halo on the open dot."
       },
       {
-        "name": "ingresso-slide-phone",
-        "value": "1000ms ease-smooth; translateY 0 to -30%",
-        "purpose": "On phones the last frame slides up so the counter stays visible above the slab."
-      },
-      {
-        "name": "slider-dot",
-        "value": "300ms; width 8px to 20px",
-        "purpose": "Current review dot stretches to a pill."
+        "name": "press",
+        "value": "scale 0.97 (chips 0.94, steppers 0.88)",
+        "purpose": "Tap feedback."
       }
     ],
     "breakpoints": [
@@ -334,145 +330,144 @@
       {
         "name": "lg",
         "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "portrait-video",
+        "value": "max-aspect-ratio: 1/1"
       }
     ]
   },
   "components": [
     {
-      "name": "Cacao Button",
+      "name": "Champagne Button",
       "kind": "button",
-      "refersTo": "button-cacao",
-      "description": "The single order action: cocoa slab, red-sign Tel. line in honey.",
-      "html": "<a class=\"ds-btn ds-btn-cacao\" href=\"#\"><span class=\"ds-stack\"><span>Chiama per ordinare</span><span class=\"ds-tel\">Tel. 06 231 0948</span></span><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2\"/></svg></a>",
-      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:.7rem;min-height:3.4rem;min-width:16rem;padding:.6rem 1.35rem;font-family:Jost,Futura,'Century Gothic',sans-serif;font-weight:500;font-size:1rem;border-radius:2px;text-decoration:none;transition:background-color 220ms ease,color 220ms ease,transform 160ms cubic-bezier(.22,1,.36,1)}.ds-btn:active{transform:translateY(1px)}.ds-btn:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-btn-cacao{background:#4a2c1d;color:#fdfbf7}.ds-btn-cacao:hover{background:#6b4430}.ds-stack{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}.ds-tel{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;letter-spacing:.04em;font-size:.92rem;color:#ebcb8f;font-variant-numeric:tabular-nums}"
+      "refersTo": "button-champagne",
+      "description": "Primary action: order, call, send. Light band sweeps across on hover.",
+      "html": "<a class=\"ds-btn ds-btn-champagne\" href=\"#\">Ordina e prenota <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;transition:background-color 240ms ease,color 240ms ease,box-shadow 240ms ease,transform 240ms cubic-bezier(0.16,1,0.3,1);text-decoration:none;position:relative;overflow:hidden;isolation:isolate}.ds-btn-champagne{background:var(--color-champagne,#cdae7a);color:var(--color-fondente,#170e0a)}.ds-btn-champagne::after{content:\"\";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgb(255 248 228/0.6) 50%,transparent 65%);transform:translateX(-110%);transition:transform 700ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-champagne:hover{background:#dbbe8c;transform:translateY(-2px)}.ds-btn-champagne:hover::after{transform:translateX(110%)}.ds-btn:active{transform:scale(0.97)}.ds-btn:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}.ds-btn svg{transition:transform 300ms}.ds-btn:hover svg{transform:translateX(4px)}"
     },
     {
-      "name": "Crema Button",
+      "name": "Line Button",
       "kind": "button",
-      "refersTo": "button-crema",
-      "description": "Secondary action on cream: crema slab with a cocoa hairline.",
-      "html": "<a class=\"ds-btn-crema\" href=\"#\">Raggiungici <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z\"/><circle cx=\"12\" cy=\"9.5\" r=\"2.5\"/></svg></a>",
-      "css": ".ds-btn-crema{display:inline-flex;align-items:center;justify-content:space-between;gap:.7rem;min-height:3.4rem;min-width:12rem;padding:.6rem 1.35rem;font-family:Jost,Futura,sans-serif;font-weight:500;font-size:1rem;border-radius:2px;text-decoration:none;background:#f6efe4;color:#4a2c1d;box-shadow:inset 0 0 0 1px rgb(74 44 29 / .3);transition:background-color 220ms ease}.ds-btn-crema:hover{background:#fdfbf7}.ds-btn-crema:active{transform:translateY(1px)}.ds-btn-crema:focus-visible{outline:2px solid #c08a33;outline-offset:3px}"
+      "refersTo": "button-line",
+      "description": "Secondary action; takes the text color of its ground.",
+      "html": "<div style=\"background:#2b1a12;padding:24px;border-radius:2rem\"><a class=\"ds-btn-line\" href=\"#\">Indicazioni stradali</a></div>",
+      "css": ".ds-btn-line{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;transition:background-color 240ms ease,color 240ms ease,box-shadow 240ms ease,transform 240ms cubic-bezier(0.16,1,0.3,1);text-decoration:none;background:transparent;color:#ecdcbc;box-shadow:inset 0 0 0 1.5px currentColor}.ds-btn-line:hover{background:rgb(205 174 122/0.14);transform:translateY(-2px)}.ds-btn-line:active{transform:scale(0.97)}.ds-btn-line:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}"
     },
     {
-      "name": "Chiaro Button",
-      "kind": "button",
-      "refersTo": "button-chiaro",
-      "description": "Action on the cocoa band: panna slab that warms to honey on hover.",
-      "html": "<div class=\"ds-band\"><a class=\"ds-btn-chiaro\" href=\"#\">Indicazioni <span>&rarr;</span></a></div>",
-      "css": ".ds-band{background:#4a2c1d;padding:1.5rem}.ds-btn-chiaro{display:inline-flex;align-items:center;justify-content:space-between;gap:.7rem;min-height:3.4rem;min-width:12rem;padding:.6rem 1.35rem;font-family:Jost,Futura,sans-serif;font-weight:500;font-size:1rem;border-radius:2px;text-decoration:none;background:#fdfbf7;color:#4a2c1d;transition:background-color 220ms ease}.ds-btn-chiaro:hover{background:#ebcb8f}.ds-btn-chiaro:focus-visible{outline:2px solid #c08a33;outline-offset:3px}"
-    },
-    {
-      "name": "Tessera Tabs",
+      "name": "Chips",
       "kind": "chip",
-      "refersTo": "tessera",
-      "description": "Vitrine menu tiles, centred: crema at rest, cocoa with a honey underline and a one-pass sheen when chosen. 2-column grid on phones.",
-      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tessera\" role=\"tab\" aria-selected=\"true\"><span class=\"ds-cond\">Pasticceria</span><span class=\"ds-n\">12 foto</span></button><button class=\"ds-tessera\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-cond\">Torte</span><span class=\"ds-n\">9 foto</span></button><button class=\"ds-tessera\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-cond\">Salato</span><span class=\"ds-n\">su ordinazione</span></button></div>",
-      "css": ".ds-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.ds-tessera{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:4.25rem;min-width:11rem;padding:0 1rem;border:0;border-radius:0;text-align:center;cursor:pointer;background:#f6efe4;color:#4a2c1d;box-shadow:inset 0 0 0 1px #e7dccb;transition:background-color 280ms ease,color 280ms ease}.ds-tessera:hover:not([aria-selected=true]){background:#fdfbf7}.ds-tessera[aria-selected=true]{background:#4a2c1d;color:#fdfbf7;box-shadow:inset 0 -3px 0 #c08a33}.ds-tessera:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:1.2rem;line-height:1.05}.ds-n{font-family:Jost,sans-serif;font-size:.86rem;color:#6e5646}.ds-tessera[aria-selected=true] .ds-n{color:#ebcb8f}@media (prefers-reduced-motion:no-preference){.ds-tessera{transition:background-color 280ms ease,color 280ms ease}}"
+      "refersTo": "chip",
+      "description": "Order-form choices on chocolate; pressed fills champagne.",
+      "html": "<div class=\"ds-chip-wrap\"><button class=\"ds-chip\" aria-pressed=\"true\">Mignon misti</button><button class=\"ds-chip\" aria-pressed=\"false\">Pasticceria da tè</button></div>",
+      "css": ".ds-chip-wrap{display:flex;gap:8px;flex-wrap:wrap;background:#2b1a12;padding:24px;border-radius:2rem}.ds-chip{display:inline-flex;align-items:center;min-height:2.75rem;padding:0.35rem 1rem;border-radius:999px;border:0;cursor:pointer;font-family:Manrope,system-ui,sans-serif;font-size:0.97rem;font-weight:500;color:#ecdcbc;background:rgb(248 241 228/0.06);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.22);transition:background-color 200ms,color 200ms}.ds-chip:not([aria-pressed=\"true\"]):hover{background:rgb(248 241 228/0.12)}.ds-chip[aria-pressed=\"true\"]{background:#cdae7a;color:#170e0a;box-shadow:inset 0 0 0 1px #cdae7a}.ds-chip:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}"
     },
     {
-      "name": "Lastra",
-      "kind": "card",
-      "refersTo": "lastra",
-      "description": "A crema slab laid on the panna ground: Caslon title, Jost prose, a filo-ruled order line.",
-      "html": "<div class=\"ds-ground\"><div class=\"ds-lastra\"><h3>Pasticceria fresca</h3><p>Bignè, cannoli, maritozzi con la panna: in vetrina dalle 7:30.</p><a href=\"#\"><span>Ordinate al telefono</span><span class=\"ds-tel\">Tel. 06 231 0948</span></a></div></div>",
-      "css": ".ds-ground{background:#fdfbf7;padding:1.5rem}.ds-lastra{background:#f6efe4;color:#2e1e14;padding:1.75rem;max-width:28rem;font-family:Jost,Futura,sans-serif}.ds-lastra h3{margin:0;font-family:'Libre Caslon Display','Big Caslon',Georgia,serif;font-weight:400;font-size:2.2rem;line-height:1.06;letter-spacing:-.01em;color:#4a2c1d}.ds-lastra p{margin:1rem 0;font-size:1.06rem;line-height:1.6;color:rgb(46 30 20 / .85)}.ds-lastra a{display:flex;justify-content:space-between;gap:.75rem;border-top:1px solid #e7dccb;padding-top:1rem;color:#4a2c1d;text-decoration:none}.ds-lastra a:hover{color:#6b4430}.ds-tel{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;letter-spacing:.04em;color:#c1252d;font-variant-numeric:tabular-nums;font-size:1.15rem}"
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Text and date fields, on chocolate only.",
+      "html": "<label class=\"ds-field-wrap\"><span class=\"ds-field-label\">La dedica <span>(facoltativa)</span></span><input class=\"ds-field\" placeholder=\"Es. Auguri Camilla\"></label>",
+      "css": ".ds-field-wrap{display:block;background:#2b1a12;padding:24px;border-radius:2rem;font-family:Manrope,system-ui,sans-serif}.ds-field-label{display:block;margin-bottom:12px;font-weight:600;color:#f8f1e4}.ds-field-label span{font-weight:400;color:rgb(236 220 188/0.8)}.ds-field{width:100%;min-height:3.25rem;border-radius:14px;border:0;background:rgb(248 241 228/0.07);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.22);padding:0.8rem 1rem;color:#f8f1e4;font:inherit;font-size:1rem;color-scheme:dark;transition:box-shadow 200ms,background-color 200ms}.ds-field::placeholder{color:rgb(236 220 188/0.55)}.ds-field:focus{outline:none;box-shadow:inset 0 0 0 2px #cdae7a;background:rgb(248 241 228/0.1)}"
     },
     {
-      "name": "Product Card",
+      "name": "Glass Header",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Fixed floating pill with the foil sign, section links on a sliding pill, Mappa and Chiama shortcuts.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-mark\">Pasticceria F.lli Remia</span><a href=\"#\">Chi siamo</a><a href=\"#\">La vetrina</a><a href=\"#\">Ordina</a><a class=\"ds-nav-call\" href=\"#\">06 231 0948</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:4px;padding:6px 6px 6px 20px;border-radius:999px;background:rgb(23 14 10/0.8);backdrop-filter:blur(20px) saturate(1.4);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.16),0 18px 40px -22px rgb(0 0 0/0.7);font-family:Manrope,system-ui,sans-serif}.ds-nav-mark{margin-right:auto;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-style:italic;font-size:1.3rem;background:linear-gradient(180deg,#f3e3c0,#e2c792 35%,#c09a5c 65%,#9a7841);-webkit-background-clip:text;background-clip:text;color:transparent}.ds-nav a{padding:10px 14px;border-radius:999px;color:rgb(248 241 228/0.9);font-size:0.93rem;font-weight:500;text-decoration:none;transition:background-color 200ms,color 200ms}.ds-nav a:hover{background:rgb(255 255 255/0.1);color:#f8f1e4}.ds-nav a.ds-nav-call{background:#cdae7a;color:#170e0a;font-weight:600}.ds-nav a.ds-nav-call:hover{background:#dbbe8c}.ds-nav a:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}"
+    },
+    {
+      "name": "Passe-partout Photo Card",
       "kind": "card",
-      "refersTo": "product-card",
-      "description": "A 4:5 counter photo on a crema card, a 2px honey rule, the caption in Caslon.",
-      "html": "<div class=\"ds-grid\"><button class=\"ds-prod\"><span class=\"ds-ph\"></span><span class=\"ds-cap\">Cannoli siciliani con ricotta</span></button><button class=\"ds-prod\"><span class=\"ds-ph\"></span><span class=\"ds-cap\">Maritozzi con la panna</span></button></div>",
-      "css": ".ds-grid{display:grid;grid-template-columns:repeat(2,minmax(0,12rem));gap:6px;background:#fdfbf7;padding:1rem}.ds-prod{display:flex;flex-direction:column;border:0;border-radius:0;padding:0;background:#f6efe4;text-align:left;cursor:pointer}.ds-ph{display:block;aspect-ratio:4/5;background:#e7dccb;transition:transform 700ms cubic-bezier(.16,1,.3,1)}.ds-prod:hover .ds-ph{transform:scale(1.035)}.ds-prod{overflow:hidden}.ds-prod:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-cap{display:block;border-top:2px solid #c08a33;padding:.75rem 1rem 1rem;font-family:'Libre Caslon Display','Big Caslon',Georgia,serif;font-size:1.15rem;line-height:1.375;letter-spacing:-.01em;color:#4a2c1d}"
+      "refersTo": "photo-frame",
+      "description": "Vetrina card: ivory mat, framed photo, category label and serif caption.",
+      "html": "<button class=\"ds-frame\"><span class=\"ds-frame-photo\"></span><span class=\"ds-frame-cat\">Mignon</span><span class=\"ds-frame-cap\">Tartellette al cioccolato</span></button>",
+      "css": ".ds-frame{display:flex;flex-direction:column;width:220px;text-align:left;border:0;cursor:pointer;background:#f8f1e4;padding:0.45rem;border-radius:1.4rem;box-shadow:0 1px 0 rgb(255 255 255/0.7) inset,0 28px 50px -32px rgb(43 26 18/0.55),0 6px 14px -8px rgb(43 26 18/0.18);transition:transform 400ms cubic-bezier(0.16,1,0.3,1)}.ds-frame:hover{transform:perspective(1100px) rotateX(3deg) rotateY(-4deg)}.ds-frame:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}.ds-frame-photo{display:block;aspect-ratio:4/5;border-radius:1rem;background:linear-gradient(160deg,#e2d1b5,#674b38)}.ds-frame-cat{padding:12px 6px 0;font-family:Manrope,system-ui,sans-serif;font-size:0.86rem;font-weight:600;color:#7c5e2c}.ds-frame-cap{padding:2px 6px 6px;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-size:1.22rem;line-height:1.15;color:#2b1a12}"
     },
     {
       "name": "Review Card",
       "kind": "card",
-      "refersTo": "review-card",
-      "description": "A verbatim Google review: square panna card with a 1px honey border, stars, a Caslon opening quote mark.",
-      "html": "<div class=\"ds-sec\"><figure class=\"ds-rev\"><span class=\"ds-stars\" role=\"img\" aria-label=\"5 stelle su 5\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z\"/></svg></span><blockquote><span class=\"ds-q\" aria-hidden=\"true\">“</span><p>La mia pasticceria di fiducia da una vita.</p></blockquote><figcaption><b>Veronica R.</b><span>Google · 2023</span></figcaption></figure></div>",
-      "css": ".ds-sec{background:#fdfbf7;padding:1.5rem}.ds-rev{margin:0;max-width:25rem;display:flex;flex-direction:column;gap:1.25rem;background:#fdfbf7;border:1px solid rgb(192 138 51 / .7);padding:1.75rem;font-family:Jost,sans-serif;color:#2e1e14}.ds-stars{display:flex;gap:4px;color:#c08a33}.ds-rev blockquote{position:relative;margin:0}.ds-q{position:absolute;left:-4px;top:-1rem;font-family:'Libre Caslon Display',Georgia,serif;font-size:3.2rem;line-height:1;color:rgb(192 138 51 / .6)}.ds-rev p{position:relative;margin:0;padding-top:1rem;font-size:1.06rem;line-height:1.65}.ds-rev figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;border-top:1px solid rgb(74 44 29 / .15);padding-top:1rem}.ds-rev b{font-family:'Libre Caslon Display',Georgia,serif;font-weight:400;font-size:1.2rem;color:#4a2c1d}.ds-rev span:last-child{font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:.9rem;color:#6e5646}"
+      "refersTo": "",
+      "description": "Verbatim Google review in the moving rows.",
+      "html": "<figure class=\"ds-review\"><span class=\"ds-stars\">★★★★★</span><blockquote>Pasticceria che si tramanda da padre in figlio, tutta una famiglia.</blockquote><figcaption><span class=\"ds-initial\">M</span><span><b>Maurizio T.</b><small>Google · 2024</small></span></figcaption></figure>",
+      "css": ".ds-review{margin:0;width:25rem;max-width:100%;display:flex;flex-direction:column;gap:24px;padding:24px;border-radius:1.75rem;background:#2b1a12;box-shadow:inset 0 0 0 1px rgb(236 220 188/0.14);font-family:Manrope,system-ui,sans-serif}.ds-stars{color:#cdae7a;letter-spacing:2px}.ds-review blockquote{margin:0;font-size:1.04rem;line-height:1.65;color:rgb(248 241 228/0.9)}.ds-review figcaption{display:flex;align-items:center;gap:12px}.ds-initial{display:grid;place-items:center;width:44px;height:44px;border-radius:999px;background:#cdae7a;color:#170e0a;font-family:\"Cormorant Garamond\",serif;font-style:italic;font-weight:600;font-size:1.4rem}.ds-review b{display:block;color:#f8f1e4}.ds-review small{display:block;font-size:0.9rem;color:rgb(236 220 188/0.85)}"
     },
     {
-      "name": "Header",
-      "kind": "nav",
-      "refersTo": "header",
-      "description": "The sign over the door: green wordmark left, condensed caps nav, the red Tel. right.",
-      "html": "<header class=\"ds-head\"><span class=\"ds-mark\">Pasticceria F.lli Remia</span><nav><a href=\"#\">La vetrina</a><a href=\"#\">Recensioni</a><a href=\"#\">Orari</a></nav><a class=\"ds-tel\" href=\"#\">Tel. 06.23.10.948</a></header>",
-      "css": ".ds-head{display:flex;align-items:center;gap:1.75rem;height:4rem;padding:0 2.5rem;background:#f6efe4;border-bottom:1px solid #e7dccb}.ds-mark{font-family:'Libre Caslon Display',Georgia,serif;font-style:italic;font-size:1.5rem;color:#1d9a7c}.ds-head nav{margin-left:auto;display:flex;gap:1.75rem}.ds-head nav a{font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:1.02rem;color:#6e5646;text-decoration:none;transition:color 200ms}.ds-head nav a:hover{color:#4a2c1d}.ds-tel{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.04em;font-size:1.28rem;color:#c1252d;text-decoration:none}.ds-head a:focus-visible{outline:2px solid #c08a33;outline-offset:3px}"
-    },
-    {
-      "name": "Open-Now Readout",
+      "name": "Open Badge",
       "kind": "custom",
-      "refersTo": "label",
-      "description": "Live state of the shop's hours: breathing green dot when open, red when closed.",
-      "html": "<p class=\"ds-open\"><span class=\"ds-dot\"><i></i><i></i></span><b>Aperto ora</b><span>fino alle 20:30</span></p>",
-      "css": ".ds-open{display:flex;align-items:center;gap:.625rem;font-family:Jost,sans-serif}.ds-dot{position:relative;width:10px;height:10px}.ds-dot i{position:absolute;inset:0;border-radius:9999px;background:#1d9a7c}.ds-dot i:first-child{animation:ds-respiro 2.6s ease-out infinite}@keyframes ds-respiro{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(2.2);opacity:0}}@media (prefers-reduced-motion:reduce){.ds-dot i:first-child{animation:none}}.ds-open b{font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:1.08rem;color:#4a2c1d}.ds-open span:last-child{font-size:.98rem;color:#6e5646}"
+      "refersTo": "",
+      "description": "Live open/closed state with a breathing verde dot.",
+      "html": "<div style=\"background:#170e0a;padding:24px\"><span class=\"ds-open\"><span class=\"ds-dot\"></span><span><strong>Aperto</strong> · chiude alle 20:30</span></span></div>",
+      "css": ".ds-open{display:inline-flex;align-items:center;gap:10px;min-height:2.5rem;padding:8px 16px;border-radius:1.4rem;background:rgb(255 255 255/0.08);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.2);color:#f8f1e4;font-family:Manrope,system-ui,sans-serif;font-size:0.94rem}.ds-open strong{font-weight:600}.ds-dot{position:relative;width:10px;height:10px;border-radius:999px;background:#7cbf67}.ds-dot::before{content:\"\";position:absolute;inset:0;border-radius:999px;background:#7cbf67;animation:ds-breathe 2.4s ease-out infinite}@keyframes ds-breathe{0%,100%{transform:scale(1);opacity:0.9}50%{transform:scale(2.2);opacity:0}}"
     },
     {
-      "name": "Ingresso Invitation",
+      "name": "Dedication Plaque",
       "kind": "custom",
-      "refersTo": "lastra",
-      "description": "The entrance's one invitation: a crema slab in a 3px honey frame over the street-front still.",
-      "html": "<div class=\"ds-door\"><div class=\"ds-frame\"><div class=\"ds-inv\"><p class=\"ds-pay\">Produzione propria dal 1979 · Via dei Frassini 25</p><button class=\"ds-enter\"><span>Entra in pasticceria</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" aria-hidden=\"true\"><path d=\"M8 5l11 7-11 7z\"/></svg></button><a href=\"#\">oppure scorri la pagina</a></div></div></div>",
-      "css": ".ds-door{background:#2b1a10;padding:3rem 1rem;display:grid;place-items:center}.ds-frame{background:#c08a33;padding:3px;width:100%;max-width:30rem}.ds-inv{background:#f6efe4;padding:2.25rem;text-align:center;font-family:Jost,sans-serif}.ds-pay{margin:0;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:1.05rem;color:#8a5e1e}.ds-enter{margin-top:1.25rem;width:100%;display:flex;justify-content:space-between;align-items:center;min-height:3.8rem;padding:.6rem 1.25rem;border:0;border-radius:2px;background:#4a2c1d;color:#fdfbf7;font-family:'Libre Caslon Display',Georgia,serif;font-size:1.45rem;cursor:pointer;transition:background-color 220ms ease}.ds-enter:hover{background:#6b4430}.ds-enter:focus-visible,.ds-inv a:focus-visible{outline:2px solid #c08a33;outline-offset:3px}.ds-inv a{display:inline-block;margin-top:1rem;font-size:.95rem;color:#6e5646;text-underline-offset:.24em}.ds-inv a:hover{color:#4a2c1d}"
+      "refersTo": "plaque",
+      "description": "Live preview of the cake dedication, tilted on a sabbia ground.",
+      "html": "<div class=\"ds-plaque-ground\"><div class=\"ds-plaque\">Auguri Camilla</div></div>",
+      "css": ".ds-plaque-ground{display:grid;place-items:center;padding:28px 16px;border-radius:1.4rem;background:radial-gradient(120% 120% at 50% 0%,#f3e6cf,#e2d1b5)}.ds-plaque{transform:rotate(-2.5deg);padding:16px 28px;border-radius:0.9rem;background:#3d2316;color:#fbf0dc;font-family:\"Cormorant Garamond\",serif;font-style:italic;font-weight:600;font-size:2rem;line-height:1.2;box-shadow:inset 0 2px 0 rgb(255 255 255/0.1),inset 0 -3px 0 rgb(0 0 0/0.3),0 18px 34px -16px rgb(0 0 0/0.8)}"
     }
   ],
   "narrative": {
-    "northStar": "La vetrina sotto l'insegna",
-    "overview": "A bright pastry-shop boutique: a cream ground (panna) with cream slabs (crema) laid on it, cocoa ink, honey details, and a fine Caslon serif as the voice of the shop. Over it sits the one thing that is not invented: the shop's own sign, painted on the facade in 1979, kept exactly as it is. Its green script wordmark, its bold condensed capitals and its red \"Tel.\" are the identity; everything around them is quiet, warm and laid flat, like the paper and board of a pastry box.\n\nThe page opens at the door. A full-screen still of the street front carries one honey-framed cream slab that invites you in; a click plays the single take from the street to the counter once, and the screen settles on its last frame with the shop's name, address, phone and order actions on a slab. Nothing moves with the scroll. Below the entrance every section is a calm, even arrangement: flat crema slabs on the panna ground, photographs laid edge to edge on 6px seams, a symmetric product grid, a centred review slider, then the cocoa band of hours and place. Photography carries the appetite; the system around it stays flat, unshadowed and almost square.\n\nDensity is generous between sections (80 to 112px) and tight inside them (6px seams), so the gallery reads as a tidy shop case and the prose reads as a calm boutique.",
+    "northStar": "Champagne e cioccolato",
+    "overview": "The page is a pastry tray: deep cream paper, champagne-gold cake boards and ribbon, dark chocolate glaze. Light grounds (avorio, crema, sabbia) alternate with chocolate panels, and every surface after the entrance slides up over the previous one as a rounded sheet, like a new tray set on the counter. The shop's own sign lettering, vectorised from the 1979 facade, is the signature: it appears in champagne foil in the glass header and full width in the footer, and in champagne-scuro on the order ticket.\n\nType is a two-voice pairing: Cormorant Garamond speaks (section titles, the shop name, quotes, numerals), Manrope reads (body, labels, controls). Motion is generous but physical: text rises line by line out of a mask, photos parallax inside their frames, cards tilt toward the mouse, a sliding pill marks the active choice. Everything collapses to still states under reduced motion.\n\nDensity is relaxed: large serif titles, short measured paragraphs (44 to 54ch), photos always inside an ivory passe-partout. Real material only: the shop's photos, the real hours, real Google reviews quoted verbatim.",
     "keyCharacteristics": [
-      "Cream on cream: crema slabs laid on the panna ground, cocoa bands for the dark sections, fondente for the footer.",
-      "The sign is the only borrowed identity: green script wordmark, condensed caps, red \"Tel.\".",
-      "Caslon Display for every title and caption, Jost for every sentence, Barlow Condensed only for sign-grammar labels and numbers.",
-      "Depth only by laid slabs, seams and hairlines: no drop shadows, no glass, no decorative gradients, no blur.",
-      "Corners are cut, not rounded (2px on controls, square elsewhere).",
-      "Motion answers a click or a state change, never the scroll position."
+      "Cream grounds, champagne accent, chocolate for text, panels, and the night ground.",
+      "Sections overlap as rounded sheets (2.5rem, 3.5rem from md) pulled up 40px / 56px.",
+      "The 1979 sign lettering in champagne foil is the only logo.",
+      "Photos sit in an ivory passe-partout with a long, low chocolate shadow.",
+      "Pills for every action; one fill per button.",
+      "Glass only on what floats."
     ],
     "rules": [
       {
-        "name": "The Sign Keeps Its Colours Rule",
-        "body": "Green, red and bordeaux belong to the sign. Green is the wordmark and \"open\"; red is \"Tel.\" and \"closed\"; bordeaux is \"dal 1979\". They never become generic accents, fills or button backgrounds.",
+        "name": "The One Metal Rule",
+        "body": "Champagne is the only accent. On light grounds it appears as champagne-scuro text or as a fill under fondente text, never as champagne text on cream.",
         "section": "colors"
       },
       {
-        "name": "The Honey Is a Thread Rule",
-        "body": "Miele is drawn in lines and points (a 1 to 3px edge, a star, a quote mark, a focus ring), never as a field. When honey has to be read as words on cream it speaks as Miele Scuro; on dark grounds it speaks as Miele Chiaro.",
+        "name": "The Foil Rule",
+        "body": "The vertical champagne foil gradient (`.foil`, `.insegna-foil`) is reserved for the shop's name, the sign lettering, and the big numerals (numbers band, rating). Never on body copy or buttons.",
         "section": "colors"
       },
       {
-        "name": "The Sign Grammar Rule",
-        "body": "Condensed caps are for what the sign itself would say: names of things, states, times, numbers, the payoff. They may follow a title as its subline; they never sit above a heading as a kicker or eyebrow.",
+        "name": "The Two Voices Rule",
+        "body": "Serif for what the shop says, sans for what the visitor reads or operates. Controls, legends, and data are never serif, except the stepper value and numerals.",
         "section": "typography"
       },
       {
-        "name": "The One Serif Rule",
-        "body": "Every title and caption is Caslon Display at weight 400. No bold serif, no italic display, no second serif (Bodoni belongs to the sibling Cristiani site).",
+        "name": "The Sentence Case Rule",
+        "body": "No uppercase, no tracked-out labels, no kickers above titles. Hierarchy comes from the serif size step and color.",
         "section": "typography"
       },
       {
-        "name": "The Laid Slab Rule",
-        "body": "A surface is raised by being a different cream, not by a shadow. If an element needs separation, give it a slab, a 1px filo hairline or a thin honey edge.",
+        "name": "The Glass Floats Rule",
+        "body": "Glass only on what floats above content: the header, the menu's shortcut tray, the photo viewer controls. Never on an in-flow card.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** lay crema (#f6efe4) slabs on the panna (#fdfbf7) ground and join blocks on 6px seams.",
-      "**Do** set every title and caption in Libre Caslon Display 400 and every sentence in Jost, with prose capped at 62ch.",
-      "**Do** print every phone number as \"Tel.\" in Barlow Condensed 700, rosso on cream, Miele Chiaro inside a cocoa button.",
-      "**Do** keep the sign's wordmark in insegna green (#1d9a7c) and use green otherwise only for the open state.",
-      "**Do** draw honey as lines and points: 1 to 3px edges, stars, quote marks, focus rings; set honey-coloured words in Miele Scuro (#8a5e1e) on cream.",
-      "**Do** keep product grids even: 4:5 cards, 2 columns on phones and 4 from md, rows that close.",
-      "**Do** keep a reduced-motion path for every moving thing (the entrance, the tile sheen, the breathing dot, the slider)."
+      "Do frame every product photo in the avorio passe-partout with the passe-partout shadow.",
+      "Do keep each section a rounded sheet overlapping the previous one, alternating light and chocolate grounds.",
+      "Do put champagne fills under fondente text and use champagne-scuro for accent text on light grounds.",
+      "Do use the sign lettering (insegna mask) as the only wordmark.",
+      "Do reveal headlines with the masked stagger and ease every transition on cubic-bezier(0.16, 1, 0.3, 1).",
+      "Do give every motion a still state under prefers-reduced-motion."
     ],
     "donts": [
-      "**Don't** add drop shadows, glass, blur or decorative gradients; separation is a slab or a hairline.",
-      "**Don't** round corners beyond the 2px cut on controls; dots are the only round forms.",
-      "**Don't** use green, red or bordeaux as generic accents or button fills; they belong to the sign.",
-      "**Don't** put condensed caps above a heading as a kicker or eyebrow.",
-      "**Don't** tie animation to the scroll position; motion starts from a click or a state change.",
-      "**Don't** bring back the retired terrazzo tiles or Bodoni."
+      "Don't use foil on anything other than the name, the sign, and the big numerals.",
+      "Don't add uppercase tracked labels or eyebrow kickers above section titles.",
+      "Don't draw borders; use inset hairlines and tonal layers.",
+      "Don't use glass on in-flow content.",
+      "Don't set controls or body copy in the serif.",
+      "Don't break the vetrina grid's symmetry (2 or 4 equal columns)."
     ]
   }
 }
