@@ -1,25 +1,30 @@
 @import "tailwindcss";
 
 /*
-  Design tokens "Gold & Obsidian", presi dal logo: oro caldo (lettere FADE), champagne (contorni) e nero.
-  Niente viola, niente vetro sfocato: superfici piene, linee sottili, oro come unico accento.
-  Forme: card 22px, pulsanti a pillola con "chip" della freccia, azioni rapide quadrate arrotondate.
-  Z-index: nav 40, barra mobile 40, intro 50.
+  Design "Ink & Bone": un'impaginazione da rivista di lusso.
+  - Nero inchiostro (sezioni scure, foto) e avorio "osso" (sezioni chiare, testo da leggere) che si alternano.
+  - Ottone come unico accento, preso dall'oro del logo.
+  - Tipografia: Instrument Serif per i titoli (anche in corsivo), Geist per testi e interfaccia.
+  Niente vetro sfocato, niente bagliori: superfici piene, linee sottili, foto grandi.
+  Z-index: nav 40, barra mobile 40, lightbox 45, intro 50, schermata d'ingresso 60.
 */
 @theme {
-  --color-obsidian: #070707;
-  --color-carbon: #0f0f0f;
-  --color-graphite: #161616;
-  --color-anthracite: #222222;
-  --color-gold: #f2c14e;
-  --color-gold-light: #ffe08a;
-  --color-gold-deep: #b8862b;
-  --color-champagne: #e6d3a3;
-  --color-ivory: #f6f1e7;
-  --color-mist: #9e978a;
+  --color-ink: #0c0b0a;
+  --color-ink-2: #151311;
+  --color-ink-3: #201d1a;
+  --color-bone: #efe8dc;
+  --color-bone-2: #e4dbcc;
+  --color-bone-3: #d3c7b3;
+  --color-brass: #b4925a;
+  --color-brass-light: #dcc18f;
+  --color-brass-dark: #7a5d2e;
+  --color-smoke: #a59c8e;
+  --color-stone: #675e52;
 
-  --font-display: "Unbounded Variable", "Geist Variable", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
   --font-sans: "Geist Variable", system-ui, sans-serif;
+  /* alias usato da schermata d'ingresso e intro */
+  --font-display: var(--font-serif);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
@@ -27,19 +32,19 @@
 
 @layer base {
   html {
-    background: var(--color-obsidian);
+    background: var(--color-ink);
     color-scheme: dark;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
   body {
-    background: var(--color-obsidian);
-    color: var(--color-ivory);
+    background: var(--color-ink);
+    color: var(--color-bone);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
-    caret-color: var(--color-gold);
-    scrollbar-color: rgb(242 193 78 / 0.55) var(--color-obsidian);
+    caret-color: var(--color-brass);
+    scrollbar-color: var(--color-brass) var(--color-ink);
   }
   section[id] {
     scroll-margin-top: 5rem;
@@ -48,190 +53,163 @@
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-obsidian);
+    background: var(--color-ink);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgb(242 193 78 / 0.5);
-    border: 2px solid var(--color-obsidian);
+    background: var(--color-brass-dark);
+    border: 2px solid var(--color-ink);
     border-radius: 999px;
   }
   button,
   summary {
     cursor: pointer;
   }
-  a {
-    text-underline-offset: 0.2em;
-  }
   ::selection {
-    background: var(--color-gold);
-    color: var(--color-obsidian);
+    background: var(--color-brass);
+    color: var(--color-ink);
   }
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-brass);
     outline-offset: 3px;
   }
 }
 
 @layer components {
-  /* Oro metallico per le parole chiave dei titoli. */
-  .text-gold-gradient {
-    background: linear-gradient(100deg, var(--color-gold-light) 0%, var(--color-gold) 45%, var(--color-gold-deep) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  /* Sezioni chiare: fondo avorio, testo inchiostro. */
+  .paper {
+    background: var(--color-bone);
+    color: var(--color-ink);
   }
 
-  /* Superfici: nero pieno, bordo sottile, una linea d'oro in alto. Nessun filtro, nessuna sfocatura. */
-  .card {
-    position: relative;
-    border-radius: 22px;
-    border: 1px solid rgb(255 255 255 / 0.07);
-    background: #101010;
-  }
-  .card-gold-edge::before {
-    content: "";
-    position: absolute;
-    inset: 0 18% auto;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
-    opacity: 0.55;
-    pointer-events: none;
-  }
-  .surface {
-    background: rgb(12 12 12 / 0.96);
-    border: 1px solid rgb(255 255 255 / 0.08);
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
   }
 
   /*
-    Pulsante principale: oro metallico, testo nero, "chip" nera con la freccia.
-    Al tocco: scala 0.98 e un filo più di luminosità (solo transform e filter: brightness, economici).
+    Pulsanti a pillola, testo maiuscoletto con spaziatura ampia.
+    .btn-brass: ottone pieno (prenotazione) · .btn-line: solo contorno, prende il colore del testo.
+    Al tocco: scale(0.98) e luminosità (transform e filter sul solo pulsante, economici).
   */
-  .btn-gold {
+  .btn-brass,
+  .btn-line,
+  .btn-ink {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
     min-height: 3.25rem;
-    padding: 0.4rem 0.45rem 0.4rem 1.6rem;
     border-radius: 999px;
     white-space: nowrap;
-    background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 42%, var(--color-gold-deep) 100%);
-    color: #0b0b0b;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.55),
-      inset 0 -1px 0 rgb(0 0 0 / 0.25),
-      0 14px 34px -16px rgb(242 193 78 / 0.7);
     transition:
       transform 160ms var(--ease-smooth),
-      filter 160ms var(--ease-smooth);
+      filter 160ms var(--ease-smooth),
+      background-color 220ms var(--ease-smooth),
+      color 220ms var(--ease-smooth),
+      border-color 220ms var(--ease-smooth);
   }
-  .btn-gold .btn-chip {
+  .btn-brass {
+    padding: 0.35rem 0.4rem 0.35rem 1.5rem;
+    background: var(--color-brass);
+    color: var(--color-ink);
+  }
+  .btn-ink {
+    padding: 0.35rem 0.4rem 0.35rem 1.5rem;
+    background: var(--color-ink);
+    color: var(--color-bone);
+  }
+  .btn-line {
+    padding: 0 1.5rem;
+    border: 1px solid currentColor;
+    background: transparent;
+  }
+  .btn-arrow {
     display: grid;
     place-items: center;
-    width: 2.45rem;
-    height: 2.45rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 999px;
-    background: #0b0b0b;
-    color: var(--color-gold);
     transition: transform 300ms var(--ease-smooth);
   }
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    min-height: 3.25rem;
-    padding: 0 1.6rem;
-    border-radius: 999px;
-    white-space: nowrap;
-    border: 1px solid rgb(242 193 78 / 0.55);
-    background: #0b0b0b;
-    color: var(--color-gold-light);
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition:
-      transform 160ms var(--ease-smooth),
-      background-color 200ms var(--ease-smooth),
-      color 200ms var(--ease-smooth);
+  .btn-brass .btn-arrow {
+    background: var(--color-ink);
+    color: var(--color-brass-light);
+  }
+  .btn-ink .btn-arrow {
+    background: var(--color-brass);
+    color: var(--color-ink);
   }
   @media (hover: hover) {
-    .btn-gold:hover {
-      filter: brightness(1.07);
+    .btn-brass:hover {
+      background: var(--color-brass-light);
     }
-    .btn-gold:hover .btn-chip {
-      transform: rotate(45deg);
+    .btn-ink:hover {
+      background: var(--color-ink-3);
     }
-    .btn-outline:hover {
-      background: var(--color-gold);
-      color: #0b0b0b;
+    .btn-brass:hover .btn-arrow,
+    .btn-ink:hover .btn-arrow {
+      transform: translateX(3px) rotate(-45deg);
+    }
+    .btn-line:hover {
+      background: rgb(180 146 90 / 0.14);
+      border-color: var(--color-brass);
     }
   }
-  .btn-gold:active,
-  .btn-outline:active {
+  .btn-brass:active,
+  .btn-line:active,
+  .btn-ink:active {
     transform: scale(0.98);
-  }
-  .btn-gold:active {
-    filter: brightness(1.12);
-  }
-  .btn-outline:active {
-    background: rgb(242 193 78 / 0.14);
+    filter: brightness(1.1);
   }
 
-  /* Azione rapida (chiama, WhatsApp, mappa): quadrato nero arrotondato con icona oro. */
+  /* Azione rapida tonda (chiama, WhatsApp, mappa). */
   .quick {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.55rem;
-    color: var(--color-ivory);
-    font-size: 11px;
+    gap: 0.5rem;
+    font-size: 10.5px;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     transition: transform 160ms var(--ease-smooth);
   }
   .quick-icon {
     display: grid;
     place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1.1rem;
-    border: 1px solid rgb(242 193 78 / 0.4);
-    background: linear-gradient(180deg, #181818, #0b0b0b);
-    color: var(--color-gold);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 999px;
+    border: 1px solid rgb(239 232 220 / 0.35);
     transition:
       background-color 200ms var(--ease-smooth),
       color 200ms var(--ease-smooth),
       border-color 200ms var(--ease-smooth);
   }
-  .quick-icon--solid {
-    border-color: transparent;
-    background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold) 45%, var(--color-gold-deep));
-    color: #0b0b0b;
-  }
   @media (hover: hover) {
-    .quick:hover .quick-icon:not(.quick-icon--solid) {
-      border-color: var(--color-gold);
-      color: var(--color-gold-light);
+    .quick:hover .quick-icon {
+      background: var(--color-bone);
+      border-color: var(--color-bone);
+      color: var(--color-ink);
     }
   }
   .quick:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
   }
   .quick:active .quick-icon {
-    filter: brightness(1.15);
+    background: var(--color-brass);
+    border-color: var(--color-brass);
+    color: var(--color-ink);
   }
 
-  /* Card che si premono al tocco. */
   .press {
     transition: transform 160ms var(--ease-smooth);
   }
@@ -239,29 +217,42 @@
     transform: scale(0.98);
   }
 
-  /* Menù del listino: si apre subito (niente animazione d'altezza), il contenuto entra con opacità e spostamento. */
-  .t-accordion-body {
-    display: grid;
-    grid-template-rows: 0fr;
+  /* Link con sottolineatura che si allunga (scaleX). */
+  .link-line {
+    position: relative;
   }
-  .t-accordion-body > * {
-    min-height: 0;
-    overflow: hidden;
+  .link-line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 400ms var(--ease-smooth);
   }
-  [data-open="true"] > .t-accordion-body {
-    grid-template-rows: 1fr;
+  @media (hover: hover) {
+    .link-line:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
   }
-  .t-accordion-body > * > * {
-    opacity: 0;
-    transform: translate3d(0, -6px, 0);
-    transition:
-      opacity 200ms ease-out,
-      transform 250ms var(--ease-smooth);
+  .link-line[aria-current]::after {
+    transform: scaleX(1);
   }
-  [data-open="true"] > .t-accordion-body > * > * {
-    opacity: 1;
-    transform: none;
-    transition-delay: 60ms;
+
+  /* Puntini guida del listino, come nei menù stampati. */
+  .leader {
+    flex: 1;
+    min-width: 1.5rem;
+    height: 1px;
+    transform: translateY(-0.3em);
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1.2px);
+    background-size: 7px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.45;
   }
 
   /* Carosello a scorrimento con aggancio: barra di scorrimento nascosta. */
@@ -274,11 +265,11 @@
     display: none;
   }
 
-  /* Pallino "aperto ora": un solo anello che si espande (transform + opacity). */
+  /* Pallino "aperto ora": un anello che si espande (transform + opacity). */
   .live-dot {
     position: relative;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 999px;
     background: currentColor;
   }
@@ -324,7 +315,7 @@
     opacity: 0.8;
   }
   100% {
-    transform: scale(1.35, 1.7);
+    transform: scale(1.3, 1.7);
     opacity: 0;
   }
 }
@@ -333,7 +324,7 @@
   will-change: transform, opacity;
 }
 
-/* Lama di luce dorata del passaggio intro → Hero (solo transform e opacity). */
+/* Lama di luce del passaggio intro → Hero (solo transform e opacity). */
 @keyframes intro-blade {
   0% {
     transform: translate3d(0, 0, 0) scaleX(0.2);
@@ -348,8 +339,8 @@
   }
 }
 .intro-blade {
-  background: linear-gradient(90deg, transparent, var(--color-gold-deep), #fff4cc, var(--color-gold), transparent);
-  box-shadow: 0 0 18px 4px rgb(242 193 78 / 0.7);
+  background: linear-gradient(90deg, transparent, var(--color-brass-dark), #fff4dc, var(--color-brass), transparent);
+  box-shadow: 0 0 18px 4px rgb(180 146 90 / 0.6);
   animation: intro-blade 950ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
@@ -375,13 +366,27 @@
   }
 }
 .marquee-track {
-  animation: marquee 28s linear infinite;
+  animation: marquee 40s linear infinite;
   will-change: transform;
 }
-@media (hover: hover) {
-  .marquee-track:hover {
-    animation-play-state: paused;
-  }
+
+/*
+  Foto che si scoprono (RevealImage e galleria): la tenda si ritira e l'immagine si assesta.
+  Transizioni CSS di transform: le esegue il compositore della GPU.
+*/
+.reveal-img {
+  transform: scale(1.15);
+  transition: transform 1.4s var(--ease-smooth);
+}
+.reveal-cover {
+  transform-origin: top;
+  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+}
+[data-shown] .reveal-img {
+  transform: scale(1);
+}
+[data-shown] .reveal-cover {
+  transform: scaleY(0);
 }
 
 /* Elementi fissi o animati di continuo: livello GPU dedicato. */
@@ -398,11 +403,16 @@
   html {
     scroll-behavior: auto;
   }
-  .btn-gold:active,
-  .btn-outline:active,
+  .btn-brass:active,
+  .btn-line:active,
+  .btn-ink:active,
   .quick:active,
   .press:active {
     transform: none;
+  }
+  .reveal-img,
+  .reveal-cover {
+    transition: none !important;
   }
   .marquee-track,
   .live-dot::after,

@@ -4,6 +4,8 @@ import taglioFade from "./assets/taglio-fade.webp";
 import taglioCropSkinFade from "./assets/taglio-crop-skin-fade.webp";
 import taglioSlickBack from "./assets/taglio-slick-back.webp";
 import taglioMullet from "./assets/taglio-mullet.webp";
+import taglioTaperFade from "./assets/taglio-taper-fade.jpg";
+import taglioMidFade from "./assets/taglio-mid-fade.jpg";
 
 /* ───────────── Dati del salone ───────────── */
 
@@ -114,6 +116,36 @@ export const WEEK = [
   `kind` decide i filtri (Sfumature, Barba, Styling); `details` sono le righe mostrate quando la scheda è aperta.
 */
 export const CUTS = [
+  {
+    src: taglioTaperFade,
+    width: 1280,
+    height: 1650,
+    title: "Taper fade",
+    kind: ["sfumature", "barba"],
+    tags: ["Taper Fade", "Beard Care"],
+    details: [
+      ["Sfumatura", "Taper basso su nuca e basette"],
+      ["Sopra", "Ricci naturali definiti"],
+      ["Finitura", "Barba piena sagomata"],
+    ],
+    alt: "Ricci scuri con sfumatura taper e barba piena sagomata, visti di profilo su sfondo grigio",
+    focus: "50% 35%",
+  },
+  {
+    src: taglioMidFade,
+    width: 1280,
+    height: 1728,
+    title: "Mid fade",
+    kind: ["sfumature", "styling"],
+    tags: ["Mid Fade", "Styling"],
+    details: [
+      ["Sfumatura", "Mid fade a pelle"],
+      ["Sopra", "Crop mosso con frangia"],
+      ["Finitura", "Texture naturale"],
+    ],
+    alt: "Capelli mossi con frangia e sfumatura media a pelle, cliente in poltrona nel salone",
+    focus: "50% 30%",
+  },
   {
     src: taglioFade,
     width: 1100,

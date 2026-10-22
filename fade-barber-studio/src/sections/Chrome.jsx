@@ -3,11 +3,11 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { CalendarCheck, MapPin, Menu, MessageCircle, Phone, X } from "lucide-react";
 
 import logo from "../assets/logo-trasparente.webp";
-import { LINKS, NAV } from "../data.js";
-import { GoldButton } from "../ui.jsx";
+import { HOURS, LINKS, NAV } from "../data.js";
+import { BrassButton, EASE } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
-/** Sezione visibile in questo momento, per la pillola che scorre nel menu. */
+/** Sezione visibile in questo momento, per evidenziare la voce del menù. */
 function useActiveSection(ids) {
   const [active, setActive] = useState(null);
   useEffect(() => {
@@ -53,37 +53,32 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="gpu fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-6">
+    <header className="fixed inset-x-0 top-0 z-40">
       <nav
         aria-label="Navigazione principale"
         className={cn(
-          "mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 rounded-full border pl-3 pr-2 transition-[background-color,border-color] duration-300",
-          scrolled || open ? "border-white/[0.08] bg-[#0b0b0b]/95" : "border-transparent bg-transparent",
+          "relative z-10 mx-auto flex h-[4.5rem] items-center justify-between gap-6 px-4 transition-[background-color,border-color] duration-300 sm:px-8",
+          scrolled || open ? "border-b border-white/[0.08] bg-ink" : "border-b border-transparent bg-transparent",
         )}
       >
-        <a href="#top" className="flex items-center gap-2" aria-label="Fade Barber Studio, torna all'inizio">
+        <a href="#top" className="flex items-center gap-3" aria-label="Fade Barber Studio, torna all'inizio">
           <img src={logo} alt="" width="48" height="48" className="h-11 w-11" />
-          <span className="font-display text-sm font-extrabold tracking-[0.18em] text-ivory">FADE</span>
+          <span className="hidden font-serif text-2xl leading-none sm:block">
+            Fade <span className="italic text-brass-light">Barber Studio</span>
+          </span>
         </a>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="hidden items-center gap-8 lg:flex">
           {NAV.map((item) => {
             const isActive = active === item.href.slice(1);
             return (
-              <li key={item.href} className="relative">
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full bg-gold/12 ring-1 ring-gold/40"
-                    transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 36 }}
-                  />
-                )}
+              <li key={item.href}>
                 <a
                   href={item.href}
                   aria-current={isActive ? "location" : undefined}
                   className={cn(
-                    "relative block rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
-                    isActive ? "text-gold-light" : "text-mist hover:text-ivory",
+                    "link-line text-[13px] font-medium tracking-wide transition-colors duration-200",
+                    isActive ? "text-brass-light" : "text-bone/75 hover:text-bone",
                   )}
                 >
                   {item.label}
@@ -94,65 +89,76 @@ export function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <GoldButton
+          <BrassButton
             href={LINKS.treatwell}
-            className="min-h-11 py-1 pl-4 pr-1 text-[10.5px] sm:pl-5 [&_.btn-chip]:h-9 [&_.btn-chip]:w-9"
+            className="min-h-11 py-1 pl-4 pr-1 text-[11px] [&_.btn-arrow]:h-9 [&_.btn-arrow]:w-9"
           >
             Prenota
-          </GoldButton>
+          </BrassButton>
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 text-ivory transition-[transform,background-color] duration-150 active:scale-95 active:bg-gold/15 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-bone/25 transition-[transform,background-color] duration-150 active:scale-95 active:bg-bone/10 lg:hidden"
             aria-label={open ? "Chiudi il menu" : "Apri il menu"}
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((v) => !v)}
           >
-            {/* scambio di icone (transitions.dev, "icon swap"), solo scala e opacità */}
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
                 key={open ? "x" : "menu"}
-                initial={{ opacity: 0, scale: 0.6, rotate: -45 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                exit={{ opacity: 0, scale: 0.6, rotate: 45 }}
+                initial={{ opacity: 0, rotate: -60, scale: 0.6 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 60, scale: 0.6 }}
                 transition={{ duration: 0.15 }}
               >
-                {open ? <X size={21} strokeWidth={2} /> : <Menu size={21} strokeWidth={2} />}
+                {open ? <X size={20} strokeWidth={1.8} /> : <Menu size={20} strokeWidth={1.8} />}
               </motion.span>
             </AnimatePresence>
           </button>
         </div>
       </nav>
 
+      {/* menù del telefono: pannello a tutto schermo, voci grandi in serif che entrano a cascata */}
       <AnimatePresence>
         {open && (
           <motion.div
             id="menu-mobile"
-            className="mx-auto mt-2 max-w-7xl origin-top overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#0b0b0b] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.95)] lg:hidden"
-            initial={reduce ? false : { opacity: 0, scale: 0.97, y: -6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.12 } }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 top-0 flex touch-none flex-col overscroll-contain bg-ink px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-24 lg:hidden"
+            initial={reduce ? false : { opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.15 } }}
+            transition={{ duration: 0.3, ease: EASE }}
           >
-            <ul className="flex flex-col p-2">
+            <ul className="flex flex-col">
               {NAV.map((item, i) => (
                 <motion.li
                   key={item.href}
-                  initial={reduce ? false : { opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.25, delay: 0.03 * i, ease: [0.22, 1, 0.36, 1] }}
+                  className="border-b border-white/[0.08]"
+                  initial={reduce ? false : { opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.05 + 0.04 * i, ease: EASE }}
                 >
                   <a
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-center justify-between rounded-2xl px-4 py-4 font-display text-sm font-semibold uppercase tracking-wide text-ivory transition-colors duration-150 active:bg-gold/15 hover:bg-white/5"
+                    className="flex items-baseline justify-between py-4 font-serif text-[2.6rem] leading-none transition-colors duration-150 active:text-brass-light"
                   >
                     {item.label}
-                    <span className="font-display text-xs text-gold">0{i + 1}</span>
+                    <span className="eyebrow text-smoke">0{i + 1}</span>
                   </a>
                 </motion.li>
               ))}
             </ul>
+            <div className="mt-auto space-y-5">
+              <p className="text-sm text-smoke">
+                {HOURS[0].days} · {HOURS[0].time}
+                <br />
+                Via Delle Azalee 73, Roma
+              </p>
+              <BrassButton href={LINKS.treatwell} icon={CalendarCheck} className="w-full justify-between">
+                Prenota su Treatwell
+              </BrassButton>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -181,25 +187,25 @@ export function MobileDock() {
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-[120%] opacity-0",
       )}
     >
-      <div className="flex items-center gap-1 rounded-[22px] border border-white/[0.08] bg-[#0b0b0b]/[0.97] p-1.5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.95)]">
+      <div className="flex items-center gap-1 rounded-full border border-white/10 bg-ink p-1.5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)]">
         {actions.map(({ href, icon: Icon, label }) => (
           <a
             key={label}
             href={href}
             {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl text-[10px] font-semibold uppercase tracking-wider text-ivory/85 transition-[transform,background-color] duration-150 active:scale-95 active:bg-gold/15"
+            aria-label={label}
+            className="grid h-12 flex-1 place-items-center rounded-full text-bone/85 transition-[transform,background-color] duration-150 active:scale-95 active:bg-bone/10"
           >
-            <Icon size={18} strokeWidth={2} className="text-gold" aria-hidden="true" />
-            {label}
+            <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
           </a>
         ))}
-        <GoldButton
+        <BrassButton
           href={LINKS.treatwell}
           icon={CalendarCheck}
-          className="min-h-12 flex-[1.5] gap-2 py-1 pl-4 pr-1 text-[11px] [&_.btn-chip]:h-10 [&_.btn-chip]:w-10"
+          className="min-h-12 flex-[2.2] justify-between py-1 pl-5 pr-1 text-[11px] [&_.btn-arrow]:h-10 [&_.btn-arrow]:w-10"
         >
           Prenota
-        </GoldButton>
+        </BrassButton>
       </div>
     </div>
   );

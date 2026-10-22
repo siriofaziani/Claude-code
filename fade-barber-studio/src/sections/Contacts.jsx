@@ -1,134 +1,18 @@
 import { useState } from "react";
-import {
-  ArrowUpRight,
-  CalendarCheck,
-  Camera,
-  Clock,
-  Hand,
-  MapPin,
-  MessageCircle,
-  Navigation,
-  Phone,
-} from "lucide-react";
+import { ArrowUpRight, CalendarCheck, Camera, Hand, MapPin, MessageCircle, Navigation, Phone } from "lucide-react";
 
 import { EXT, HOURS, LINKS, MAP_EMBED, WEEK, isOpenNow, romeNow } from "../data.js";
-import { GoldButton, Reveal, SectionHeading, Stagger, StaggerItem, useDesktopFx } from "../ui.jsx";
+import { InkButton, Reveal, SectionTitle, Stagger, StaggerItem, useDesktopFx } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 const ACTIONS = [
   { href: LINKS.phone, icon: Phone, label: "Chiamata diretta", value: "+39 334 919 6591" },
   { href: LINKS.whatsapp, icon: MessageCircle, label: "WhatsApp", value: "Scrivici ora" },
-  { href: LINKS.maps, icon: Navigation, label: "Indicazioni", value: "Apri il navigatore", solid: true },
+  { href: LINKS.maps, icon: Navigation, label: "Indicazioni", value: "Apri il navigatore" },
   { href: LINKS.instagram, icon: Camera, label: "Instagram", value: "@fade_barber_studio" },
 ];
 
-function ActionTile({ href, icon: Icon, label, value, solid }) {
-  const external = href.startsWith("http");
-  return (
-    <a
-      href={href}
-      {...(external ? EXT : {})}
-      className={cn(
-        "card press group flex min-h-[132px] flex-col justify-between gap-4 p-4 sm:p-5",
-        solid && "border-gold/45 bg-[#15120a]",
-      )}
-    >
-      <span className="flex items-center justify-between">
-        <span
-          className={cn(
-            "grid h-11 w-11 place-items-center rounded-xl border",
-            solid
-              ? "border-transparent bg-gradient-to-br from-gold-light via-gold to-gold-deep text-obsidian"
-              : "border-gold/40 bg-gold/[0.06] text-gold",
-          )}
-        >
-          <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
-        </span>
-        <ArrowUpRight
-          size={17}
-          strokeWidth={2}
-          className="text-mist transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold"
-          aria-hidden="true"
-        />
-      </span>
-      <span>
-        <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne">{label}</span>
-        <span className="mt-1 block break-words font-display text-[13px] font-bold leading-tight text-ivory sm:text-sm">
-          {value}
-        </span>
-      </span>
-    </a>
-  );
-}
-
-function HoursCard() {
-  const open = isOpenNow();
-  const today = romeNow()?.day;
-  return (
-    <div className="card card-gold-edge p-5 sm:p-6">
-      <div className="flex items-center justify-between gap-4">
-        <p className="flex items-center gap-3 font-display text-base font-bold uppercase text-ivory">
-          <Clock size={20} strokeWidth={1.8} className="text-gold" aria-hidden="true" />
-          Orari
-        </p>
-        {open !== null && (
-          <span
-            className={cn(
-              "inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider",
-              open ? "bg-emerald-400/10 text-emerald-300" : "bg-white/5 text-mist",
-            )}
-          >
-            <span className="live-dot" aria-hidden="true" />
-            {open ? "Aperto ora" : "Ora chiuso"}
-          </span>
-        )}
-      </div>
-
-      {/* settimana: giorni aperti con il punto d'oro, oggi evidenziato */}
-      <Stagger
-        as="ol"
-        gap={0.04}
-        amount={0.6}
-        className="mt-5 grid grid-cols-7 gap-1.5"
-        aria-label="Giorni di apertura"
-      >
-        {WEEK.map((d) => {
-          const isToday = d.key === today;
-          return (
-            <StaggerItem
-              as="li"
-              key={d.key}
-              y={10}
-              aria-current={isToday ? "date" : undefined}
-              className={cn(
-                "flex flex-col items-center gap-1.5 rounded-xl py-2.5 text-[11px] font-semibold uppercase",
-                d.open ? "bg-white/[0.04] text-ivory" : "text-mist/50",
-                isToday && "bg-gold text-obsidian",
-              )}
-            >
-              {d.short}
-              <span
-                className={cn("h-1.5 w-1.5 rounded-full", isToday ? "bg-obsidian" : d.open ? "bg-gold" : "bg-white/15")}
-              />
-              <span className="sr-only">{d.open ? "aperto" : "chiuso"}</span>
-            </StaggerItem>
-          );
-        })}
-      </Stagger>
-
-      <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-white/[0.08] pt-5">
-        {HOURS.map((row) => (
-          <div key={row.days}>
-            <dt className="text-xs text-mist">{row.days}</dt>
-            <dd className="mt-1 font-display text-base font-bold tabular-nums text-ivory sm:text-lg">{row.time}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  );
-}
-
-/** Mappa disegnata (leggera): strade stilizzate e segnaposto dorato sull'indirizzo. */
+/** Mappa disegnata (leggera), nei toni della carta: strade stilizzate e segnaposto sull'indirizzo. */
 function MapSketch() {
   const roads = [
     "M-20 60 L420 140",
@@ -140,33 +24,33 @@ function MapSketch() {
     "M-20 20 L200 420",
   ];
   return (
-    <div className="absolute inset-0 bg-[#141311]" aria-hidden="true">
+    <div className="absolute inset-0 bg-bone-2" aria-hidden="true">
       <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
-        <rect x="150" y="190" width="120" height="70" rx="10" fill="#1d1b14" />
+        <rect x="150" y="190" width="120" height="70" rx="6" fill="#d6cfb9" />
         {roads.map((d, i) => (
-          <path key={d} d={d} stroke={i % 3 ? "#2c2a24" : "#4a4434"} strokeWidth={i % 3 ? 7 : 12} fill="none" />
+          <path key={d} d={d} stroke={i % 3 ? "#f6f1e8" : "#fffaf1"} strokeWidth={i % 3 ? 7 : 12} fill="none" />
         ))}
       </svg>
-      <div className="absolute left-1/2 top-[40%] flex -translate-x-1/2 -translate-y-full flex-col items-center">
-        <span className="whitespace-nowrap rounded-full bg-gold px-2.5 py-1 font-display text-[11px] font-bold text-obsidian">
+      <div className="absolute left-1/2 top-[42%] flex -translate-x-1/2 -translate-y-full flex-col items-center">
+        <span className="whitespace-nowrap rounded-full bg-ink px-3 py-1 font-serif text-base text-bone">
           Fade Barber Studio
         </span>
-        <MapPin size={34} strokeWidth={2} className="fill-gold text-obsidian" />
+        <MapPin size={34} strokeWidth={1.8} className="fill-brass text-ink" />
       </div>
     </div>
   );
 }
 
 /**
- * Mappa scura. Su computer è la mappa Google interattiva (toni caldi). Sul telefono parte come disegno leggero
+ * Mappa: su computer è la mappa Google (in bianco e nero caldo). Sul telefono parte come disegno leggero
  * e la mappa vera si carica al tocco, così non pesa durante lo scorrimento.
  */
-function DarkMap() {
+function SalonMap() {
   const [live, setLive] = useState(false);
   const fx = useDesktopFx();
   const showIframe = fx || live;
   return (
-    <div className="relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-[24px] border border-gold/25 bg-carbon lg:min-h-[540px]">
+    <div className="relative h-full min-h-[380px] overflow-hidden rounded-[4px] bg-bone-2 lg:min-h-[600px]">
       {showIframe ? (
         <iframe
           title="Mappa: Fade Barber Studio, Via Delle Azalee 73, Roma"
@@ -174,15 +58,13 @@ function DarkMap() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className={cn(
-            "h-full min-h-[360px] w-full flex-1 [filter:grayscale(1)_invert(0.9)_sepia(0.35)_contrast(0.95)] lg:min-h-[540px]",
+            "absolute inset-0 h-full w-full [filter:grayscale(1)_sepia(0.25)_contrast(1.05)]",
             !live && "pointer-events-none",
           )}
         />
       ) : (
         <MapSketch />
       )}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_45%,transparent,rgba(7,7,7,0.55))]" />
-
       {!live && (
         <button
           type="button"
@@ -190,62 +72,116 @@ function DarkMap() {
           className="absolute inset-0 flex items-start justify-end p-4"
           aria-label="Attiva la mappa interattiva"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-obsidian/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-gold transition-transform duration-150 active:scale-95">
-            <Hand size={14} aria-hidden="true" />
+          <span className="eyebrow inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-2 text-[10px] text-bone transition-transform duration-150 active:scale-95">
+            <Hand size={13} aria-hidden="true" />
             {showIframe ? "Tocca per esplorare" : "Tocca per aprire la mappa"}
           </span>
         </button>
       )}
-
-      <div className="pointer-events-none absolute inset-x-3 bottom-3 sm:inset-x-4 sm:bottom-4">
-        <div className="surface pointer-events-auto flex flex-col gap-4 rounded-[18px] p-4 sm:flex-row sm:items-center sm:justify-between">
-          <span className="flex items-center gap-3">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-gold-light via-gold to-gold-deep text-obsidian">
-              <MapPin size={20} strokeWidth={2} aria-hidden="true" />
-            </span>
-            <span>
-              <span className="block font-display font-bold text-ivory">Via Delle Azalee, 73</span>
-              <span className="text-sm text-mist">00172 Roma RM</span>
-            </span>
-          </span>
-          <GoldButton
-            href={LINKS.maps}
-            icon={Navigation}
-            className="min-h-11 py-1 pl-5 pr-1 text-[11px] [&_.btn-chip]:h-9 [&_.btn-chip]:w-9"
-          >
-            Indicazioni
-          </GoldButton>
-        </div>
-      </div>
     </div>
   );
 }
 
 export default function Contacts() {
+  const open = isOpenNow();
+  const today = romeNow()?.day;
   return (
-    <section id="contatti" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
-      <SectionHeading index="05" eyebrow="Contatti" words={["Vieni", "a"]} accent="trovarci" />
+    <section id="contatti" className="paper relative">
+      <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 md:py-36">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-6">
+            <SectionTitle
+              index="05"
+              eyebrow="Contatti"
+              tone="light"
+              lines={["Vieni", { text: "a trovarci.", italic: true }]}
+            />
 
-      <div className="mt-12 grid gap-4 lg:grid-cols-12 lg:gap-5">
-        <Reveal className="lg:col-span-7">
-          <DarkMap />
-        </Reveal>
+            <Reveal className="mt-10">
+              <p className="font-serif text-4xl leading-[1.05] sm:text-5xl">
+                Via Delle Azalee, 73
+                <span className="block italic text-brass-dark">00172 Roma</span>
+              </p>
+            </Reveal>
 
-        <div className="flex flex-col gap-4 lg:col-span-5">
-          <Stagger className="grid grid-cols-2 gap-3" gap={0.07}>
-            {ACTIONS.map((a) => (
-              <StaggerItem key={a.label}>
-                <ActionTile {...a} />
-              </StaggerItem>
-            ))}
-          </Stagger>
-          <Reveal delay={0.1}>
-            <GoldButton href={LINKS.treatwell} icon={CalendarCheck} className="w-full">
-              Prenota su Treatwell
-            </GoldButton>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <HoursCard />
+            {/* orari: la settimana con oggi evidenziato */}
+            <Reveal delay={0.05} className="mt-10 border-t border-ink pt-6">
+              <div className="flex items-center justify-between">
+                <p className="eyebrow">Orari</p>
+                {open !== null && (
+                  <span
+                    className={cn("eyebrow inline-flex items-center gap-2", open ? "text-emerald-700" : "text-stone")}
+                  >
+                    <span className="live-dot" aria-hidden="true" />
+                    {open ? "Aperto ora" : "Ora chiuso"}
+                  </span>
+                )}
+              </div>
+              <ol className="mt-5 grid grid-cols-7 gap-1" aria-label="Giorni di apertura">
+                {WEEK.map((d) => {
+                  const isToday = d.key === today;
+                  return (
+                    <li
+                      key={d.key}
+                      aria-current={isToday ? "date" : undefined}
+                      className={cn(
+                        "flex flex-col items-center gap-2 rounded-[3px] py-3 text-[11px] font-semibold uppercase tracking-wider",
+                        isToday ? "bg-ink text-bone" : d.open ? "text-ink" : "text-ink/35",
+                      )}
+                    >
+                      {d.short}
+                      <span className={cn("h-1 w-1 rounded-full", d.open ? "bg-brass" : "bg-ink/20")} />
+                      <span className="sr-only">{d.open ? "aperto" : "chiuso"}</span>
+                    </li>
+                  );
+                })}
+              </ol>
+              <dl className="mt-5 grid grid-cols-2 gap-4">
+                {HOURS.map((row) => (
+                  <div key={row.days}>
+                    <dt className="text-sm text-stone">{row.days}</dt>
+                    <dd className="mt-1 font-serif text-3xl leading-none">{row.time}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+
+            {/* contatti come righe di un indice */}
+            <Stagger as="ul" className="mt-10 border-t border-ink" gap={0.06}>
+              {ACTIONS.map(({ href, icon: Icon, label, value }) => (
+                <StaggerItem as="li" key={label} y={14} className="border-b border-ink/15">
+                  <a
+                    href={href}
+                    {...(href.startsWith("http") ? EXT : {})}
+                    className="press group flex items-center gap-4 py-4"
+                  >
+                    <Icon size={20} strokeWidth={1.6} className="shrink-0 text-brass-dark" aria-hidden="true" />
+                    <span className="min-w-0 flex-1">
+                      <span className="eyebrow block text-[10px] text-stone">{label}</span>
+                      <span className="mt-1 block truncate font-serif text-2xl leading-none">{value}</span>
+                    </span>
+                    <ArrowUpRight
+                      size={18}
+                      strokeWidth={1.6}
+                      className="shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </StaggerItem>
+              ))}
+            </Stagger>
+
+            <Reveal className="mt-10">
+              <InkButton href={LINKS.treatwell} icon={CalendarCheck} className="w-full justify-between sm:w-auto">
+                Prenota su Treatwell
+              </InkButton>
+            </Reveal>
+          </div>
+
+          <Reveal className="lg:col-span-6" y={30}>
+            <div className="h-full lg:sticky lg:top-28 lg:h-[calc(100dvh-9rem)]">
+              <SalonMap />
+            </div>
           </Reveal>
         </div>
       </div>

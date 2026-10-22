@@ -14,33 +14,38 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 ## Ingresso
 
 All'apertura c'è una schermata nera con il logo e il pulsante "Vieni a trovarci" (`src/EntryGate.jsx`), con anelli
-dorati che pulsano. Il video di benvenuto si precarica sotto la schermata e parte solo al tocco: la schermata si apre
+color ottone che pulsano. Il video di benvenuto si precarica sotto la schermata e parte solo al tocco: la schermata si apre
 con uno zoom e una dissolvenza (0,7 s, solo transform e opacità), poi il video si dissolve nella Hero come prima.
 
-## Stile
+## Stile "Ink & Bone"
 
-Palette presa dal logo: oro caldo (`gold` #F2C14E, `gold-light`, `gold-deep`), `champagne` e neri
-(`obsidian`, `carbon`, `graphite`, `anthracite`). Niente viola, niente vetro sfocato (`backdrop-filter`),
-niente inclinazione 3D o riflessi: superfici piene con linee sottili e l'oro come unico accento.
-Pulsanti: `GoldButton` (oro metallico con chip nera della freccia), `OutlineButton` (nero con bordo oro),
-`QuickAction` (chiama, WhatsApp, mappa). Tutto in `src/ui.jsx` e `src/index.css`.
+Impaginazione da rivista: sezioni nero inchiostro (`ink`) e avorio (`bone`) che si alternano, ottone (`brass`,
+dall'oro del logo) come unico accento. Titoli in **Instrument Serif** (anche corsivo), testi in **Geist**.
+Niente vetro sfocato, niente bagliori: foto grandi, linee sottili, puntini guida nel listino.
+Pulsanti: `BrassButton` (prenotazione), `InkButton` (sulle sezioni chiare), `LineButton`, `QuickAction` (`src/ui.jsx`).
 
-## Animazioni (solo transform e opacità, 60 fps su telefono)
+## Sezioni
 
-- Titoli: numero e linea d'oro che si disegna, parole che salgono da una "finestra".
-- Foto: sipario dorato che si ritira mentre l'immagine si stabilizza (`CurtainImage`).
-- Card che entrano a cascata (`Stagger`), contatori che contano (`CountUp`: numeri del salone e prezzi).
-- Scritte giganti a contorno dorato che scorrono con la pagina (`ScrollText`), barra di avanzamento in alto.
-- Tracciati vettoriali che si disegnano (sigillo Gilmont, forbici), lampada dorata sopra le recensioni (Aceternity UI),
-  pillola dei filtri e del menù che scorre (transitions.dev), menù del listino che si apre al tocco.
-- Al tocco: `scale(0.98)` e un filo più di luminosità sui pulsanti.
-- Solo su computer: parallasse delle foto e nuvola di lettere "FADE → BARBER" in canvas
-  (sul telefono è uno scambio di lettere leggero). La mappa Google sul telefono si carica al tocco.
+Schermata "Vieni a trovarci" e video d'ingresso (invariati) → Hero editoriale con stato "Aperto ora / Ora chiuso" →
+nastro di stili → Chi siamo (firme dei titolari, sigillo Gilmont, numeri del salone) → I nostri tagli (mosaico con
+filtri e vista grande: tocca per ingrandire 2,4×, trascina, scorri per cambiare foto) → Listino come un menù stampato →
+Recensioni Google (slider una alla volta, avanza da solo) → Contatti (orari, mappa, chiamata, WhatsApp, Treatwell).
+
+Le due foto `src/assets/taglio-taper-fade.jpg` e `taglio-mid-fade.jpg` sono ritagliate dagli screenshot di Instagram
+(solo la foto, senza interfaccia): sono nella galleria, accanto al listino (Mid fade) e alle recensioni (Taper fade).
+
+## Animazioni e prestazioni (60 fps su telefono)
+
+- Comparse di titoli, testi e card: Motion su `transform` e `opacity` (Web Animations del browser, compositore GPU).
+- Foto che si scoprono con la tenda: transizioni CSS di transform avviate all'ingresso (`RevealImage`, `.reveal`).
+- Barra di avanzamento e scritta che scorre con la pagina; parallasse delle foto solo su computer.
+- Contatori dei numeri e dei prezzi; al tocco i pulsanti si premono (`scale(0.98)`).
+- Mappa Google: su telefono si carica al tocco. Immagini con caricamento differito.
 
 ## Struttura
 
-- `src/App.jsx`: pagina, intro video e footer. `src/data.js`: link, listino, tagli, recensioni, orari.
-- `src/sections/`: Hero, numeri, Chi siamo, Lookbook, Listino, Recensioni, Contatti, intestazione e barra del telefono.
+- `src/App.jsx`: pagina, schermata d'ingresso, intro video e footer. `src/data.js`: link, listino, tagli, recensioni, orari.
+- `src/sections/`: Hero, Chi siamo, Lookbook (con la vista grande), Listino, Recensioni, Contatti, intestazione e barra del telefono.
 
 ## Da completare
 

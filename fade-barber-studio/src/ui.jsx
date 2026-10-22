@@ -1,43 +1,54 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, motion, useInView, useReducedMotion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { animate, motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { ArrowRight } from "lucide-react";
 
 import { EXT } from "./data.js";
 import { cn } from "./lib/utils.js";
 
 export const EASE = [0.22, 1, 0.36, 1];
+const isExternal = (href) => /^https?:/.test(href);
 
 /* ───────────── Pulsanti ───────────── */
 
-const isExternal = (href) => /^https?:/.test(href);
-
-/** Pulsante principale oro con "chip" nera della freccia. `href` esterno apre in una nuova scheda. */
-export function GoldButton({ href, children, icon: Icon = ArrowUpRight, className = "", ...rest }) {
+/** Pillola ottone con freccia: l'azione principale (prenotare). */
+export function BrassButton({ href, children, icon: Icon = ArrowRight, className = "", ...rest }) {
   return (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-gold", className)} {...rest}>
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-brass", className)} {...rest}>
       <span>{children}</span>
-      <span className="btn-chip" aria-hidden="true">
-        <Icon size={17} strokeWidth={2.4} />
+      <span className="btn-arrow" aria-hidden="true">
+        <Icon size={16} strokeWidth={2.2} />
       </span>
     </a>
   );
 }
 
-/** Pulsante secondario: nero con bordo e testo oro. */
-export function OutlineButton({ href, children, className = "", ...rest }) {
+/** Pillola nera con freccia ottone, per le sezioni chiare. */
+export function InkButton({ href, children, icon: Icon = ArrowRight, className = "", ...rest }) {
   return (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-outline", className)} {...rest}>
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-ink", className)} {...rest}>
+      <span>{children}</span>
+      <span className="btn-arrow" aria-hidden="true">
+        <Icon size={16} strokeWidth={2.2} />
+      </span>
+    </a>
+  );
+}
+
+/** Solo contorno: prende il colore del testo intorno (funziona su nero e su avorio). */
+export function LineButton({ href, children, className = "", ...rest }) {
+  return (
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-line", className)} {...rest}>
       {children}
     </a>
   );
 }
 
-/** Azione rapida con icona e etichetta (chiama, WhatsApp, mappa). */
-export function QuickAction({ href, icon: Icon, label, solid = false, className = "" }) {
+/** Azione rapida tonda con etichetta (chiama, WhatsApp, mappa). */
+export function QuickAction({ href, icon: Icon, label, className = "" }) {
   return (
     <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("quick", className)} aria-label={label}>
-      <span className={cn("quick-icon", solid && "quick-icon--solid")}>
-        <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
+      <span className="quick-icon">
+        <Icon size={20} strokeWidth={1.7} aria-hidden="true" />
       </span>
       {label}
     </a>
@@ -46,7 +57,7 @@ export function QuickAction({ href, icon: Icon, label, solid = false, className 
 
 /* ───────────── Media query ───────────── */
 
-/** Schermi larghi con mouse e senza "riduci movimento": qui girano gli effetti legati allo scorrimento più ricchi. */
+/** Schermi larghi con mouse e senza "riduci movimento": qui girano parallasse ed effetti più ricchi. */
 export const DESKTOP_FX = "(min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference)";
 
 export function useMediaQuery(query) {
@@ -65,25 +76,28 @@ export function useMediaQuery(query) {
 
 export const useDesktopFx = () => useMediaQuery(DESKTOP_FX);
 
-/* ───────────── Comparse allo scorrimento (solo opacità e transform: restano sulla GPU) ───────────── */
+/* ───────────── Comparse allo scorrimento ─────────────
+   Si anima la proprietà `transform` intera (non x/y separati) e l'opacità: Motion le affida alle Web Animations
+   del browser, che le eseguono sul compositore della GPU senza lavoro JavaScript per fotogramma. */
 
-export function Reveal({ children, delay = 0, className = "", y = 24, as = "div" }) {
+export function Reveal({ children, delay = 0, className = "", y = 24, as = "div", ...rest }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
     <Tag
       className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reduce ? false : { opacity: 0, transform: `translateY(${y}px)` }}
+      whileInView={{ opacity: 1, transform: "translateY(0px)" }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay, ease: EASE }}
+      transition={{ duration: 0.7, delay, ease: EASE }}
+      {...rest}
     >
       {children}
     </Tag>
   );
 }
 
-/** Contenitore che fa entrare i figli `StaggerItem` uno dopo l'altro (transitions.dev, "stagger"). */
+/** Contenitore che fa entrare i figli `StaggerItem` uno dopo l'altro. */
 export function Stagger({ children, className = "", as = "div", gap = 0.08, amount = 0.15, ...rest }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
@@ -101,14 +115,14 @@ export function Stagger({ children, className = "", as = "div", gap = 0.08, amou
   );
 }
 
-export function StaggerItem({ children, className = "", as = "div", y = 28, ...rest }) {
+export function StaggerItem({ children, className = "", as = "div", y = 26, ...rest }) {
   const Tag = motion[as];
   return (
     <Tag
       className={className}
       variants={{
-        hidden: { opacity: 0, y, scale: 0.98 },
-        shown: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: EASE } },
+        hidden: { opacity: 0, transform: `translateY(${y}px)` },
+        shown: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.7, ease: EASE } },
       }}
       {...rest}
     >
@@ -118,49 +132,51 @@ export function StaggerItem({ children, className = "", as = "div", y = 28, ...r
 }
 
 /**
- * Titolo di sezione: numero e linea d'oro che si disegna, poi le parole salgono una alla volta
- * da dentro una "finestra" (effetto editoriale, solo transform). `accent` è la parola in oro.
+ * Titolo editoriale: etichetta con numero, poi le righe salgono da dentro una "finestra".
+ * `lines` è un elenco di righe; una riga può essere { text, italic: true } per la parola in corsivo ottone.
  */
-export function SectionHeading({ index, eyebrow, words, accent, align = "left", className = "", children }) {
+export function SectionTitle({ index, eyebrow, lines, align = "left", tone = "dark", className = "", children }) {
   const reduce = useReducedMotion();
-  const all = [...words, accent].filter(Boolean);
+  const muted = tone === "dark" ? "text-smoke" : "text-stone";
+  const accent = tone === "dark" ? "text-brass-light" : "text-brass-dark";
   return (
     <div className={cn(align === "center" && "mx-auto text-center", className)}>
-      <p
-        className={cn(
-          "flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-champagne",
-          align === "center" && "justify-center",
-        )}
-      >
-        <span className="font-display text-gold">{index}</span>
+      <p className={cn("eyebrow flex items-center gap-3", muted, align === "center" && "justify-center")}>
+        <span className={accent}>{index}</span>
         <motion.span
           aria-hidden="true"
-          className="h-px w-12 origin-left bg-gradient-to-r from-gold to-transparent"
-          initial={reduce ? false : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
+          className="h-px w-10 origin-left bg-current opacity-50"
+          initial={reduce ? false : { transform: "scaleX(0)" }}
+          whileInView={{ transform: "scaleX(1)" }}
           viewport={{ once: true, amount: 0.8 }}
           transition={{ duration: 0.8, ease: EASE }}
         />
         {eyebrow}
       </p>
-      {/* l'osservazione parte dal titolo intero: le parole, nascoste dentro le loro "finestre", non sarebbero mai visibili */}
+      {/* si osserva il titolo intero: le righe, nascoste nelle loro finestre, non sarebbero mai "visibili" */}
       <motion.h2
-        className="mt-5 font-display text-[2.1rem] font-black uppercase leading-[1] tracking-tight text-ivory sm:text-5xl lg:text-6xl"
+        className="mt-5 font-serif text-[3.1rem] leading-[0.92] tracking-[-0.02em] sm:text-7xl lg:text-[5.5rem]"
         initial={reduce ? false : "hidden"}
         whileInView="shown"
         viewport={{ once: true, amount: 0.5 }}
-        variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
+        variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.1 } } }}
       >
-        {all.map((word, i) => (
-          <span key={i} className="mr-[0.25em] inline-block overflow-hidden pb-[0.08em] align-bottom last:mr-0">
-            <motion.span
-              className={cn("inline-block", word === accent && "text-gold-gradient")}
-              variants={{ hidden: { y: "105%" }, shown: { y: 0, transition: { duration: 0.7, ease: EASE } } }}
-            >
-              {word}
-            </motion.span>
-          </span>
-        ))}
+        {lines.map((line, i) => {
+          const l = typeof line === "string" ? { text: line } : line;
+          return (
+            <span key={i} className="block overflow-hidden pb-[0.06em]">
+              <motion.span
+                className={cn("block", l.italic && cn("italic", accent))}
+                variants={{
+                  hidden: { transform: "translateY(105%)" },
+                  shown: { transform: "translateY(0%)", transition: { duration: 0.9, ease: EASE } },
+                }}
+              >
+                {l.text}
+              </motion.span>
+            </span>
+          );
+        })}
       </motion.h2>
       {children}
     </div>
@@ -169,11 +185,8 @@ export function SectionHeading({ index, eyebrow, words, accent, align = "left", 
 
 /* ───────────── Contatore ───────────── */
 
-/**
- * Numero che conta da 0 al valore quando entra a schermo. Scrive direttamente nel testo del nodo
- * (nessun render React per fotogramma).
- */
-export function CountUp({ value, duration = 1.2, decimals = 0, className = "" }) {
+/** Numero che conta da 0 al valore quando entra a schermo (scrive nel testo del nodo, nessun render per fotogramma). */
+export function CountUp({ value, duration = 1.4, decimals = 0, className = "" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.8 });
   const reduce = useReducedMotion();
@@ -202,77 +215,68 @@ export function CountUp({ value, duration = 1.2, decimals = 0, className = "" })
   );
 }
 
-/* ───────────── Linee vettoriali che si disegnano ───────────── */
+/* ───────────── Immagini ───────────── */
 
-/** Tracciato SVG d'oro che si disegna quando entra a schermo (pathLength). */
-export function DrawPath({ d, viewBox, className = "", strokeWidth = 1.5, delay = 0, duration = 1.4 }) {
-  const reduce = useReducedMotion();
+/** Livello che scorre più lento della pagina (solo su computer). */
+function ParallaxLayer({ amount, children }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [`${-amount}%`, `${amount}%`]);
   return (
-    <svg viewBox={viewBox} fill="none" className={className} aria-hidden="true">
-      <motion.path
-        d={d}
-        stroke="url(#gold-stroke)"
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={reduce ? false : { pathLength: 0, opacity: 0 }}
-        whileInView={{ pathLength: 1, opacity: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration, delay, ease: EASE }}
-      />
-    </svg>
+    <motion.div ref={ref} className="absolute inset-[-8%_0]" style={{ y }}>
+      {children}
+    </motion.div>
   );
 }
-
-/** Gradiente oro condiviso dai tracciati (va messo una volta nella pagina). */
-export function GoldStrokeDefs() {
-  return (
-    <svg width="0" height="0" className="absolute" aria-hidden="true">
-      <defs>
-        <linearGradient id="gold-stroke" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#ffe08a" />
-          <stop offset="50%" stopColor="#f2c14e" />
-          <stop offset="100%" stopColor="#b8862b" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
-/* ───────────── Immagine con "sipario" ───────────── */
 
 /**
- * La foto entra con un sipario dorato che si ritira verso l'alto mentre l'immagine si stabilizza
- * (scaleY del sipario e scale della foto: solo transform, gira sulla GPU).
+ * Foto che si scopre con una tenda (del colore della sezione) che si ritira, mentre l'immagine si assesta.
+ * Le due animazioni sono transizioni CSS di transform avviate quando la foto entra a schermo: girano sul
+ * compositore della GPU, senza lavoro JavaScript per fotogramma. Su computer la foto può anche scorrere più lenta
+ * della pagina (parallax).
  */
-export function CurtainImage({ src, alt, width, height, className = "", imgClassName = "", style, delay = 0 }) {
+export function RevealImage({
+  src,
+  alt,
+  width,
+  height,
+  className = "",
+  imgClassName = "",
+  style,
+  cover = "bg-ink",
+  parallax = 0,
+  delay = 0,
+  eager = false,
+}) {
+  const ref = useRef(null);
   const reduce = useReducedMotion();
+  const fx = useDesktopFx();
+  const inView = useInView(ref, { once: true, amount: 0.25 });
+  const shown = reduce || inView;
+  const img = (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      style={{ ...style, transitionDelay: `${delay}s` }}
+      className={cn("reveal-img h-full w-full object-cover", imgClassName)}
+    />
+  );
   return (
-    <motion.div
-      className={cn("relative overflow-hidden", className)}
-      initial={reduce ? false : "hidden"}
-      whileInView="shown"
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      <motion.img
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        loading="lazy"
-        decoding="async"
-        style={style}
-        className={cn("h-full w-full object-cover", imgClassName)}
-        variants={{ hidden: { scale: 1.18 }, shown: { scale: 1, transition: { duration: 1.2, delay, ease: EASE } } }}
-      />
-      <motion.span
+    <div ref={ref} data-shown={shown || undefined} className={cn("reveal relative overflow-hidden", className)}>
+      {fx && parallax ? (
+        <ParallaxLayer amount={parallax}>{img}</ParallaxLayer>
+      ) : (
+        <div className="absolute inset-0">{img}</div>
+      )}
+      <span
         aria-hidden="true"
-        className="absolute inset-0 origin-top bg-gradient-to-b from-gold-light via-gold to-gold-deep"
-        variants={{
-          hidden: { scaleY: 1 },
-          shown: { scaleY: 0, transition: { duration: 0.8, delay: delay + 0.05, ease: [0.76, 0, 0.24, 1] } },
-        }}
+        className={cn("reveal-cover absolute inset-0", cover)}
+        style={{ transitionDelay: `${delay}s` }}
       />
-    </motion.div>
+    </div>
   );
 }

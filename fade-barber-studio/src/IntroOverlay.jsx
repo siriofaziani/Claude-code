@@ -158,7 +158,7 @@ export default function IntroOverlay({ started, fading, onFinish }) {
           ref={skipRef}
           type="button"
           onClick={finish}
-          className="btn-outline absolute right-6 top-6 z-10 min-h-11 bg-black/70 px-5 text-xs"
+          className="btn-line absolute right-6 top-6 z-10 min-h-11 bg-black/60 px-5 text-[11px] text-bone"
         >
           Salta intro
           <SkipForward size={16} strokeWidth={2} aria-hidden="true" />
