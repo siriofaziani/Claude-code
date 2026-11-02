@@ -1,7 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, CalendarCheck, Camera, Maximize2, X, ZoomIn, ZoomOut } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarCheck,
+  Camera,
+  Maximize2,
+  X,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react";
 
 import { CUTS, EXT, LINKS, SERVICES } from "../data.js";
 import { useBooking } from "../booking.jsx";
@@ -19,7 +28,11 @@ const FILTERS = [
 function Filters({ value, onChange }) {
   const reduce = useReducedMotion();
   return (
-    <div role="tablist" aria-label="Filtra i tagli" className="inline-flex flex-wrap gap-1 rounded-full bg-void p-1.5">
+    <div
+      role="tablist"
+      aria-label="Filtra i tagli"
+      className="inline-flex flex-wrap gap-1 rounded-full bg-void p-1.5"
+    >
       {FILTERS.map((f) => {
         const active = f.id === value;
         return (
@@ -38,7 +51,9 @@ function Filters({ value, onChange }) {
               <motion.span
                 layoutId="cut-filter"
                 className="absolute inset-0 rounded-full bg-sun"
-                transition={reduce ? { duration: 0 } : { duration: 0.3, ease: EASE }}
+                transition={
+                  reduce ? { duration: 0 } : { duration: 0.3, ease: EASE }
+                }
               />
             )}
             <span className="relative">{f.label}</span>
@@ -105,7 +120,9 @@ function Tile({ cut, index, onOpen, active = false }) {
       </div>
 
       <div className="flex flex-1 flex-col items-center px-6 pb-7 pt-6 text-center">
-        <p className="label text-[10px] text-void/50">Look {String(index + 1).padStart(2, "0")}</p>
+        <p className="label text-[10px] text-void/50">
+          Look {String(index + 1).padStart(2, "0")}
+        </p>
         <h3 className="display mt-2 flex min-h-[3.75rem] items-center justify-center text-2xl leading-tight">
           {cut.title}
         </h3>
@@ -113,7 +130,9 @@ function Tile({ cut, index, onOpen, active = false }) {
           {cut.details[0][1]} · {cut.details[1][1]}
         </p>
         <p className="mt-auto flex items-baseline justify-center gap-2 pt-5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-void/55">{service.name}</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-void/55">
+            {service.name}
+          </span>
           <span className="display text-2xl">€{service.price}</span>
         </p>
         <button
@@ -136,8 +155,9 @@ function Tile({ cut, index, onOpen, active = false }) {
 const GAP = 24; // px, uguale a gap-6
 
 /**
- * Carosello orizzontale dei tagli: scorrimento nativo con aggancio (fluido col dito), trascinamento col mouse,
- * rotellina (una carta per scatto, poi la pagina riprende a scorrere), frecce gialle e indicatori.
+ * Carosello orizzontale dei tagli: si muove solo quando lo muovi tu (nessuno scorrimento automatico).
+ * Telefono: swipe orizzontale nativo con aggancio; il gesto verticale scorre sempre la pagina (touch-action pan-x pan-y,
+ * la rotellina non viene mai intercettata). Computer: trascinamento col mouse, frecce gialle, indicatori.
  * Telefono: una carta e l'anteprima della successiva · tablet: 2 · computer: 3 · schermi larghi: 4.
  */
 function CutsCarousel({ cuts, filter, onOpen }) {
@@ -146,7 +166,6 @@ function CutsCarousel({ cuts, filter, onOpen }) {
   const [index, setIndex] = useState(0);
   const [perView, setPerView] = useState(1);
   const drag = useRef(null);
-  const wheelLock = useRef(0);
 
   const step = useCallback(() => {
     const card = track?.firstElementChild;
@@ -157,7 +176,10 @@ function CutsCarousel({ cuts, filter, onOpen }) {
     (i) => {
       if (!track) return;
       const n = Math.min(Math.max(i, 0), Math.max(0, cuts.length - perView));
-      track.scrollTo({ left: n * step(), behavior: reduce ? "auto" : "smooth" });
+      track.scrollTo({
+        left: n * step(),
+        behavior: reduce ? "auto" : "smooth",
+      });
     },
     [track, cuts.length, perView, step, reduce],
   );
@@ -185,30 +207,15 @@ function CutsCarousel({ cuts, filter, onOpen }) {
     };
   }, [track, step]);
 
-  // rotellina verticale -> una carta alla volta; agli estremi lascia scorrere la pagina
-  useEffect(() => {
-    if (!track) return undefined;
-    const onWheel = (e) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || Math.abs(e.deltaY) < 4) return; // trackpad orizzontale: nativo
-      const max = track.scrollWidth - track.clientWidth;
-      const dir = e.deltaY > 0 ? 1 : -1;
-      if ((dir > 0 && track.scrollLeft >= max - 2) || (dir < 0 && track.scrollLeft <= 2)) return;
-      e.preventDefault();
-      const now = performance.now();
-      if (now < wheelLock.current) return;
-      wheelLock.current = now + 420;
-      const st = step();
-      const cur = Math.round(track.scrollLeft / st);
-      track.scrollTo({ left: Math.min(max, Math.max(0, (cur + dir) * st)), behavior: "smooth" });
-    };
-    track.addEventListener("wheel", onWheel, { passive: false });
-    return () => track.removeEventListener("wheel", onWheel);
-  }, [track, step]);
-
   // trascinamento col mouse (sul telefono basta lo scorrimento nativo)
   const onPointerDown = (e) => {
     if (e.pointerType !== "mouse" || e.button !== 0 || !track) return;
-    drag.current = { x: e.clientX, left: track.scrollLeft, moved: false, id: e.pointerId };
+    drag.current = {
+      x: e.clientX,
+      left: track.scrollLeft,
+      moved: false,
+      id: e.pointerId,
+    };
   };
   const onPointerMove = (e) => {
     const d = drag.current;
@@ -233,7 +240,10 @@ function CutsCarousel({ cuts, filter, onOpen }) {
       ev.preventDefault();
     };
     track.addEventListener("click", block, { capture: true, once: true });
-    setTimeout(() => track.removeEventListener("click", block, { capture: true }), 0);
+    setTimeout(
+      () => track.removeEventListener("click", block, { capture: true }),
+      0,
+    );
   };
 
   const pages = maxIndex + 1;
@@ -252,34 +262,64 @@ function CutsCarousel({ cuts, filter, onOpen }) {
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
           className={cn(
-            "snap-row -mx-5 flex cursor-grab select-none gap-6 overflow-x-auto scroll-px-5 px-5 pb-10 pt-4 data-[dragging]:cursor-grabbing data-[dragging]:[scroll-snap-type:none] sm:-mx-10 sm:scroll-px-10 sm:px-10",
+            "snap-row -mx-5 flex cursor-grab touch-pan-x touch-pan-y select-none gap-6 overflow-x-auto scroll-px-5 px-5 pb-10 pt-4 data-[dragging]:cursor-grabbing data-[dragging]:[scroll-snap-type:none] sm:-mx-10 sm:scroll-px-10 sm:px-10",
             // se le carte entrano tutte (filtro con pochi tagli) restano centrate
             fits && "justify-center",
           )}
           initial="hidden"
           animate="shown"
-          exit={reduce ? undefined : { opacity: 0, transform: "scale(0.98)", transition: { duration: 0.18 } }}
-          variants={{ hidden: {}, shown: { transition: { staggerChildren: reduce ? 0 : 0.07 } } }}
+          exit={
+            reduce
+              ? undefined
+              : {
+                  opacity: 0,
+                  transform: "scale(0.98)",
+                  transition: { duration: 0.18 },
+                }
+          }
+          variants={{
+            hidden: {},
+            shown: { transition: { staggerChildren: reduce ? 0 : 0.07 } },
+          }}
         >
           {cuts.map((cut, i) => (
             <motion.li
               key={cut.title}
               className="flex w-[82%] shrink-0 snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]"
               variants={{
-                hidden: reduce ? {} : { opacity: 0, transform: "translateY(18px) scale(0.94)" },
-                shown: { opacity: 1, transform: "translateY(0px) scale(1)", transition: { duration: 0.5, ease: EASE } },
+                hidden: reduce
+                  ? {}
+                  : { opacity: 0, transform: "translateY(18px) scale(0.94)" },
+                shown: {
+                  opacity: 1,
+                  transform: "translateY(0px) scale(1)",
+                  transition: { duration: 0.5, ease: EASE },
+                },
               }}
             >
-              <Tile cut={cut} index={i} onOpen={() => onOpen(i)} active={i === current} />
+              <Tile
+                cut={cut}
+                index={i}
+                onOpen={() => onOpen(i)}
+                active={i === current}
+              />
             </motion.li>
           ))}
         </motion.ul>
       </AnimatePresence>
 
       {/* indicatori e frecce (nascosti quando le carte entrano tutte) */}
-      <div className={cn("mt-2 flex items-center justify-between gap-6", fits && "invisible")} aria-hidden={fits || undefined}>
+      <div
+        className={cn(
+          "mt-2 flex items-center justify-between gap-6",
+          fits && "invisible",
+        )}
+        aria-hidden={fits || undefined}
+      >
         <div className="flex items-center gap-4">
-          <span className="display text-lg">{String(current + 1).padStart(2, "0")}</span>
+          <span className="display text-lg">
+            {String(current + 1).padStart(2, "0")}
+          </span>
           <div className="flex items-center gap-1.5">
             {Array.from({ length: pages }, (_, i) => (
               <button
@@ -293,18 +333,32 @@ function CutsCarousel({ cuts, filter, onOpen }) {
                 <span
                   className={cn(
                     "block h-1.5 rounded-full transition-[width,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                    i === current ? "w-8 bg-sun shadow-[0_0_12px_rgba(255,214,10,0.7)]" : "w-1.5 bg-void/20 hover:bg-void/40",
+                    i === current
+                      ? "w-8 bg-sun shadow-[0_0_12px_rgba(255,214,10,0.7)]"
+                      : "w-1.5 bg-void/20 hover:bg-void/40",
                   )}
                 />
               </button>
             ))}
           </div>
-          <span className="display text-lg text-void/35">{String(pages).padStart(2, "0")}</span>
+          <span className="display text-lg text-void/35">
+            {String(pages).padStart(2, "0")}
+          </span>
         </div>
         <div className="flex gap-2">
           {[
-            { d: -1, Icon: ArrowLeft, label: "Tagli precedenti", disabled: current <= 0 },
-            { d: 1, Icon: ArrowRight, label: "Tagli successivi", disabled: current >= maxIndex },
+            {
+              d: -1,
+              Icon: ArrowLeft,
+              label: "Tagli precedenti",
+              disabled: current <= 0,
+            },
+            {
+              d: 1,
+              Icon: ArrowRight,
+              label: "Tagli successivi",
+              disabled: current >= maxIndex,
+            },
           ].map(({ d, Icon, label, disabled }) => (
             <button
               key={label}
@@ -367,7 +421,9 @@ function Lightbox({ items, index, onClose, onIndex }) {
   const toggleZoom = (e) => {
     if (!zoom) {
       const r = e.currentTarget.getBoundingClientRect();
-      setOrigin(`${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`);
+      setOrigin(
+        `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`,
+      );
     }
     setZoom((z) => !z);
   };
@@ -385,8 +441,10 @@ function Lightbox({ items, index, onClose, onIndex }) {
     >
       <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:px-8">
         <p className="label text-ash">
-          <span className="text-white">{String(index + 1).padStart(2, "0")}</span> /{" "}
-          {String(items.length).padStart(2, "0")}
+          <span className="text-white">
+            {String(index + 1).padStart(2, "0")}
+          </span>{" "}
+          / {String(items.length).padStart(2, "0")}
         </p>
         <div className="flex items-center gap-2">
           <button
@@ -435,7 +493,10 @@ function Lightbox({ items, index, onClose, onIndex }) {
           >
             <div
               className="relative max-h-full overflow-hidden"
-              style={{ aspectRatio: `${cut.width} / ${cut.height}`, height: "100%" }}
+              style={{
+                aspectRatio: `${cut.width} / ${cut.height}`,
+                height: "100%",
+              }}
             >
               <motion.img
                 src={cut.src}
@@ -452,7 +513,12 @@ function Lightbox({ items, index, onClose, onIndex }) {
                 animate={{ scale: zoom ? 2.4 : 1 }}
                 transition={{ duration: reduce ? 0 : 0.45, ease: EASE }}
                 drag={zoom}
-                dragConstraints={{ left: -260, right: 260, top: -320, bottom: 320 }}
+                dragConstraints={{
+                  left: -260,
+                  right: 260,
+                  top: -320,
+                  bottom: 320,
+                }}
                 dragElastic={0.1}
                 dragMomentum
               />
@@ -492,7 +558,9 @@ function Lightbox({ items, index, onClose, onIndex }) {
             </dl>
           </div>
           <p className="text-xs text-ash sm:text-right">
-            {zoom ? "Trascina per esplorare · tocca per ridurre" : "Tocca la foto per ingrandire · scorri per cambiare"}
+            {zoom
+              ? "Trascina per esplorare · tocca per ridurre"
+              : "Tocca la foto per ingrandire · scorri per cambiare"}
           </p>
         </div>
       </div>
@@ -503,15 +571,25 @@ function Lightbox({ items, index, onClose, onIndex }) {
 export default function Lookbook() {
   const [filter, setFilter] = useState("tutti");
   const [openIndex, setOpenIndex] = useState(null);
-  const cuts = CUTS.filter((cut) => filter === "tutti" || cut.kind.includes(filter));
+  const cuts = CUTS.filter(
+    (cut) => filter === "tutti" || cut.kind.includes(filter),
+  );
 
   return (
-    <section id="tagli" className="relative z-10 -mt-12 rounded-t-[48px] bg-paper text-void sm:rounded-t-[80px]">
+    <section
+      id="tagli"
+      className="relative z-10 -mt-12 rounded-t-[48px] bg-paper text-void sm:rounded-t-[80px]"
+    >
       <div className="mx-auto max-w-[1500px] px-5 py-24 sm:px-10 md:py-36">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-          <Heading label="Lookbook" labelClass="text-void" lines={["I nostri", { text: "tagli.", serif: true }]}>
+          <Heading
+            label="Lookbook"
+            labelClass="text-void"
+            lines={["I nostri", { text: "tagli.", serif: true }]}
+          >
             <p className="mt-6 max-w-[44ch] text-lg text-void/70">
-              Lavori reali, fatti nel nostro salone. Scorri i look e tocca una foto per vederla da vicino.
+              Lavori reali, fatti nel nostro salone. Scorri i look e tocca una
+              foto per vederla da vicino.
             </p>
           </Heading>
           <Reveal delay={0.1}>
@@ -526,7 +604,12 @@ export default function Lookbook() {
         {/* anteprima Instagram: quadrati 1:1 tutti uguali */}
         <Reveal className="mt-20 grid items-center gap-10 rounded-[28px] bg-void p-7 text-white sm:p-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
           <div>
-            <Camera size={30} strokeWidth={1.5} className="text-sun" aria-hidden="true" />
+            <Camera
+              size={30}
+              strokeWidth={1.5}
+              className="text-sun"
+              aria-hidden="true"
+            />
             <p className="display mt-6 text-3xl sm:text-5xl">
               Altri look
               <span
@@ -536,12 +619,20 @@ export default function Lookbook() {
                 su Instagram.
               </span>
             </p>
-            <p className="mt-4 max-w-[40ch] text-white/70">Tutti i lavori del salone sul profilo @fade_barber_studio.</p>
-            <BlackButton href={LINKS.instagram} className="mt-8 bg-sun text-void">
+            <p className="mt-4 max-w-[40ch] text-white/70">
+              Tutti i lavori del salone sul profilo @fade_barber_studio.
+            </p>
+            <BlackButton
+              href={LINKS.instagram}
+              className="mt-8 bg-sun text-void"
+            >
               Apri Instagram
             </BlackButton>
           </div>
-          <ul className="grid grid-cols-3 gap-2 sm:gap-3" aria-label="Anteprima del profilo Instagram">
+          <ul
+            className="grid grid-cols-3 gap-2 sm:gap-3"
+            aria-label="Anteprima del profilo Instagram"
+          >
             {CUTS.map((cut) => (
               <li key={cut.title}>
                 <a
@@ -571,7 +662,12 @@ export default function Lookbook() {
       {createPortal(
         <AnimatePresence>
           {openIndex !== null && (
-            <Lightbox items={cuts} index={openIndex} onIndex={setOpenIndex} onClose={() => setOpenIndex(null)} />
+            <Lightbox
+              items={cuts}
+              index={openIndex}
+              onIndex={setOpenIndex}
+              onClose={() => setOpenIndex(null)}
+            />
           )}
         </AnimatePresence>,
         document.body,

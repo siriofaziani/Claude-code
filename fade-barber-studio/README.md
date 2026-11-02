@@ -23,8 +23,8 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 | Chi siamo | nero a puntini: foto contenuta (max 380 px su computer, ferma mentre scorre il testo) affiancata a logo e storia di Federico e David, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
 | I nostri tagli | bianco con bordo curvo, filtri (Tutti, Sfumature, Barba, Combo & Styling) con dissolvenza, carosello orizzontale di schede identiche (4 su schermi larghi, 3 su computer, 2 su tablet, 1 + anteprima sul telefono): trascinamento, rotellina, frecce gialle e indicatori; anteprima Instagram a quadrati 1:1; vista grande con zoom |
 | Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
-| Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
-| Recensioni | blocco unico: carosello con frecce e avanzamento automatico, nastro inclinato che scorre |
+| Prenota | nero profondo con bagliori gialli: indicatore Servizio → Barbiere → Fascia oraria, tre riquadri di vetro con scelte ad alto contrasto, riepilogo fisso con la bozza WhatsApp |
+| Recensioni | blocco unico: carosello con frecce (nessun avanzamento automatico), nastro inclinato che scorre |
 | Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza e completamente libera (scheda informativa di Google tagliata fuori), con una barra ancorata in fondo: orari a sinistra, 4 azioni rapide a destra |
 
 ## Ingresso a scorrimento
@@ -42,8 +42,10 @@ ffmpeg -i nuovo.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 30 -g 6 -keyint_min 6 -row-m
 
 ## Prenotazione
 
-Scelta del barbiere (Federico o David) e del servizio: Treatwell oppure WhatsApp con il messaggio già scritto,
-"Salve! Vorrei prenotare un [servizio] con [barbiere]. Qual è il primo giorno e orario disponibile? Grazie!".
+Scelta del servizio, del barbiere (Federico o David) e, se si vuole, della fascia oraria (`SLOTS` in `src/data.js`):
+Treatwell oppure WhatsApp con il messaggio già scritto, "Salve! Vorrei prenotare un [servizio] con [barbiere] per la
+fascia di [fascia] ([orario]). Qual è il primo giorno disponibile? Grazie!" (senza fascia: "Qual è il primo giorno e
+orario disponibile?").
 Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la scelta già fatta (`src/booking.jsx`).
 
 ## Animazioni e prestazioni

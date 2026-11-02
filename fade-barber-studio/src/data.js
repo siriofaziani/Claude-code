@@ -1,4 +1,10 @@
-import { Crown, Droplets, Gem, Scissors, ScissorsLineDashed } from "lucide-react";
+import {
+  Crown,
+  Droplets,
+  Gem,
+  Scissors,
+  ScissorsLineDashed,
+} from "lucide-react";
 
 import taglioFade from "./assets/taglio-fade.webp";
 import taglioCropSkinFade from "./assets/taglio-crop-skin-fade.webp";
@@ -11,13 +17,16 @@ import taglioMidFade from "./assets/taglio-mid-fade.jpg";
 
 export const LINKS = {
   treatwell: "https://trea.tw/aiYvzzGhZG4QzMXsd",
-  instagram: "https://www.instagram.com/fade_barber_studio?stkn=bWtiMjd2ejZkeXdx",
+  instagram:
+    "https://www.instagram.com/fade_barber_studio?stkn=bWtiMjd2ejZkeXdx",
   maps: "https://www.google.com/maps/dir/?api=1&destination=Via+Delle+Azalee+73+00172+Roma",
-  googleReviews: "https://www.google.com/maps/search/?api=1&query=Fade+Barber+Studio+Via+Delle+Azalee+73+Roma",
+  googleReviews:
+    "https://www.google.com/maps/search/?api=1&query=Fade+Barber+Studio+Via+Delle+Azalee+73+Roma",
   phone: "tel:+393349196591",
   whatsapp: "https://wa.me/393349196591",
 };
-export const MAP_EMBED = "https://maps.google.com/maps?q=Via%20Delle%20Azalee%2073%2C%2000172%20Roma&z=16&output=embed";
+export const MAP_EMBED =
+  "https://maps.google.com/maps?q=Via%20Delle%20Azalee%2073%2C%2000172%20Roma&z=16&output=embed";
 export const EXT = { target: "_blank", rel: "noopener noreferrer" };
 
 export const NAV = [
@@ -33,29 +42,64 @@ export const WHATSAPP_NUMBER = "393349196591";
 
 /** I due barbieri titolari. */
 export const BARBERS = [
-  { id: "federico", name: "Federico Giustini", short: "Federico", initials: "FG" },
+  {
+    id: "federico",
+    name: "Federico Giustini",
+    short: "Federico",
+    initials: "FG",
+  },
   { id: "david", name: "David Pannunzi", short: "David", initials: "DP" },
 ];
 
-/** Bozza del messaggio WhatsApp con servizio e barbiere scelti. */
-export function whatsappMessage(serviceName, barberName) {
+/** Fasce orarie proposte nella sezione Prenota (l'orario preciso lo conferma il salone). */
+export const SLOTS = [
+  { id: "prima-mattina", label: "Prima Mattina", time: "09:00 - 11:00" },
+  { id: "tardo-mattino", label: "Tardo Mattino", time: "11:00 - 13:00" },
+  { id: "primo-pomeriggio", label: "Primo Pomeriggio", time: "14:30 - 17:00" },
+  { id: "tardo-pomeriggio", label: "Tardo Pomeriggio", time: "17:00 - 19:30" },
+];
+
+/**
+ * Bozza del messaggio WhatsApp con servizio, barbiere e (se scelta) fascia oraria:
+ * "Salve! Vorrei prenotare un Taglio con Federico Giustini per la fascia di Primo Pomeriggio (14:30 - 17:00).
+ *  Qual è il primo giorno disponibile? Grazie!"
+ */
+export function whatsappMessage(serviceName, barberName, slot) {
   const service = serviceName || "taglio";
   // articolo giusto per il servizio: "un Taglio", "una Barba"
   const article = /^barba/i.test(service) ? "una" : "un";
   const barber = barberName ? ` con ${barberName}` : "";
+  if (slot) {
+    return `Salve! Vorrei prenotare ${article} ${service}${barber} per la fascia di ${slot.label} (${slot.time}). Qual è il primo giorno disponibile? Grazie!`;
+  }
   return `Salve! Vorrei prenotare ${article} ${service}${barber}. Qual è il primo giorno e orario disponibile? Grazie!`;
 }
-export function whatsappLink(serviceName, barberName) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage(serviceName, barberName))}`;
+export function whatsappLink(serviceName, barberName, slot) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage(serviceName, barberName, slot))}`;
 }
 
 /** Il percorso del taglio, passo per passo. */
 export const STEPS = [
-  { title: "Consulenza d'immagine", text: "Ascoltiamo cosa vuoi e studiamo forma del viso, crescita e abitudini per un taglio su misura." },
-  { title: "Shampoo e preparazione", text: "Capelli lavati e preparati: la base pulita per una sfumatura precisa." },
-  { title: "Taglio e sfumatura", text: "Esecuzione di precisione, a macchinetta e forbice, fino al passaggio più sottile." },
-  { title: "Barba e panni caldi", text: "Rifinitura della barba, contorni netti e panno caldo per pelle e pori." },
-  { title: "Styling finale", text: "Prodotti dedicati e consigli per riprodurre il look a casa." },
+  {
+    title: "Consulenza d'immagine",
+    text: "Ascoltiamo cosa vuoi e studiamo forma del viso, crescita e abitudini per un taglio su misura.",
+  },
+  {
+    title: "Shampoo e preparazione",
+    text: "Capelli lavati e preparati: la base pulita per una sfumatura precisa.",
+  },
+  {
+    title: "Taglio e sfumatura",
+    text: "Esecuzione di precisione, a macchinetta e forbice, fino al passaggio più sottile.",
+  },
+  {
+    title: "Barba e panni caldi",
+    text: "Rifinitura della barba, contorni netti e panno caldo per pelle e pori.",
+  },
+  {
+    title: "Styling finale",
+    text: "Prodotti dedicati e consigli per riprodurre il look a casa.",
+  },
 ];
 
 export const SERVICES = [
@@ -99,7 +143,12 @@ export const SERVICES = [
     icon: Gem,
     text: "Il nostro servizio più completo: taglio, barba e trattamento premium, senza fretta.",
     featured: true,
-    includes: ["Consulenza e taglio su misura", "Barba con panno caldo", "Trattamento premium", "Styling finale"],
+    includes: [
+      "Consulenza e taglio su misura",
+      "Barba con panno caldo",
+      "Trattamento premium",
+      "Styling finale",
+    ],
   },
 ];
 
@@ -251,7 +300,10 @@ export function romeNow() {
       hourCycle: "h23",
     }).formatToParts(new Date());
     const get = (t) => parts.find((p) => p.type === t)?.value;
-    return { day: get("weekday"), minutes: Number(get("hour")) * 60 + Number(get("minute")) };
+    return {
+      day: get("weekday"),
+      minutes: Number(get("hour")) * 60 + Number(get("minute")),
+    };
   } catch {
     return null;
   }
@@ -261,5 +313,7 @@ export function isOpenNow() {
   const now = romeNow();
   if (!now) return null;
   const openDay = WEEK.find((d) => d.key === now.day)?.open;
-  return Boolean(openDay) && now.minutes >= 8 * 60 && now.minutes < 19 * 60 + 30;
+  return (
+    Boolean(openDay) && now.minutes >= 8 * 60 && now.minutes < 19 * 60 + 30
+  );
 }
