@@ -51,7 +51,7 @@ function SalonMap() {
   const fx = useDesktopFx();
   const showIframe = fx || live;
   return (
-    <div className="relative h-[60vh] min-h-[420px] overflow-hidden rounded-[32px] bg-[#111] lg:h-[78vh]">
+    <div className="relative h-[72vh] min-h-[520px] overflow-hidden rounded-[32px] bg-[#111] lg:h-[72vh] lg:min-h-[480px]">
       {showIframe ? (
         <iframe
           title="Mappa: Fade Barber Studio, Via Delle Azalee 73, Roma"
@@ -83,14 +83,15 @@ function SalonMap() {
   );
 }
 
+/** Orari: sotto la mappa, a tutta larghezza (su computer stato, settimana e fasce orarie in fila). */
 function HoursCard() {
   const open = isOpenNow();
   const today = romeNow()?.day;
   return (
-    <div className="glass rounded-[28px] p-6 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)] sm:p-8">
-      <div className="flex items-center justify-between gap-4">
+    <div className="rounded-[28px] bg-char p-6 ring-1 ring-white/10 sm:p-8 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-12">
+      <div className="flex items-center justify-between gap-4 lg:flex-col lg:items-start">
         <p className="label flex items-center gap-2 text-white/70">
-          <Clock size={15} aria-hidden="true" /> Orari
+          <Clock size={15} aria-hidden="true" /> Orari di apertura
         </p>
         {open !== null && (
           <span
@@ -104,7 +105,7 @@ function HoursCard() {
           </span>
         )}
       </div>
-      <ol className="mt-5 grid grid-cols-7 gap-1" aria-label="Giorni di apertura">
+      <ol className="mt-5 grid grid-cols-7 gap-1 lg:mt-0" aria-label="Giorni di apertura">
         {WEEK.map((d) => {
           const isToday = d.key === today;
           return (
@@ -123,11 +124,11 @@ function HoursCard() {
           );
         })}
       </ol>
-      <dl className="mt-5 grid grid-cols-2 gap-4">
+      <dl className="mt-5 grid grid-cols-2 gap-4 lg:mt-0 lg:gap-10">
         {HOURS.map((h) => (
           <div key={h.days}>
             <dt className="text-xs text-white/50">{h.days}</dt>
-            <dd className="display mt-1 text-xl">{h.time}</dd>
+            <dd className="display mt-1 whitespace-nowrap text-xl">{h.time}</dd>
           </div>
         ))}
       </dl>
@@ -164,45 +165,45 @@ export default function Contacts() {
             </Reveal>
           </div>
 
-          {/* mappa a tutta larghezza con le schede che le galleggiano sopra */}
-          <div className="relative mt-14">
-            <Reveal y={40}>
-              <SalonMap />
-            </Reveal>
-            <div className="relative -mt-24 grid gap-4 px-3 sm:px-6 lg:absolute lg:inset-y-8 lg:left-8 lg:mt-0 lg:w-[440px] lg:content-between lg:px-0">
-              <Reveal delay={0.1}>
-                <HoursCard />
-              </Reveal>
-              <Stagger className="grid grid-cols-2 gap-3" gap={0.06}>
-                {QUICK.map(({ href, icon: Icon, label, value }) => (
-                  <StaggerItem key={label}>
-                    <TiltCard max={8} className="h-full rounded-[22px]">
-                      <a
-                        href={href}
-                        {...(href.startsWith("http") ? EXT : {})}
-                        className="press group flex h-full flex-col justify-between gap-4 rounded-[22px] bg-void p-4 ring-1 ring-white/10 transition-[box-shadow] duration-300 hover:ring-sun/70 sm:p-5"
-                      >
-                        <span className="flex items-center justify-between">
-                          <span className="grid h-10 w-10 place-items-center rounded-full bg-sun text-void">
-                            <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
-                          </span>
-                          <ArrowUpRight
-                            size={16}
-                            className="text-white/40 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sun"
-                            aria-hidden="true"
-                          />
+          {/* mappa a tutta larghezza con le azioni rapide sopra; gli orari stanno sotto, staccati */}
+          <Reveal y={40} className="relative mt-14">
+            <SalonMap />
+            <Stagger
+              className="absolute inset-x-3 bottom-3 grid grid-cols-2 gap-2 sm:inset-x-5 sm:bottom-5 sm:gap-3 lg:inset-x-auto lg:bottom-auto lg:left-8 lg:top-8 lg:w-[420px]"
+              gap={0.06}
+            >
+              {QUICK.map(({ href, icon: Icon, label, value }) => (
+                <StaggerItem key={label}>
+                  <TiltCard max={8} className="h-full rounded-[22px]">
+                    <a
+                      href={href}
+                      {...(href.startsWith("http") ? EXT : {})}
+                      className="press group flex h-full flex-col justify-between gap-3 rounded-[22px] bg-void/95 p-4 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10 transition-[box-shadow] duration-300 hover:ring-sun/70 sm:gap-4 sm:p-5"
+                    >
+                      <span className="flex items-center justify-between">
+                        <span className="grid h-10 w-10 place-items-center rounded-full bg-sun text-void">
+                          <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
                         </span>
-                        <span>
-                          <span className="label block text-[9.5px] text-white/50">{label}</span>
-                          <span className="mt-1 block break-words text-sm font-semibold">{value}</span>
-                        </span>
-                      </a>
-                    </TiltCard>
-                  </StaggerItem>
-                ))}
-              </Stagger>
-            </div>
-          </div>
+                        <ArrowUpRight
+                          size={16}
+                          className="text-white/40 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sun"
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="label block text-[9.5px] text-white/50">{label}</span>
+                        <span className="mt-1 block text-[13px] font-semibold [overflow-wrap:anywhere] sm:text-sm">{value}</span>
+                      </span>
+                    </a>
+                  </TiltCard>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </Reveal>
+
+          <Reveal className="mt-6 sm:mt-8" delay={0.05}>
+            <HoursCard />
+          </Reveal>
         </div>
       </section>
 

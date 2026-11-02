@@ -21,11 +21,11 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 | Ingresso | video a scorrimento, su computer in un "portale" alla risoluzione nativa |
 | Manifesto | fascia gialla con tagli diagonali e trama a righe |
 | Chi siamo | nero a puntini: foto contenuta (max 380 px su computer, ferma mentre scorre il testo) affiancata a logo e storia di Federico e David, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
-| I nostri tagli | bianco con bordo curvo, griglia asimmetrica sfalsata, vista grande con zoom |
+| I nostri tagli | bianco con bordo curvo, griglia simmetrica di schede identiche (foto 4:5, testo centrato, prezzo e "Prenota questo look"), anteprima Instagram a quadrati 1:1, vista grande con zoom |
 | Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
 | Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
 | Recensioni | blocco unico: carosello con frecce e avanzamento automatico, nastro inclinato che scorre |
-| Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza con schede sovrapposte |
+| Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza con le 4 azioni rapide sopra, orari in un blocco a parte sotto la mappa |
 
 ## Ingresso a scorrimento
 
@@ -56,8 +56,8 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
 
 ## Struttura
 
-- `src/App.jsx` compone la pagina. `src/data.js`: link, listino, barbieri, giornata, passaggi, tagli, recensioni, orari.
-- `src/sections/`: Hero (ingresso), About (manifesto, storia, giornata, percorso, team), Lookbook, Services, Booking,
+- `src/App.jsx` compone la pagina. `src/data.js`: link, listino, barbieri, passaggi, tagli, recensioni, orari.
+- `src/sections/`: Hero (ingresso), About (manifesto, storia, percorso, team), Lookbook, Services, Booking,
   Reviews, Contacts (con footer), Chrome (intestazione, barra del telefono, cursore).
 
 ## Da completare
@@ -66,6 +66,6 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
   pubblicate solo recensioni reali, copiate da Google con il nome come appare online.
 - **Video:** l'originale porta la scritta "KlingAI 3.0" in basso a destra. Con una versione senza scritta basta
   rigenerare i due file con i comandi sopra.
-- **Tagli:** per aggiungere un lavoro, importa la foto in `src/data.js` e aggiungila all'elenco `CUTS`.
+- **Tagli:** per aggiungere un lavoro, importa la foto in `src/data.js` e aggiungila all'elenco `CUTS`. Il prezzo mostrato nella scheda viene dal listino: "Taglio e Barba" se il look ha la barba, altrimenti "Taglio".
 
 `src/assets/logo-giallo.webp` è il logo in versione trasparente con l'oro portato al giallo del sito (#FFD60A), ricavato dal file a 640 px; il logo originale (`logo-trasparente.webp`) resta invariato in header e footer.

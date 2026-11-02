@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Camera, Maximize2, X, ZoomIn, ZoomOut } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarCheck, Camera, Maximize2, X, ZoomIn, ZoomOut } from "lucide-react";
 
-import { CUTS, LINKS } from "../data.js";
+import { CUTS, EXT, LINKS, SERVICES } from "../data.js";
+import { useBooking } from "../booking.jsx";
 import { BlackButton, EASE, Heading, Reveal, useTilt } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
@@ -48,73 +49,87 @@ function Filters({ value, onChange }) {
   );
 }
 
-/*
-  Griglia asimmetrica: ogni foto ha la sua forma e un piccolo scarto verticale, così la griglia "respira" e si rompe.
-  Le celle sono scelte per posizione nella lista filtrata.
-*/
-const CELLS = [
-  "lg:col-span-5 lg:row-span-2 aspect-[4/5] lg:aspect-auto",
-  "lg:col-span-4 aspect-[4/5] lg:mt-16",
-  "lg:col-span-3 aspect-[3/4] lg:-mt-8",
-  "lg:col-span-4 aspect-[4/5]",
-  "lg:col-span-3 aspect-[3/4] lg:mt-10",
-  "lg:col-span-5 aspect-[4/5] lg:-mt-10",
-];
+/** Servizio del listino collegato a ogni look: con la barba "Taglio e Barba", altrimenti "Taglio". */
+function serviceFor(cut) {
+  const name = cut.kind.includes("barba") ? "Taglio e Barba" : "Taglio";
+  return SERVICES.find((s) => s.name === name);
+}
 
-/** Foto: tenda che si ritira, al passaggio del mouse inclinazione 3D, zoom e bordo giallo luminoso. */
+/**
+ * Scheda di un taglio: tutte identiche (foto 4:5, stessa altezza), contenuto centrato.
+ * La foto apre la vista grande; il pulsante porta il servizio collegato nella sezione Prenota.
+ */
 function Tile({ cut, index, onOpen, className = "" }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const inView = useInView(ref, { once: true, amount: 0.2 });
-  const tilt = useTilt(7);
+  const tilt = useTilt(5);
+  const { setServiceName, goToBooking } = useBooking();
+  const service = serviceFor(cut);
   const delay = `${(index % 3) * 0.08}s`;
   return (
-    <li ref={ref} data-shown={reduce || inView || undefined} className={cn("relative", className)}>
-      <div
+    <li ref={ref} data-shown={reduce || inView || undefined} className={cn("flex", className)}>
+      <article
         ref={tilt.ref}
         onPointerMove={tilt.onPointerMove}
         onPointerLeave={tilt.onPointerLeave}
-        className="tilt group relative h-full overflow-hidden rounded-[22px] bg-char shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_0_3px_#ffd60a,0_30px_70px_-20px_rgba(255,214,10,0.55)] active:scale-[0.98]"
+        className="tilt group relative flex w-full flex-col overflow-hidden rounded-[24px] bg-white ring-1 ring-void/10 shadow-[0_30px_60px_-36px_rgba(0,0,0,0.45)] transition-shadow duration-300 hover:shadow-[0_0_0_3px_#ffd60a,0_30px_70px_-20px_rgba(255,214,10,0.55)]"
       >
-        <div className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]">
-          <img
-            src={cut.src}
-            alt={cut.alt}
-            width={cut.width}
-            height={cut.height}
-            loading="lazy"
-            decoding="async"
-            style={{ objectPosition: cut.focus, transitionDelay: delay }}
-            className="reveal-img h-full w-full object-cover"
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-char">
+          <div className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]">
+            <img
+              src={cut.src}
+              alt={cut.alt}
+              width={cut.width}
+              height={cut.height}
+              loading="lazy"
+              decoding="async"
+              style={{ objectPosition: cut.focus, transitionDelay: delay }}
+              className="reveal-img h-full w-full object-cover"
+            />
+          </div>
+          <span aria-hidden="true" className="reveal-cover absolute inset-0 bg-paper" style={{ transitionDelay: delay }} />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-sun text-void transition-transform duration-300 group-hover:rotate-90"
+          >
+            <Maximize2 size={16} strokeWidth={2.2} />
+          </span>
+          <button
+            type="button"
+            onClick={onOpen}
+            aria-label={`Apri la foto: ${cut.title}`}
+            className="absolute inset-0 z-10"
+            data-cursor
           />
         </div>
-        <span
-          aria-hidden="true"
-          className="reveal-cover absolute inset-0 bg-paper"
-          style={{ transitionDelay: delay }}
-        />
-        <span className="tilt-glow" aria-hidden="true" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-void/85 via-void/20 to-transparent p-5 pt-20">
-          <p className="label text-[10px] text-sun">Look {String(index + 1).padStart(2, "0")}</p>
-          <p className="display mt-1.5 text-2xl text-white sm:text-3xl">{cut.title}</p>
-          <p className="mt-2 max-h-0 overflow-hidden text-sm text-white/80 opacity-0 transition-[max-height,opacity] duration-500 group-hover:max-h-12 group-hover:opacity-100">
-            {cut.details[0][1]} · {cut.details[2][1]}
+
+        <div className="flex flex-1 flex-col items-center px-6 pb-7 pt-6 text-center">
+          <p className="label text-[10px] text-void/50">Look {String(index + 1).padStart(2, "0")}</p>
+          <h3 className="display mt-2 flex items-center justify-center text-2xl leading-tight lg:min-h-[3.75rem]">
+            {cut.title}
+          </h3>
+          <p className="mt-3 line-clamp-2 min-h-[2.75rem] max-w-[32ch] text-sm leading-[1.375rem] text-void/65">
+            {cut.details[0][1]} · {cut.details[1][1]}
           </p>
+          <p className="mt-auto flex items-baseline justify-center gap-2 pt-5">
+            <span className="text-xs font-semibold uppercase tracking-wider text-void/55">{service.name}</span>
+            <span className="display text-2xl">€{service.price}</span>
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setServiceName(service.name);
+              goToBooking();
+            }}
+            className="btn-black mt-5 w-full max-w-[300px]"
+          >
+            <CalendarCheck size={16} className="shrink-0" aria-hidden="true" />
+            Prenota questo look
+          </button>
         </div>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-sun text-void transition-transform duration-300 group-hover:rotate-90"
-        >
-          <Maximize2 size={16} strokeWidth={2.2} />
-        </span>
-        <button
-          type="button"
-          onClick={onOpen}
-          aria-label={`Apri la foto: ${cut.title}`}
-          className="absolute inset-0 z-10"
-          data-cursor
-        />
-      </div>
+        <span className="tilt-glow" aria-hidden="true" />
+      </article>
     </li>
   );
 }
@@ -307,7 +322,7 @@ export default function Lookbook() {
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <Heading label="Lookbook" labelClass="text-void" lines={["I nostri", { text: "tagli.", serif: true }]}>
             <p className="mt-6 max-w-[44ch] text-lg text-void/70">
-              Lavori reali, fatti nel nostro salone. Passa sopra o tocca una foto: ogni sfumatura, ogni contorno.
+              Lavori reali, fatti nel nostro salone. Tocca una foto per vederla da vicino: ogni sfumatura, ogni contorno.
             </p>
           </Heading>
           <Reveal delay={0.1}>
@@ -315,45 +330,61 @@ export default function Lookbook() {
           </Reveal>
         </div>
 
-        <ul className="mt-16 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-12 lg:gap-8" aria-label="Galleria dei tagli">
+        {/* griglia simmetrica: 1 colonna sul telefono, 2 su tablet, 3 su computer; righe incomplete centrate */}
+        <ul className="mx-auto mt-16 flex max-w-[1180px] flex-wrap justify-center gap-6 lg:gap-8" aria-label="Galleria dei tagli">
           {cuts.map((cut, i) => (
             <Tile
               key={cut.title}
               cut={cut}
               index={i}
               onOpen={() => setOpenIndex(i)}
-              className={cn(
-                CELLS[i] ?? "lg:col-span-4 aspect-[4/5]",
-                // sul telefono la prima foto occupa tutta la riga
-                i === 0 && "col-span-2",
-              )}
+              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-21.34px)]"
             />
           ))}
-          {/* l'ultima cella è un invito, non una foto: rompe il ritmo della griglia */}
-          <Reveal
-            as="li"
-            className="col-span-2 flex flex-col justify-between gap-8 rounded-[28px] bg-void p-7 text-white sm:p-10 lg:col-span-7 lg:self-end"
-          >
+        </ul>
+
+        {/* anteprima Instagram: quadrati 1:1 tutti uguali */}
+        <Reveal className="mt-20 grid items-center gap-10 rounded-[28px] bg-void p-7 text-white sm:p-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+          <div>
             <Camera size={30} strokeWidth={1.5} className="text-sun" aria-hidden="true" />
-            <div>
-              <p className="display text-3xl sm:text-5xl">
-                Altri look
-                <span
-                  className="block font-serif normal-case italic tracking-normal text-sun"
-                  style={{ fontStretch: "100%", fontWeight: 400 }}
-                >
-                  su Instagram.
-                </span>
-              </p>
-              <p className="mt-4 max-w-[40ch] text-white/70">
-                Tutti i lavori del salone sul profilo @fade_barber_studio.
-              </p>
-            </div>
-            <BlackButton href={LINKS.instagram} className="self-start bg-sun text-void">
+            <p className="display mt-6 text-3xl sm:text-5xl">
+              Altri look
+              <span
+                className="block font-serif normal-case italic tracking-normal text-sun"
+                style={{ fontStretch: "100%", fontWeight: 400 }}
+              >
+                su Instagram.
+              </span>
+            </p>
+            <p className="mt-4 max-w-[40ch] text-white/70">Tutti i lavori del salone sul profilo @fade_barber_studio.</p>
+            <BlackButton href={LINKS.instagram} className="mt-8 bg-sun text-void">
               Apri Instagram
             </BlackButton>
-          </Reveal>
-        </ul>
+          </div>
+          <ul className="grid grid-cols-3 gap-2 sm:gap-3" aria-label="Anteprima del profilo Instagram">
+            {CUTS.map((cut) => (
+              <li key={cut.title}>
+                <a
+                  href={LINKS.instagram}
+                  {...EXT}
+                  aria-label={`${cut.title}: vedi altri look su Instagram`}
+                  className="group relative block aspect-square overflow-hidden rounded-xl bg-char ring-1 ring-white/10 transition-shadow duration-300 hover:ring-2 hover:ring-sun hover:shadow-[0_0_30px_-8px_rgba(255,214,10,0.7)]"
+                >
+                  <img
+                    src={cut.src}
+                    alt=""
+                    width={cut.width}
+                    height={cut.height}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ objectPosition: cut.focus }}
+                    className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
 
       {/* la vista grande va nel body: la sezione ha un suo z-index e la terrebbe sotto l'intestazione */}
