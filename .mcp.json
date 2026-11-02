@@ -6,6 +6,17 @@
       "headers": {
         "x-api-key": "${API_KEY_21ST}"
       }
+    },
+    "openseo": {
+      "type": "http",
+      "url": "https://app.openseo.so/mcp"
+    },
+    "apify": {
+      "type": "http",
+      "url": "https://mcp.apify.com",
+      "headers": {
+        "Authorization": "Bearer ${APIFY_TOKEN}"
+      }
     }
   }
 }
