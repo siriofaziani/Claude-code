@@ -1,174 +1,321 @@
-import { motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { Award, CalendarCheck } from "lucide-react";
 
 import certificato from "../assets/certificato.webp";
 import premiazione from "../assets/premiazione.webp";
-import { SERVICES, WEEK } from "../data.js";
-import { CountUp, EASE, RevealImage, Reveal, SectionTitle, Stagger, StaggerItem } from "../ui.jsx";
+import { BARBERS, DAY, STEPS } from "../data.js";
+import { useBooking } from "../booking.jsx";
+import { EASE, Heading, Reveal, RevealImage, Stagger, StaggerItem, SunButton, useDesktopFx, useTilt } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
-/**
- * Sigillo dell'Accademia Gilmont: l'anello si disegna, la scritta circolare ruota in posizione una volta sola.
- */
-export function GilmontSeal({ size = 128, className = "" }) {
+/* ───────────── Fascia gialla: il manifesto ───────────── */
+
+export function Manifesto() {
   const reduce = useReducedMotion();
-  const text = "Accademia Gilmont · Albo degli Eccellenti · ";
+  const words = ["Precisione.", "Cura.", "Il tuo tempo."];
   return (
-    <motion.div
-      className={cn("relative grid place-items-center rounded-full bg-ink text-bone", className)}
-      style={{ width: size, height: size }}
-      role="img"
-      aria-label="Sigillo: Accademia Gilmont, Albo degli Eccellenti"
-      initial={reduce ? false : "hidden"}
-      whileInView="shown"
-      viewport={{ once: true, amount: 0.6 }}
+    <section
+      aria-label="Il nostro manifesto"
+      className="cut-both relative -mt-[4vw] bg-sun py-[calc(4vw+4rem)] text-void"
     >
-      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
-        <defs>
-          <path id="seal-path" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" />
-        </defs>
-        <motion.circle
-          cx="50"
-          cy="50"
-          r="47.5"
-          fill="none"
-          stroke="#b4925a"
-          strokeWidth="1"
-          variants={{ hidden: { pathLength: 0 }, shown: { pathLength: 1, transition: { duration: 1.4, ease: EASE } } }}
-        />
-        <motion.g
-          style={{ transformOrigin: "50px 50px" }}
-          variants={{
-            hidden: { rotate: -120, opacity: 0 },
-            shown: { rotate: 0, opacity: 1, transition: { duration: 1.2, delay: 0.2, ease: EASE } },
-          }}
+      <div className="texture-lines absolute inset-0 opacity-60 mix-blend-multiply" aria-hidden="true" />
+      <div className="relative mx-auto grid max-w-[1500px] gap-10 px-5 sm:px-10 lg:grid-cols-12 lg:items-end">
+        <motion.p
+          className="display text-[2.6rem] sm:text-8xl lg:col-span-12 lg:text-[7.4rem] xl:text-[8.5rem]"
+          initial={reduce ? false : "hidden"}
+          whileInView="shown"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.12 } } }}
         >
-          <text
-            fill="#dcc18f"
-            fontSize="7.6"
-            letterSpacing="1.8"
-            style={{ fontFamily: "var(--font-sans)", fontWeight: 600 }}
-          >
-            <textPath href="#seal-path">{text.toUpperCase()}</textPath>
-          </text>
-        </motion.g>
-      </svg>
-      <motion.span
-        className="relative font-serif text-[2.6rem] italic leading-none text-brass-light"
-        variants={{
-          hidden: { scale: 0.6, opacity: 0 },
-          shown: { scale: 1, opacity: 1, transition: { duration: 0.7, delay: 0.5, ease: EASE } },
-        }}
-      >
-        G
-      </motion.span>
-    </motion.div>
+          {words.map((w) => (
+            <span key={w} className="block overflow-hidden pb-[0.05em]">
+              <motion.span
+                className="block"
+                variants={{
+                  hidden: { transform: "translateY(105%)" },
+                  shown: { transform: "translateY(0%)", transition: { duration: 0.9, ease: EASE } },
+                }}
+              >
+                {w}
+              </motion.span>
+            </span>
+          ))}
+        </motion.p>
+        <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.2}>
+          <p className="flex items-center gap-3">
+            <Award size={26} strokeWidth={1.8} aria-hidden="true" />
+            <span className="label">Accademia Gilmont</span>
+          </p>
+          <p className="mt-4 max-w-[34ch] text-lg font-medium leading-snug">
+            Iscritti all'Albo degli Eccellenti: un riconoscimento al lavoro fatto ogni giorno, sulla poltrona.
+          </p>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 
-const PILLARS = [
-  { title: "Precisione", text: "Sfumature studiate al millimetro e rifinite a rasoio." },
-  { title: "Ambiente", text: "Un salone riservato, curato in ogni dettaglio." },
-  { title: "Comodità", text: "Prenoti online in pochi secondi, zero attese." },
-];
+/* ───────────── La storia: foto a sbalzo e scheda di vetro sovrapposta ───────────── */
 
-const FOUNDERS = ["Federico Giustini", "David Pannunzi"];
+function Story() {
+  return (
+    <div className="relative mx-auto max-w-[1500px] px-5 sm:px-10">
+      <Heading label="Chi siamo" lines={["Due barbieri,", { text: "una firma.", serif: true, sun: true }]} />
+      <div className="relative mt-14 lg:mt-20 lg:grid lg:grid-cols-12">
+        <RevealImage
+          src={premiazione}
+          alt="Federico Giustini e David Pannunzi ricevono il riconoscimento dell'Accademia Gilmont"
+          width="1200"
+          height="900"
+          parallax={6}
+          className="aspect-[4/5] rounded-[28px] lg:col-span-6 lg:col-start-1 lg:aspect-[5/6]"
+          imgClassName="object-[50%_40%]"
+        />
+        {/* scheda che "rompe" la griglia: si sovrappone alla foto */}
+        <Reveal
+          x={40}
+          y={0}
+          className="glass relative -mt-20 ml-6 rounded-[24px] p-7 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)] sm:p-10 lg:col-span-7 lg:col-start-6 lg:-ml-0 lg:mt-40 lg:self-start"
+        >
+          <p className="font-serif text-[1.75rem] leading-[1.2] sm:text-[2.2rem]">
+            Federico Giustini e David Pannunzi hanno trasformato talento e dedizione in un salone dove ogni sfumatura è
+            studiata al millimetro.
+          </p>
+          <p className="mt-5 text-white/70">
+            L'Accademia Gilmont li ha iscritti all'<span className="font-semibold text-sun">Albo degli Eccellenti</span>
+            . Da Via Delle Azalee 73, a Roma, accolgono ogni cliente con lo stesso metodo: ascolto, precisione, rispetto
+            del tempo.
+          </p>
+          <div className="mt-8 flex items-center gap-5">
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl ring-1 ring-sun/40">
+              <img
+                src={certificato}
+                alt="La targa Eccellenza Gilmont in salone"
+                width="1100"
+                height="1220"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <p className="label text-[10px] leading-relaxed text-white/60">
+              La targa Eccellenza Gilmont,
+              <br />
+              in salone
+            </p>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  );
+}
 
-// Numeri ricavati dai dati reali del salone (listino e orari).
-const STATS = [
-  { value: SERVICES.length, label: "Servizi in listino" },
-  { value: WEEK.filter((d) => d.open).length, label: "Giorni aperti, mar – sab" },
-  { value: 11.5, decimals: 1, label: "Ore al giorno, 08:00 – 19:30" },
-];
+/* ───────────── La giornata in barberia: linea del tempo ───────────── */
+
+function DayTimeline() {
+  const ref = useRef(null);
+  const fx = useDesktopFx();
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // computer: la striscia scorre in orizzontale mentre si scorre in verticale (sezione "fissata")
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-62%"]);
+  // telefono: la linea si riempie scorrendo
+  const { scrollYProgress: lineProgress } = useScroll({ target: ref, offset: ["start 70%", "end 60%"] });
+
+  if (fx && !reduce) {
+    return (
+      <div ref={ref} className="relative h-[260vh]">
+        <div className="sticky top-0 flex h-[100dvh] flex-col justify-center overflow-hidden">
+          <div className="mx-auto w-full max-w-[1500px] px-10">
+            <Heading
+              label="La giornata in barberia"
+              lines={["Dalle 08:00", { text: "alle 19:30.", serif: true }]}
+              size="text-7xl"
+            />
+          </div>
+          <motion.ol
+            style={{ x }}
+            className="mt-14 flex w-max gap-6 pl-[max(2.5rem,calc((100vw-1500px)/2+2.5rem))] pr-[20vw]"
+          >
+            {DAY.map((d, i) => (
+              <li
+                key={d.time}
+                className={cn(
+                  "relative flex h-[46vh] w-[34vw] max-w-[520px] shrink-0 flex-col justify-between rounded-[28px] p-9",
+                  i % 2 ? "bg-coal ring-1 ring-white/10" : "bg-char",
+                  i === DAY.length - 1 && "bg-sun text-void",
+                )}
+              >
+                <span className={cn("display text-4xl 2xl:text-5xl", i === DAY.length - 1 ? "text-void" : "text-sun")}>
+                  {d.time}
+                </span>
+                <div>
+                  <p className="display text-3xl">{d.title}</p>
+                  <p
+                    className={cn("mt-3 text-lg leading-snug", i === DAY.length - 1 ? "text-void/80" : "text-white/70")}
+                  >
+                    {d.text}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </motion.ol>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={ref} className="mx-auto max-w-[1500px] px-5 sm:px-10">
+      <Heading label="La giornata in barberia" lines={["Dalle 08:00", { text: "alle 19:30.", serif: true }]} />
+      <ol className="relative mt-12 space-y-10 pl-10">
+        <span aria-hidden="true" className="absolute bottom-2 left-[11px] top-2 w-px bg-white/15" />
+        <motion.span
+          aria-hidden="true"
+          style={reduce ? undefined : { scaleY: lineProgress }}
+          className="absolute bottom-2 left-[11px] top-2 w-px origin-top bg-sun"
+        />
+        {DAY.map((d) => (
+          <Reveal as="li" key={d.time} className="relative">
+            <span
+              aria-hidden="true"
+              className="absolute -left-10 top-2 h-[23px] w-[23px] rounded-full border-4 border-void bg-sun"
+            />
+            <p className="display text-3xl text-sun">{d.time}</p>
+            <p className="display mt-2 text-xl">{d.title}</p>
+            <p className="mt-2 text-white/70">{d.text}</p>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/* ───────────── Il percorso del taglio: schede che si impilano ───────────── */
+
+function CutJourney() {
+  return (
+    <div className="mx-auto grid max-w-[1500px] gap-12 px-5 sm:px-10 lg:grid-cols-12">
+      <div className="lg:col-span-5">
+        <div className="lg:sticky lg:top-32">
+          <Heading
+            label="Il percorso del taglio"
+            lines={["Cinque", "passaggi,", { text: "zero fretta.", serif: true, sun: true }]}
+            size="text-[2.5rem] sm:text-7xl"
+          />
+          <p className="mt-6 max-w-[36ch] text-white/70">
+            Dalla consulenza allo styling: ogni appuntamento segue lo stesso metodo, studiato su di te.
+          </p>
+        </div>
+      </div>
+      {/* ogni scheda resta "attaccata" un po' più in basso della precedente: si impilano a sbalzo */}
+      <ol className="lg:col-span-7">
+        {STEPS.map((s, i) => (
+          <li key={s.title} className="sticky mb-6" style={{ top: `calc(6.5rem + ${i * 1.4}rem)` }}>
+            <Reveal
+              y={50}
+              className={cn(
+                "rounded-[26px] p-7 shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.9)] sm:p-9",
+                i % 2 ? "bg-char ring-1 ring-white/10" : "bg-coal ring-1 ring-white/10",
+                i === STEPS.length - 1 && "bg-white text-void ring-0",
+              )}
+            >
+              <div className="flex items-start gap-6">
+                <span
+                  className={cn(
+                    "display grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-2xl",
+                    i === STEPS.length - 1 ? "bg-void text-sun" : "bg-sun text-void",
+                  )}
+                >
+                  {i + 1}
+                </span>
+                <div>
+                  <p className="label text-[10px] opacity-60">Step {i + 1}</p>
+                  <h3 className="display mt-2 text-2xl sm:text-3xl">{s.title}</h3>
+                  <p className={cn("mt-3 leading-relaxed", i === STEPS.length - 1 ? "text-void/75" : "text-white/70")}>
+                    {s.text}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/* ───────────── Il team ───────────── */
+
+function BarberCard({ barber, index }) {
+  const tilt = useTilt(8);
+  const { setBarberId, goToBooking } = useBooking();
+  return (
+    <StaggerItem className={cn(index === 1 && "lg:mt-24")}>
+      <div
+        ref={tilt.ref}
+        onPointerMove={tilt.onPointerMove}
+        onPointerLeave={tilt.onPointerLeave}
+        className="tilt relative overflow-hidden rounded-[30px] bg-char p-8 ring-1 ring-white/10 sm:p-10"
+      >
+        <span className="tilt-glow" aria-hidden="true" />
+        <span
+          aria-hidden="true"
+          className="display pointer-events-none absolute -right-4 -top-6 text-[11rem] leading-none text-white/[0.04]"
+        >
+          {barber.initials}
+        </span>
+        <div className="relative">
+          <span className="display grid h-20 w-20 place-items-center rounded-full bg-sun text-2xl text-void">
+            {barber.initials}
+          </span>
+          <h3 className="display mt-8 text-4xl sm:text-5xl">
+            {barber.name.split(" ")[0]}
+            <span className="block text-sun">{barber.name.split(" ").slice(1).join(" ")}</span>
+          </h3>
+          <p className="label mt-4 text-[10px] text-white/60">Barbiere · Titolare</p>
+          <ul className="mt-6 flex flex-wrap gap-2 text-sm">
+            <li className="rounded-full bg-white/10 px-3 py-1.5">Albo degli Eccellenti Gilmont</li>
+            <li className="rounded-full bg-white/10 px-3 py-1.5">Sfumature di precisione</li>
+            <li className="rounded-full bg-white/10 px-3 py-1.5">Barba e rifinitura</li>
+          </ul>
+          <SunButton
+            className="mt-8"
+            icon={CalendarCheck}
+            onClick={() => {
+              setBarberId(barber.id);
+              goToBooking();
+            }}
+          >
+            Prenota con {barber.short}
+          </SunButton>
+        </div>
+      </div>
+    </StaggerItem>
+  );
+}
+
+function Team() {
+  return (
+    <div className="mx-auto max-w-[1500px] px-5 sm:px-10">
+      <Heading label="Il team" lines={["Federico", { text: "& David.", serif: true, sun: true }]} />
+      <Stagger className="mt-12 grid gap-6 lg:grid-cols-2" gap={0.15}>
+        {BARBERS.map((b, i) => (
+          <BarberCard key={b.id} barber={b} index={i} />
+        ))}
+      </Stagger>
+    </div>
+  );
+}
 
 export default function About() {
   return (
-    <section id="chi-siamo" className="paper relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 md:py-36">
-        <SectionTitle
-          index="01"
-          eyebrow="La storia"
-          tone="light"
-          lines={["Due barbieri,", { text: "una firma.", italic: true }]}
-        />
-
-        <div className="mt-14 grid gap-16 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-7">
-            <Reveal>
-              {/* capolettera da rivista con ::first-letter (il testo resta intero per i lettori di schermo) */}
-              <p className="font-serif text-[1.9rem] leading-[1.15] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-[5.2rem] first-letter:leading-[0.75] first-letter:text-brass-dark sm:text-[2.5rem] sm:first-letter:text-[6.5rem]">
-                Federico Giustini e David Pannunzi hanno trasformato talento e dedizione in un salone dove ogni
-                sfumatura è studiata al millimetro.
-              </p>
-              <p className="mt-6 max-w-[56ch] text-base leading-relaxed text-stone sm:text-lg">
-                L'Accademia Gilmont li ha iscritti all'
-                <span className="font-semibold text-ink">Albo degli Eccellenti</span>: un riconoscimento al lavoro fatto
-                ogni giorno, sulla poltrona.
-              </p>
-            </Reveal>
-
-            {/* firme dei titolari */}
-            <Stagger className="mt-10 grid gap-6 border-y border-ink/15 py-7 sm:grid-cols-2">
-              {FOUNDERS.map((name) => (
-                <StaggerItem key={name}>
-                  <p className="font-serif text-3xl italic leading-none">{name}</p>
-                  <p className="eyebrow mt-2 text-stone">Titolare</p>
-                </StaggerItem>
-              ))}
-            </Stagger>
-
-            <Stagger as="ol" className="mt-10 grid gap-8 sm:grid-cols-3" gap={0.1}>
-              {PILLARS.map((p, i) => (
-                <StaggerItem as="li" key={p.title}>
-                  <span className="font-serif text-lg italic text-brass-dark">0{i + 1}</span>
-                  <h3 className="mt-2 font-serif text-2xl leading-none">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-stone">{p.text}</p>
-                </StaggerItem>
-              ))}
-            </Stagger>
-
-            <Stagger className="mt-12 grid grid-cols-3 gap-4 border-t border-ink/15 pt-8" gap={0.1}>
-              {STATS.map((s) => (
-                <StaggerItem key={s.label}>
-                  <p className="font-serif text-5xl leading-none sm:text-6xl">
-                    <CountUp value={s.value} decimals={s.decimals ?? 0} />
-                  </p>
-                  <p className="mt-2 text-[11px] uppercase leading-snug tracking-[0.12em] text-stone">{s.label}</p>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </div>
-
-          {/* foto: la squadra alla premiazione, la targa in salone e il sigillo */}
-          <div className="relative lg:col-span-5">
-            <RevealImage
-              src={premiazione}
-              alt="Federico Giustini e David Pannunzi ricevono il riconoscimento dell'Accademia Gilmont"
-              width="1200"
-              height="900"
-              cover="bg-bone"
-              parallax={6}
-              className="aspect-[4/5] w-full rounded-[4px]"
-              imgClassName="object-[50%_40%]"
-            />
-
-            <div className="relative -mt-4 ml-auto w-[58%] sm:w-[48%] lg:-mt-24 lg:ml-10 lg:mr-auto">
-              <RevealImage
-                src={certificato}
-                alt="La targa Eccellenza Gilmont di Fade Barber Studio sul bancone del salone"
-                width="1100"
-                height="1220"
-                cover="bg-bone"
-                delay={0.2}
-                className="aspect-square w-full rounded-[4px] border-[6px] border-bone shadow-[0_30px_60px_-30px_rgba(12,11,10,0.6)]"
-              />
-              <GilmontSeal size={112} className="absolute -bottom-10 -left-10 sm:-left-14" />
-            </div>
-            <p className="eyebrow mt-16 text-right text-stone">
-              La premiazione dell'Accademia Gilmont · la targa in salone
-            </p>
-          </div>
-        </div>
-      </div>
+    <section id="chi-siamo" className="texture-dots relative space-y-32 bg-void py-28 md:space-y-44 md:py-40">
+      <Story />
+      <DayTimeline />
+      <CutJourney />
+      <Team />
     </section>
   );
 }

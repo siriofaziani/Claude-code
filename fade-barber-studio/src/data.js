@@ -24,8 +24,49 @@ export const NAV = [
   { label: "Chi Siamo", href: "#chi-siamo" },
   { label: "Tagli", href: "#tagli" },
   { label: "Listino", href: "#servizi" },
+  { label: "Prenota", href: "#prenota" },
   { label: "Recensioni", href: "#recensioni" },
   { label: "Contatti", href: "#contatti" },
+];
+
+export const WHATSAPP_NUMBER = "393349196591";
+
+/** I due barbieri titolari. */
+export const BARBERS = [
+  { id: "federico", name: "Federico Giustini", short: "Federico", initials: "FG" },
+  { id: "david", name: "David Pannunzi", short: "David", initials: "DP" },
+];
+
+/** Bozza del messaggio WhatsApp con servizio e barbiere scelti. */
+export function whatsappMessage(serviceName, barberName) {
+  const service = serviceName || "taglio";
+  // articolo giusto per il servizio: "un Taglio", "una Barba"
+  const article = /^barba/i.test(service) ? "una" : "un";
+  const barber = barberName ? ` con ${barberName}` : "";
+  return `Salve! Vorrei prenotare ${article} ${service}${barber}. Qual è il primo giorno e orario disponibile? Grazie!`;
+}
+export function whatsappLink(serviceName, barberName) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage(serviceName, barberName))}`;
+}
+
+/*
+  La giornata in barberia: racconto dell'atmosfera, ancorato agli orari reali (08:00 - 19:30, martedì - sabato).
+*/
+export const DAY = [
+  { time: "08:00", title: "Si apre", text: "Postazioni pronte, strumenti igienizzati, la prima luce sulle poltrone." },
+  { time: "Mattina", title: "I primi tagli", text: "Chi passa prima del lavoro trova il suo posto: puntuali, senza attese." },
+  { time: "Mezzogiorno", title: "Il ritmo sale", text: "Sfumature una dopo l'altra, ognuna studiata sulla testa di chi siede." },
+  { time: "Pomeriggio", title: "I dettagli", text: "Contorni a rasoio, barbe sagomate, panni caldi: il tempo che serve, non di più." },
+  { time: "19:30", title: "L'ultimo cliente", text: "Stessa cura del primo. Poi si spengono le luci, fino al giorno dopo." },
+];
+
+/** Il percorso del taglio, passo per passo. */
+export const STEPS = [
+  { title: "Consulenza d'immagine", text: "Ascoltiamo cosa vuoi e studiamo forma del viso, crescita e abitudini per un taglio su misura." },
+  { title: "Shampoo e preparazione", text: "Capelli lavati e preparati: la base pulita per una sfumatura precisa." },
+  { title: "Taglio e sfumatura", text: "Esecuzione di precisione, a macchinetta e forbice, fino al passaggio più sottile." },
+  { title: "Barba e panni caldi", text: "Rifinitura della barba, contorni netti e panno caldo per pelle e pori." },
+  { title: "Styling finale", text: "Prodotti dedicati e consigli per riprodurre il look a casa." },
 ];
 
 export const SERVICES = [
@@ -81,18 +122,22 @@ export const SERVICES = [
 export const REVIEWS = [
   {
     author: "Marco R.",
+    topics: ["sfumature", "ambiente", "puntualita"],
     text: "Sfumatura impeccabile e cura del dettaglio mai vista prima a Roma. Federico e David sono due professionisti veri. Ambiente top e servizio puntuale!",
   },
   {
     author: "Alessandro T.",
+    topics: ["sfumature", "barba"],
     text: "Frequento il salone da mesi. La precisione nei tagli sfumati e la modellatura della barba sono di un altro livello. Consigliatissimo per chi cerca la qualità.",
   },
   {
     author: "Gabriele M.",
+    topics: ["ambiente"],
     text: "Location fantastica, pulita e moderna. Si vede che hanno una formazione di livello alto (Accademia Gilmont). Ormai il mio punto di riferimento.",
   },
   {
     author: "Daniele V.",
+    topics: ["puntualita", "sfumature"],
     text: "Prenotazione comodissima e zero attese. Il taglio rimane perfetto anche a distanza di settimane. Grandi ragazzi!",
   },
 ];

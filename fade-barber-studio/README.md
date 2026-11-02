@@ -11,50 +11,58 @@ npm run build:single # un solo file HTML autosufficiente in dist-single/
 
 `anteprima.html` è la versione in un unico file, apribile con doppio clic.
 
-## Ingresso
+## Stile "Black · Yellow · White"
 
-All'apertura c'è una schermata nera con il logo e il pulsante "Vieni a trovarci" (`src/EntryGate.jsx`), con anelli
-color ottone che pulsano. Il video di benvenuto si precarica sotto la schermata e parte solo al tocco: la schermata si apre
-con uno zoom e una dissolvenza (0,7 s, solo transform e opacità), poi il video si dissolve nella Hero come prima.
+Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in **Archivo** a larghezza variabile
+(espanso su computer), accenti in **Instrument Serif** corsivo, testi in **Geist**. Ogni sezione ha una forma diversa:
 
-## Stile "Ink & Bone"
+| Sezione | Forma |
+|---|---|
+| Ingresso | video a scorrimento, su computer in un "portale" alla risoluzione nativa |
+| Manifesto | fascia gialla con tagli diagonali e trama a righe |
+| Chi siamo | nero a puntini: storia con scheda di vetro sovrapposta alla foto, giornata in orizzontale (computer) o linea del tempo (telefono), 5 passaggi in schede che si impilano, team con inclinazione 3D |
+| I nostri tagli | bianco con bordo curvo, griglia asimmetrica sfalsata, vista grande con zoom |
+| Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
+| Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
+| Recensioni | colonna fissa con il voto, griglia sfalsata, filtri, nastro inclinato che scorre |
+| Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza con schede sovrapposte |
 
-Impaginazione da rivista: sezioni nero inchiostro (`ink`) e avorio (`bone`) che si alternano, ottone (`brass`,
-dall'oro del logo) come unico accento. Titoli in **Instrument Serif** (anche corsivo), testi in **Geist**.
-Niente vetro sfocato, niente bagliori: foto grandi, linee sottili, puntini guida nel listino.
-Pulsanti: `BrassButton` (prenotazione), `InkButton` (sulle sezioni chiare), `LineButton`, `QuickAction` (`src/ui.jsx`).
+## Ingresso a scorrimento
 
-## Sezioni
+Il video del salone (`src/assets/intro-scrub.mp4`, più `intro-scrub.webm` per i browser senza H.264) avanza con lo
+scorrimento: è codificato con fotogrammi chiave fitti (`-g 6`) per cercare velocemente, caricato come blob e
+pilotato da un ciclo rAF con lerp (tecnica della skill scroll-craft). Risoluzione nativa del video: 1244×1660.
+Sul computer il video sta in un riquadro alto quanto lo schermo, quindi non viene mai ingrandito oltre la sua
+risoluzione. Per rigenerarlo da un nuovo video:
 
-Schermata "Vieni a trovarci" e video d'ingresso (invariati) → Hero editoriale con stato "Aperto ora / Ora chiuso" →
-nastro di stili → Chi siamo (firme dei titolari, sigillo Gilmont, numeri del salone) → I nostri tagli (mosaico con
-filtri e vista grande: tocca per ingrandire 2,4×, trascina, scorri per cambiare foto) → Listino come un menù stampato →
-Recensioni Google (slider una alla volta, avanza da solo) → Contatti (orari, mappa, chiamata, WhatsApp, Treatwell).
+```bash
+ffmpeg -i nuovo.mp4 -an -vf format=yuv420p -c:v libx264 -preset slow -crf 20 -g 6 -keyint_min 6 -sc_threshold 0 -movflags +faststart src/assets/intro-scrub.mp4
+ffmpeg -i nuovo.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 30 -g 6 -keyint_min 6 -row-mt 1 src/assets/intro-scrub.webm
+```
 
-Le due foto `src/assets/taglio-taper-fade.jpg` e `taglio-mid-fade.jpg` sono ritagliate dagli screenshot di Instagram
-(solo la foto, senza interfaccia): sono nella galleria, accanto al listino (Mid fade) e alle recensioni (Taper fade).
+## Prenotazione
 
-## Animazioni e prestazioni (60 fps su telefono)
+Scelta del barbiere (Federico o David) e del servizio: Treatwell oppure WhatsApp con il messaggio già scritto,
+"Salve! Vorrei prenotare un [servizio] con [barbiere]. Qual è il primo giorno e orario disponibile? Grazie!".
+Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la scelta già fatta (`src/booking.jsx`).
 
-- Comparse di titoli, testi e card: Motion su `transform` e `opacity` (Web Animations del browser, compositore GPU).
-- Foto che si scoprono con la tenda: transizioni CSS di transform avviate all'ingresso (`RevealImage`, `.reveal`).
-- Barra di avanzamento e scritta che scorre con la pagina; parallasse delle foto solo su computer.
-- Contatori dei numeri e dei prezzi; al tocco i pulsanti si premono (`scale(0.98)`).
-- Mappa Google: su telefono si carica al tocco. Immagini con caricamento differito.
+## Animazioni e prestazioni
+
+- Comparse con Motion su `transform` e `opacity` (Web Animations, compositore GPU); foto con tenda in transizioni CSS.
+- Solo su computer con mouse: inclinazione 3D con riflesso giallo, pulsanti "magnetici", anello che segue il cursore,
+  parallasse delle foto, vetro sfocato. Sul telefono tutto resta piatto e leggero.
+- La mappa Google sul telefono si carica al tocco.
 
 ## Struttura
 
-- `src/App.jsx`: pagina, schermata d'ingresso, intro video e footer. `src/data.js`: link, listino, tagli, recensioni, orari.
-- `src/sections/`: Hero, Chi siamo, Lookbook (con la vista grande), Listino, Recensioni, Contatti, intestazione e barra del telefono.
+- `src/App.jsx` compone la pagina. `src/data.js`: link, listino, barbieri, giornata, passaggi, tagli, recensioni, orari.
+- `src/sections/`: Hero (ingresso), About (manifesto, storia, giornata, percorso, team), Lookbook, Services, Booking,
+  Reviews, Contacts (con footer), Chrome (intestazione, barra del telefono, cursore).
 
 ## Da completare
 
-- **Video intro:** è il video Kling (`src/assets/intro.mp4`, più `intro.webm` per i browser che non leggono l'MP4).
-  La Hero usa come sfondo il suo ultimo fotogramma (`src/assets/hero-ultimo-fotogramma.webp`) con lo stesso ritaglio
-  (`FRAME_FIT` in `src/IntroOverlay.jsx`), quindi la dissolvenza di 1 secondo non mostra stacchi.
-  Se cambi il video, rigenera webm e ultimo fotogramma:
-  `ffmpeg -i src/assets/intro.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 40 src/assets/intro.webm`
-  `ffmpeg -sseof -0.08 -i src/assets/intro.mp4 -frames:v 1 ultimo.png` (poi convertilo in `hero-ultimo-fotogramma.webp`).
+- **Recensioni:** sono nell'elenco `REVIEWS` di `src/data.js`, con gli argomenti per i filtri (`topics`). Vanno
+  pubblicate solo recensioni reali, copiate da Google con il nome come appare online.
+- **Video:** l'originale porta la scritta "KlingAI 3.0" in basso a destra. Con una versione senza scritta basta
+  rigenerare i due file con i comandi sopra.
 - **Tagli:** per aggiungere un lavoro, importa la foto in `src/data.js` e aggiungila all'elenco `CUTS`.
-- **Recensioni:** sono nell'elenco `REVIEWS` di `src/data.js`. Vanno pubblicate solo recensioni reali, copiate da Google
-  con il nome come appare online.

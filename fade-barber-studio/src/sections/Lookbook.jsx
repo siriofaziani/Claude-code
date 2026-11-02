@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Camera, Expand, X, ZoomIn, ZoomOut } from "lucide-react";
+import { ArrowLeft, ArrowRight, Camera, Maximize2, X, ZoomIn, ZoomOut } from "lucide-react";
 
 import { CUTS, LINKS } from "../data.js";
-import { EASE, LineButton, Reveal, SectionTitle } from "../ui.jsx";
+import { BlackButton, EASE, Heading, Reveal, useTilt } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 const FILTERS = [
@@ -13,14 +14,13 @@ const FILTERS = [
   { id: "styling", label: "Styling" },
 ];
 
-/** Filtri come voci di un indice: sottolineatura ottone che scorre sotto la voce attiva. */
+/** Filtri: pillole nere con la selezione gialla che scorre (transitions.dev, "tabs sliding"). */
 function Filters({ value, onChange }) {
   const reduce = useReducedMotion();
   return (
-    <div role="tablist" aria-label="Filtra i tagli" className="flex flex-wrap gap-x-6 gap-y-2">
+    <div role="tablist" aria-label="Filtra i tagli" className="inline-flex flex-wrap gap-1 rounded-full bg-void p-1.5">
       {FILTERS.map((f) => {
         const active = f.id === value;
-        const count = f.id === "tutti" ? CUTS.length : CUTS.filter((c) => c.kind.includes(f.id)).length;
         return (
           <button
             key={f.id}
@@ -29,19 +29,18 @@ function Filters({ value, onChange }) {
             aria-selected={active}
             onClick={() => onChange(f.id)}
             className={cn(
-              "relative min-h-11 pb-1 font-serif text-2xl transition-colors duration-200 active:opacity-70",
-              active ? "text-bone" : "text-smoke hover:text-bone",
+              "relative min-h-11 rounded-full px-5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 active:scale-95",
+              active ? "text-void" : "text-white/70 hover:text-sun",
             )}
           >
-            {f.label}
-            <sup className="ml-1 font-sans text-[10px] text-brass-light">{count}</sup>
             {active && (
               <motion.span
                 layoutId="cut-filter"
-                className="absolute inset-x-0 bottom-1 h-px bg-brass"
+                className="absolute inset-0 rounded-full bg-sun"
                 transition={reduce ? { duration: 0 } : { duration: 0.3, ease: EASE }}
               />
             )}
+            <span className="relative">{f.label}</span>
           </button>
         );
       })}
@@ -49,58 +48,80 @@ function Filters({ value, onChange }) {
   );
 }
 
-/** Foto della galleria: entra con la tenda, al passaggio del mouse si avvicina; tocco o clic aprono la vista grande. */
-function Tile({ cut, index, onOpen }) {
+/*
+  Griglia asimmetrica: ogni foto ha la sua forma e un piccolo scarto verticale, così la griglia "respira" e si rompe.
+  Le celle sono scelte per posizione nella lista filtrata.
+*/
+const CELLS = [
+  "lg:col-span-5 lg:row-span-2 aspect-[4/5] lg:aspect-auto",
+  "lg:col-span-4 aspect-[4/5] lg:mt-16",
+  "lg:col-span-3 aspect-[3/4] lg:-mt-8",
+  "lg:col-span-4 aspect-[4/5]",
+  "lg:col-span-3 aspect-[3/4] lg:mt-10",
+  "lg:col-span-5 aspect-[4/5] lg:-mt-10",
+];
+
+/** Foto: tenda che si ritira, al passaggio del mouse inclinazione 3D, zoom e bordo giallo luminoso. */
+function Tile({ cut, index, onOpen, className = "" }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const inView = useInView(ref, { once: true, amount: 0.2 });
-  // rivelazione con transizioni CSS di transform (compositore GPU), vedi .reveal in index.css
+  const tilt = useTilt(7);
   const delay = `${(index % 3) * 0.08}s`;
   return (
-    <figure
-      ref={ref}
-      data-shown={reduce || inView || undefined}
-      className="group relative mb-3 break-inside-avoid overflow-hidden rounded-[3px] bg-ink-2 transition-transform duration-150 active:scale-[0.98] lg:mb-5"
-      style={{ aspectRatio: `${cut.width} / ${cut.height}` }}
-    >
-      <div className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
-        <img
-          src={cut.src}
-          alt={cut.alt}
-          width={cut.width}
-          height={cut.height}
-          loading="lazy"
-          decoding="async"
-          style={{ objectPosition: cut.focus, transitionDelay: delay }}
-          className="reveal-img h-full w-full object-cover"
+    <li ref={ref} data-shown={reduce || inView || undefined} className={cn("relative", className)}>
+      <div
+        ref={tilt.ref}
+        onPointerMove={tilt.onPointerMove}
+        onPointerLeave={tilt.onPointerLeave}
+        className="tilt group relative h-full overflow-hidden rounded-[22px] bg-char shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_0_3px_#ffd60a,0_30px_70px_-20px_rgba(255,214,10,0.55)] active:scale-[0.98]"
+      >
+        <div className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]">
+          <img
+            src={cut.src}
+            alt={cut.alt}
+            width={cut.width}
+            height={cut.height}
+            loading="lazy"
+            decoding="async"
+            style={{ objectPosition: cut.focus, transitionDelay: delay }}
+            className="reveal-img h-full w-full object-cover"
+          />
+        </div>
+        <span
+          aria-hidden="true"
+          className="reveal-cover absolute inset-0 bg-paper"
+          style={{ transitionDelay: delay }}
+        />
+        <span className="tilt-glow" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-void/85 via-void/20 to-transparent p-5 pt-20">
+          <p className="label text-[10px] text-sun">Look {String(index + 1).padStart(2, "0")}</p>
+          <p className="display mt-1.5 text-2xl text-white sm:text-3xl">{cut.title}</p>
+          <p className="mt-2 max-h-0 overflow-hidden text-sm text-white/80 opacity-0 transition-[max-height,opacity] duration-500 group-hover:max-h-12 group-hover:opacity-100">
+            {cut.details[0][1]} · {cut.details[2][1]}
+          </p>
+        </div>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-sun text-void transition-transform duration-300 group-hover:rotate-90"
+        >
+          <Maximize2 size={16} strokeWidth={2.2} />
+        </span>
+        <button
+          type="button"
+          onClick={onOpen}
+          aria-label={`Apri la foto: ${cut.title}`}
+          className="absolute inset-0 z-10"
+          data-cursor
         />
       </div>
-      <span aria-hidden="true" className="reveal-cover absolute inset-0 bg-ink" style={{ transitionDelay: delay }} />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent p-3 pt-16 sm:p-5 sm:pt-20">
-        <p className="eyebrow text-[9.5px] text-brass-light sm:text-[11px]">
-          Look {String(index + 1).padStart(2, "0")}
-        </p>
-        <figcaption className="mt-1 font-serif text-xl leading-none text-bone sm:text-3xl">{cut.title}</figcaption>
-      </div>
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-ink/80 text-bone transition-transform duration-300 group-hover:scale-110"
-      >
-        <Expand size={15} strokeWidth={1.8} />
-      </span>
-      <button
-        type="button"
-        onClick={onOpen}
-        aria-label={`Apri la foto: ${cut.title}`}
-        className="absolute inset-0 z-10"
-      />
-    </figure>
+    </li>
   );
 }
 
 /**
  * Vista grande a tutto schermo: scorri (o frecce/tastiera) per cambiare foto, tocca per ingrandire 2,4×
- * nel punto toccato e trascina per esplorare sfumature e barba. Solo transform e opacità.
+ * nel punto toccato e trascina per esplorare sfumature e barba.
  */
 function Lightbox({ items, index, onClose, onIndex }) {
   const reduce = useReducedMotion();
@@ -152,15 +173,15 @@ function Lightbox({ items, index, onClose, onIndex }) {
       role="dialog"
       aria-modal="true"
       aria-label={`Galleria: ${cut.title}`}
-      className="fixed inset-0 z-[48] flex flex-col bg-ink"
+      className="fixed inset-0 z-[48] flex flex-col bg-void"
       initial={reduce ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
       transition={{ duration: 0.3 }}
     >
       <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:px-8">
-        <p className="eyebrow text-smoke">
-          <span className="text-bone">{String(index + 1).padStart(2, "0")}</span> /{" "}
+        <p className="label text-ash">
+          <span className="text-white">{String(index + 1).padStart(2, "0")}</span> /{" "}
           {String(items.length).padStart(2, "0")}
         </p>
         <div className="flex items-center gap-2">
@@ -168,7 +189,7 @@ function Lightbox({ items, index, onClose, onIndex }) {
             type="button"
             onClick={() => setZoom((z) => !z)}
             aria-label={zoom ? "Riduci" : "Ingrandisci"}
-            className="grid h-11 w-11 place-items-center rounded-full border border-bone/20 text-bone transition-transform duration-150 active:scale-90"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white transition-transform duration-150 active:scale-90"
           >
             {zoom ? <ZoomOut size={18} /> : <ZoomIn size={18} />}
           </button>
@@ -177,7 +198,7 @@ function Lightbox({ items, index, onClose, onIndex }) {
             type="button"
             onClick={onClose}
             aria-label="Chiudi la galleria"
-            className="grid h-11 w-11 place-items-center rounded-full bg-bone text-ink transition-transform duration-150 active:scale-90"
+            className="grid h-11 w-11 place-items-center rounded-full bg-sun text-void transition-transform duration-150 active:scale-90"
           >
             <X size={18} />
           </button>
@@ -239,7 +260,7 @@ function Lightbox({ items, index, onClose, onIndex }) {
           type="button"
           onClick={() => go(-1)}
           aria-label="Foto precedente"
-          className="absolute left-4 top-1/2 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-bone/25 text-bone transition-transform duration-150 active:scale-90 sm:grid"
+          className="absolute left-4 top-1/2 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/25 text-white transition-transform duration-150 active:scale-90 sm:grid"
         >
           <ArrowLeft size={18} />
         </button>
@@ -247,7 +268,7 @@ function Lightbox({ items, index, onClose, onIndex }) {
           type="button"
           onClick={() => go(1)}
           aria-label="Foto successiva"
-          className="absolute right-4 top-1/2 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-bone/25 text-bone transition-transform duration-150 active:scale-90 sm:grid"
+          className="absolute right-4 top-1/2 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/25 text-white transition-transform duration-150 active:scale-90 sm:grid"
         >
           <ArrowRight size={18} />
         </button>
@@ -256,17 +277,17 @@ function Lightbox({ items, index, onClose, onIndex }) {
       <div className="shrink-0 border-t border-white/[0.08] px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8">
         <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="font-serif text-3xl leading-none">{cut.title}</p>
+            <p className="display text-3xl">{cut.title}</p>
             <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
               {cut.details.map(([k, v]) => (
                 <div key={k} className="flex gap-2">
-                  <dt className="text-smoke">{k}</dt>
-                  <dd className="text-bone">{v}</dd>
+                  <dt className="text-ash">{k}</dt>
+                  <dd className="text-white">{v}</dd>
                 </div>
               ))}
             </dl>
           </div>
-          <p className="text-xs text-smoke sm:text-right">
+          <p className="text-xs text-ash sm:text-right">
             {zoom ? "Trascina per esplorare · tocca per ridurre" : "Tocca la foto per ingrandire · scorri per cambiare"}
           </p>
         </div>
@@ -281,45 +302,69 @@ export default function Lookbook() {
   const cuts = CUTS.filter((cut) => filter === "tutti" || cut.kind.includes(filter));
 
   return (
-    <section id="tagli" className="relative bg-ink">
-      <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 md:py-36">
+    <section id="tagli" className="relative z-10 -mt-12 rounded-t-[48px] bg-paper text-void sm:rounded-t-[80px]">
+      <div className="mx-auto max-w-[1500px] px-5 py-24 sm:px-10 md:py-36">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-          <SectionTitle index="02" eyebrow="Lookbook" lines={["I nostri", { text: "tagli.", italic: true }]}>
-            <p className="mt-6 max-w-[44ch] text-base leading-relaxed text-smoke">
-              Lavori reali, fatti nel nostro salone. Tocca una foto per vederla da vicino: ogni sfumatura, ogni
-              contorno.
+          <Heading label="Lookbook" labelClass="text-void" lines={["I nostri", { text: "tagli.", serif: true }]}>
+            <p className="mt-6 max-w-[44ch] text-lg text-void/70">
+              Lavori reali, fatti nel nostro salone. Passa sopra o tocca una foto: ogni sfumatura, ogni contorno.
             </p>
-          </SectionTitle>
+          </Heading>
           <Reveal delay={0.1}>
             <Filters value={filter} onChange={setFilter} />
           </Reveal>
         </div>
 
-        {/* griglia a mosaico: le foto mantengono le loro proporzioni */}
-        <div className="mt-12 columns-2 gap-3 lg:columns-3 lg:gap-5">
+        <ul className="mt-16 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-12 lg:gap-8" aria-label="Galleria dei tagli">
           {cuts.map((cut, i) => (
-            <Tile key={cut.title} cut={cut} index={i} onOpen={() => setOpenIndex(i)} />
+            <Tile
+              key={cut.title}
+              cut={cut}
+              index={i}
+              onOpen={() => setOpenIndex(i)}
+              className={cn(
+                CELLS[i] ?? "lg:col-span-4 aspect-[4/5]",
+                // sul telefono la prima foto occupa tutta la riga
+                i === 0 && "col-span-2",
+              )}
+            />
           ))}
-        </div>
-
-        <Reveal className="mt-10 flex flex-col items-start gap-5 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="flex items-center gap-4">
-            <Camera size={22} strokeWidth={1.5} className="text-brass-light" aria-hidden="true" />
-            <span className="font-serif text-2xl leading-tight">
-              Tutti i look su Instagram <span className="italic text-brass-light">@fade_barber_studio</span>
-            </span>
-          </p>
-          <LineButton href={LINKS.instagram} className="text-bone">
-            Apri Instagram
-          </LineButton>
-        </Reveal>
+          {/* l'ultima cella è un invito, non una foto: rompe il ritmo della griglia */}
+          <Reveal
+            as="li"
+            className="col-span-2 flex flex-col justify-between gap-8 rounded-[28px] bg-void p-7 text-white sm:p-10 lg:col-span-7 lg:self-end"
+          >
+            <Camera size={30} strokeWidth={1.5} className="text-sun" aria-hidden="true" />
+            <div>
+              <p className="display text-3xl sm:text-5xl">
+                Altri look
+                <span
+                  className="block font-serif normal-case italic tracking-normal text-sun"
+                  style={{ fontStretch: "100%", fontWeight: 400 }}
+                >
+                  su Instagram.
+                </span>
+              </p>
+              <p className="mt-4 max-w-[40ch] text-white/70">
+                Tutti i lavori del salone sul profilo @fade_barber_studio.
+              </p>
+            </div>
+            <BlackButton href={LINKS.instagram} className="self-start bg-sun text-void">
+              Apri Instagram
+            </BlackButton>
+          </Reveal>
+        </ul>
       </div>
 
-      <AnimatePresence>
-        {openIndex !== null && (
-          <Lightbox items={cuts} index={openIndex} onIndex={setOpenIndex} onClose={() => setOpenIndex(null)} />
-        )}
-      </AnimatePresence>
+      {/* la vista grande va nel body: la sezione ha un suo z-index e la terrebbe sotto l'intestazione */}
+      {createPortal(
+        <AnimatePresence>
+          {openIndex !== null && (
+            <Lightbox items={cuts} index={openIndex} onIndex={setOpenIndex} onClose={() => setOpenIndex(null)} />
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </section>
   );
 }

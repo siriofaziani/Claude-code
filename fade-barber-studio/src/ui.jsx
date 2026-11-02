@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 import { EXT } from "./data.js";
 import { cn } from "./lib/utils.js";
@@ -8,57 +8,11 @@ import { cn } from "./lib/utils.js";
 export const EASE = [0.22, 1, 0.36, 1];
 const isExternal = (href) => /^https?:/.test(href);
 
-/* ───────────── Pulsanti ───────────── */
-
-/** Pillola ottone con freccia: l'azione principale (prenotare). */
-export function BrassButton({ href, children, icon: Icon = ArrowRight, className = "", ...rest }) {
-  return (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-brass", className)} {...rest}>
-      <span>{children}</span>
-      <span className="btn-arrow" aria-hidden="true">
-        <Icon size={16} strokeWidth={2.2} />
-      </span>
-    </a>
-  );
-}
-
-/** Pillola nera con freccia ottone, per le sezioni chiare. */
-export function InkButton({ href, children, icon: Icon = ArrowRight, className = "", ...rest }) {
-  return (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-ink", className)} {...rest}>
-      <span>{children}</span>
-      <span className="btn-arrow" aria-hidden="true">
-        <Icon size={16} strokeWidth={2.2} />
-      </span>
-    </a>
-  );
-}
-
-/** Solo contorno: prende il colore del testo intorno (funziona su nero e su avorio). */
-export function LineButton({ href, children, className = "", ...rest }) {
-  return (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("btn-line", className)} {...rest}>
-      {children}
-    </a>
-  );
-}
-
-/** Azione rapida tonda con etichetta (chiama, WhatsApp, mappa). */
-export function QuickAction({ href, icon: Icon, label, className = "" }) {
-  return (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cn("quick", className)} aria-label={label}>
-      <span className="quick-icon">
-        <Icon size={20} strokeWidth={1.7} aria-hidden="true" />
-      </span>
-      {label}
-    </a>
-  );
-}
-
 /* ───────────── Media query ───────────── */
 
-/** Schermi larghi con mouse e senza "riduci movimento": qui girano parallasse ed effetti più ricchi. */
-export const DESKTOP_FX = "(min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference)";
+/** Computer con mouse e senza "riduci movimento": qui girano inclinazione 3D, calamita, cursore e parallasse. */
+export const DESKTOP_FX =
+  "(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
 
 export function useMediaQuery(query) {
   const get = () => typeof window !== "undefined" && Boolean(window.matchMedia?.(query).matches);
@@ -73,23 +27,114 @@ export function useMediaQuery(query) {
   }, [query]);
   return matches;
 }
-
 export const useDesktopFx = () => useMediaQuery(DESKTOP_FX);
 
-/* ───────────── Comparse allo scorrimento ─────────────
-   Si anima la proprietà `transform` intera (non x/y separati) e l'opacità: Motion le affida alle Web Animations
-   del browser, che le eseguono sul compositore della GPU senza lavoro JavaScript per fotogramma. */
+/* ───────────── Interazioni da computer ───────────── */
 
-export function Reveal({ children, delay = 0, className = "", y = 24, as = "div", ...rest }) {
+/**
+ * Inclinazione 3D che segue il mouse, con riflesso giallo nel punto del cursore.
+ * Scrive solo variabili CSS (nessun render React) e resta spenta su touch.
+ */
+export function useTilt(max = 10) {
+  const ref = useRef(null);
+  const fx = useDesktopFx();
+  const onPointerMove = (e) => {
+    const el = ref.current;
+    if (!fx || !el || e.pointerType !== "mouse") return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    el.classList.add("is-tilting");
+    el.style.setProperty("--ry", `${((px - 0.5) * max).toFixed(2)}deg`);
+    el.style.setProperty("--rx", `${((0.5 - py) * max).toFixed(2)}deg`);
+    el.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+    el.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+  };
+  const onPointerLeave = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.classList.remove("is-tilting");
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+  };
+  return { ref, onPointerMove, onPointerLeave };
+}
+
+/** Il contenuto viene attirato verso il cursore quando ci passa vicino (pulsanti "magnetici"). Solo computer. */
+export function Magnetic({ children, strength = 0.3, className = "" }) {
+  const ref = useRef(null);
+  const fx = useDesktopFx();
+  const move = (e) => {
+    const el = ref.current;
+    if (!fx || !el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - (r.left + r.width / 2)) * strength;
+    const y = (e.clientY - (r.top + r.height / 2)) * strength;
+    el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  };
+  const leave = () => {
+    if (ref.current) ref.current.style.transform = "";
+  };
+  return (
+    <span
+      ref={ref}
+      onPointerMove={move}
+      onPointerLeave={leave}
+      className={cn("inline-flex transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]", className)}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ───────────── Pulsanti ───────────── */
+
+function Btn({
+  variant,
+  href,
+  onClick,
+  children,
+  icon: Icon = ArrowUpRight,
+  className = "",
+  magnetic = false,
+  ...rest
+}) {
+  const content = (
+    <>
+      <span>{children}</span>
+      {Icon && <Icon size={17} strokeWidth={2.2} aria-hidden="true" />}
+    </>
+  );
+  const cls = cn(variant, className);
+  const el = href ? (
+    <a href={href} {...(isExternal(href) ? EXT : {})} className={cls} onClick={onClick} {...rest}>
+      {content}
+    </a>
+  ) : (
+    <button type="button" className={cls} onClick={onClick} {...rest}>
+      {content}
+    </button>
+  );
+  return magnetic ? <Magnetic>{el}</Magnetic> : el;
+}
+export const SunButton = (p) => <Btn variant="btn-sun" {...p} />;
+export const GhostButton = (p) => <Btn variant="btn-ghost" {...p} />;
+export const BlackButton = (p) => <Btn variant="btn-black" {...p} />;
+
+/* ───────────── Comparse allo scorrimento ─────────────
+   Si anima la proprietà `transform` intera e l'opacità: Motion le affida alle Web Animations del browser,
+   che le eseguono sul compositore della GPU senza lavoro JavaScript per fotogramma. */
+
+export function Reveal({ children, delay = 0, className = "", y = 30, x = 0, as = "div", ...rest }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
     <Tag
       className={className}
-      initial={reduce ? false : { opacity: 0, transform: `translateY(${y}px)` }}
-      whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+      initial={reduce ? false : { opacity: 0, transform: `translate(${x}px, ${y}px)` }}
+      whileInView={{ opacity: 1, transform: "translate(0px, 0px)" }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7, delay, ease: EASE }}
+      transition={{ duration: 0.8, delay, ease: EASE }}
       {...rest}
     >
       {children}
@@ -97,7 +142,6 @@ export function Reveal({ children, delay = 0, className = "", y = 24, as = "div"
   );
 }
 
-/** Contenitore che fa entrare i figli `StaggerItem` uno dopo l'altro. */
 export function Stagger({ children, className = "", as = "div", gap = 0.08, amount = 0.15, ...rest }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
@@ -115,14 +159,14 @@ export function Stagger({ children, className = "", as = "div", gap = 0.08, amou
   );
 }
 
-export function StaggerItem({ children, className = "", as = "div", y = 26, ...rest }) {
+export function StaggerItem({ children, className = "", as = "div", y = 30, ...rest }) {
   const Tag = motion[as];
   return (
     <Tag
       className={className}
       variants={{
         hidden: { opacity: 0, transform: `translateY(${y}px)` },
-        shown: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.7, ease: EASE } },
+        shown: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.8, ease: EASE } },
       }}
       {...rest}
     >
@@ -132,41 +176,44 @@ export function StaggerItem({ children, className = "", as = "div", y = 26, ...r
 }
 
 /**
- * Titolo editoriale: etichetta con numero, poi le righe salgono da dentro una "finestra".
- * `lines` è un elenco di righe; una riga può essere { text, italic: true } per la parola in corsivo ottone.
+ * Titolo di sezione: etichetta, poi le righe salgono da dentro una "finestra".
+ * Una riga può essere { text, serif: true } per l'accento in corsivo, oppure { text, sun: true } per il giallo.
  */
-export function SectionTitle({ index, eyebrow, lines, align = "left", tone = "dark", className = "", children }) {
+export function Heading({
+  label,
+  lines,
+  className = "",
+  size = "text-[2.5rem] sm:text-7xl lg:text-[6.5rem]",
+  labelClass = "text-sun",
+  children,
+}) {
   const reduce = useReducedMotion();
-  const muted = tone === "dark" ? "text-smoke" : "text-stone";
-  const accent = tone === "dark" ? "text-brass-light" : "text-brass-dark";
   return (
-    <div className={cn(align === "center" && "mx-auto text-center", className)}>
-      <p className={cn("eyebrow flex items-center gap-3", muted, align === "center" && "justify-center")}>
-        <span className={accent}>{index}</span>
-        <motion.span
-          aria-hidden="true"
-          className="h-px w-10 origin-left bg-current opacity-50"
-          initial={reduce ? false : { transform: "scaleX(0)" }}
-          whileInView={{ transform: "scaleX(1)" }}
-          viewport={{ once: true, amount: 0.8 }}
-          transition={{ duration: 0.8, ease: EASE }}
-        />
-        {eyebrow}
-      </p>
-      {/* si osserva il titolo intero: le righe, nascoste nelle loro finestre, non sarebbero mai "visibili" */}
+    <div className={className}>
+      {label && (
+        <p className={cn("label flex items-center gap-3", labelClass)}>
+          <span className="h-px w-8 bg-current" aria-hidden="true" />
+          {label}
+        </p>
+      )}
       <motion.h2
-        className="mt-5 font-serif text-[3.1rem] leading-[0.92] tracking-[-0.02em] sm:text-7xl lg:text-[5.5rem]"
+        className={cn("display mt-5", size)}
         initial={reduce ? false : "hidden"}
         whileInView="shown"
         viewport={{ once: true, amount: 0.5 }}
-        variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.1 } } }}
+        variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.09 } } }}
       >
         {lines.map((line, i) => {
           const l = typeof line === "string" ? { text: line } : line;
           return (
             <span key={i} className="block overflow-hidden pb-[0.06em]">
               <motion.span
-                className={cn("block", l.italic && cn("italic", accent))}
+                className={cn(
+                  "block",
+                  l.serif && "font-serif text-[1.08em] normal-case italic tracking-normal",
+                  l.sun && "text-sun",
+                )}
+                style={l.serif ? { fontStretch: "100%", fontWeight: 400 } : undefined}
                 variants={{
                   hidden: { transform: "translateY(105%)" },
                   shown: { transform: "translateY(0%)", transition: { duration: 0.9, ease: EASE } },
@@ -185,7 +232,6 @@ export function SectionTitle({ index, eyebrow, lines, align = "left", tone = "da
 
 /* ───────────── Contatore ───────────── */
 
-/** Numero che conta da 0 al valore quando entra a schermo (scrive nel testo del nodo, nessun render per fotogramma). */
 export function CountUp({ value, duration = 1.4, decimals = 0, className = "" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.8 });
@@ -217,7 +263,6 @@ export function CountUp({ value, duration = 1.4, decimals = 0, className = "" })
 
 /* ───────────── Immagini ───────────── */
 
-/** Livello che scorre più lento della pagina (solo su computer). */
 function ParallaxLayer({ amount, children }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -230,10 +275,8 @@ function ParallaxLayer({ amount, children }) {
 }
 
 /**
- * Foto che si scopre con una tenda (del colore della sezione) che si ritira, mentre l'immagine si assesta.
- * Le due animazioni sono transizioni CSS di transform avviate quando la foto entra a schermo: girano sul
- * compositore della GPU, senza lavoro JavaScript per fotogramma. Su computer la foto può anche scorrere più lenta
- * della pagina (parallax).
+ * Foto che si scopre con una tenda che si ritira, mentre l'immagine si assesta (transizioni CSS di transform).
+ * Su computer può scorrere più lenta della pagina (parallax). Immagini a piena risoluzione, caricamento differito.
  */
 export function RevealImage({
   src,
@@ -243,30 +286,28 @@ export function RevealImage({
   className = "",
   imgClassName = "",
   style,
-  cover = "bg-ink",
+  cover = "bg-void",
   parallax = 0,
   delay = 0,
-  eager = false,
 }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const fx = useDesktopFx();
-  const inView = useInView(ref, { once: true, amount: 0.25 });
-  const shown = reduce || inView;
+  const inView = useInView(ref, { once: true, amount: 0.2 });
   const img = (
     <img
       src={src}
       alt={alt}
       width={width}
       height={height}
-      loading={eager ? "eager" : "lazy"}
+      loading="lazy"
       decoding="async"
       style={{ ...style, transitionDelay: `${delay}s` }}
       className={cn("reveal-img h-full w-full object-cover", imgClassName)}
     />
   );
   return (
-    <div ref={ref} data-shown={shown || undefined} className={cn("reveal relative overflow-hidden", className)}>
+    <div ref={ref} data-shown={reduce || inView || undefined} className={cn("relative overflow-hidden", className)}>
       {fx && parallax ? (
         <ParallaxLayer amount={parallax}>{img}</ParallaxLayer>
       ) : (
