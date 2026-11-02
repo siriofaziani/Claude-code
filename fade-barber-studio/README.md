@@ -21,7 +21,7 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 | Ingresso | video a scorrimento, su computer in un "portale" alla risoluzione nativa |
 | Manifesto | fascia gialla con tagli diagonali e trama a righe |
 | Chi siamo | nero a puntini: foto contenuta (max 380 px su computer, ferma mentre scorre il testo) affiancata a logo e storia di Federico e David, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
-| I nostri tagli | bianco con bordo curvo, griglia simmetrica di schede identiche (foto 4:5, testo centrato, prezzo e "Prenota questo look"), anteprima Instagram a quadrati 1:1, vista grande con zoom |
+| I nostri tagli | bianco con bordo curvo, filtri (Tutti, Sfumature, Barba, Combo & Styling) con dissolvenza, carosello orizzontale di schede identiche (4 su schermi larghi, 3 su computer, 2 su tablet, 1 + anteprima sul telefono): trascinamento, rotellina, frecce gialle e indicatori; anteprima Instagram a quadrati 1:1; vista grande con zoom |
 | Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
 | Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
 | Recensioni | blocco unico: carosello con frecce e avanzamento automatico, nastro inclinato che scorre |
