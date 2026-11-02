@@ -25,7 +25,7 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 | Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
 | Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
 | Recensioni | blocco unico: carosello con frecce e avanzamento automatico, nastro inclinato che scorre |
-| Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza con le 4 azioni rapide sopra, orari in un blocco a parte sotto la mappa |
+| Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza e completamente libera (scheda informativa di Google tagliata fuori), con una barra ancorata in fondo: orari a sinistra, 4 azioni rapide a destra |
 
 ## Ingresso a scorrimento
 

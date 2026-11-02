@@ -51,7 +51,7 @@ function SalonMap() {
   const fx = useDesktopFx();
   const showIframe = fx || live;
   return (
-    <div className="relative h-[72vh] min-h-[520px] overflow-hidden rounded-[32px] bg-[#111] lg:h-[72vh] lg:min-h-[480px]">
+    <div className="relative h-[58vh] min-h-[400px] overflow-hidden bg-[#111] lg:h-[66vh] lg:min-h-[460px]">
       {showIframe ? (
         <iframe
           title="Mappa: Fade Barber Studio, Via Delle Azalee 73, Roma"
@@ -59,7 +59,9 @@ function SalonMap() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className={cn(
-            "absolute inset-0 h-full w-full [filter:invert(0.9)_grayscale(1)_sepia(0.9)_hue-rotate(8deg)_saturate(1.8)_brightness(0.8)_contrast(1.1)]",
+            // la mappa parte 160 px più in alto: la scheda informativa di Google (in alto a sinistra) resta fuori vista,
+            // mentre i crediti e i comandi in basso restano visibili
+            "absolute inset-x-0 bottom-0 top-[-160px] h-[calc(100%+160px)] w-full [filter:invert(0.9)_grayscale(1)_sepia(0.9)_hue-rotate(8deg)_saturate(1.8)_brightness(0.8)_contrast(1.1)]",
             !live && "pointer-events-none",
           )}
         />
@@ -70,7 +72,7 @@ function SalonMap() {
         <button
           type="button"
           onClick={() => setLive(true)}
-          className="absolute inset-0 flex items-start justify-end p-5"
+          className="absolute inset-0 flex items-end justify-center p-5 pb-10"
           aria-label="Attiva la mappa interattiva"
         >
           <span className="label inline-flex items-center gap-2 rounded-full bg-sun px-4 py-2.5 text-[10px] text-void transition-transform duration-150 active:scale-95">
@@ -83,13 +85,13 @@ function SalonMap() {
   );
 }
 
-/** Orari: sotto la mappa, a tutta larghezza (su computer stato, settimana e fasce orarie in fila). */
+/** Orari: nella barra in fondo alla mappa (stato, settimana e fasce orarie). */
 function HoursCard() {
   const open = isOpenNow();
   const today = romeNow()?.day;
   return (
-    <div className="rounded-[28px] bg-char p-6 ring-1 ring-white/10 sm:p-8 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-12">
-      <div className="flex items-center justify-between gap-4 lg:flex-col lg:items-start">
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="label flex items-center gap-2 text-white/70">
           <Clock size={15} aria-hidden="true" /> Orari di apertura
         </p>
@@ -105,7 +107,7 @@ function HoursCard() {
           </span>
         )}
       </div>
-      <ol className="mt-5 grid grid-cols-7 gap-1 lg:mt-0" aria-label="Giorni di apertura">
+      <ol className="mt-5 grid grid-cols-7 gap-1" aria-label="Giorni di apertura">
         {WEEK.map((d) => {
           const isToday = d.key === today;
           return (
@@ -124,7 +126,7 @@ function HoursCard() {
           );
         })}
       </ol>
-      <dl className="mt-5 grid grid-cols-2 gap-4 lg:mt-0 lg:gap-10">
+      <dl className="mt-5 grid grid-cols-2 gap-4">
         {HOURS.map((h) => (
           <div key={h.days}>
             <dt className="text-xs text-white/50">{h.days}</dt>
@@ -140,7 +142,7 @@ const QUICK = [
   { href: LINKS.phone, icon: Phone, label: "Chiama", value: "+39 334 919 6591" },
   { href: whatsappLink(), icon: MessageCircle, label: "WhatsApp", value: "Scrivici ora" },
   { href: LINKS.maps, icon: Navigation, label: "Indicazioni", value: "Apri il navigatore" },
-  { href: LINKS.instagram, icon: Camera, label: "Instagram", value: "@fade_barber_studio" },
+  { href: LINKS.instagram, icon: Camera, label: "Instagram", value: "@fade_barber_studio", short: "Seguici ora" },
 ];
 
 export default function Contacts() {
@@ -165,44 +167,49 @@ export default function Contacts() {
             </Reveal>
           </div>
 
-          {/* mappa a tutta larghezza con le azioni rapide sopra; gli orari stanno sotto, staccati */}
-          <Reveal y={40} className="relative mt-14">
+          {/* mappa libera in alto; azioni rapide e orari in una barra ancorata in fondo, senza coprire la mappa */}
+          <Reveal y={40} className="mt-14 overflow-hidden rounded-[32px] bg-void ring-1 ring-white/10">
             <SalonMap />
-            <Stagger
-              className="absolute inset-x-3 bottom-3 grid grid-cols-2 gap-2 sm:inset-x-5 sm:bottom-5 sm:gap-3 lg:inset-x-auto lg:bottom-auto lg:left-8 lg:top-8 lg:w-[420px]"
-              gap={0.06}
-            >
-              {QUICK.map(({ href, icon: Icon, label, value }) => (
-                <StaggerItem key={label}>
-                  <TiltCard max={8} className="h-full rounded-[22px]">
-                    <a
-                      href={href}
-                      {...(href.startsWith("http") ? EXT : {})}
-                      className="press group flex h-full flex-col justify-between gap-3 rounded-[22px] bg-void/95 p-4 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10 transition-[box-shadow] duration-300 hover:ring-sun/70 sm:gap-4 sm:p-5"
-                    >
-                      <span className="flex items-center justify-between">
-                        <span className="grid h-10 w-10 place-items-center rounded-full bg-sun text-void">
-                          <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
+            <div className="grid gap-8 border-t border-white/10 p-5 sm:p-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-12">
+              <HoursCard />
+              <Stagger className="grid grid-cols-2 gap-3" gap={0.06}>
+                {QUICK.map(({ href, icon: Icon, label, value, short }) => (
+                  <StaggerItem key={label}>
+                    <TiltCard max={8} className="h-full rounded-[22px]">
+                      <a
+                        href={href}
+                        {...(href.startsWith("http") ? EXT : {})}
+                        className="press group flex h-full flex-col justify-between gap-4 rounded-[22px] bg-char p-4 ring-1 ring-white/10 transition-[box-shadow] duration-300 hover:ring-sun/70 sm:p-5"
+                      >
+                        <span className="flex items-center justify-between">
+                          <span className="grid h-10 w-10 place-items-center rounded-full bg-sun text-void">
+                            <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
+                          </span>
+                          <ArrowUpRight
+                            size={16}
+                            className="text-white/40 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sun"
+                            aria-hidden="true"
+                          />
                         </span>
-                        <ArrowUpRight
-                          size={16}
-                          className="text-white/40 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sun"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span className="min-w-0">
-                        <span className="label block text-[9.5px] text-white/50">{label}</span>
-                        <span className="mt-1 block text-[13px] font-semibold [overflow-wrap:anywhere] sm:text-sm">{value}</span>
-                      </span>
-                    </a>
-                  </TiltCard>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </Reveal>
-
-          <Reveal className="mt-6 sm:mt-8" delay={0.05}>
-            <HoursCard />
+                        <span className="min-w-0">
+                          <span className="label block text-[9.5px] text-white/50">{label}</span>
+                          <span className="mt-1 block text-[13px] font-semibold [overflow-wrap:anywhere] sm:text-sm">
+                            {short ? (
+                              <>
+                                <span className="sm:hidden">{short}</span>
+                                <span className="hidden sm:inline">{value}</span>
+                              </>
+                            ) : (
+                              value
+                            )}
+                          </span>
+                        </span>
+                      </a>
+                    </TiltCard>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
           </Reveal>
         </div>
       </section>
