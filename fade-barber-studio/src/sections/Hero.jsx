@@ -244,7 +244,7 @@ export default function Hero() {
               )}
             >
               <p className="label text-sun">Benvenuti da</p>
-              <h1 className="display mt-4 text-[3.1rem] sm:text-7xl lg:text-[5.6rem] xl:text-[6.4rem]">
+              <h1 className="display mt-4 text-[3.1rem] sm:text-7xl lg:text-[4.8rem] xl:text-[5.4rem]">
                 Fade
                 <br />
                 Barber
@@ -269,7 +269,7 @@ export default function Hero() {
               <motion.p
                 style={{ opacity: bOpacity, y: bY }}
                 aria-hidden="true"
-                className="display pointer-events-none absolute inset-x-0 bottom-0 text-[2.3rem] sm:text-6xl lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:text-[4.6rem] xl:text-[5.2rem]"
+                className="display pointer-events-none absolute inset-x-0 bottom-0 text-[2.3rem] sm:text-6xl lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:text-[4rem] xl:text-[4.6rem]"
               >
                 Da Via
                 <br />
@@ -300,7 +300,7 @@ export default function Hero() {
                 )}
                 <span className="label text-[10px] text-white/70">Via Delle Azalee 73 · Roma</span>
               </div>
-              <p className="display mt-6 text-[2.5rem] sm:text-7xl lg:text-[4.6rem] xl:text-[5.4rem]">
+              <p className="display mt-6 text-[2.5rem] sm:text-7xl lg:text-[4.2rem] xl:text-[4.8rem]">
                 La perfezione
                 <span
                   className="block font-serif text-[1.1em] normal-case italic tracking-normal text-sun"

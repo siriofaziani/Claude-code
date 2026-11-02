@@ -1,19 +1,11 @@
-import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Star } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Quote, Star } from "lucide-react";
 
 import taglioTaperFade from "../assets/taglio-taper-fade.jpg";
 import { LINKS, REVIEWS } from "../data.js";
-import { EASE, Heading, Reveal, RevealImage, SunButton, useTilt } from "../ui.jsx";
-import { cn } from "../lib/utils.js";
+import { Heading, Reveal, RevealImage, SunButton, useTilt } from "../ui.jsx";
 
-const TOPICS = [
-  { id: "tutte", label: "Tutte" },
-  { id: "sfumature", label: "Sfumature" },
-  { id: "barba", label: "Barba" },
-  { id: "ambiente", label: "Ambiente" },
-  { id: "puntualita", label: "Puntualità" },
-];
+const AUTOPLAY_MS = 6000;
 
 function Stars({ size = 15 }) {
   return (
@@ -25,31 +17,26 @@ function Stars({ size = 15 }) {
   );
 }
 
-function ReviewCard({ review, index }) {
+/** Scheda di una recensione: inclinazione 3D e riflesso giallo al passaggio del mouse. */
+function ReviewCard({ review, index, total }) {
   const tilt = useTilt(6);
   return (
-    <motion.li
-      layout
-      initial={{ opacity: 0, transform: "translateY(24px)" }}
-      animate={{ opacity: 1, transform: "translateY(0px)" }}
-      exit={{ opacity: 0, transform: "scale(0.96)", transition: { duration: 0.15 } }}
-      transition={{ duration: 0.5, delay: index * 0.05, ease: EASE }}
-      className={cn(index % 2 === 1 && "md:translate-y-10")}
+    <figure
+      ref={tilt.ref}
+      onPointerMove={tilt.onPointerMove}
+      onPointerLeave={tilt.onPointerLeave}
+      aria-roledescription="recensione"
+      aria-label={`${index + 1} di ${total}`}
+      className="tilt glass relative flex h-full flex-col rounded-[28px] p-7 transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(255,214,10,0.6),0_30px_70px_-30px_rgba(255,214,10,0.45)] sm:p-9"
     >
-      <figure
-        ref={tilt.ref}
-        onPointerMove={tilt.onPointerMove}
-        onPointerLeave={tilt.onPointerLeave}
-        className="tilt glass relative h-full rounded-[24px] p-7"
-      >
-        <span className="tilt-glow" aria-hidden="true" />
-        <div className="flex items-center justify-between">
-          <Stars />
-          <span className="label text-[9.5px] text-white/50">Google</span>
-        </div>
-        <blockquote className="mt-5 text-[17px] leading-relaxed text-white/90">“{review.text}”</blockquote>
-        <figcaption className="mt-6 flex items-center gap-3">
-          <span className="display grid h-10 w-10 place-items-center rounded-full bg-sun text-xs text-void">
+      <span className="tilt-glow" aria-hidden="true" />
+      <Quote size={40} strokeWidth={1.4} className="text-sun" aria-hidden="true" />
+      <blockquote className="mt-5 flex-1 font-serif text-[1.45rem] leading-[1.3] text-white sm:text-[1.7rem]">
+        {review.text}
+      </blockquote>
+      <figcaption className="mt-8 flex items-center justify-between gap-4 border-t border-white/10 pt-5">
+        <span className="flex items-center gap-3">
+          <span className="display grid h-11 w-11 place-items-center rounded-full bg-sun text-xs text-void">
             {review.author
               .split(/\s+/)
               .map((p) => p[0])
@@ -57,11 +44,12 @@ function ReviewCard({ review, index }) {
           </span>
           <span>
             <span className="block font-semibold">{review.author}</span>
-            <span className="text-xs text-white/50">Cliente del salone</span>
+            <span className="text-xs text-white/50">Recensione Google</span>
           </span>
-        </figcaption>
-      </figure>
-    </motion.li>
+        </span>
+        <Stars />
+      </figcaption>
+    </figure>
   );
 }
 
@@ -88,91 +76,169 @@ function QuoteRibbon() {
   );
 }
 
+/**
+ * Recensioni in un unico blocco: carosello con aggancio (scorrimento nativo, fluido col dito),
+ * frecce, barra di avanzamento e avanzamento automatico che si ferma quando si interagisce.
+ */
 export default function Reviews() {
-  const reduce = useReducedMotion();
-  const [topic, setTopic] = useState("tutte");
-  const list = REVIEWS.filter((r) => topic === "tutte" || r.topics.includes(topic));
+  const trackRef = useRef(null);
+  const sectionRef = useRef(null);
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [perView, setPerView] = useState(1);
+
+  const step = () => {
+    const track = trackRef.current;
+    const card = track?.firstElementChild;
+    return card ? card.getBoundingClientRect().width + 20 : 1;
+  };
+  const maxIndex = Math.max(0, REVIEWS.length - perView);
+  const goTo = (i) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const n = i > maxIndex ? 0 : i < 0 ? maxIndex : i;
+    track.scrollTo({ left: n * step(), behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      setIndex(Math.round(track.scrollLeft / step()));
+      setPerView(Math.max(1, Math.round(track.clientWidth / step())));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      track.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return undefined;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (paused || !inView || reduce || maxIndex === 0) return undefined;
+    const id = window.setTimeout(() => goTo(index + 1), AUTOPLAY_MS);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, paused, inView, maxIndex]);
+
+  const pause = () => setPaused(true);
+  const pages = maxIndex + 1;
 
   return (
-    <section id="recensioni" className="texture-dots relative overflow-hidden bg-void pb-28 pt-28 md:pb-40 md:pt-40">
-      <div className="mx-auto grid max-w-[1500px] gap-14 px-5 sm:px-10 lg:grid-cols-12">
-        <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-32">
-            <Heading
-              label="Recensioni Google"
-              lines={["Parola", { text: "ai clienti.", serif: true, sun: true }]}
-              size="text-[2.5rem] sm:text-7xl"
-            />
-            <Reveal className="mt-8 flex items-end gap-4">
-              <span className="display text-8xl leading-none text-sun">5</span>
-              <span className="pb-2">
-                <Stars size={18} />
-                <span className="mt-1 block text-sm text-white/60">
-                  su 5, in tutte le {REVIEWS.length} recensioni in evidenza
-                </span>
-              </span>
-            </Reveal>
+    <section
+      id="recensioni"
+      ref={sectionRef}
+      className="texture-dots relative overflow-hidden bg-void pb-28 pt-28 md:pb-36 md:pt-36"
+    >
+      <div className="mx-auto max-w-[1500px] px-5 sm:px-10">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <Heading
+            className="lg:col-span-7"
+            label="Recensioni Google"
+            lines={["Parola", { text: "ai clienti.", serif: true, sun: true }]}
+          />
+          <Reveal className="flex items-center gap-6 lg:col-span-5 lg:justify-end">
             <RevealImage
               src={taglioTaperFade}
               alt="Taper fade con ricci naturali e barba piena, realizzato da Fade Barber Studio"
               width="1280"
               height="1650"
-              className="mt-10 hidden aspect-[4/5] rounded-[26px] lg:block"
-              imgClassName="object-[50%_35%]"
+              className="hidden h-28 w-24 shrink-0 rounded-2xl sm:block"
+              imgClassName="object-[50%_30%]"
             />
-          </div>
+            <span className="flex items-end gap-4">
+              <span className="display text-7xl leading-none text-sun lg:text-8xl">5</span>
+              <span className="pb-1">
+                <Stars size={18} />
+                <span className="mt-1 block max-w-[22ch] text-sm text-white/60">
+                  su 5, in tutte le {REVIEWS.length} recensioni in evidenza
+                </span>
+              </span>
+            </span>
+          </Reveal>
         </div>
 
-        <div className="lg:col-span-8">
-          {/* filtri per argomento */}
-          <div role="tablist" aria-label="Filtra le recensioni" className="flex flex-wrap gap-2">
-            {TOPICS.map((t) => {
-              const active = topic === t.id;
-              const count = t.id === "tutte" ? REVIEWS.length : REVIEWS.filter((r) => r.topics.includes(t.id)).length;
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => setTopic(t.id)}
-                  className={cn(
-                    "relative min-h-11 rounded-full px-5 text-sm font-semibold transition-colors duration-200 active:scale-95",
-                    active ? "text-void" : "text-white/70 ring-1 ring-white/15 hover:text-sun",
-                  )}
-                >
-                  {active && (
-                    <motion.span
-                      layoutId="review-filter"
-                      className="absolute inset-0 rounded-full bg-sun"
-                      transition={reduce ? { duration: 0 } : { duration: 0.3, ease: EASE }}
-                    />
-                  )}
-                  <span className="relative">
-                    {t.label} <span className="opacity-60">{count}</span>
-                  </span>
-                </button>
-              );
-            })}
+        <Reveal className="mt-14">
+          <div
+            ref={trackRef}
+            className="snap-row -mx-5 flex gap-5 overflow-x-auto px-5 pb-4 pt-2 sm:-mx-10 sm:px-10"
+            onPointerDown={pause}
+            onWheel={pause}
+            onFocus={pause}
+            aria-roledescription="carosello"
+            aria-label="Recensioni dei clienti"
+            tabIndex={0}
+          >
+            {REVIEWS.map((r, i) => (
+              <div
+                key={r.author}
+                className="w-[86%] shrink-0 snap-start sm:w-[calc(50%-10px)] xl:w-[calc(33.333%-14px)]"
+              >
+                <ReviewCard review={r} index={i} total={REVIEWS.length} />
+              </div>
+            ))}
           </div>
 
-          <ul className="mt-10 grid gap-5 md:grid-cols-2">
-            <AnimatePresence mode="popLayout" initial={false}>
-              {list.map((r, i) => (
-                <ReviewCard key={r.author} review={r} index={i} />
+          <div className="mt-8 flex items-center justify-between gap-6">
+            <div className="flex items-center gap-4" aria-hidden="true">
+              <span className="display text-xl">{String(Math.min(index, maxIndex) + 1).padStart(2, "0")}</span>
+              <span className="relative h-[2px] w-28 overflow-hidden rounded-full bg-white/15 sm:w-48">
+                <span
+                  className="absolute inset-0 origin-left rounded-full bg-sun transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{ transform: `scaleX(${(Math.min(index, maxIndex) + 1) / pages})` }}
+                />
+              </span>
+              <span className="display text-xl text-white/40">{String(pages).padStart(2, "0")}</span>
+            </div>
+            <div className="flex gap-2">
+              {[
+                { d: -1, Icon: ArrowLeft, label: "Recensione precedente" },
+                { d: 1, Icon: ArrowRight, label: "Recensione successiva" },
+              ].map(({ d, Icon, label }) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => {
+                    pause();
+                    goTo(index + d);
+                  }}
+                  aria-label={label}
+                  className="grid h-12 w-12 place-items-center rounded-full border border-white/20 text-white transition-[transform,background-color,color,border-color,box-shadow] duration-200 hover:border-sun hover:bg-sun hover:text-void hover:shadow-[0_0_30px_-6px_rgba(255,214,10,0.8)] active:scale-90"
+                >
+                  <Icon size={18} aria-hidden="true" />
+                </button>
               ))}
-            </AnimatePresence>
-          </ul>
+            </div>
+          </div>
 
-          <div className="mt-16">
+          <div className="mt-12">
             <SunButton
               href={LINKS.googleReviews}
+              magnetic
               className="h-auto max-w-full whitespace-normal py-3 text-left leading-snug"
             >
               Leggi tutte le recensioni o lascia la tua su Google
             </SunButton>
           </div>
-        </div>
+        </Reveal>
       </div>
 
       <div className="mt-24">

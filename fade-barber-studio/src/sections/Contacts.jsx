@@ -13,7 +13,7 @@ import {
 
 import logo from "../assets/logo-trasparente.webp";
 import { EXT, HOURS, LINKS, MAP_EMBED, NAV, WEEK, isOpenNow, romeNow, whatsappLink } from "../data.js";
-import { Heading, Magnetic, Reveal, Stagger, StaggerItem, SunButton, useDesktopFx } from "../ui.jsx";
+import { Heading, Magnetic, Reveal, Stagger, StaggerItem, SunButton, TiltCard, useDesktopFx } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 /** Mappa disegnata (leggera), nera e gialla: strade stilizzate e segnaposto sull'indirizzo. */
@@ -176,26 +176,28 @@ export default function Contacts() {
               <Stagger className="grid grid-cols-2 gap-3" gap={0.06}>
                 {QUICK.map(({ href, icon: Icon, label, value }) => (
                   <StaggerItem key={label}>
-                    <a
-                      href={href}
-                      {...(href.startsWith("http") ? EXT : {})}
-                      className="press group flex h-full flex-col justify-between gap-4 rounded-[22px] bg-void p-4 ring-1 ring-white/10 transition-[box-shadow] duration-300 hover:ring-sun/70 sm:p-5"
-                    >
-                      <span className="flex items-center justify-between">
-                        <span className="grid h-10 w-10 place-items-center rounded-full bg-sun text-void">
-                          <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
+                    <TiltCard max={8} className="h-full rounded-[22px]">
+                      <a
+                        href={href}
+                        {...(href.startsWith("http") ? EXT : {})}
+                        className="press group flex h-full flex-col justify-between gap-4 rounded-[22px] bg-void p-4 ring-1 ring-white/10 transition-[box-shadow] duration-300 hover:ring-sun/70 sm:p-5"
+                      >
+                        <span className="flex items-center justify-between">
+                          <span className="grid h-10 w-10 place-items-center rounded-full bg-sun text-void">
+                            <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
+                          </span>
+                          <ArrowUpRight
+                            size={16}
+                            className="text-white/40 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sun"
+                            aria-hidden="true"
+                          />
                         </span>
-                        <ArrowUpRight
-                          size={16}
-                          className="text-white/40 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sun"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span>
-                        <span className="label block text-[9.5px] text-white/50">{label}</span>
-                        <span className="mt-1 block break-words text-sm font-semibold">{value}</span>
-                      </span>
-                    </a>
+                        <span>
+                          <span className="label block text-[9.5px] text-white/50">{label}</span>
+                          <span className="mt-1 block break-words text-sm font-semibold">{value}</span>
+                        </span>
+                      </a>
+                    </TiltCard>
                   </StaggerItem>
                 ))}
               </Stagger>
@@ -208,7 +210,7 @@ export default function Contacts() {
         <div className="mx-auto max-w-[1500px] px-5 sm:px-10">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-6">
-              <p className="display text-5xl sm:text-7xl">
+              <p className="display text-5xl sm:text-6xl lg:text-[4.25rem]">
                 Il prossimo taglio
                 <span
                   className="block font-serif normal-case italic tracking-normal text-sun"
@@ -270,7 +272,7 @@ export default function Contacts() {
           </div>
           <p
             aria-hidden="true"
-            className="display mt-20 select-none whitespace-nowrap text-[17vw] leading-[0.8] text-sun lg:text-[14.5vw]"
+            className="display mt-20 select-none whitespace-nowrap text-[17vw] leading-[0.8] text-sun lg:text-[11vw]"
           >
             Fade
           </p>

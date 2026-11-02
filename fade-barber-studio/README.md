@@ -20,11 +20,11 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 |---|---|
 | Ingresso | video a scorrimento, su computer in un "portale" alla risoluzione nativa |
 | Manifesto | fascia gialla con tagli diagonali e trama a righe |
-| Chi siamo | nero a puntini: storia con scheda di vetro sovrapposta alla foto, giornata in orizzontale (computer) o linea del tempo (telefono), 5 passaggi in schede che si impilano, team con inclinazione 3D |
+| Chi siamo | nero a puntini: foto contenuta (max 380 px su computer) affiancata alla storia, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
 | I nostri tagli | bianco con bordo curvo, griglia asimmetrica sfalsata, vista grande con zoom |
 | Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
 | Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
-| Recensioni | colonna fissa con il voto, griglia sfalsata, filtri, nastro inclinato che scorre |
+| Recensioni | blocco unico: carosello con frecce e avanzamento automatico, nastro inclinato che scorre |
 | Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza con schede sovrapposte |
 
 ## Ingresso a scorrimento
@@ -49,7 +49,8 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
 ## Animazioni e prestazioni
 
 - Comparse con Motion su `transform` e `opacity` (Web Animations, compositore GPU); foto con tenda in transizioni CSS.
-- Solo su computer con mouse: inclinazione 3D con riflesso giallo, pulsanti "magnetici", anello che segue il cursore,
+- Solo su computer con mouse: inclinazione 3D con riflesso giallo (`TiltCard`: tagli, passaggi, team, listino,
+  barbieri, recensioni, contatti), pulsanti "magnetici", anello che segue il cursore,
   parallasse delle foto, vetro sfocato. Sul telefono tutto resta piatto e leggero.
 - La mappa Google sul telefono si carica al tocco.
 
@@ -61,7 +62,7 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
 
 ## Da completare
 
-- **Recensioni:** sono nell'elenco `REVIEWS` di `src/data.js`, con gli argomenti per i filtri (`topics`). Vanno
+- **Recensioni:** sono nell'elenco `REVIEWS` di `src/data.js`. Vanno
   pubblicate solo recensioni reali, copiate da Google con il nome come appare online.
 - **Video:** l'originale porta la scritta "KlingAI 3.0" in basso a destra. Con una versione senza scritta basta
   rigenerare i due file con i comandi sopra.

@@ -3,7 +3,7 @@ import { Check, Clock } from "lucide-react";
 import taglioMidFade from "../assets/taglio-mid-fade.jpg";
 import { SERVICES } from "../data.js";
 import { useBooking } from "../booking.jsx";
-import { CountUp, Heading, RevealImage, Stagger, StaggerItem } from "../ui.jsx";
+import { CountUp, Heading, RevealImage, Stagger, StaggerItem, TiltCard } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 /**
@@ -44,70 +44,72 @@ export default function Services() {
             const selected = service?.name === s.name;
             return (
               <StaggerItem as="li" key={s.name}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setServiceName(s.name);
-                    goToBooking();
-                  }}
-                  aria-label={`Scegli ${s.name}, ${s.price} euro, ${s.duration}, e vai alla prenotazione`}
-                  className={cn(
-                    "press group relative grid w-full grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 overflow-hidden rounded-[22px] px-6 py-6 text-left transition-[background-color,box-shadow] duration-300 sm:grid-cols-[4rem_1fr_auto_auto] sm:px-8",
-                    s.featured
-                      ? "bg-sun text-void"
-                      : "bg-char ring-1 ring-white/10 hover:ring-sun/60 hover:shadow-[0_0_40px_-12px_rgba(255,214,10,0.5)]",
-                  )}
-                >
-                  <span
-                    className={cn("display hidden text-2xl sm:block", s.featured ? "text-void/50" : "text-white/30")}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span>
-                    <span className="display block text-xl sm:text-4xl">{s.name}</span>
-                    <span
-                      className={cn(
-                        "mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm",
-                        s.featured ? "text-void/70" : "text-white/60",
-                      )}
-                    >
-                      <span className="inline-flex items-center gap-1.5">
-                        <Clock size={13} aria-hidden="true" />
-                        {s.duration}
-                      </span>
-                      <span>{s.text}</span>
-                    </span>
-                  </span>
-                  <span className="display row-span-2 self-start text-[2.2rem] sm:row-span-1 sm:self-center sm:text-6xl">
-                    <span className="mr-1 align-top text-lg">€</span>
-                    <CountUp value={s.price} duration={1.1} />
-                  </span>
-                  <span
+                <TiltCard max={2.5} className="rounded-[22px]">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setServiceName(s.name);
+                      goToBooking();
+                    }}
+                    aria-label={`Scegli ${s.name}, ${s.price} euro, ${s.duration}, e vai alla prenotazione`}
                     className={cn(
-                      "col-span-2 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-200 sm:col-span-1",
+                      "press group relative grid w-full grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 overflow-hidden rounded-[22px] px-6 py-6 text-left transition-[background-color,box-shadow] duration-300 sm:grid-cols-[4rem_1fr_auto_auto] sm:px-8",
                       s.featured
-                        ? "bg-void text-sun"
-                        : selected
-                          ? "bg-sun text-void"
-                          : "bg-white/10 text-white group-hover:bg-sun group-hover:text-void",
+                        ? "bg-sun text-void"
+                        : "bg-char ring-1 ring-white/10 hover:ring-sun/60 hover:shadow-[0_0_40px_-12px_rgba(255,214,10,0.5)]",
                     )}
                   >
-                    {selected && <Check size={14} aria-hidden="true" />}
-                    {selected ? "Scelto" : "Scegli"}
-                  </span>
-                  {s.featured && (
-                    <span className="col-span-2 flex flex-wrap gap-2 text-xs sm:col-span-4 sm:col-start-2">
-                      <span className="rounded-full bg-void px-3 py-1.5 font-bold uppercase tracking-wider text-sun">
-                        Il più completo
-                      </span>
-                      {s.includes.map((inc) => (
-                        <span key={inc} className="rounded-full border border-void/25 px-3 py-1.5">
-                          {inc}
-                        </span>
-                      ))}
+                    <span
+                      className={cn("display hidden text-2xl sm:block", s.featured ? "text-void/50" : "text-white/30")}
+                    >
+                      {String(i + 1).padStart(2, "0")}
                     </span>
-                  )}
-                </button>
+                    <span>
+                      <span className="display block text-xl sm:text-3xl xl:text-[2rem]">{s.name}</span>
+                      <span
+                        className={cn(
+                          "mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm",
+                          s.featured ? "text-void/70" : "text-white/60",
+                        )}
+                      >
+                        <span className="inline-flex items-center gap-1.5">
+                          <Clock size={13} aria-hidden="true" />
+                          {s.duration}
+                        </span>
+                        <span>{s.text}</span>
+                      </span>
+                    </span>
+                    <span className="display row-span-2 self-start text-[2.2rem] sm:row-span-1 sm:self-center sm:text-5xl">
+                      <span className="mr-1 align-top text-lg">€</span>
+                      <CountUp value={s.price} duration={1.1} />
+                    </span>
+                    <span
+                      className={cn(
+                        "col-span-2 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-200 sm:col-span-1",
+                        s.featured
+                          ? "bg-void text-sun"
+                          : selected
+                            ? "bg-sun text-void"
+                            : "bg-white/10 text-white group-hover:bg-sun group-hover:text-void",
+                      )}
+                    >
+                      {selected && <Check size={14} aria-hidden="true" />}
+                      {selected ? "Scelto" : "Scegli"}
+                    </span>
+                    {s.featured && (
+                      <span className="col-span-2 flex flex-wrap gap-2 text-xs sm:col-span-4 sm:col-start-2">
+                        <span className="rounded-full bg-void px-3 py-1.5 font-bold uppercase tracking-wider text-sun">
+                          Il più completo
+                        </span>
+                        {s.includes.map((inc) => (
+                          <span key={inc} className="rounded-full border border-void/25 px-3 py-1.5">
+                            {inc}
+                          </span>
+                        ))}
+                      </span>
+                    )}
+                  </button>
+                </TiltCard>
               </StaggerItem>
             );
           })}

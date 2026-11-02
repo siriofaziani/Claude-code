@@ -3,7 +3,7 @@ import { CalendarCheck, Check, MessageCircle } from "lucide-react";
 
 import { BARBERS, LINKS, SERVICES, whatsappLink, whatsappMessage } from "../data.js";
 import { useBooking } from "../booking.jsx";
-import { EASE, GhostButton, Heading, Reveal, SunButton } from "../ui.jsx";
+import { EASE, GhostButton, Heading, Reveal, SunButton, TiltCard } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 function StepLabel({ n, children, dark = false }) {
@@ -49,37 +49,38 @@ export default function Booking() {
               {BARBERS.map((b) => {
                 const active = barber?.id === b.id;
                 return (
-                  <button
-                    key={b.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={active}
-                    onClick={() => setBarberId(b.id)}
-                    className={cn(
-                      "press relative flex items-center gap-4 rounded-[22px] p-4 text-left transition-[background-color,color,box-shadow] duration-300 sm:p-5",
-                      active
-                        ? "bg-void text-white shadow-[0_24px_50px_-20px_rgba(0,0,0,0.7)]"
-                        : "bg-void/[0.07] hover:bg-void/[0.12]",
-                    )}
-                  >
-                    <span
+                  <TiltCard key={b.id} max={8} className="rounded-[22px]">
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => setBarberId(b.id)}
                       className={cn(
-                        "display grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm transition-colors duration-300 sm:h-14 sm:w-14 sm:text-lg",
-                        active ? "bg-sun text-void" : "bg-void text-sun",
+                        "press relative flex w-full items-center gap-4 rounded-[22px] p-4 text-left transition-[background-color,color,box-shadow] duration-300 sm:p-5",
+                        active
+                          ? "bg-void text-white shadow-[0_24px_50px_-20px_rgba(0,0,0,0.7)]"
+                          : "bg-void/[0.07] hover:bg-void/[0.12]",
                       )}
                     >
-                      {b.initials}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="display block truncate text-base leading-tight sm:text-2xl">{b.short}</span>
                       <span
-                        className={cn("block truncate text-xs sm:text-sm", active ? "text-white/60" : "text-void/60")}
+                        className={cn(
+                          "display grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm transition-colors duration-300 sm:h-14 sm:w-14 sm:text-lg",
+                          active ? "bg-sun text-void" : "bg-void text-sun",
+                        )}
                       >
-                        {b.name}
+                        {b.initials}
                       </span>
-                    </span>
-                    {active && <Check size={18} className="absolute right-4 top-4 text-sun" aria-hidden="true" />}
-                  </button>
+                      <span className="min-w-0">
+                        <span className="display block truncate text-base leading-tight sm:text-2xl">{b.short}</span>
+                        <span
+                          className={cn("block truncate text-xs sm:text-sm", active ? "text-white/60" : "text-void/60")}
+                        >
+                          {b.name}
+                        </span>
+                      </span>
+                      {active && <Check size={18} className="absolute right-4 top-4 text-sun" aria-hidden="true" />}
+                    </button>
+                  </TiltCard>
                 );
               })}
             </div>

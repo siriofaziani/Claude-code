@@ -183,7 +183,7 @@ export function Heading({
   label,
   lines,
   className = "",
-  size = "text-[2.5rem] sm:text-7xl lg:text-[6.5rem]",
+  size = "text-[2.5rem] sm:text-6xl lg:text-[4.75rem] xl:text-[5.25rem]",
   labelClass = "text-sun",
   children,
 }) {
@@ -319,5 +319,22 @@ export function RevealImage({
         style={{ transitionDelay: `${delay}s` }}
       />
     </div>
+  );
+}
+
+/** Contenitore con inclinazione 3D e riflesso giallo che segue il cursore (solo computer). */
+export function TiltCard({ children, className = "", max = 6, as: Tag = "div", ...rest }) {
+  const tilt = useTilt(max);
+  return (
+    <Tag
+      ref={tilt.ref}
+      onPointerMove={tilt.onPointerMove}
+      onPointerLeave={tilt.onPointerLeave}
+      className={cn("tilt relative", className)}
+      {...rest}
+    >
+      {children}
+      <span className="tilt-glow" aria-hidden="true" />
+    </Tag>
   );
 }
