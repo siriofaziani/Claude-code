@@ -20,7 +20,7 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 |---|---|
 | Ingresso | video a scorrimento, su computer in un "portale" alla risoluzione nativa |
 | Manifesto | fascia gialla con tagli diagonali e trama a righe |
-| Chi siamo | nero a puntini: foto contenuta (max 380 px su computer) affiancata alla storia, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
+| Chi siamo | nero a puntini: foto contenuta (max 380 px su computer, ferma mentre scorre il testo) affiancata a logo e storia di Federico e David, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
 | I nostri tagli | bianco con bordo curvo, griglia asimmetrica sfalsata, vista grande con zoom |
 | Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
 | Prenota | giallo a taglio diagonale, scheda nera inclinata con la bozza WhatsApp |
@@ -67,3 +67,5 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
 - **Video:** l'originale porta la scritta "KlingAI 3.0" in basso a destra. Con una versione senza scritta basta
   rigenerare i due file con i comandi sopra.
 - **Tagli:** per aggiungere un lavoro, importa la foto in `src/data.js` e aggiungila all'elenco `CUTS`.
+
+`src/assets/logo-giallo.webp` è il logo in versione trasparente con l'oro portato al giallo del sito (#FFD60A), ricavato dal file a 640 px; il logo originale (`logo-trasparente.webp`) resta invariato in header e footer.

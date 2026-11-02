@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Award, CalendarCheck } from "lucide-react";
 
 import certificato from "../assets/certificato.webp";
+import logoGiallo from "../assets/logo-giallo.webp";
 import premiazione from "../assets/premiazione.webp";
 import { BARBERS, HOURS, STEPS, isOpenNow } from "../data.js";
 import { useBooking } from "../booking.jsx";
@@ -62,9 +63,9 @@ function Story() {
   return (
     <div className="relative mx-auto max-w-[1500px] px-5 sm:px-10">
       <Heading label="Chi siamo" lines={["Due barbieri,", { text: "una firma.", serif: true, sun: true }]} />
-      {/* computer: foto contenuta (max 380 px) e testo affiancati */}
-      <div className="mt-14 grid items-center gap-12 lg:mt-20 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-16 xl:gap-24">
-        <div className="relative mx-auto w-full max-w-[400px] lg:mx-0 lg:max-w-[380px]">
+      {/* computer: foto contenuta (max 380 px, resta ferma mentre scorre la storia) e testo affiancati */}
+      <div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:items-start lg:gap-16 xl:gap-24">
+        <div className="relative mx-auto w-full max-w-[400px] lg:sticky lg:top-28 lg:mx-0 lg:max-w-[380px]">
           <span aria-hidden="true" className="absolute -inset-3 rounded-[34px] bg-sun [transform:rotate(-3deg)]" />
           <RevealImage
             src={premiazione}
@@ -88,16 +89,49 @@ function Story() {
           </div>
         </div>
 
-        <Reveal x={30} y={0} className="max-w-[640px]">
-          <p className="font-serif text-[1.75rem] leading-[1.2] sm:text-[2.1rem]">
-            Federico Giustini e David Pannunzi hanno trasformato talento e dedizione in un salone dove ogni sfumatura è
-            studiata al millimetro.
+        <Reveal x={30} y={0} className="max-w-[660px]">
+          {/* logo, in alto sopra il racconto */}
+          <div className="flex items-center gap-5 sm:gap-6">
+            <img
+              src={logoGiallo}
+              alt="Logo Fade Barber Studio"
+              width="578"
+              height="472"
+              loading="lazy"
+              decoding="async"
+              className="h-auto w-32 shrink-0 drop-shadow-[0_0_28px_rgba(255,214,10,0.22)] sm:w-40 lg:w-44"
+            />
+            <span aria-hidden="true" className="h-14 w-px shrink-0 bg-white/15" />
+            <p className="label text-[10px] leading-relaxed text-white/60">
+              Fondato da
+              <span className="block text-white">Federico Giustini</span>
+              <span className="block text-white">&amp; David Pannunzi</span>
+            </p>
+          </div>
+
+          <p className="mt-10 font-serif text-[1.75rem] leading-[1.2] sm:text-[2.1rem]">
+            Due ragazzi, la stessa passione, <span className="italic text-sun">un sogno in comune.</span>
           </p>
-          <p className="mt-5 text-white/70">
-            L'Accademia Gilmont li ha iscritti all'<span className="font-semibold text-sun">Albo degli Eccellenti</span>
-            . Da Via Delle Azalee 73, a Roma, accolgono ogni cliente con lo stesso metodo: ascolto, precisione, rispetto
-            del tempo.
-          </p>
+          <div className="mt-6 space-y-5 leading-relaxed text-white/70">
+            <p>
+              Federico e David hanno iniziato come tanti: con un paio di forbici in mano e la voglia di capire come si
+              costruisce un taglio fatto bene. Ognuno sulla propria strada, hanno passato anni a studiare, a fare
+              pratica e a ripetere ogni passaggio finché non veniva naturale.
+            </p>
+            <p>
+              La formazione professionale li ha portati fino all'Accademia Gilmont, dove hanno conseguito la
+              certificazione e l'iscrizione all'<span className="font-semibold text-sun">Albo degli Eccellenti</span>.
+              Per loro non era un punto d'arrivo, ma la prova che quel sogno condiviso poteva diventare un posto vero.
+              Così hanno unito le forze.
+            </p>
+            <p>
+              È nato Fade Barber Studio, in Via Delle Azalee 73, con un obiettivo preciso: ridefinire nel quartiere
+              l'idea di barberia d'élite. Qui la tecnica tradizionale, rasoio, panni caldi e forbice, incontra lo stile
+              di oggi: sfumature nette, texture e linee pulite. A ogni cliente lo stesso metodo: ascolto, precisione,
+              rispetto del tempo.
+            </p>
+          </div>
+          <p className="mt-7 font-serif text-2xl italic text-sun">Federico &amp; David</p>
 
           {/* orari: riquadro essenziale */}
           <div className="mt-8 inline-flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4">
