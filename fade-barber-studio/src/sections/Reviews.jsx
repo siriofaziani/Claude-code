@@ -26,7 +26,6 @@ function Stars({ size = 15 }) {
   );
 }
 
-
 /** Scheda di una recensione: inclinazione 3D e riflesso giallo al passaggio del mouse. */
 function ReviewCard({ review, index, total }) {
   const tilt = useTilt(6);
@@ -96,7 +95,6 @@ function ReviewCard({ review, index, total }) {
           {google ? (
             <span className="inline-flex items-center gap-1 text-xs text-sun/90">
               <BadgeCheck size={13} aria-hidden="true" /> Recensione su Google
-              Maps
             </span>
           ) : (
             <span className="text-xs text-white/50">Recensione cliente</span>
@@ -135,7 +133,7 @@ function QuoteRibbon() {
   );
 }
 
-/** Dicitura in evidenza: recensioni da Google Maps, voto 5.0 con stelle dorate. */
+/** Dicitura in evidenza: recensioni verificate su Google, voto 5.0 con stelle dorate. */
 function GoogleBadge({ className = "" }) {
   return (
     <div
@@ -153,7 +151,7 @@ function GoogleBadge({ className = "" }) {
             className="shrink-0 text-sun"
             aria-hidden="true"
           />
-          Recensioni verificate da Google Maps
+          Recensioni verificate su Google
         </span>
       </span>
     </div>

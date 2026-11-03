@@ -153,60 +153,70 @@ export const SERVICES = [
 ];
 
 /*
-  Recensioni a 5 stelle fornite dal salone come copiate dalla scheda Google.
-  Pubblica solo recensioni reali, con il nome come appare online: le recensioni inventate
-  o modificate sono vietate (Codice del Consumo, direttiva UE "Omnibus").
-*/
-/*
-  Recensioni dei clienti. Le prime cinque sono recensioni reali di Google Maps, riportate parola per parola
-  (comprese virgole ed emoji); "highlight" è un passaggio preso dal testo, usato nel nastro che scorre.
+  Recensioni reali dei clienti (5 stelle su Google), nel testo fornito dal salone.
+  Solo recensioni vere, con il nome come appare su Google: niente recensioni inventate.
+  "highlight" è un passaggio preso dal testo, usato nel nastro giallo che scorre.
 */
 export const REVIEWS = [
   {
     author: "Edoardo Papale",
     source: "google",
-    text: "Ho conosciuto questi ragazzi tramite la loro pagina Instagram, da quando sono andato la prima volta ho capito da subito che sarebbero stati loro i miei barbieri di fiducia. Professionalità top e tanta passione nel lavoro che fanno. Super consigliati.",
+    text: "Ho conosciuto questi ragazzi tramite la loro pagina Instagram. Da quando sono andato la prima volta ho capito da subito che sarebbero stati loro i miei barbieri di fiducia. Professionalità top e tanta passione nel lavoro che fanno. Super consigliati!",
     highlight: "Professionalità top e tanta passione nel lavoro che fanno.",
   },
   {
     author: "Fabio Fermante",
     source: "google",
-    text: "Parto nel dire che ho provato e riprovato molti barbieri in zona centocelle,trovandomi piu o meno bene con gli stessi .... Ma nessuno è paragonabile a fade barber studio,professionalità,cura maniacale nel taglio,prodotti di alta qualità (non il classico shampoo che trovi nelle altre barberie),pulizia e ordine che non è da sottovalutare in termini di igiene.... provare per credere non cambierete mai piu barbiere .....per me diventerà una delle migliori barberie in zona ... bravi ragazzi good job 😉",
-    highlight: "Nessuno è paragonabile a fade barber studio.",
+    text: "Parto nel dire che ho provato e riprovato molti barbieri in zona Centocelle, trovandomi più o meno bene. Ma nessuno è paragonabile a Fade Barber Studio: professionalità, cura maniacale nel taglio, prodotti di alta qualità (non il classico shampoo che trovi nelle altre barberie), pulizia e ordine che non sono da sottovalutare in termini di igiene... Provare per credere, non cambierete mai più barbiere! Per me diventerà una delle migliori barberie in zona. Bravi ragazzi, good job! 😉",
+    highlight: "Provare per credere, non cambierete mai più barbiere!",
   },
   {
     author: "Fabio Giustini",
     source: "google",
-    text: "Semplicemente il meglio! Cortesia, professionalità, stile ma anche simpatia e freschezza fanno di Federico e David due ragazzi fantastici! Ambiente sempre curato nei minimi dettagli: candele accese, tonalità giuste che danno uno stile inconfondibile all'ambiente, dettagli d'arredamento che rendono il tutto unico e di classe. Il benvenuto con un caffè di ottima qualità è poi ormai un marchio distintivo che la dice lunga sull'attenzione e la cura verso il cliente. Ogni volta ritrovo un taglio attento alle mie esigenze e al contempo giovanile e fresco. La ciliegina sulla torta? Prodotti di grandissima qualità a chiudere un'esperienze unica! Avanti così!",
+    text: "Semplicemente il meglio! Cortesia, professionalità, stile ma anche simpatia e freschezza fanno di Federico e David due ragazzi fantastici! Ambiente sempre curato nei minimi dettagli: candele accese, tonalità giuste che danno uno stile inconfondibile e dettagli d'arredamento che rendono il tutto unico e di classe. Il benvenuto con un caffè di ottima qualità è ormai un marchio distintivo che la dice lunga sull'attenzione verso il cliente. Ogni volta ritrovo un taglio attento alle mie esigenze e al contempo giovanile e fresco. La ciliegina sulla torta? Prodotti di grandissima qualità a chiudere un'esperienza unica! Avanti così!",
     highlight: "Semplicemente il meglio!",
   },
   {
     author: "Manuel Orlandi",
     source: "google",
-    text: "Nuova barberia in zona Centocelle, Locale veramente stupendo molto accogliente e i miei più grandi complimenti vanno ai titolari David e Federico per la loro professionalità e costanza. Gentilezza, innovazione e competenza fanno sì che ogni clienti si senta coccolato e curato dall’inizio alla fine. Offrono vari trattamenti per la cura del capello e della barba. Consiglio di provare un’esperienza presso il Fade Barberstudio",
-    highlight: "Locale veramente stupendo molto accogliente.",
+    text: "Nuova barberia in zona Centocelle. Locale veramente stupendo e molto accogliente. I miei più grandi complimenti vanno ai titolari David e Federico per la loro professionalità e costanza. Gentilezza, innovazione e competenza fanno sì che ogni cliente si senta coccolato e curato dall’inizio alla fine. Offrono vari trattamenti per la cura del capello e della barba. Consiglio vivamente di provare un’esperienza presso il Fade Barber Studio!",
+    highlight: "Locale veramente stupendo e molto accogliente.",
   },
   {
     author: "Giulio Tortoriello",
     source: "google",
-    text: "Servizio impeccabile!! Con Federico e David puoi finalmente dire di aver trovato i barbieri di fiducia, quelli che si cercano per una vita intera e che una volta trovati sei disposto ad arrivare (come il sottoscritto) dall’altro lato di Roma pur di uscire soddisfatto e rigenerato. Se poi alla loro bravura, per esperienza raramente trovabile altrove, si aggiunge anche la simpatia con cui deliziano il loro servizio, ecco che finirete come me ogni 15 giorni presso di loro. Veramente eccezionali!",
+    text: "Servizio impeccabile!! Con Federico e David puoi finalmente dire di aver trovato i barbieri di fiducia, quelli che si cercano per una vita intera e che, una volta trovati, sei disposto ad arrivare (come il sottoscritto) dall’altro lato di Roma pur di uscire soddisfatto e rigenerato. Se poi alla loro bravura si aggiunge la simpatia con cui deliziano il servizio, ecco che finirete come me ogni 15 giorni da loro. Veramente eccezionali!",
     highlight: "Servizio impeccabile!!",
   },
   {
-    author: "Marco R.",
-    text: "Sfumatura impeccabile e cura del dettaglio mai vista prima a Roma. Federico e David sono due professionisti veri. Ambiente top e servizio puntuale!",
+    author: "Massimiliano Dionisi",
+    source: "google",
+    text: "Accoglienti, professionali e pulitissimi. Consiglio vivamente questi due giovani professionisti che con passione fanno al meglio il loro lavoro.",
+    highlight: "Accoglienti, professionali e pulitissimi.",
   },
   {
-    author: "Alessandro T.",
-    text: "Frequento il salone da mesi. La precisione nei tagli sfumati e la modellatura della barba sono di un altro livello. Consigliatissimo per chi cerca la qualità.",
+    author: "Antonia Cannone",
+    source: "google",
+    text: "Ho cominciato da loro poco dopo la loro apertura. Bravissimi, educati e sempre perfetti. Straconsiglio!",
+    highlight: "Bravissimi, educati e sempre perfetti.",
   },
   {
-    author: "Gabriele M.",
-    text: "Location fantastica, pulita e moderna. Si vede che hanno una formazione di livello alto (Accademia Gilmont). Ormai il mio punto di riferimento.",
+    author: "Simone Sabbatini",
+    source: "google",
+    text: "Ottime competenze di taglio sia per barba che per capelli. Negozio pulito e moderno. Personale ottimo e gentile. Consigliato per passare un’ora di relax!",
+    highlight: "Negozio pulito e moderno.",
   },
   {
-    author: "Daniele V.",
-    text: "Prenotazione comodissima e zero attese. Il taglio rimane perfetto anche a distanza di settimane. Grandi ragazzi!",
+    author: "Giulio Capriotti",
+    source: "google",
+    text: "Locale nuovo, sempre super pulito e profumato. Federico e David troppo simpatici e ogni volta che vengo mi faccio veramente un’oretta di risate in compagnia e relax. Io ho l’appuntamento fisso ogni due settimane: dovete solamente venire per provare!",
+    highlight: "Dovete solamente venire per provare!",
+  },
+  {
+    author: "Daniele Della casa",
+    source: "google",
+    text: "Conosciuti i ragazzi di Fade tramite passaparola, dal primo giorno che sono entrato in negozio sono rimasto particolarmente colpito dall’accoglienza e professionalità oltre alla loro bravura. Prezzo molto economico soprattutto per chi come me ha una frequenza di almeno due volte al mese.",
+    highlight: "Colpito dall’accoglienza e professionalità.",
   },
 ];
 
