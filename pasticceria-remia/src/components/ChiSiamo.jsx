@@ -92,7 +92,7 @@ export default function ChiSiamo() {
 
       {/* the family's numbers, all real */}
       <Reveal className="mt-20 md:mt-28">
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-cioccolato-2 text-avorio lg:grid-cols-4">
+        <dl className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-4">
           {[
             { v: <CountUp value={1979} from={1950} />, l: "produzione propria dal" },
             {
@@ -107,9 +107,9 @@ export default function ChiSiamo() {
             { v: <span>6<span className="text-[0.5em] italic"> giorni su 7</span></span>, l: "aperti dal martedì alla domenica" },
             { v: "7:30", l: "il bancone apre ogni mattina" },
           ].map((x, i) => (
-            <div key={i} className="flex flex-col-reverse justify-end gap-2 bg-cioccolato p-6 md:p-8">
-              <dt className="text-[0.98rem] text-champagne-chiaro/90">{x.l}</dt>
-              <dd className="serif foil text-[clamp(2.8rem,5vw,4.2rem)] font-[600] leading-none tabular-nums">{x.v}</dd>
+            <div key={i} className="frame flex flex-col-reverse justify-end gap-2 p-6 md:p-8">
+              <dt className="text-[0.98rem] text-tostato">{x.l}</dt>
+              <dd className="serif foil-bronze text-[clamp(2.8rem,5vw,4.2rem)] font-[600] leading-none tabular-nums">{x.v}</dd>
             </div>
           ))}
         </dl>

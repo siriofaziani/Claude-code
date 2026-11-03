@@ -28,13 +28,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="vetrina" aria-label="La vetrina" className={`${sheet} bg-avorio pb-28 pt-20 md:pb-40 md:pt-28`}>
+        <section id="vetrina" aria-label="La vetrina" className={`${sheet} bg-panna pb-28 pt-20 md:pb-40 md:pt-28`}>
           <div className={wrap}>
             <Vetrina />
           </div>
         </section>
 
-        <section id="ordina" aria-label="Ordini e prenotazioni" className={`${sheet} bg-sabbia pb-28 pt-20 md:pb-40 md:pt-28`}>
+        <section id="ordina" aria-label="Ordini e prenotazioni" className={`${sheet} bg-cipria pb-28 pt-20 md:pb-40 md:pt-28`}>
           <div className={wrap}>
             <div className="mb-12 grid gap-6 md:mb-16 lg:grid-cols-12 lg:items-end lg:gap-12">
               <div className="lg:col-span-6">
@@ -49,17 +49,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="recensioni" aria-label="Recensioni dei clienti" className={`${sheet} bg-fondente pb-28 pt-20 text-avorio md:pb-36 md:pt-28`}>
+        <section id="recensioni" aria-label="Recensioni dei clienti" className={`${sheet} bg-pistacchio pb-28 pt-20 md:pb-36 md:pt-28`}>
           <div className={`${wrap} mb-12 grid gap-6 md:mb-16 md:grid-cols-12 md:items-end`}>
             <div className="md:col-span-7">
-              <StaggerText as="h2" text="Lo dice il quartiere" className="serif block text-[clamp(2.8rem,7vw,5.2rem)] text-avorio" />
+              <StaggerText as="h2" text="Lo dice il quartiere" className="serif block text-[clamp(2.8rem,7vw,5.2rem)] text-cioccolato" />
             </div>
             <Reveal delay={0.1} className="md:col-span-5 md:text-right">
               <p className="inline-flex items-baseline gap-3">
-                <span className="serif foil text-[3.6rem] font-[600] leading-none">{shop.rating}</span>
+                <span className="serif foil-bronze text-[3.6rem] font-[600] leading-none">{shop.rating}</span>
                 <span className="flex gap-0.5 text-champagne" aria-hidden="true">{Array.from({ length: 5 }, (_, k) => <Star key={k} size={18} />)}</span>
               </p>
-              <p className="mt-1 text-[1.02rem] text-avorio/80">su {shop.reviewCount} recensioni Google. Qui alcune a cinque stelle, parola per parola.</p>
+              <p className="mt-1 text-[1.02rem] text-inchiostro">su {shop.reviewCount} recensioni Google. Qui alcune a cinque stelle, parola per parola.</p>
             </Reveal>
           </div>
           <Recensioni />

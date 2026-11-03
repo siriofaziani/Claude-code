@@ -7,7 +7,6 @@ import Image from "next/image";
 import images from "@/data/images.json";
 import { categories } from "@/data/content";
 import Photo from "./Photo";
-import TiltCard from "./ui/TiltCard";
 import StaggerText from "./ui/StaggerText";
 import useReduce from "./ui/useReduce";
 import { cn } from "./ui/cn";
@@ -42,6 +41,9 @@ const filters = [
   { id: "te", label: "Da tè", kind: "pasticceria", preset: { assortimento: "Pasticceria da tè" } },
   { id: "salato", label: "Salato", kind: "salato" },
 ];
+// Each shelf has its own pastel, like the icings on the counter.
+const bannerTone = { tutto: "bg-champagne-chiaro", mignon: "bg-cipria", torte: "bg-champagne-chiaro", fresca: "bg-sabbia", te: "bg-pistacchio", salato: "bg-crema" };
+const chipTone = { mignon: "bg-cipria", torte: "bg-champagne-chiaro", fresca: "bg-sabbia", te: "bg-pistacchio", salato: "bg-crema" };
 const orderLabel = { mignon: "Ordina un vassoio", torte: "Prenota la tua torta", fresca: "Ordina la colazione", te: "Ordina la pasticceria da tè", salato: "Prenota il rinfresco" };
 
 function itemsFor(id) {
@@ -97,7 +99,7 @@ export default function Vetrina() {
         </div>
         <div className="min-w-0 md:col-span-6 md:justify-self-end">
           <LayoutGroup id="vetrina-filtro">
-            <div role="tablist" aria-label="Reparti della vetrina" onKeyDown={onKey} className="flex flex-wrap gap-1 rounded-[1.75rem] bg-sabbia/70 p-1 md:justify-end">
+            <div role="tablist" aria-label="Reparti della vetrina" onKeyDown={onKey} className="flex flex-wrap gap-1 rounded-[1.75rem] bg-avorio p-1 shadow-[0_1px_2px_rgb(58_42_33/0.05),0_10px_24px_-16px_rgb(58_42_33/0.25)] md:justify-end">
               {filters.map((x) => {
                 const on = x.id === active;
                 return (
@@ -132,23 +134,23 @@ export default function Vetrina() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8, transition: { duration: 0.18 } }}
             transition={{ duration: 0.5, ease }}
-            className="grid gap-6 rounded-[1.75rem] bg-cioccolato p-6 text-avorio md:grid-cols-12 md:items-center md:gap-10 md:p-9"
+            className={cn("grid gap-6 rounded-[1.75rem] p-6 text-cioccolato md:grid-cols-12 md:items-center md:gap-10 md:p-9", bannerTone[active])}
           >
             <div className="md:col-span-7">
-              <h3 className="serif text-[clamp(1.9rem,3.2vw,2.7rem)] text-champagne-chiaro">{cat ? cat.title : f.title}</h3>
-              <p className="mt-3 max-w-[54ch] text-[1.05rem] text-avorio/85">{cat ? cat.text : f.text}</p>
+              <h3 className="serif text-[clamp(1.9rem,3.2vw,2.7rem)] text-cioccolato">{cat ? cat.title : f.title}</h3>
+              <p className="mt-3 max-w-[54ch] text-[1.05rem] text-inchiostro">{cat ? cat.text : f.text}</p>
               {cat?.quote ? (
-                <p className="mt-4 max-w-[54ch] text-[0.98rem] italic text-champagne-chiaro/90">
-                  «{cat.quote.text}» <span className="not-italic text-avorio/60">{cat.quote.source}</span>
+                <p className="mt-4 max-w-[54ch] text-[0.98rem] italic text-champagne-scuro">
+                  «{cat.quote.text}» <span className="not-italic text-tostato">{cat.quote.source}</span>
                 </p>
               ) : null}
             </div>
             <div className="flex flex-wrap items-center gap-3 md:col-span-5 md:justify-end">
-              <a href="#ordina" onClick={() => f.kind && askOrder(f.kind, f.preset)} className="btn btn-champagne btn-shine group">
+              <a href="#ordina" onClick={() => f.kind && askOrder(f.kind, f.preset)} className="btn btn-cioccolato group">
                 {f.kind ? orderLabel[active] : "Ordina e prenota"}
                 <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
-              {items.length ? <span className="text-[0.95rem] text-champagne-chiaro/80">{items.length} foto</span> : null}
+              {items.length ? <span className="text-[0.95rem] text-tostato">{items.length} foto</span> : null}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -165,25 +167,25 @@ export default function Vetrina() {
                     animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.55, ease, delay: Math.min(i % FIRST, 7) * 0.045 } }}
                     exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.18 } }}
                   >
-                    <TiltCard className="h-full rounded-[1.4rem]" innerClassName="rounded-[1.4rem]" max={7}>
-                      <button
-                        type="button"
-                        onClick={() => setViewer({ list: items, index: i })}
-                        className="frame group flex h-full w-full flex-col text-left"
-                        aria-label={`${it.caption}: apri la foto`}
-                      >
-                        <span className="relative block aspect-[4/5] w-full overflow-hidden rounded-[1rem] bg-sabbia">
-                          <Photo name={it.name} alt={it.caption} fill sizes="(min-width: 768px) 23vw, 46vw" className="object-cover transition-transform duration-[900ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.06]" />
-                          <span className="absolute right-2.5 top-2.5 hidden h-9 w-9 place-items-center rounded-full bg-cioccolato/70 text-avorio opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:grid">
-                            <Expand size={15} aria-hidden="true" />
-                          </span>
+                    <button
+                      type="button"
+                      onClick={() => setViewer({ list: items, index: i })}
+                      className="frame card-lift group flex h-full w-full flex-col text-left"
+                      aria-label={`${it.caption}: apri la foto`}
+                    >
+                      <span className="relative block aspect-[4/5] w-full overflow-hidden rounded-[1.05rem] bg-crema">
+                        <span className="card-photo absolute inset-0 block">
+                          <Photo name={it.name} alt={it.caption} fill sizes="(min-width: 768px) 23vw, 46vw" className="object-cover" />
                         </span>
-                        <span className="flex flex-1 flex-col px-1.5 pb-1.5 pt-3">
-                          <span className="text-[0.86rem] font-semibold text-champagne-scuro">{filters.find((x) => x.id === it.cat).label}</span>
-                          <span className="serif mt-0.5 line-clamp-2 text-[1.12rem] font-[600] leading-tight text-cioccolato md:text-[1.22rem]">{it.caption}</span>
+                        <span className="absolute right-2.5 top-2.5 hidden h-9 w-9 place-items-center rounded-full bg-avorio/90 text-cioccolato opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:grid">
+                          <Expand size={15} aria-hidden="true" />
                         </span>
-                      </button>
-                    </TiltCard>
+                      </span>
+                      <span className="flex flex-1 flex-col items-start px-2 pb-2 pt-3.5">
+                        <span className={cn("rounded-full px-2.5 py-0.5 text-[0.82rem] font-semibold text-cioccolato", chipTone[it.cat])}>{filters.find((x) => x.id === it.cat).label}</span>
+                        <span className="serif mt-2 line-clamp-2 min-h-[2.5em] text-[1.14rem] font-[600] leading-[1.15] text-cioccolato md:text-[1.24rem]">{it.caption}</span>
+                      </span>
+                    </button>
                   </motion.li>
                 ))}
               </AnimatePresence>

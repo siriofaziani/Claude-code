@@ -45,12 +45,13 @@ Pubblicazione: su Vercel basta importare la cartella `pasticceria-remia` come pr
 - Foto: 71 scelte tra le 216 della scheda (66 nella vetrina); ogni file in `public/foto` ha accanto un `.json` con l'URL di origine.
   `npm run images -- <cartella con gli originali>` le rigenera.
 
-## Design: "Champagne e cioccolato" (restyling sperimentale)
+## Design: "Panna, pastelli e bronzo"
 
-Crema profondo, avorio e sabbia per i fondi, oro champagne per i dettagli e i pulsanti, cioccolato fondente per le
-schede scure. Titoli in Cormorant Garamond, testo in Manrope. La scritta dell'insegna (vettorializzata dalla foto
-della facciata, `src/app/insegna.svg`) resta la firma, ora in foglia champagne nell'header e nel footer. Ogni
-sezione sale sopra la precedente come un vassoio nuovo.
+Fondi panna e crema, i pastelli delle glasse del bancone come campiture leggere (cipria per gli ordini, pistacchio
+per le recensioni), oro e bronzo per i dettagli, il cioccolato solo dove serve contrasto: l'ingresso, il pannello
+degli ordini e il footer. Titoli in Cormorant Garamond, testo in Manrope. La scritta dell'insegna
+(`src/app/insegna.svg`) resta la firma, in foglia d'oro nell'header e nel footer. Ogni sezione sale sopra la
+precedente come un vassoio nuovo.
 
 Ordine delle sezioni: ingresso, Chi siamo, La vetrina, Ordini e prenotazioni, Recensioni, Orari e mappa.
 
@@ -66,22 +67,22 @@ Ordine delle sezioni: ingresso, Chi siamo, La vetrina, Ordini e prenotazioni, Re
   bancone, da padre in figlio) con foto incorniciate in parallasse e una fascia di numeri reali (1979, 4,6 su 599
   recensioni, 6 giorni su 7, 7:30) che contano al passaggio.
 - **La vetrina**: filtro animato (Tutto, Mignon, Torte, Paste e lievitati, Da tè, Salato) senza ricaricare la
-  pagina; banner del reparto con il pulsante che apre l'ordine già impostato; griglia sempre simmetrica (2 colonne
-  su telefono, 4 da tablet in su, otto foto e poi "Mostra tutte") di card con passe-partout avorio, angoli
-  morbidi, ombra lunga e inclinazione 3D al passaggio del mouse; ogni foto si apre a schermo intero. Il salato non
-  ha foto: lo raccontano le recensioni.
+  pagina; banner del reparto su un pastello con il pulsante che apre l'ordine già impostato; griglia sempre
+  simmetrica (2 colonne su telefono, 4 da tablet in su, otto foto e poi "Mostra tutte") di card bianche con angoli
+  morbidi, ombra soffice e un'etichetta pastello per reparto. Al passaggio del mouse la card si solleva appena e la
+  foto fa un leggero zoom; ogni foto si apre a schermo intero. Il salato non ha foto: lo raccontano le recensioni.
 - **Ordini e prenotazioni**: quattro tipi di richiesta (Torte per eventi, Pasticceria e mignon, Salato e
   rinfreschi, Colazioni e festività), dettagli con scelte e contatori, per le torte la dedica scritta dal vivo
   sulla placchetta di cioccolato; poi giorno (il lunedì è bloccato, sabato e domenica segnalano l'orario
   continuato), fascia oraria, nome e telefono. A sinistra il "biglietto d'ordine" si compila da solo; l'invio va
   al link di `ORDER_REDIRECT_URL` (vedi sopra).
-- **Recensioni**: le 10 recensioni Google a 5 stelle, parola per parola, su due file che scorrono all'infinito in
-  direzioni opposte e si fermano sotto il mouse.
-- **Orari e mappa**: scheda con orari (oggi evidenziato), il cartello della porta, mappa Google integrata e i
+- **Recensioni**: le 10 recensioni Google a 5 stelle, parola per parola, su un'unica fila che scorre piano e senza
+  fine e si ferma sotto il mouse; schede bianche e minimali con le stelle, il voto, il testo e il nome.
+- **Orari e mappa**: scheda chiara con orari (oggi evidenziato), il cartello della porta, mappa Google integrata e i
   pulsanti Chiama, Indicazioni, Facebook, Instagram.
 
 Tecnica: Motion (Framer Motion) per tutte le transizioni e i gesti; componenti in stile Aceternity/shadcn in
-`src/components/ui/` (TiltCard, InfiniteMovingCards, StaggerText, CountUp, helper `cn` con clsx +
+`src/components/ui/` (InfiniteMovingCards, StaggerText, CountUp, helper `cn` con clsx +
 tailwind-merge). Solo transform e opacità, spazi riservati per foto e video (niente spostamenti di layout).
 Con "riduci movimento" restano le dissolvenze e spariscono gli spostamenti (`MotionConfig reducedMotion="user"`,
 `useReduce` sicuro per l'hydration).

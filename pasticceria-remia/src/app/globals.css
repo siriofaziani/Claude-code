@@ -1,27 +1,32 @@
 @import "tailwindcss";
 @source "../";
 
-/* ── Pasticceria F.lli Remia · "Champagne e cioccolato" ───────────────
-   Deep cream for the paper of the pastry trays, champagne gold for the
-   cake boards and the ribbon, dark chocolate for the glaze. The sign's
-   lettering, traced from the 1979 facade, stays the shop's signature,
-   now in champagne. Cormorant for the voice, Manrope to read. */
+/* ── Pasticceria F.lli Remia · "Panna, pastelli e bronzo" ─────────────
+   Whipped cream and paper doilies for the grounds, the pastel icings of
+   the counter (blush, pistachio) as quiet fields, gold and bronze for the
+   cake boards and the ribbon, chocolate only where contrast is needed.
+   The sign's lettering, traced from the 1979 facade, stays the shop's
+   signature. Cormorant for the voice, Manrope to read. */
 
 @theme {
   --font-serif: var(--font-cormorant), "Cormorant", "Garamond", serif;
   --font-sans: var(--font-manrope), system-ui, sans-serif;
 
-  --color-avorio: #f8f1e4;
-  --color-crema: #efe3cf;
-  --color-sabbia: #e2d1b5;
-  --color-champagne: #cdae7a;
-  --color-champagne-chiaro: #ecdcbc;
-  --color-champagne-scuro: #7c5e2c;
-  --color-cioccolato: #2b1a12;
-  --color-cioccolato-2: #3a251a;
-  --color-fondente: #170e0a;
-  --color-inchiostro: #2b1a12;
-  --color-tostato: #674b38;
+  --color-avorio: #fffcf7;
+  --color-panna: #fbf6ee;
+  --color-crema: #f6eee2;
+  --color-sabbia: #eee2d0;
+  --color-cipria: #f5e6df;
+  --color-pistacchio: #e9ecdc;
+  --color-champagne: #c9a46a;
+  --color-champagne-chiaro: #f0e3c9;
+  --color-champagne-scuro: #8a6236;
+  --color-bronzo: #9a6d3c;
+  --color-cioccolato: #3a2a21;
+  --color-cioccolato-2: #4a372b;
+  --color-fondente: #241912;
+  --color-inchiostro: #33251d;
+  --color-tostato: #6e5544;
   --color-verde: #7cbf67;
   --color-rosso: #e07a62;
 
@@ -40,7 +45,7 @@
     html { scroll-behavior: auto; }
   }
   body {
-    background: var(--color-crema);
+    background: var(--color-panna);
     color: var(--color-inchiostro);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
@@ -82,6 +87,15 @@
     -webkit-mask: url("./insegna.svg") center / contain no-repeat;
     mask: url("./insegna.svg") center / contain no-repeat;
   }
+  /* Bronze foil, for the same effect on light grounds. */
+  .foil-bronze {
+    background-image: linear-gradient(180deg, #c9a46a 0%, #a97d48 45%, #7f5a30 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
   /* …or the same lettering in champagne foil. */
   .insegna-foil { background-color: transparent; background-image: linear-gradient(180deg, #f3e3c0 0%, #e2c792 35%, #c09a5c 65%, #9a7841 100%); }
 
@@ -98,12 +112,25 @@
     }
   }
 
-  /* A photo in a passe-partout: an ivory mat, a soft radius, a long low shadow. */
+  /* A photo in a passe-partout: a white mat, a soft radius, a soft two-layer shadow. */
   .frame {
     background: var(--color-avorio);
-    padding: 0.45rem;
-    border-radius: 1.4rem;
-    box-shadow: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 28px 50px -32px rgb(43 26 18 / 0.55), 0 6px 14px -8px rgb(43 26 18 / 0.18);
+    padding: 0.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 1px 2px rgb(58 42 33 / 0.05), 0 18px 40px -22px rgb(58 42 33 / 0.28);
+  }
+  /* A card that lifts a little under the mouse; its photo zooms gently. */
+  .card-lift {
+    transition: transform 500ms var(--ease-out-expo), box-shadow 500ms var(--ease-out-expo);
+  }
+  .card-lift .card-photo { transition: transform 900ms var(--ease-out-expo); }
+  @media (hover: hover) {
+    .card-lift:hover { transform: translateY(-4px); box-shadow: 0 1px 2px rgb(58 42 33 / 0.05), 0 28px 50px -24px rgb(58 42 33 / 0.38); }
+    .card-lift:hover .card-photo { transform: scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-lift, .card-lift .card-photo { transition: none; }
+    .card-lift:hover, .card-lift:hover .card-photo { transform: none; }
   }
   .frame-dark {
     background: var(--color-cioccolato-2);
@@ -125,13 +152,22 @@
     white-space: nowrap;
     touch-action: manipulation;
     user-select: none;
-    transition: background-color 240ms ease, color 240ms ease, box-shadow 240ms ease;
+    transition: background-color 240ms ease, color 240ms ease, box-shadow 300ms ease, transform 300ms var(--ease-out-expo);
+  }
+  @media (hover: hover) {
+    .btn:hover { transform: translateY(-2px); }
+    .btn-champagne:hover { box-shadow: 0 14px 28px -14px rgb(138 98 54 / 0.65); }
+    .btn-cioccolato:hover { box-shadow: 0 14px 28px -14px rgb(36 25 18 / 0.6); }
+  }
+  .btn:active { transform: translateY(0) scale(0.98); }
+  @media (prefers-reduced-motion: reduce) {
+    .btn:hover, .btn:active { transform: none; }
   }
   .btn-champagne { background: var(--color-champagne); color: var(--color-fondente); }
   .btn-cioccolato { background: var(--color-cioccolato); color: var(--color-avorio); }
   .btn-line { color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
   @media (hover: hover) {
-    .btn-champagne:hover { background: #dbbe8c; }
+    .btn-champagne:hover { background: #d4b27c; }
     .btn-cioccolato:hover { background: var(--color-cioccolato-2); }
     .btn-line:hover { background: rgb(205 174 122 / 0.14); }
   }
