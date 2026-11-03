@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Quote, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, Quote, Star } from "lucide-react";
 
 import taglioTaperFade from "../assets/taglio-taper-fade.jpg";
 import { LINKS, REVIEWS } from "../data.js";
 import { Heading, Reveal, RevealImage, SunButton, useTilt } from "../ui.jsx";
+import { cn } from "../lib/utils.js";
 
 function Stars({ size = 15 }) {
   return (
@@ -25,9 +26,24 @@ function Stars({ size = 15 }) {
   );
 }
 
+
 /** Scheda di una recensione: inclinazione 3D e riflesso giallo al passaggio del mouse. */
 function ReviewCard({ review, index, total }) {
   const tilt = useTilt(6);
+  const [open, setOpen] = useState(false);
+  // "Leggi tutta" compare solo se il testo è davvero tagliato (misurato, non stimato)
+  const textRef = useRef(null);
+  const [clamped, setClamped] = useState(false);
+  useEffect(() => {
+    const el = textRef.current;
+    if (!el || open || typeof ResizeObserver === "undefined") return undefined;
+    const measure = () => setClamped(el.scrollHeight > el.clientHeight + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [open]);
+  const google = review.source === "google";
   return (
     <figure
       ref={tilt.ref}
@@ -38,29 +54,54 @@ function ReviewCard({ review, index, total }) {
       className="tilt glass relative flex h-full flex-col rounded-[28px] p-7 transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(255,214,10,0.6),0_30px_70px_-30px_rgba(255,214,10,0.45)] sm:p-9"
     >
       <span className="tilt-glow" aria-hidden="true" />
-      <Quote
-        size={40}
-        strokeWidth={1.4}
-        className="text-sun"
-        aria-hidden="true"
-      />
-      <blockquote className="mt-5 flex-1 font-serif text-[1.45rem] leading-[1.3] text-white sm:text-[1.7rem]">
-        {review.text}
-      </blockquote>
-      <figcaption className="mt-8 flex items-center justify-between gap-4 border-t border-white/10 pt-5">
-        <span className="flex items-center gap-3">
-          <span className="display grid h-11 w-11 place-items-center rounded-full bg-sun text-xs text-void">
-            {review.author
-              .split(/\s+/)
-              .map((p) => p[0])
-              .join("")}
-          </span>
-          <span>
-            <span className="block font-semibold">{review.author}</span>
-            <span className="text-xs text-white/50">Recensione Google</span>
-          </span>
-        </span>
+      <div className="flex items-center justify-between gap-4">
+        <Quote
+          size={36}
+          strokeWidth={1.4}
+          className="text-sun"
+          aria-hidden="true"
+        />
         <Stars />
+      </div>
+      <div className="mt-5 flex-1">
+        <blockquote
+          ref={textRef}
+          className={cn(
+            "font-serif text-[1.2rem] leading-[1.45] text-white sm:text-[1.3rem]",
+            !open && "line-clamp-7",
+          )}
+        >
+          {review.text}
+        </blockquote>
+        {(clamped || open) && (
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            className="mt-3 text-sm font-semibold text-sun underline decoration-sun/40 underline-offset-4 transition-colors hover:decoration-sun"
+          >
+            {open ? "Mostra meno" : "Leggi tutta la recensione"}
+          </button>
+        )}
+      </div>
+      <figcaption className="mt-8 flex items-center gap-3 border-t border-white/10 pt-5">
+        <span className="display grid h-11 w-11 shrink-0 place-items-center rounded-full bg-sun text-xs text-void">
+          {review.author
+            .split(/\s+/)
+            .map((p) => p[0])
+            .join("")}
+        </span>
+        <span className="min-w-0">
+          <span className="block truncate font-semibold">{review.author}</span>
+          {google ? (
+            <span className="inline-flex items-center gap-1 text-xs text-sun/90">
+              <BadgeCheck size={13} aria-hidden="true" /> Recensione su Google
+              Maps
+            </span>
+          ) : (
+            <span className="text-xs text-white/50">Recensione cliente</span>
+          )}
+        </span>
       </figcaption>
     </figure>
   );
@@ -73,7 +114,7 @@ function QuoteRibbon() {
       {REVIEWS.map((r) => (
         <span key={r.author} className="flex items-center gap-10">
           <span className="font-serif text-3xl italic sm:text-4xl">
-            “{r.text.split(/[.!]/)[0]}.”
+            “{r.highlight ?? `${r.text.split(/[.!]/)[0]}.`}”
           </span>
           <span className="label text-[10px] text-void/60">{r.author}</span>
           <Star size={18} className="fill-current" aria-hidden="true" />
@@ -90,6 +131,31 @@ function QuoteRibbon() {
         {row}
         {row}
       </div>
+    </div>
+  );
+}
+
+/** Dicitura in evidenza: recensioni da Google Maps, voto 5.0 con stelle dorate. */
+function GoogleBadge({ className = "" }) {
+  return (
+    <div
+      className={cn(
+        "glass inline-flex items-center gap-4 rounded-[22px] px-5 py-4 shadow-[0_0_0_1px_rgba(255,214,10,0.45),0_20px_50px_-20px_rgba(255,214,10,0.55)]",
+        className,
+      )}
+    >
+      <span className="display text-5xl leading-none text-sun">5.0</span>
+      <span>
+        <Stars size={16} />
+        <span className="mt-1.5 flex items-center gap-1.5 text-sm font-semibold text-white">
+          <BadgeCheck
+            size={16}
+            className="shrink-0 text-sun"
+            aria-hidden="true"
+          />
+          Recensioni verificate da Google Maps
+        </span>
+      </span>
     </div>
   );
 }
@@ -161,17 +227,7 @@ export default function Reviews() {
               className="hidden h-28 w-24 shrink-0 rounded-2xl sm:block"
               imgClassName="object-[50%_30%]"
             />
-            <span className="flex items-end gap-4">
-              <span className="display text-7xl leading-none text-sun lg:text-8xl">
-                5
-              </span>
-              <span className="pb-1">
-                <Stars size={18} />
-                <span className="mt-1 block max-w-[22ch] text-sm text-white/60">
-                  su 5, in tutte le {REVIEWS.length} recensioni in evidenza
-                </span>
-              </span>
-            </span>
+            <GoogleBadge />
           </Reveal>
         </div>
 

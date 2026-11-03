@@ -81,7 +81,11 @@
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-    line-height: 0.88;
+    line-height: 0.94;
+  }
+  /* le righe in corsivo dentro i titoli hanno discendenti lunghi (g, p, q, y): più aria sotto */
+  .display .font-serif {
+    line-height: 1.04;
   }
   @media (min-width: 1024px) {
     .display {

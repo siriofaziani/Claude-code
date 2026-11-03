@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
+import {
+  animate,
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
 import { EXT } from "./data.js";
@@ -15,7 +22,9 @@ export const DESKTOP_FX =
   "(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
 
 export function useMediaQuery(query) {
-  const get = () => typeof window !== "undefined" && Boolean(window.matchMedia?.(query).matches);
+  const get = () =>
+    typeof window !== "undefined" &&
+    Boolean(window.matchMedia?.(query).matches);
   const [matches, setMatches] = useState(get);
   useEffect(() => {
     const mq = window.matchMedia?.(query);
@@ -80,7 +89,10 @@ export function Magnetic({ children, strength = 0.3, className = "" }) {
       ref={ref}
       onPointerMove={move}
       onPointerLeave={leave}
-      className={cn("inline-flex transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]", className)}
+      className={cn(
+        "inline-flex transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        className,
+      )}
     >
       {children}
     </span>
@@ -107,7 +119,13 @@ function Btn({
   );
   const cls = cn(variant, className);
   const el = href ? (
-    <a href={href} {...(isExternal(href) ? EXT : {})} className={cls} onClick={onClick} {...rest}>
+    <a
+      href={href}
+      {...(isExternal(href) ? EXT : {})}
+      className={cls}
+      onClick={onClick}
+      {...rest}
+    >
       {content}
     </a>
   ) : (
@@ -125,13 +143,23 @@ export const BlackButton = (p) => <Btn variant="btn-black" {...p} />;
    Si anima la proprietà `transform` intera e l'opacità: Motion le affida alle Web Animations del browser,
    che le eseguono sul compositore della GPU senza lavoro JavaScript per fotogramma. */
 
-export function Reveal({ children, delay = 0, className = "", y = 30, x = 0, as = "div", ...rest }) {
+export function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  y = 30,
+  x = 0,
+  as = "div",
+  ...rest
+}) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
     <Tag
       className={className}
-      initial={reduce ? false : { opacity: 0, transform: `translate(${x}px, ${y}px)` }}
+      initial={
+        reduce ? false : { opacity: 0, transform: `translate(${x}px, ${y}px)` }
+      }
       whileInView={{ opacity: 1, transform: "translate(0px, 0px)" }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, delay, ease: EASE }}
@@ -142,7 +170,14 @@ export function Reveal({ children, delay = 0, className = "", y = 30, x = 0, as 
   );
 }
 
-export function Stagger({ children, className = "", as = "div", gap = 0.08, amount = 0.15, ...rest }) {
+export function Stagger({
+  children,
+  className = "",
+  as = "div",
+  gap = 0.08,
+  amount = 0.15,
+  ...rest
+}) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
@@ -159,14 +194,24 @@ export function Stagger({ children, className = "", as = "div", gap = 0.08, amou
   );
 }
 
-export function StaggerItem({ children, className = "", as = "div", y = 30, ...rest }) {
+export function StaggerItem({
+  children,
+  className = "",
+  as = "div",
+  y = 30,
+  ...rest
+}) {
   const Tag = motion[as];
   return (
     <Tag
       className={className}
       variants={{
         hidden: { opacity: 0, transform: `translateY(${y}px)` },
-        shown: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.8, ease: EASE } },
+        shown: {
+          opacity: 1,
+          transform: "translateY(0px)",
+          transition: { duration: 0.8, ease: EASE },
+        },
       }}
       {...rest}
     >
@@ -201,22 +246,35 @@ export function Heading({
         initial={reduce ? false : "hidden"}
         whileInView="shown"
         viewport={{ once: true, amount: 0.5 }}
-        variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.09 } } }}
+        variants={{
+          hidden: {},
+          shown: { transition: { staggerChildren: 0.09 } },
+        }}
       >
         {lines.map((line, i) => {
           const l = typeof line === "string" ? { text: line } : line;
           return (
-            <span key={i} className="block overflow-hidden pb-[0.06em]">
+            // la maschera serve all'ingresso dal basso: pb ampio (discendenti di g, p, q, y) compensato dal margine negativo
+            <span
+              key={i}
+              className="-mb-[0.16em] block overflow-hidden pb-[0.22em]"
+            >
               <motion.span
                 className={cn(
                   "block",
-                  l.serif && "font-serif text-[1.08em] normal-case italic tracking-normal",
+                  l.serif &&
+                    "font-serif text-[1.08em] normal-case italic tracking-normal",
                   l.sun && "text-sun",
                 )}
-                style={l.serif ? { fontStretch: "100%", fontWeight: 400 } : undefined}
+                style={
+                  l.serif ? { fontStretch: "100%", fontWeight: 400 } : undefined
+                }
                 variants={{
                   hidden: { transform: "translateY(105%)" },
-                  shown: { transform: "translateY(0%)", transition: { duration: 0.9, ease: EASE } },
+                  shown: {
+                    transform: "translateY(0%)",
+                    transition: { duration: 0.9, ease: EASE },
+                  },
                 }}
               >
                 {l.text}
@@ -232,7 +290,12 @@ export function Heading({
 
 /* ───────────── Contatore ───────────── */
 
-export function CountUp({ value, duration = 1.4, decimals = 0, className = "" }) {
+export function CountUp({
+  value,
+  duration = 1.4,
+  decimals = 0,
+  className = "",
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.8 });
   const reduce = useReducedMotion();
@@ -265,8 +328,15 @@ export function CountUp({ value, duration = 1.4, decimals = 0, className = "" })
 
 function ParallaxLayer({ amount, children }) {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [`${-amount}%`, `${amount}%`]);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [`${-amount}%`, `${amount}%`],
+  );
   return (
     <motion.div ref={ref} className="absolute inset-[-8%_0]" style={{ y }}>
       {children}
@@ -307,7 +377,11 @@ export function RevealImage({
     />
   );
   return (
-    <div ref={ref} data-shown={reduce || inView || undefined} className={cn("relative overflow-hidden", className)}>
+    <div
+      ref={ref}
+      data-shown={reduce || inView || undefined}
+      className={cn("relative overflow-hidden", className)}
+    >
       {fx && parallax ? (
         <ParallaxLayer amount={parallax}>{img}</ParallaxLayer>
       ) : (
@@ -323,7 +397,13 @@ export function RevealImage({
 }
 
 /** Contenitore con inclinazione 3D e riflesso giallo che segue il cursore (solo computer). */
-export function TiltCard({ children, className = "", max = 6, as: Tag = "div", ...rest }) {
+export function TiltCard({
+  children,
+  className = "",
+  max = 6,
+  as: Tag = "div",
+  ...rest
+}) {
   const tilt = useTilt(max);
   return (
     <Tag
