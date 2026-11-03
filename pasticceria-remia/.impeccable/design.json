@@ -1,172 +1,232 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-20T09:53:54.360Z",
+  "generatedAt": "2026-11-03T14:14:47.000Z",
   "title": "Design System: Pasticceria F.lli Remia",
   "extensions": {
     "colorMeta": {
       "avorio": {
         "role": "neutral",
         "displayName": "Avorio",
-        "canonical": "#f8f1e4",
+        "canonical": "#fffcf7",
         "tonalRamp": [
-          "#2c2311",
-          "#51401f",
-          "#7a602e",
-          "#a6823f",
-          "#c3a060",
-          "#d5bd90",
-          "#e6d7bc",
-          "#f7f2e9"
+          "#0f0a03",
+          "#292319",
+          "#453f34",
+          "#645d51",
+          "#867f73",
+          "#aba497",
+          "#d1c9bc",
+          "#f6ede0"
+        ]
+      },
+      "panna": {
+        "role": "neutral",
+        "displayName": "Panna",
+        "canonical": "#fbf6ee",
+        "tonalRamp": [
+          "#100a03",
+          "#292319",
+          "#453f34",
+          "#645d51",
+          "#877f73",
+          "#aba397",
+          "#d1c9bc",
+          "#f6ede0"
         ]
       },
       "crema": {
         "role": "neutral",
         "displayName": "Crema",
-        "canonical": "#efe3cf",
+        "canonical": "#f6eee2",
         "tonalRamp": [
-          "#2c2211",
-          "#513e1f",
-          "#7a5e2e",
-          "#a6803f",
-          "#c39e60",
-          "#d5bb90",
-          "#e6d6bc",
-          "#f7f1e9"
+          "#100a03",
+          "#292319",
+          "#463f34",
+          "#645c51",
+          "#877f73",
+          "#aca397",
+          "#d2c9bc",
+          "#f6ede0"
         ]
       },
       "sabbia": {
         "role": "neutral",
         "displayName": "Sabbia",
-        "canonical": "#e2d1b5",
+        "canonical": "#eee2d0",
         "tonalRamp": [
-          "#2c2211",
-          "#513e20",
-          "#795d2f",
-          "#a57f41",
-          "#c19d61",
-          "#d4bb91",
-          "#e5d6bd",
-          "#f6f1e9"
+          "#110a01",
+          "#2b2215",
+          "#483e2f",
+          "#665c4c",
+          "#897f6e",
+          "#aea392",
+          "#d5c9b7",
+          "#f9eddb"
+        ]
+      },
+      "cipria": {
+        "role": "secondary",
+        "displayName": "Cipria",
+        "canonical": "#f5e6df",
+        "tonalRamp": [
+          "#120905",
+          "#2c211c",
+          "#493d37",
+          "#685a54",
+          "#8b7d76",
+          "#b0a19a",
+          "#d6c7c0",
+          "#fbebe3"
+        ]
+      },
+      "pistacchio": {
+        "role": "secondary",
+        "displayName": "Pistacchio",
+        "canonical": "#e9ecdc",
+        "tonalRamp": [
+          "#0b0c03",
+          "#232519",
+          "#3f4134",
+          "#5d5f52",
+          "#7f8274",
+          "#a4a697",
+          "#caccbd",
+          "#edf1e0"
         ]
       },
       "champagne": {
         "role": "primary",
         "displayName": "Champagne",
-        "canonical": "#cdae7a",
+        "canonical": "#c9a46a",
         "tonalRamp": [
-          "#2c2211",
-          "#513e1f",
-          "#7a5e2e",
-          "#a6803f",
-          "#c39e60",
-          "#d5bb90",
-          "#e6d6bc",
-          "#f7f1e9"
+          "#120900",
+          "#322001",
+          "#553a05",
+          "#78571a",
+          "#9d7a40",
+          "#c39e64",
+          "#eac489",
+          "#feecd0"
         ]
       },
       "champagne-chiaro": {
         "role": "primary",
         "displayName": "Champagne Light",
-        "canonical": "#ecdcbc",
+        "canonical": "#f0e3c9",
         "tonalRamp": [
-          "#2c2311",
-          "#51411f",
-          "#7a612e",
-          "#a6843f",
-          "#c3a260",
-          "#d5be90",
-          "#e6d8bc",
-          "#f7f2e9"
+          "#110a00",
+          "#2c220d",
+          "#493e29",
+          "#675c46",
+          "#8b7f67",
+          "#afa38b",
+          "#d6c9b0",
+          "#faedd3"
         ]
       },
       "champagne-scuro": {
         "role": "primary",
         "displayName": "Champagne Deep",
-        "canonical": "#7c5e2c",
+        "canonical": "#8a6236",
         "tonalRamp": [
-          "#2c2211",
-          "#513e1f",
-          "#7a5e2e",
-          "#a6803f",
-          "#c39e60",
-          "#d5bb90",
-          "#e6d6bc",
-          "#f7f1e9"
+          "#150800",
+          "#361e00",
+          "#5b3603",
+          "#7b5428",
+          "#a0774b",
+          "#c69b6e",
+          "#eec193",
+          "#ffebd7"
+        ]
+      },
+      "bronzo": {
+        "role": "primary",
+        "displayName": "Bronzo",
+        "canonical": "#9a6d3c",
+        "tonalRamp": [
+          "#140800",
+          "#361d00",
+          "#5b3603",
+          "#7e5321",
+          "#a37645",
+          "#ca9a68",
+          "#f1c08d",
+          "#feebd8"
         ]
       },
       "cioccolato": {
         "role": "neutral",
         "displayName": "Cioccolato",
-        "canonical": "#2b1a12",
+        "canonical": "#3a2a21",
         "tonalRamp": [
-          "#2b1a12",
-          "#4f3021",
-          "#774832",
-          "#a26244",
-          "#be8164",
-          "#d2a793",
-          "#e4cabe",
-          "#f6ede9"
+          "#150702",
+          "#2f2017",
+          "#4c3c32",
+          "#6b594f",
+          "#8f7c71",
+          "#b4a095",
+          "#dbc6ba",
+          "#feeadf"
         ]
       },
       "cioccolato-2": {
         "role": "neutral",
         "displayName": "Cioccolato 2",
-        "canonical": "#3a251a",
+        "canonical": "#4a372b",
         "tonalRamp": [
-          "#2a1b13",
-          "#4d3123",
-          "#744a34",
-          "#9e6547",
-          "#bb8468",
-          "#d0a995",
-          "#e3ccc0",
-          "#f6eeea"
+          "#160701",
+          "#311f14",
+          "#4e3b2f",
+          "#6d594c",
+          "#917b6e",
+          "#b69f91",
+          "#ddc5b6",
+          "#ffeadd"
         ]
       },
       "fondente": {
         "role": "neutral",
         "displayName": "Fondente",
-        "canonical": "#170e0a",
+        "canonical": "#241912",
         "tonalRamp": [
-          "#2b1a13",
-          "#4e3022",
-          "#754733",
-          "#a06146",
-          "#bd8166",
-          "#d1a794",
-          "#e3cabf",
-          "#f6edea"
+          "#120904",
+          "#2d211a",
+          "#493d35",
+          "#685b52",
+          "#8b7d74",
+          "#b0a198",
+          "#d7c7bd",
+          "#fbebe1"
         ]
       },
       "inchiostro": {
         "role": "neutral",
         "displayName": "Inchiostro",
-        "canonical": "#2b1a12",
+        "canonical": "#33251d",
         "tonalRamp": [
-          "#2b1a12",
-          "#4f3021",
-          "#774832",
-          "#a26244",
-          "#be8164",
-          "#d2a793",
-          "#e4cabe",
-          "#f6ede9"
+          "#140803",
+          "#2e2119",
+          "#4b3c34",
+          "#6a5a51",
+          "#8d7c73",
+          "#b2a096",
+          "#d9c6bc",
+          "#feeadf"
         ]
       },
       "tostato": {
         "role": "neutral",
         "displayName": "Tostato",
-        "canonical": "#674b38",
+        "canonical": "#6e5544",
         "tonalRamp": [
-          "#281d16",
-          "#493528",
-          "#6d4f3b",
-          "#956c51",
-          "#b28b71",
-          "#c9ae9c",
-          "#dfcfc4",
-          "#f4efeb"
+          "#160700",
+          "#341e0f",
+          "#513a2a",
+          "#715847",
+          "#957a68",
+          "#ba9e8c",
+          "#e1c4b1",
+          "#feeadd"
         ]
       },
       "verde": {
@@ -174,14 +234,14 @@
         "displayName": "Verde",
         "canonical": "#7cbf67",
         "tonalRamp": [
-          "#182b12",
-          "#2c4f21",
-          "#427632",
-          "#5aa244",
-          "#7abe65",
-          "#a2d293",
-          "#c7e4be",
-          "#ecf6e9"
+          "#020f00",
+          "#0d2c02",
+          "#1d4c09",
+          "#2e6f13",
+          "#52933c",
+          "#76b961",
+          "#9ce086",
+          "#d0fec3"
         ]
       },
       "rosso": {
@@ -189,14 +249,14 @@
         "displayName": "Rosso",
         "canonical": "#e07a62",
         "tonalRamp": [
-          "#2c1611",
-          "#51281f",
-          "#7a3d2e",
-          "#a6533f",
-          "#c37360",
-          "#d59d90",
-          "#e6c4bc",
-          "#f7ebe9"
+          "#1c0200",
+          "#450d02",
+          "#761700",
+          "#9a3b25",
+          "#c25f48",
+          "#eb846b",
+          "#feb6a5",
+          "#ffe9e4"
         ]
       }
     },
@@ -207,15 +267,15 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "One section title per sheet, staggered by word on scroll."
+        "purpose": "One section title per sheet, in cioccolato, staggered by word on scroll."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Chapter titles, order step titles, shelf banner, dialog title."
+        "purpose": "Chapter titles, order step titles, shelf banner, dialog title, the address."
       },
       "numeral": {
         "displayName": "Numeral",
-        "purpose": "Foil numbers in the numbers band and the rating, count-up once."
+        "purpose": "Bronze foil numbers in the numbers band and the rating, count-up once."
       },
       "quote": {
         "displayName": "Quote",
@@ -223,7 +283,7 @@
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running text, 44 to 54ch."
+        "purpose": "Running text, 44 to 54ch; review text at 1.02rem / 1.65."
       },
       "lede": {
         "displayName": "Lede",
@@ -231,14 +291,39 @@
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Buttons, tabs, legends, step names, card category tags. Sentence case."
+        "purpose": "Buttons, tabs, legends, step names, shelf tags. Sentence case."
       }
     },
     "shadows": [
       {
-        "name": "passe-partout",
-        "value": "0 1px 0 rgb(255 255 255 / 0.7) inset, 0 28px 50px -32px rgb(43 26 18 / 0.55), 0 6px 14px -8px rgb(43 26 18 / 0.18)",
-        "purpose": "Framed photos and quote cards."
+        "name": "mat",
+        "value": "0 1px 2px rgb(58 42 33 / 0.05), 0 18px 40px -22px rgb(58 42 33 / 0.28)",
+        "purpose": "White mat: framed photos, number cards, vetrina quote cards, the hours card."
+      },
+      {
+        "name": "mat-lifted",
+        "value": "0 1px 2px rgb(58 42 33 / 0.05), 0 28px 50px -24px rgb(58 42 33 / 0.38)",
+        "purpose": "Vetrina cards on hover, with the 4px lift."
+      },
+      {
+        "name": "review",
+        "value": "0 1px 2px rgb(58 42 33 / 0.05), 0 18px 36px -24px rgb(58 42 33 / 0.3)",
+        "purpose": "Review cards."
+      },
+      {
+        "name": "tab-track",
+        "value": "0 1px 2px rgb(58 42 33 / 0.05), 0 10px 24px -16px rgb(58 42 33 / 0.25)",
+        "purpose": "The vetrina filter track."
+      },
+      {
+        "name": "button-champagne-hover",
+        "value": "0 14px 28px -14px rgb(138 98 54 / 0.65)",
+        "purpose": "Champagne button on hover, with the 2px lift."
+      },
+      {
+        "name": "button-cioccolato-hover",
+        "value": "0 14px 28px -14px rgb(36 25 18 / 0.6)",
+        "purpose": "Chocolate button on hover, with the 2px lift."
       },
       {
         "name": "lifted-card",
@@ -246,7 +331,7 @@
         "purpose": "The order form card."
       },
       {
-        "name": "paper-on-dark",
+        "name": "ticket",
         "value": "0 30px 60px -36px rgb(0 0 0 / 0.9)",
         "purpose": "The ticket."
       },
@@ -263,7 +348,7 @@
       {
         "name": "hairline",
         "value": "inset 0 0 0 1px rgb(236 220 188 / 0.14)",
-        "purpose": "Edges on chocolate: review cards, map well, chips, fields (0.12 to 0.22 alpha)."
+        "purpose": "Edges on dark: chips, fields, stepper track on chocolate, the open badge on the entrance (0.12 to 0.22 alpha)."
       },
       {
         "name": "plaque",
@@ -290,12 +375,22 @@
       {
         "name": "pill-spring",
         "value": "spring stiffness 380 to 420, damping 32 to 34",
-        "purpose": "Shared sliding pill in nav, tabs, and today's hours row (300/30)."
+        "purpose": "Shared sliding pill in nav (420/34), vetrina tabs (380/32), and today's hours row (300/30)."
       },
       {
-        "name": "tilt-spring",
-        "value": "spring stiffness 260, damping 24, mass 0.5; max 7deg",
-        "purpose": "3D tilt of vetrina cards, mouse only."
+        "name": "card-lift",
+        "value": "translateY(-4px) 500ms ease-out-expo; photo scale(1.06) 900ms ease-out-expo",
+        "purpose": "Vetrina cards on hover devices; still under reduced motion."
+      },
+      {
+        "name": "button-lift",
+        "value": "translateY(-2px) 300ms ease-out-expo, shadow 300ms ease",
+        "purpose": "Every .btn on hover devices; none under reduced motion."
+      },
+      {
+        "name": "hours-scale",
+        "value": "scale 0.94 to 1, scroll-linked",
+        "purpose": "The hours card as it enters."
       },
       {
         "name": "shine",
@@ -304,8 +399,8 @@
       },
       {
         "name": "marquee",
-        "value": "75s and 85s linear, opposite directions",
-        "purpose": "Review rows; paused on hover or focus."
+        "value": "110s linear, one row",
+        "purpose": "The single review row; paused on hover or focus, hand-scrolled under reduced motion."
       },
       {
         "name": "breathe",
@@ -314,7 +409,7 @@
       },
       {
         "name": "press",
-        "value": "scale 0.97 (chips 0.94, steppers 0.88)",
+        "value": "scale 0.98 on .btn:active (0.97 via motion, chips 0.94, steppers 0.88)",
         "purpose": "Tap feedback."
       }
     ],
@@ -346,17 +441,25 @@
       "name": "Champagne Button",
       "kind": "button",
       "refersTo": "button-champagne",
-      "description": "Primary action: order, call, send. Light band sweeps across on hover.",
+      "description": "Primary action: order, call, send. Lifts 2px with a soft shadow; a light band sweeps across on hover.",
       "html": "<a class=\"ds-btn ds-btn-champagne\" href=\"#\">Ordina e prenota <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
-      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;transition:background-color 240ms ease,color 240ms ease,box-shadow 240ms ease,transform 240ms cubic-bezier(0.16,1,0.3,1);text-decoration:none;position:relative;overflow:hidden;isolation:isolate}.ds-btn-champagne{background:var(--color-champagne,#cdae7a);color:var(--color-fondente,#170e0a)}.ds-btn-champagne::after{content:\"\";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgb(255 248 228/0.6) 50%,transparent 65%);transform:translateX(-110%);transition:transform 700ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-champagne:hover{background:#dbbe8c;transform:translateY(-2px)}.ds-btn-champagne:hover::after{transform:translateX(110%)}.ds-btn:active{transform:scale(0.97)}.ds-btn:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}.ds-btn svg{transition:transform 300ms}.ds-btn:hover svg{transform:translateX(4px)}"
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;isolation:isolate;transition:background-color 240ms ease,color 240ms ease,box-shadow 300ms ease,transform 300ms cubic-bezier(0.16,1,0.3,1)}.ds-btn:hover{transform:translateY(-2px)}.ds-btn:active{transform:translateY(0) scale(0.98)}.ds-btn:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}.ds-btn-champagne{background:var(--color-champagne,#c9a46a);color:var(--color-fondente,#241912)}.ds-btn-champagne::after{content:\"\";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgb(255 248 228/0.6) 50%,transparent 65%);transform:translateX(-110%);transition:transform 700ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-champagne:hover{background:#d4b27c;box-shadow:0 14px 28px -14px rgb(138 98 54/0.65)}.ds-btn-champagne:hover::after{transform:translateX(110%)}.ds-btn svg{transition:transform 300ms}.ds-btn:hover svg{transform:translateX(4px)}"
+    },
+    {
+      "name": "Chocolate Button",
+      "kind": "button",
+      "refersTo": "button-cioccolato",
+      "description": "The CTA on light grounds: shelf banners, the call button in the hours card.",
+      "html": "<div style=\"background:#f5e6df;padding:24px;border-radius:1.75rem\"><a class=\"ds-btn ds-btn-cioccolato\" href=\"#\">Ordina un vassoio <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a></div>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;isolation:isolate;transition:background-color 240ms ease,color 240ms ease,box-shadow 300ms ease,transform 300ms cubic-bezier(0.16,1,0.3,1)}.ds-btn:hover{transform:translateY(-2px)}.ds-btn:active{transform:translateY(0) scale(0.98)}.ds-btn:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}.ds-btn-cioccolato{background:var(--color-cioccolato,#3a2a21);color:var(--color-avorio,#fffcf7)}.ds-btn-cioccolato:hover{background:var(--color-cioccolato-2,#4a372b);box-shadow:0 14px 28px -14px rgb(36 25 18/0.6)}.ds-btn svg{transition:transform 300ms}.ds-btn:hover svg{transform:translateX(4px)}"
     },
     {
       "name": "Line Button",
       "kind": "button",
       "refersTo": "button-line",
-      "description": "Secondary action; takes the text color of its ground.",
-      "html": "<div style=\"background:#2b1a12;padding:24px;border-radius:2rem\"><a class=\"ds-btn-line\" href=\"#\">Indicazioni stradali</a></div>",
-      "css": ".ds-btn-line{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;transition:background-color 240ms ease,color 240ms ease,box-shadow 240ms ease,transform 240ms cubic-bezier(0.16,1,0.3,1);text-decoration:none;background:transparent;color:#ecdcbc;box-shadow:inset 0 0 0 1.5px currentColor}.ds-btn-line:hover{background:rgb(205 174 122/0.14);transform:translateY(-2px)}.ds-btn-line:active{transform:scale(0.97)}.ds-btn-line:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}"
+      "description": "Secondary action; takes the text color of its ground (cioccolato on light, avorio on dark).",
+      "html": "<div style=\"background:#e9ecdc;padding:24px;border-radius:1.75rem\"><a class=\"ds-btn ds-btn-line\" href=\"#\">Tutte le recensioni su Google</a></div>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;font-family:Manrope,system-ui,sans-serif;font-weight:600;font-size:1rem;border:0;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;isolation:isolate;transition:background-color 240ms ease,color 240ms ease,box-shadow 300ms ease,transform 300ms cubic-bezier(0.16,1,0.3,1)}.ds-btn:hover{transform:translateY(-2px)}.ds-btn:active{transform:translateY(0) scale(0.98)}.ds-btn:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}.ds-btn-line{background:transparent;color:#3a2a21;box-shadow:inset 0 0 0 1.5px currentColor}.ds-btn-line:hover{background:rgb(205 174 122/0.14)}"
     },
     {
       "name": "Chips",
@@ -364,7 +467,15 @@
       "refersTo": "chip",
       "description": "Order-form choices on chocolate; pressed fills champagne.",
       "html": "<div class=\"ds-chip-wrap\"><button class=\"ds-chip\" aria-pressed=\"true\">Mignon misti</button><button class=\"ds-chip\" aria-pressed=\"false\">Pasticceria da tè</button></div>",
-      "css": ".ds-chip-wrap{display:flex;gap:8px;flex-wrap:wrap;background:#2b1a12;padding:24px;border-radius:2rem}.ds-chip{display:inline-flex;align-items:center;min-height:2.75rem;padding:0.35rem 1rem;border-radius:999px;border:0;cursor:pointer;font-family:Manrope,system-ui,sans-serif;font-size:0.97rem;font-weight:500;color:#ecdcbc;background:rgb(248 241 228/0.06);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.22);transition:background-color 200ms,color 200ms}.ds-chip:not([aria-pressed=\"true\"]):hover{background:rgb(248 241 228/0.12)}.ds-chip[aria-pressed=\"true\"]{background:#cdae7a;color:#170e0a;box-shadow:inset 0 0 0 1px #cdae7a}.ds-chip:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}"
+      "css": ".ds-chip-wrap{display:flex;gap:8px;flex-wrap:wrap;background:#3a2a21;padding:24px;border-radius:2rem}.ds-chip{display:inline-flex;align-items:center;min-height:2.75rem;padding:0.35rem 1rem;border-radius:999px;border:0;cursor:pointer;font-family:Manrope,system-ui,sans-serif;font-size:0.97rem;font-weight:500;color:#f0e3c9;background:rgb(248 241 228/0.06);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.22);transition:background-color 200ms,color 200ms}.ds-chip:not([aria-pressed=\"true\"]):hover{background:rgb(248 241 228/0.12)}.ds-chip[aria-pressed=\"true\"]{background:#c9a46a;color:#241912;box-shadow:inset 0 0 0 1px #c9a46a}.ds-chip:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}"
+    },
+    {
+      "name": "Shelf Tag",
+      "kind": "chip",
+      "refersTo": "shelf-tag",
+      "description": "Static category pill on vetrina cards, in the shelf's pastel.",
+      "html": "<div class=\"ds-tags\"><span class=\"ds-tag\" style=\"background:#f5e6df\">Mignon</span><span class=\"ds-tag\" style=\"background:#f0e3c9\">Torte</span><span class=\"ds-tag\" style=\"background:#eee2d0\">Paste e lievitati</span><span class=\"ds-tag\" style=\"background:#e9ecdc\">Da tè</span><span class=\"ds-tag\" style=\"background:#f6eee2\">Salato</span></div>",
+      "css": ".ds-tags{display:flex;flex-wrap:wrap;gap:8px;background:#fffcf7;padding:20px;border-radius:1.5rem}.ds-tag{display:inline-block;border-radius:999px;padding:2px 10px;font-family:Manrope,system-ui,sans-serif;font-size:0.82rem;font-weight:600;color:#3a2a21}"
     },
     {
       "name": "Field",
@@ -372,7 +483,7 @@
       "refersTo": "field",
       "description": "Text and date fields, on chocolate only.",
       "html": "<label class=\"ds-field-wrap\"><span class=\"ds-field-label\">La dedica <span>(facoltativa)</span></span><input class=\"ds-field\" placeholder=\"Es. Auguri Camilla\"></label>",
-      "css": ".ds-field-wrap{display:block;background:#2b1a12;padding:24px;border-radius:2rem;font-family:Manrope,system-ui,sans-serif}.ds-field-label{display:block;margin-bottom:12px;font-weight:600;color:#f8f1e4}.ds-field-label span{font-weight:400;color:rgb(236 220 188/0.8)}.ds-field{width:100%;min-height:3.25rem;border-radius:14px;border:0;background:rgb(248 241 228/0.07);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.22);padding:0.8rem 1rem;color:#f8f1e4;font:inherit;font-size:1rem;color-scheme:dark;transition:box-shadow 200ms,background-color 200ms}.ds-field::placeholder{color:rgb(236 220 188/0.55)}.ds-field:focus{outline:none;box-shadow:inset 0 0 0 2px #cdae7a;background:rgb(248 241 228/0.1)}"
+      "css": ".ds-field-wrap{display:block;background:#3a2a21;padding:24px;border-radius:2rem;font-family:Manrope,system-ui,sans-serif}.ds-field-label{display:block;margin-bottom:12px;font-weight:600;color:#fffcf7}.ds-field-label span{font-weight:400;color:rgb(236 220 188/0.8)}.ds-field{width:100%;min-height:3.25rem;border-radius:14px;border:0;background:rgb(248 241 228/0.07);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.22);padding:0.8rem 1rem;color:#fffcf7;font:inherit;font-size:1rem;color-scheme:dark;transition:box-shadow 200ms,background-color 200ms}.ds-field::placeholder{color:rgb(236 220 188/0.55)}.ds-field:focus{outline:none;box-shadow:inset 0 0 0 2px #c9a46a;background:rgb(248 241 228/0.1)}"
     },
     {
       "name": "Glass Header",
@@ -380,66 +491,95 @@
       "refersTo": "",
       "description": "Fixed floating pill with the foil sign, section links on a sliding pill, Mappa and Chiama shortcuts.",
       "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-mark\">Pasticceria F.lli Remia</span><a href=\"#\">Chi siamo</a><a href=\"#\">La vetrina</a><a href=\"#\">Ordina</a><a class=\"ds-nav-call\" href=\"#\">06 231 0948</a></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;gap:4px;padding:6px 6px 6px 20px;border-radius:999px;background:rgb(23 14 10/0.8);backdrop-filter:blur(20px) saturate(1.4);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.16),0 18px 40px -22px rgb(0 0 0/0.7);font-family:Manrope,system-ui,sans-serif}.ds-nav-mark{margin-right:auto;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-style:italic;font-size:1.3rem;background:linear-gradient(180deg,#f3e3c0,#e2c792 35%,#c09a5c 65%,#9a7841);-webkit-background-clip:text;background-clip:text;color:transparent}.ds-nav a{padding:10px 14px;border-radius:999px;color:rgb(248 241 228/0.9);font-size:0.93rem;font-weight:500;text-decoration:none;transition:background-color 200ms,color 200ms}.ds-nav a:hover{background:rgb(255 255 255/0.1);color:#f8f1e4}.ds-nav a.ds-nav-call{background:#cdae7a;color:#170e0a;font-weight:600}.ds-nav a.ds-nav-call:hover{background:#dbbe8c}.ds-nav a:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}"
+      "css": ".ds-nav{display:flex;align-items:center;gap:4px;padding:6px 6px 6px 20px;border-radius:999px;background:rgb(23 14 10/0.8);backdrop-filter:blur(20px) saturate(1.4);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.16),0 18px 40px -22px rgb(0 0 0/0.7);font-family:Manrope,system-ui,sans-serif}.ds-nav-mark{margin-right:auto;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-style:italic;font-size:1.3rem;background:linear-gradient(180deg,#f3e3c0,#e2c792 35%,#c09a5c 65%,#9a7841);-webkit-background-clip:text;background-clip:text;color:transparent}.ds-nav a{padding:10px 14px;border-radius:999px;color:rgb(248 241 228/0.9);font-size:0.93rem;font-weight:500;text-decoration:none;transition:background-color 200ms,color 200ms}.ds-nav a:hover{background:rgb(255 255 255/0.1);color:#fffcf7}.ds-nav a.ds-nav-call{background:#c9a46a;color:#241912;font-weight:600}.ds-nav a.ds-nav-call:hover{background:#dbbe8c}.ds-nav a:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}"
     },
     {
-      "name": "Passe-partout Photo Card",
+      "name": "Vetrina Tabs",
+      "kind": "nav",
+      "refersTo": "tab-track",
+      "description": "Shelf filter: avorio track, a chocolate pill under the active tab.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" aria-selected=\"true\">Tutto</button><button class=\"ds-tab\" aria-selected=\"false\">Mignon</button><button class=\"ds-tab\" aria-selected=\"false\">Torte</button><button class=\"ds-tab\" aria-selected=\"false\">Da tè</button></div>",
+      "css": ".ds-tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:1.75rem;background:#fffcf7;box-shadow:0 1px 2px rgb(58 42 33/0.05),0 10px 24px -16px rgb(58 42 33/0.25)}.ds-tab{min-height:2.75rem;padding:0 16px;border:0;border-radius:999px;background:transparent;cursor:pointer;font-family:Manrope,system-ui,sans-serif;font-size:0.97rem;font-weight:600;color:#6e5544;transition:background-color 300ms,color 300ms}.ds-tab:hover{color:#3a2a21}.ds-tab[aria-selected=\"true\"]{background:#3a2a21;color:#fffcf7}.ds-tab:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}"
+    },
+    {
+      "name": "Vetrina Card",
       "kind": "card",
       "refersTo": "photo-frame",
-      "description": "Vetrina card: ivory mat, framed photo, category label and serif caption.",
-      "html": "<button class=\"ds-frame\"><span class=\"ds-frame-photo\"></span><span class=\"ds-frame-cat\">Mignon</span><span class=\"ds-frame-cap\">Tartellette al cioccolato</span></button>",
-      "css": ".ds-frame{display:flex;flex-direction:column;width:220px;text-align:left;border:0;cursor:pointer;background:#f8f1e4;padding:0.45rem;border-radius:1.4rem;box-shadow:0 1px 0 rgb(255 255 255/0.7) inset,0 28px 50px -32px rgb(43 26 18/0.55),0 6px 14px -8px rgb(43 26 18/0.18);transition:transform 400ms cubic-bezier(0.16,1,0.3,1)}.ds-frame:hover{transform:perspective(1100px) rotateX(3deg) rotateY(-4deg)}.ds-frame:focus-visible{outline:2px solid #cdae7a;outline-offset:3px}.ds-frame-photo{display:block;aspect-ratio:4/5;border-radius:1rem;background:linear-gradient(160deg,#e2d1b5,#674b38)}.ds-frame-cat{padding:12px 6px 0;font-family:Manrope,system-ui,sans-serif;font-size:0.86rem;font-weight:600;color:#7c5e2c}.ds-frame-cap{padding:2px 6px 6px;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-size:1.22rem;line-height:1.15;color:#2b1a12}"
+      "description": "White mat card: lifts 4px on hover while its photo zooms 1.06; shelf tag over a serif caption.",
+      "html": "<button class=\"ds-card\"><span class=\"ds-card-well\"><span class=\"ds-card-photo\"></span></span><span class=\"ds-card-body\"><span class=\"ds-tag-s\">Mignon</span><span class=\"ds-card-cap\">Tartellette al cioccolato</span></span></button>",
+      "css": ".ds-card{display:flex;flex-direction:column;width:220px;text-align:left;border:0;cursor:pointer;background:#fffcf7;padding:0.5rem;border-radius:1.5rem;box-shadow:0 1px 2px rgb(58 42 33/0.05),0 18px 40px -22px rgb(58 42 33/0.28);transition:transform 500ms cubic-bezier(0.16,1,0.3,1),box-shadow 500ms cubic-bezier(0.16,1,0.3,1)}.ds-card:hover{transform:translateY(-4px);box-shadow:0 1px 2px rgb(58 42 33/0.05),0 28px 50px -24px rgb(58 42 33/0.38)}.ds-card:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}.ds-card-well{display:block;aspect-ratio:4/5;overflow:hidden;border-radius:1.05rem;background:#f6eee2}.ds-card-photo{display:block;height:100%;background:linear-gradient(160deg,#eee2d0,#6e5544);transition:transform 900ms cubic-bezier(0.16,1,0.3,1)}.ds-card:hover .ds-card-photo{transform:scale(1.06)}.ds-card-body{display:flex;flex-direction:column;align-items:flex-start;padding:14px 8px 8px}.ds-tag-s{border-radius:999px;padding:2px 10px;background:#f5e6df;font-family:Manrope,system-ui,sans-serif;font-size:0.82rem;font-weight:600;color:#3a2a21}.ds-card-cap{margin-top:8px;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-size:1.22rem;line-height:1.15;color:#3a2a21}"
+    },
+    {
+      "name": "Number Card",
+      "kind": "card",
+      "refersTo": "number-card",
+      "description": "Chi siamo numbers band: white card, bronze foil numeral, tostato label.",
+      "html": "<div class=\"ds-num\"><span class=\"ds-num-v\">1979</span><span class=\"ds-num-l\">produzione propria dal</span></div>",
+      "css": ".ds-num{display:flex;flex-direction:column;gap:8px;width:220px;padding:24px;border-radius:1.5rem;background:#fffcf7;box-shadow:0 1px 2px rgb(58 42 33/0.05),0 18px 40px -22px rgb(58 42 33/0.28)}.ds-num-v{font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:600;font-size:3.6rem;line-height:1;font-variant-numeric:tabular-nums;background-image:linear-gradient(180deg,#c9a46a 0%,#a97d48 45%,#7f5a30 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}.ds-num-l{font-family:Manrope,system-ui,sans-serif;font-size:0.98rem;color:#6e5544}"
     },
     {
       "name": "Review Card",
       "kind": "card",
-      "refersTo": "",
-      "description": "Verbatim Google review in the moving rows.",
-      "html": "<figure class=\"ds-review\"><span class=\"ds-stars\">★★★★★</span><blockquote>Pasticceria che si tramanda da padre in figlio, tutta una famiglia.</blockquote><figcaption><span class=\"ds-initial\">M</span><span><b>Maurizio T.</b><small>Google · 2024</small></span></figcaption></figure>",
-      "css": ".ds-review{margin:0;width:25rem;max-width:100%;display:flex;flex-direction:column;gap:24px;padding:24px;border-radius:1.75rem;background:#2b1a12;box-shadow:inset 0 0 0 1px rgb(236 220 188/0.14);font-family:Manrope,system-ui,sans-serif}.ds-stars{color:#cdae7a;letter-spacing:2px}.ds-review blockquote{margin:0;font-size:1.04rem;line-height:1.65;color:rgb(248 241 228/0.9)}.ds-review figcaption{display:flex;align-items:center;gap:12px}.ds-initial{display:grid;place-items:center;width:44px;height:44px;border-radius:999px;background:#cdae7a;color:#170e0a;font-family:\"Cormorant Garamond\",serif;font-style:italic;font-weight:600;font-size:1.4rem}.ds-review b{display:block;color:#f8f1e4}.ds-review small{display:block;font-size:0.9rem;color:rgb(236 220 188/0.85)}"
+      "refersTo": "review-card",
+      "description": "Verbatim Google review, minimal white card in the single moving row on pistacchio.",
+      "html": "<div style=\"background:#e9ecdc;padding:24px\"><figure class=\"ds-review\"><div class=\"ds-review-top\"><span class=\"ds-stars\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z\"/></svg><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z\"/></svg><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z\"/></svg><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z\"/></svg><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z\"/></svg></span><span class=\"ds-src\">5,0 · Google</span></div><blockquote>Pasticceria che si tramanda da padre in figlio, tutta una famiglia.</blockquote><figcaption><span class=\"ds-initial\">M</span><span><b>Maurizio T.</b><small>Local Guide · 2024</small></span></figcaption></figure></div>",
+      "css": ".ds-review{margin:0;width:25rem;max-width:100%;display:flex;flex-direction:column;gap:20px;padding:28px;border-radius:1.5rem;background:#fffcf7;box-shadow:0 1px 2px rgb(58 42 33/0.05),0 18px 36px -24px rgb(58 42 33/0.3);font-family:Manrope,system-ui,sans-serif}.ds-review-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.ds-stars{display:flex;gap:2px;color:#c9a46a}.ds-src{font-size:0.85rem;font-weight:600;color:#6e5544}.ds-review blockquote{margin:0;font-size:1.02rem;line-height:1.65;color:#33251d}.ds-review figcaption{display:flex;align-items:center;gap:12px}.ds-initial{display:grid;place-items:center;width:40px;height:40px;border-radius:999px;background:#e9ecdc;color:#3a2a21;font-family:\"Cormorant Garamond\",Garamond,serif;font-style:italic;font-weight:600;font-size:1.3rem}.ds-review b{display:block;font-weight:600;color:#3a2a21}.ds-review small{display:block;font-size:0.86rem;color:#6e5544}"
+    },
+    {
+      "name": "Shelf Banner",
+      "kind": "custom",
+      "refersTo": "shelf-banner",
+      "description": "Pastel field per shelf with serif title, text, quote, and a chocolate CTA.",
+      "html": "<div class=\"ds-banner\"><div><h3>Mignon</h3><p>Vassoi di pasticceria mignon per ogni festa.</p><p class=\"ds-banner-q\">«Mignon squisiti.» <span>Recensione Google</span></p></div><a class=\"ds-banner-cta\" href=\"#\">Ordina un vassoio <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a></div>",
+      "css": ".ds-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;padding:36px;border-radius:1.75rem;background:#f5e6df;color:#3a2a21;font-family:Manrope,system-ui,sans-serif}.ds-banner h3{margin:0;font-family:\"Cormorant Garamond\",Garamond,serif;font-weight:500;font-size:2.5rem;line-height:1;letter-spacing:-0.012em}.ds-banner p{margin:12px 0 0;max-width:54ch;font-size:1.05rem;color:#33251d}.ds-banner .ds-banner-q{font-size:0.98rem;font-style:italic;color:#8a6236}.ds-banner-q span{font-style:normal;color:#6e5544}.ds-banner-cta{display:inline-flex;align-items:center;gap:0.65rem;min-height:3.25rem;padding:0.5rem 1.5rem;border-radius:999px;background:#3a2a21;color:#fffcf7;font-weight:600;text-decoration:none;transition:background-color 240ms,box-shadow 300ms,transform 300ms cubic-bezier(0.16,1,0.3,1)}.ds-banner-cta:hover{background:#4a372b;transform:translateY(-2px);box-shadow:0 14px 28px -14px rgb(36 25 18/0.6)}.ds-banner-cta:focus-visible{outline:2px solid #c9a46a;outline-offset:3px}"
     },
     {
       "name": "Open Badge",
       "kind": "custom",
       "refersTo": "",
-      "description": "Live open/closed state with a breathing verde dot.",
-      "html": "<div style=\"background:#170e0a;padding:24px\"><span class=\"ds-open\"><span class=\"ds-dot\"></span><span><strong>Aperto</strong> · chiude alle 20:30</span></span></div>",
-      "css": ".ds-open{display:inline-flex;align-items:center;gap:10px;min-height:2.5rem;padding:8px 16px;border-radius:1.4rem;background:rgb(255 255 255/0.08);box-shadow:inset 0 0 0 1px rgb(236 220 188/0.2);color:#f8f1e4;font-family:Manrope,system-ui,sans-serif;font-size:0.94rem}.ds-open strong{font-weight:600}.ds-dot{position:relative;width:10px;height:10px;border-radius:999px;background:#7cbf67}.ds-dot::before{content:\"\";position:absolute;inset:0;border-radius:999px;background:#7cbf67;animation:ds-breathe 2.4s ease-out infinite}@keyframes ds-breathe{0%,100%{transform:scale(1);opacity:0.9}50%{transform:scale(2.2);opacity:0}}"
+      "description": "Live open/closed state with a breathing verde dot; crema in the hours card, translucent on the entrance.",
+      "html": "<div style=\"background:#fffcf7;padding:24px;border-radius:1.5rem\"><span class=\"ds-open\"><span class=\"ds-dot\"></span><span><strong>Aperto</strong> · chiude alle 20:30</span></span></div>",
+      "css": ".ds-open{display:inline-flex;align-items:center;gap:10px;min-height:2.5rem;padding:8px 16px;border-radius:1.4rem;background:#f6eee2;color:#3a2a21;font-family:Manrope,system-ui,sans-serif;font-size:0.94rem}.ds-open strong{font-weight:600}.ds-dot{position:relative;width:10px;height:10px;border-radius:999px;background:#7cbf67}.ds-dot::before{content:\"\";position:absolute;inset:0;border-radius:999px;background:#7cbf67;animation:ds-breathe 2.4s ease-out infinite}@keyframes ds-breathe{0%,100%{transform:scale(1);opacity:0.9}50%{transform:scale(2.2);opacity:0}}"
     },
     {
       "name": "Dedication Plaque",
       "kind": "custom",
       "refersTo": "plaque",
-      "description": "Live preview of the cake dedication, tilted on a sabbia ground.",
+      "description": "Live preview of the cake dedication, tilted on a warm sand radial ground.",
       "html": "<div class=\"ds-plaque-ground\"><div class=\"ds-plaque\">Auguri Camilla</div></div>",
       "css": ".ds-plaque-ground{display:grid;place-items:center;padding:28px 16px;border-radius:1.4rem;background:radial-gradient(120% 120% at 50% 0%,#f3e6cf,#e2d1b5)}.ds-plaque{transform:rotate(-2.5deg);padding:16px 28px;border-radius:0.9rem;background:#3d2316;color:#fbf0dc;font-family:\"Cormorant Garamond\",serif;font-style:italic;font-weight:600;font-size:2rem;line-height:1.2;box-shadow:inset 0 2px 0 rgb(255 255 255/0.1),inset 0 -3px 0 rgb(0 0 0/0.3),0 18px 34px -16px rgb(0 0 0/0.8)}"
     }
   ],
   "narrative": {
-    "northStar": "Champagne e cioccolato",
-    "overview": "The page is a pastry tray: deep cream paper, champagne-gold cake boards and ribbon, dark chocolate glaze. Light grounds (avorio, crema, sabbia) alternate with chocolate panels, and every surface after the entrance slides up over the previous one as a rounded sheet, like a new tray set on the counter. The shop's own sign lettering, vectorised from the 1979 facade, is the signature: it appears in champagne foil in the glass header and full width in the footer, and in champagne-scuro on the order ticket.\n\nType is a two-voice pairing: Cormorant Garamond speaks (section titles, the shop name, quotes, numerals), Manrope reads (body, labels, controls). Motion is generous but physical: text rises line by line out of a mask, photos parallax inside their frames, cards tilt toward the mouse, a sliding pill marks the active choice. Everything collapses to still states under reduced motion.\n\nDensity is relaxed: large serif titles, short measured paragraphs (44 to 54ch), photos always inside an ivory passe-partout. Real material only: the shop's photos, the real hours, real Google reviews quoted verbatim.",
+    "northStar": "Panna, pastelli e bronzo",
+    "overview": "The page is a pastry counter in daylight: whipped cream and paper doilies for the grounds, the pastel icings of the counter (blush, pistachio) as quiet fields, gold and bronze for the cake boards and the ribbon, chocolate only where contrast is needed. Every surface after the entrance slides up over the previous one as a rounded sheet, like a new tray set on the counter; the sheets step through crema, panna, cipria, pistacchio and crema again, and the night ground (fondente) appears only at the two ends, under the entrance video and in the footer. The shop's own sign lettering, vectorised from the 1979 facade, is the signature: in champagne foil in the glass header and full width in the footer, in champagne-scuro on the order ticket.\n\nType is a two-voice pairing: Cormorant Garamond speaks (section titles, the shop name, quotes, numerals), Manrope reads (body, labels, controls). Motion is generous but light-handed: text rises out of a mask, photos parallax inside their frames, cards lift a few pixels and their photo zooms gently, buttons lift 2px with a soft shadow, a sliding pill marks the active choice. Everything collapses to still states under reduced motion.\n\nDensity is relaxed: large serif titles, short measured paragraphs (44 to 54ch), photos and light cards always on a white mat with a soft two-layer shadow. Real material only: the shop's photos, the real hours, real Google reviews quoted verbatim.",
     "keyCharacteristics": [
-      "Cream grounds, champagne accent, chocolate for text, panels, and the night ground.",
+      "Cream and pastel grounds, champagne and bronze as the metal, chocolate for text, the order panel, and the two dark ends.",
       "Sections overlap as rounded sheets (2.5rem, 3.5rem from md) pulled up 40px / 56px.",
-      "The 1979 sign lettering in champagne foil is the only logo.",
-      "Photos sit in an ivory passe-partout with a long, low chocolate shadow.",
+      "The 1979 sign lettering in foil is the only logo.",
+      "Photos and light cards sit on a white mat with a soft, low, chocolate-tinted two-layer shadow.",
       "Pills for every action; one fill per button.",
       "Glass only on what floats."
     ],
     "rules": [
       {
         "name": "The One Metal Rule",
-        "body": "Champagne is the only accent. On light grounds it appears as champagne-scuro text or as a fill under fondente text, never as champagne text on cream.",
+        "body": "Champagne is the only accent. On light grounds it appears as champagne-scuro text, as bronze foil, as a fill under fondente text, or as the star glyphs; never as champagne running text on cream or pastel.",
         "section": "colors"
       },
       {
         "name": "The Foil Rule",
-        "body": "The vertical champagne foil gradient (`.foil`, `.insegna-foil`) is reserved for the shop's name, the sign lettering, and the big numerals (numbers band, rating). Never on body copy or buttons.",
+        "body": "Foil is reserved for the shop's name, the sign lettering, and the big numerals. Champagne foil (`.foil`, `.insegna-foil`) on dark grounds; bronze foil (`.foil-bronze`, #c9a46a to #7f5a30) on light grounds (numbers band, rating). Never on body copy or buttons.",
+        "section": "colors"
+      },
+      {
+        "name": "The Pastel Field Rule",
+        "body": "Cipria and pistacchio are grounds and quiet fields (sheets, shelf banners, shelf tags, the initial disc), always under chocolate or inchiostro text; never text colors and never button fills.",
         "section": "colors"
       },
       {
         "name": "The Two Voices Rule",
-        "body": "Serif for what the shop says, sans for what the visitor reads or operates. Controls, legends, and data are never serif, except the stepper value and numerals.",
+        "body": "Serif for what the shop says, sans for what the visitor reads or operates. Controls, legends, and data are never serif, except the stepper value, numerals, and the review initial.",
         "section": "typography"
       },
       {
@@ -451,22 +591,30 @@
         "name": "The Glass Floats Rule",
         "body": "Glass only on what floats above content: the header, the menu's shortcut tray, the photo viewer controls. Never on an in-flow card.",
         "section": "elevation"
+      },
+      {
+        "name": "The Soft Lift Rule",
+        "body": "On light grounds depth is a soft two-layer shadow and a small vertical lift (4px for cards, 2px for buttons) on hover; no tilt, no hard edges.",
+        "section": "elevation"
       }
     ],
     "dos": [
-      "Do frame every product photo in the avorio passe-partout with the passe-partout shadow.",
-      "Do keep each section a rounded sheet overlapping the previous one, alternating light and chocolate grounds.",
-      "Do put champagne fills under fondente text and use champagne-scuro for accent text on light grounds.",
+      "Do frame every product photo in the white passe-partout with the Mat shadow.",
+      "Do keep each section a rounded sheet overlapping the previous one, stepping through light and pastel grounds; keep fondente for the entrance and the footer.",
+      "Do put champagne fills under fondente text and use champagne-scuro or bronze foil for accent on light grounds.",
+      "Do give each vetrina shelf its own pastel, the same on its banner and its tags.",
       "Do use the sign lettering (insegna mask) as the only wordmark.",
       "Do reveal headlines with the masked stagger and ease every transition on cubic-bezier(0.16, 1, 0.3, 1).",
       "Do give every motion a still state under prefers-reduced-motion."
     ],
     "donts": [
-      "Don't use foil on anything other than the name, the sign, and the big numerals.",
+      "Don't use foil on anything other than the name, the sign, and the big numerals; champagne foil only on dark, bronze foil only on light.",
       "Don't add uppercase tracked labels or eyebrow kickers above section titles.",
-      "Don't draw borders; use inset hairlines and tonal layers.",
+      "Don't draw borders; use soft shadows, inset hairlines, and tonal layers.",
+      "Don't tilt cards in 3D; cards lift.",
       "Don't use glass on in-flow content.",
       "Don't set controls or body copy in the serif.",
+      "Don't set text in cipria or pistacchio, or use them as button fills.",
       "Don't break the vetrina grid's symmetry (2 or 4 equal columns)."
     ]
   }

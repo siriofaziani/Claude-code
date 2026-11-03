@@ -32,7 +32,7 @@ function Shortcuts({ big = false, className }) {
         <MapPin size={19} aria-hidden="true" />
         <span className={label}>Mappa</span>
       </a>
-      <a href={shop.phoneHref} className={cn(item, "bg-champagne text-fondente hover:bg-[#dbbe8c]")} aria-label={big ? undefined : `Chiama ${shop.phone}`}>
+      <a href={shop.phoneHref} className={cn(item, "bg-champagne text-fondente hover:bg-[#d4b27c]")} aria-label={big ? undefined : `Chiama ${shop.phone}`}>
         <Phone size={18} aria-hidden="true" />
         <span className={big ? "" : "sr-only xl:not-sr-only"}>{big ? `Chiama ${shop.phone}` : shop.phone}</span>
       </a>
