@@ -73,8 +73,7 @@ function ProductCard({ it, shelf, onZoom, index }) {
 
         {/* at rest: the name */}
         <span className="absolute inset-x-0 bottom-0 p-5 transition-[opacity,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-2 group-hover:opacity-0 group-has-[:focus-visible]:opacity-0 group-data-[open=true]:opacity-0">
-          <span className="block text-[0.8rem] font-semibold text-oro-chiaro">{shelf.label}</span>
-          <span className="serif mt-1 block text-[1.45rem] leading-tight text-panna">{it.title}</span>
+          <span className="serif block text-[1.45rem] leading-tight text-panna">{it.title}</span>
         </span>
 
         {/* the whole card toggles the details by touch or keyboard */}
@@ -85,7 +84,7 @@ function ProductCard({ it, shelf, onZoom, index }) {
           <p className="serif text-[1.3rem] leading-tight">{it.title}</p>
           <p className="mt-2 text-[0.92rem] leading-snug text-panna/85">{it.desc}</p>
           <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Dettagli">
-            {it.tags.map((t) => <li key={t} className="rounded-full bg-white/10 px-2.5 py-1 text-[0.8rem] font-medium text-oro-chiaro">{t}</li>)}
+            {it.tags.map((t) => <li key={t} className="rounded-full bg-amarena/35 px-2.5 py-1 text-[0.8rem] font-medium text-panna">{t}</li>)}
           </ul>
           <div className="mt-4 flex gap-2">
             <a href="#ordina" onClick={() => askOrder(shelf.order.kind, shelf.order.preset)} className="btn btn-oro min-h-10 flex-1 px-4 text-[0.9rem]">Ordina</a>

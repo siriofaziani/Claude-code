@@ -21,7 +21,7 @@ function Shortcuts({ className, big = false }) {
   const label = big ? "" : "sr-only xl:not-sr-only";
   return (
     <div className={cn("flex items-center gap-1.5", className)}>
-      <a href={whatsappHref()} target="_blank" rel="noopener" className={cn(item, "bg-oro text-espresso hover:bg-[#d6b268]")} aria-label={big ? undefined : `Scrivici su WhatsApp, ${shop.whatsappLabel}`}>
+      <a href={whatsappHref()} target="_blank" rel="noopener" className={cn(item, "bg-oro text-espresso hover:bg-[#d8b67c]")} aria-label={big ? undefined : `Scrivici su WhatsApp, ${shop.whatsappLabel}`}>
         <WhatsAppIcon size={19} />
         <span className={label}>WhatsApp</span>
       </a>
