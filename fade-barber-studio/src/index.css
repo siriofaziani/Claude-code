@@ -102,7 +102,10 @@
 
   /* Trame di sfondo eleganti: griglia di punti e righe diagonali sottili (statiche, nessun costo allo scorrimento). */
   .texture-dots {
-    background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1.2px);
+    background-image: radial-gradient(
+      rgb(255 255 255 / 0.07) 1px,
+      transparent 1.2px
+    );
     background-size: 22px 22px;
   }
   .texture-lines {
@@ -159,6 +162,73 @@
       border-color 220ms var(--ease-smooth),
       filter 180ms var(--ease-smooth);
   }
+  /* riflesso di luce che attraversa il pulsante al passaggio del mouse (sotto il testo, sopra lo sfondo) */
+  .btn-sun,
+  .btn-ghost,
+  .btn-black {
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-sun::after,
+  .btn-ghost::after,
+  .btn-black::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      var(--sheen, rgb(255 255 255 / 0.8)) 50%,
+      transparent 62%
+    );
+    transform: translateX(-130%);
+    transition: transform 950ms cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  .btn-ghost {
+    --sheen: rgb(255 214 10 / 0.55);
+  }
+  .btn-black {
+    --sheen: rgb(255 214 10 / 0.4);
+  }
+  @media (hover: hover) {
+    .btn-sun:hover::after,
+    .btn-ghost:hover::after,
+    .btn-black:hover::after {
+      transform: translateX(130%);
+    }
+  }
+
+  /* bagliore che segue il cursore (Spotlight) */
+  .spotlight {
+    opacity: 0;
+    transition: opacity 400ms var(--ease-smooth);
+    background: radial-gradient(
+      var(--spot-size, 620px) circle at var(--sx, 50%) var(--sy, 50%),
+      rgb(255 214 10 / var(--spot-alpha, 0.1)),
+      transparent 60%
+    );
+  }
+  .spotlight[data-on] {
+    opacity: 1;
+  }
+
+  /* badge dorato del listino */
+  .badge-gold {
+    background: linear-gradient(135deg, #fff3b0 0%, #ffd60a 45%, #c99a00 100%);
+    color: var(--color-void);
+    box-shadow:
+      0 0 0 1px rgb(255 214 10 / 0.6),
+      0 8px 24px -8px rgb(255 214 10 / 0.8);
+  }
+
+  /* parola gigante a contorno per gli sfondi (ParallaxWord) */
+  .outline-word {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(255 214 10 / 0.16);
+  }
+
   .btn-sun {
     background: var(--color-sun);
     color: var(--color-void);
@@ -206,9 +276,17 @@
     il riflesso giallo segue il cursore. Sul telefono resta piatto (vedi useTilt).
   */
   .tilt {
-    transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+    transform: perspective(1000px) rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg)) translateZ(0);
     transition: transform 600ms var(--ease-smooth);
     will-change: transform;
+  }
+  /* telefono e tablet: niente inclinazione, quindi niente livelli grafici dedicati (meno memoria, scorrimento più fluido) */
+  @media not all and (hover: hover) and (pointer: fine) {
+    .tilt {
+      transform: none;
+      will-change: auto;
+    }
   }
   .tilt.is-tilting {
     transition: transform 120ms linear;
@@ -219,7 +297,11 @@
     inset: 0;
     border-radius: inherit;
     opacity: 0;
-    background: radial-gradient(360px circle at var(--gx, 50%) var(--gy, 50%), rgb(255 214 10 / 0.22), transparent 60%);
+    background: radial-gradient(
+      360px circle at var(--gx, 50%) var(--gy, 50%),
+      rgb(255 214 10 / 0.22),
+      transparent 60%
+    );
     transition: opacity 300ms var(--ease-smooth);
   }
   .tilt.is-tilting .tilt-glow {

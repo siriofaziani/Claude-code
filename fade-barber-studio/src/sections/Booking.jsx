@@ -27,6 +27,8 @@ import {
   Heading,
   Reveal,
   SunButton,
+  ParallaxWord,
+  Spotlight,
   TiltCard,
 } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
@@ -151,8 +153,10 @@ export default function Booking() {
   return (
     <section
       id="prenota"
-      className="relative overflow-hidden bg-[#030303] py-28 text-white md:py-36"
+      className="relative isolate overflow-hidden bg-[#030303] py-28 text-white md:py-36"
     >
+      <ParallaxWord text="Prenota" className="top-[42%]" from="-20%" to="8%" />
+      <Spotlight strength={0.12} />
       {/* bagliori gialli (sfumature, nessun filtro costoso) e filo giallo sui bordi */}
       <div
         aria-hidden="true"

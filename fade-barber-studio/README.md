@@ -22,7 +22,7 @@ Nero profondo, giallo brand brillante (`sun` #FFD60A) e bianco puro. Titoli in *
 | Manifesto | fascia gialla con tagli diagonali e trama a righe |
 | Chi siamo | nero a puntini: foto contenuta (max 380 px su computer, ferma mentre scorre il testo) affiancata a logo e storia di Federico e David, riquadro degli orari, 5 passaggi in schede che si impilano, team con inclinazione 3D |
 | I nostri tagli | bianco con bordo curvo, filtri (Tutti, Sfumature, Barba, Combo & Styling) con dissolvenza, carosello orizzontale di schede identiche (4 su schermi larghi, 3 su computer, 2 su tablet, 1 + anteprima sul telefono): trascinamento, rotellina, frecce gialle e indicatori; anteprima Instagram a quadrati 1:1; vista grande con zoom |
-| Listino | antracite a righe, righe "biglietto", foto che esce dal bordo |
+| Listino | antracite a righe con parola "Listino" in parallasse: schede di vetro scuro con filo giallo, badge dorati ("Scelto dai clienti", "Top Service" in `SERVICES`), al passaggio la scheda si dilata e il prezzo si accende |
 | Prenota | nero profondo con bagliori gialli: indicatore Servizio → Barbiere → Fascia oraria, tre riquadri di vetro con scelte ad alto contrasto, riepilogo fisso con la bozza WhatsApp |
 | Recensioni | blocco unico: dicitura "5.0 · Recensioni verificate su Google", carosello con le 10 recensioni reali dei clienti (testo lungo con "Leggi tutta"), frecce senza avanzamento automatico, nastro inclinato con frasi prese dalle recensioni |
 | Contatti e footer | bordo curvo, mappa nera e gialla a tutta larghezza e completamente libera (scheda informativa di Google tagliata fuori), con una barra ancorata in fondo: orari a sinistra, 4 azioni rapide a destra |
@@ -71,3 +71,11 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
 - **Tagli:** per aggiungere un lavoro, importa la foto in `src/data.js` e aggiungila all'elenco `CUTS`. Il prezzo mostrato nella scheda viene dal listino: "Taglio e Barba" se il look ha la barba, altrimenti "Taglio".
 
 `src/assets/logo-giallo.webp` è il logo in versione trasparente con l'oro portato al giallo del sito (#FFD60A), ricavato dal file a 640 px; il logo originale (`logo-trasparente.webp`) resta invariato in header e footer.
+
+### Animazioni ed effetti (aggiornamento)
+
+- Ingressi allo scorrimento più ampi: dissolvenza, salita dal basso e leggera dilatazione (`Reveal`, `StaggerItem`).
+- Solo computer con mouse: bagliore giallo che segue il cursore nelle sezioni scure (`Spotlight`) e parole giganti
+  a contorno giallo che scorrono in parallasse sullo sfondo (`ParallaxWord`: chi siamo, listino, prenota, recensioni).
+- Riflesso di luce che attraversa i pulsanti al passaggio del mouse (`.btn-sun`, `.btn-ghost`, `.btn-black`).
+- Su telefono e tablet le carte "inclinabili" non creano livelli grafici dedicati (nessuna inclinazione al tocco).

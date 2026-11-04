@@ -14,6 +14,8 @@ import {
   Stagger,
   StaggerItem,
   SunButton,
+  ParallaxWord,
+  Spotlight,
   TiltCard,
   useTilt,
 } from "../ui.jsx";
@@ -364,8 +366,10 @@ export default function About() {
   return (
     <section
       id="chi-siamo"
-      className="texture-dots relative space-y-32 bg-void py-28 md:space-y-44 md:py-40"
+      className="texture-dots relative isolate space-y-32 bg-void py-28 md:space-y-44 md:py-40"
     >
+      <ParallaxWord text="Fade Studio" className="top-[38%]" />
+      <Spotlight />
       <Story />
       <CutJourney />
       <Team />

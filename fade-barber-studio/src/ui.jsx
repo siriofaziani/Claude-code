@@ -147,8 +147,9 @@ export function Reveal({
   children,
   delay = 0,
   className = "",
-  y = 30,
+  y = 40,
   x = 0,
+  scale = 0.97,
   as = "div",
   ...rest
 }) {
@@ -158,11 +159,16 @@ export function Reveal({
     <Tag
       className={className}
       initial={
-        reduce ? false : { opacity: 0, transform: `translate(${x}px, ${y}px)` }
+        reduce
+          ? false
+          : {
+              opacity: 0,
+              transform: `translate(${x}px, ${y}px) scale(${scale})`,
+            }
       }
-      whileInView={{ opacity: 1, transform: "translate(0px, 0px)" }}
+      whileInView={{ opacity: 1, transform: "translate(0px, 0px) scale(1)" }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, delay, ease: EASE }}
+      transition={{ duration: 0.95, delay, ease: EASE }}
       {...rest}
     >
       {children}
@@ -198,7 +204,7 @@ export function StaggerItem({
   children,
   className = "",
   as = "div",
-  y = 30,
+  y = 40,
   ...rest
 }) {
   const Tag = motion[as];
@@ -206,11 +212,11 @@ export function StaggerItem({
     <Tag
       className={className}
       variants={{
-        hidden: { opacity: 0, transform: `translateY(${y}px)` },
+        hidden: { opacity: 0, transform: `translateY(${y}px) scale(0.96)` },
         shown: {
           opacity: 1,
-          transform: "translateY(0px)",
-          transition: { duration: 0.8, ease: EASE },
+          transform: "translateY(0px) scale(1)",
+          transition: { duration: 0.9, ease: EASE },
         },
       }}
       {...rest}
@@ -416,5 +422,93 @@ export function TiltCard({
       {children}
       <span className="tilt-glow" aria-hidden="true" />
     </Tag>
+  );
+}
+
+/* ───────────── Effetti di sezione ───────────── */
+
+/**
+ * Bagliore giallo che segue il cursore dentro la sezione (solo computer con mouse).
+ * Aggiorna due variabili CSS una volta per fotogramma: nessun re-render di React.
+ * La sezione che lo contiene deve avere `isolate`: il bagliore sta sotto i contenuti (-z-10).
+ */
+export function Spotlight({ size = 620, strength = 0.1 }) {
+  const ref = useRef(null);
+  const fx = useDesktopFx();
+  useEffect(() => {
+    const el = ref.current;
+    const host = el?.parentElement;
+    if (!fx || !el || !host) return undefined;
+    let raf = 0;
+    let px = 0;
+    let py = 0;
+    const paint = () => {
+      raf = 0;
+      el.style.setProperty("--sx", `${px}px`);
+      el.style.setProperty("--sy", `${py}px`);
+    };
+    const move = (e) => {
+      const r = host.getBoundingClientRect();
+      px = e.clientX - r.left;
+      py = e.clientY - r.top;
+      el.dataset.on = "";
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+    const leave = () => delete el.dataset.on;
+    host.addEventListener("pointermove", move, { passive: true });
+    host.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(raf);
+      host.removeEventListener("pointermove", move);
+      host.removeEventListener("pointerleave", leave);
+    };
+  }, [fx]);
+  if (!fx) return null;
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      className="spotlight pointer-events-none absolute inset-0 -z-10"
+      style={{ "--spot-size": `${size}px`, "--spot-alpha": strength }}
+    />
+  );
+}
+
+/**
+ * Parola gigante a contorno giallo sullo sfondo di una sezione scura: scorre in orizzontale
+ * mentre la pagina scende (parallasse, solo transform). Solo su schermi larghi: sul telefono non c'è.
+ */
+export function ParallaxWord({
+  text,
+  className = "",
+  from = "6%",
+  to = "-22%",
+}) {
+  const ref = useRef(null);
+  const fx = useDesktopFx();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const x = useTransform(scrollYProgress, [0, 1], [from, to]);
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      className={cn(
+        "pointer-events-none absolute inset-x-0 -z-10 hidden select-none overflow-hidden lg:block",
+        className,
+      )}
+    >
+      <motion.p
+        style={fx ? { x } : undefined}
+        className={cn(
+          "display outline-word whitespace-nowrap text-[19vw] leading-[1]",
+          fx && "will-change-transform",
+        )}
+      >
+        {text}
+      </motion.p>
+    </div>
   );
 }

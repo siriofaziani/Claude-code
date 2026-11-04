@@ -13,7 +13,17 @@ import {
 
 import logo from "../assets/logo-trasparente.webp";
 import { EXT, HOURS, LINKS, MAP_EMBED, NAV, WEEK, isOpenNow, romeNow, whatsappLink } from "../data.js";
-import { Heading, Magnetic, Reveal, Stagger, StaggerItem, SunButton, TiltCard, useDesktopFx } from "../ui.jsx";
+import {
+  Heading,
+  Magnetic,
+  Reveal,
+  Spotlight,
+  Stagger,
+  StaggerItem,
+  SunButton,
+  TiltCard,
+  useDesktopFx,
+} from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 /** Mappa disegnata (leggera), nera e gialla: strade stilizzate e segnaposto sull'indirizzo. */
@@ -150,8 +160,9 @@ export default function Contacts() {
     <>
       <section
         id="contatti"
-        className="relative z-10 -mt-12 rounded-t-[48px] bg-coal pb-20 pt-24 sm:rounded-t-[80px] md:pt-36"
+        className="relative isolate z-10 -mt-12 rounded-t-[48px] bg-coal pb-20 pt-24 sm:rounded-t-[80px] md:pt-36"
       >
+        <Spotlight />
         <div className="mx-auto max-w-[1500px] px-5 sm:px-10">
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
             <Heading

@@ -126,6 +126,7 @@ export const SERVICES = [
     price: 30,
     icon: ScissorsLineDashed,
     text: "Il look completo, in un unico appuntamento.",
+    badge: "Scelto dai clienti",
   },
   {
     name: "Trattamento Barba Premium",
@@ -143,6 +144,7 @@ export const SERVICES = [
     icon: Gem,
     text: "Il nostro servizio più completo: taglio, barba e trattamento premium, senza fretta.",
     featured: true,
+    badge: "Top Service",
     includes: [
       "Consulenza e taglio su misura",
       "Barba con panno caldo",

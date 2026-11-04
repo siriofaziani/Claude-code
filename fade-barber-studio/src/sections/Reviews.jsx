@@ -3,7 +3,15 @@ import { ArrowLeft, ArrowRight, BadgeCheck, Quote, Star } from "lucide-react";
 
 import taglioTaperFade from "../assets/taglio-taper-fade.jpg";
 import { LINKS, REVIEWS } from "../data.js";
-import { Heading, Reveal, RevealImage, SunButton, useTilt } from "../ui.jsx";
+import {
+  Heading,
+  ParallaxWord,
+  Reveal,
+  RevealImage,
+  Spotlight,
+  SunButton,
+  useTilt,
+} from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
 function Stars({ size = 15 }) {
@@ -207,8 +215,10 @@ export default function Reviews() {
   return (
     <section
       id="recensioni"
-      className="texture-dots relative overflow-hidden bg-void pb-28 pt-28 md:pb-36 md:pt-36"
+      className="texture-dots relative isolate overflow-hidden bg-void pb-28 pt-28 md:pb-36 md:pt-36"
     >
+      <ParallaxWord text="Parola ai clienti" className="top-[30%]" />
+      <Spotlight />
       <div className="mx-auto max-w-[1500px] px-5 sm:px-10">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
           <Heading
