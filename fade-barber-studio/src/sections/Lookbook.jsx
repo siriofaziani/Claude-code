@@ -14,6 +14,7 @@ import {
 
 import { CUTS, EXT, LINKS, SERVICES } from "../data.js";
 import { useBooking } from "../booking.jsx";
+import BeforeAfter from "./BeforeAfter.jsx";
 import { BlackButton, EASE, Heading, Reveal, useTilt } from "../ui.jsx";
 import { cn } from "../lib/utils.js";
 
@@ -600,6 +601,8 @@ export default function Lookbook() {
         <div className="mt-14">
           <CutsCarousel cuts={cuts} filter={filter} onOpen={setOpenIndex} />
         </div>
+
+        <BeforeAfter />
 
         {/* anteprima Instagram: quadrati 1:1 tutti uguali */}
         <Reveal className="mt-20 grid items-center gap-10 rounded-[28px] bg-void p-7 text-white sm:p-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">

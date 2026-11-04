@@ -79,3 +79,12 @@ Il listino ("Scegli") e le schede del team ("Prenota con…") portano qui con la
   a contorno giallo che scorrono in parallasse sullo sfondo (`ParallaxWord`: chi siamo, listino, prenota, recensioni).
 - Riflesso di luce che attraversa i pulsanti al passaggio del mouse (`.btn-sun`, `.btn-ghost`, `.btn-black`).
 - Su telefono e tablet le carte "inclinabili" non creano livelli grafici dedicati (nessuna inclinazione al tocco).
+
+### Prima & Dopo
+
+`src/sections/BeforeAfter.jsx`, dentro "I nostri tagli": due foto sovrapposte (`trasformazione-prima.webp`,
+`trasformazione-dopo.webp`, ritagliate 4:5 dagli screenshot di Instagram senza interfaccia) e una linea gialla con
+maniglia. Computer: segue il mouse; telefono: si trascina col dito (lo scorrimento verticale resta libero); tastiera:
+frecce. Il "prima" è una rielaborazione digitale del "dopo" (sfondo identico al pixel): sotto lo slider c'è la
+dicitura che lo dichiara. Per un confronto reale basta sostituire `trasformazione-prima.webp` con uno scatto vero
+fatto prima del taglio, con la stessa inquadratura.
