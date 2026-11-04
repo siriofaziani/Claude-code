@@ -1,32 +1,33 @@
 @import "tailwindcss";
 @source "../";
 
-/* ── Pasticceria Cristiani · "Boutique della Pasticceria Romana" ──────
-   Crema for the walls and the paper, oro for the brass of the counter
-   and the gold foil of the cake boards, espresso for the dark wood and
-   the chocolate plaques. Bodoni for the shop's voice, Figtree to read,
-   the piped script only where the shop really writes by hand. */
+/* ── Pasticceria Cristiani · "Atelier di panna e champagne" ──────────
+   Panna for the light, champagne gold for the cake boards and the foil,
+   anthracite and cacao for depth, an amarena accent to make the pastries
+   sing. Glass with a fine luminous edge floats over the shop's photos.
+   Fraunces for the voice, Plus Jakarta Sans to read, the piped script
+   only on the plaque the shop really writes by hand. */
 
 @theme {
-  --font-serif: var(--font-bodoni), "Didot", "Bodoni 72", serif;
-  --font-sans: var(--font-figtree), system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), "Georgia", serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
   --font-script: var(--font-plaque), "Snell Roundhand", cursive;
 
-  --color-panna: #fcf8f1;
-  --color-crema: #f5ecdf;
-  --color-sabbia: #eadcc6;
-  --color-biscotto: #d9c3a0;
-  --color-oro: #c9a257;
-  --color-oro-chiaro: #ecd8a6;
-  --color-oro-scuro: #8a6828;
-  --color-espresso: #1a100b;
-  --color-espresso-2: #241710;
-  --color-tostato: #3a2619;
-  --color-inchiostro: #2a1a12;
-  --color-cacao: #5c4636;
-  --color-mogano: #5b2418;
-  --color-verde: #5f8f4a;
-  --color-rosso: #b5432a;
+  --color-panna: #fdfaf5;
+  --color-crema: #f6efe5;
+  --color-sabbia: #ebdfcd;
+  --color-biscotto: #dcc7a6;
+  --color-oro: #cba66a;
+  --color-oro-chiaro: #efe0bf;
+  --color-oro-scuro: #87652f;
+  --color-espresso: #1c1a18;
+  --color-espresso-2: #26221f;
+  --color-tostato: #3d2a20;
+  --color-inchiostro: #221a15;
+  --color-cacao: #67503f;
+  --color-amarena: #b0435a;
+  --color-verde: #6aa65a;
+  --color-rosso: #c8553d;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
@@ -63,9 +64,10 @@
 @layer components {
   .serif {
     font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.02;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variation-settings: "SOFT" 50, "WONK" 0;
     text-wrap: balance;
     font-optical-sizing: auto;
   }
@@ -75,7 +77,15 @@
 
   /* Gold foil, as on the cake boards: a vertical metallic fill per glyph, so it survives letter staggers. */
   .gold {
-    background-image: linear-gradient(180deg, #f3dc9f 0%, #e6c987 30%, #c9a257 56%, #9d7632 80%, #d9b56d 100%);
+    background-image: linear-gradient(180deg, #f7e7c4 0%, #e9cf98 30%, #cba66a 58%, #9c7639 82%, #e2c48c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  /* The same foil, deeper, for light grounds. */
+  .gold-dark {
+    background-image: linear-gradient(180deg, #c9a46a 0%, #a27a40 50%, #6f4f22 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -87,18 +97,40 @@
     filter: blur(8px);
   }
 
-  /* Glass: only on what floats over the page (the header, the menu shortcuts, the photo viewer arrows). */
+  /* Glass with a fine luminous edge: dark over photos and dark grounds, light over light ones. */
   .glass {
-    background: rgb(26 16 11 / 0.62);
-    box-shadow: inset 0 0 0 1px rgb(236 216 166 / 0.18), 0 18px 40px -22px rgb(0 0 0 / 0.7);
+    background: rgb(28 26 24 / 0.78);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 0 0 1px rgb(239 224 191 / 0.14), 0 24px 50px -28px rgb(0 0 0 / 0.75);
+  }
+  .glass-light {
+    background: rgb(253 250 245 / 0.92);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 0 0 1px rgb(203 166 106 / 0.28), 0 24px 50px -30px rgb(61 42 32 / 0.45);
   }
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .glass {
-      background: rgb(26 16 11 / 0.8);
-      -webkit-backdrop-filter: blur(20px) saturate(1.5);
-      backdrop-filter: blur(20px) saturate(1.5);
+      background: rgb(28 26 24 / 0.5);
+      -webkit-backdrop-filter: blur(22px) saturate(1.5);
+      backdrop-filter: blur(22px) saturate(1.5);
+    }
+    .glass-light {
+      background: rgb(253 250 245 / 0.62);
+      -webkit-backdrop-filter: blur(22px) saturate(1.6);
+      backdrop-filter: blur(22px) saturate(1.6);
     }
   }
+
+  /* Horizontal shelves: native scroll-snap, the page keeps scrolling vertically under the thumb. */
+  .shelf-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .shelf-track::-webkit-scrollbar { display: none; }
+  .shelf-track > * { scroll-snap-align: start; flex: none; }
 
   /* Buttons: pill keys, one fill each. */
   .btn {
@@ -123,7 +155,7 @@
   .btn-line { color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; }
   .btn-glass { color: var(--color-panna); }
   @media (hover: hover) {
-    .btn-oro:hover { background: #d6b268; }
+    .btn-oro:hover { background: #d8b67c; }
     .btn-espresso:hover { background: var(--color-tostato); }
     .btn-line:hover { background: rgb(201 162 87 / 0.14); }
   }
@@ -216,6 +248,9 @@
 
 @keyframes marquee {
   to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes marquee-y {
+  to { transform: translate3d(0, -50%, 0); }
 }
 @keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 0.9; }

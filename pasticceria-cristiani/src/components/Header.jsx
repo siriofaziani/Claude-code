@@ -59,7 +59,7 @@ export default function Header() {
         transition={{ duration: 0.9, ease, delay: 0.15 }}
         className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-[max(env(safe-area-inset-top),0.75rem)] md:px-6"
       >
-        <div className="glass pointer-events-auto mx-auto flex max-w-[1280px] items-center justify-between gap-3 rounded-full py-1.5 pl-5 pr-1.5 text-panna">
+        <div className="glass pointer-events-auto mx-auto bg-espresso/80 flex max-w-[1280px] items-center justify-between gap-3 rounded-full py-1.5 pl-5 pr-1.5 text-panna">
           <a href="#inizio" className="flex items-baseline gap-2" aria-label="Pasticceria Cristiani, torna all'inizio">
             <span className="serif gold text-[1.55rem] font-[600] italic leading-none md:text-[1.7rem]">Cristiani</span>
             <span className="hidden text-[0.8rem] text-oro-chiaro/80 2xl:inline">Pasticceria · Centocelle</span>

@@ -3,14 +3,14 @@ import { whatsappHref, mapsHref } from "@/lib";
 import Header from "@/components/Header";
 import { links } from "@/components/links";
 import Hero from "@/components/Hero";
-import Vetrina from "@/components/Vetrina";
+import Products from "@/components/Products";
 import OrderWizard from "@/components/OrderWizard";
 import Storia from "@/components/Storia";
 import Reviews from "@/components/Reviews";
-import Info from "@/components/Info";
+import Contact from "@/components/Contact";
 import Reveal from "@/components/Reveal";
 import StaggerText from "@/components/ui/StaggerText";
-import { FacebookIcon, InstagramIcon, TripadvisorIcon } from "@/components/Icons";
+import { FacebookIcon, InstagramIcon, Star, TripadvisorIcon } from "@/components/Icons";
 
 // Each section after the hero slides up over the one before, like a new tray on the counter.
 const sheet = "relative -mt-10 rounded-t-[2.5rem] md:-mt-14 md:rounded-t-[3.5rem]";
@@ -31,7 +31,7 @@ export default function Home() {
 
         <section id="vetrine" aria-label="La vetrina" className={`${sheet} bg-panna pb-28 pt-20 md:pb-40 md:pt-28`}>
           <div className={wrap}>
-            <Vetrina />
+            <Products />
           </div>
         </section>
 
@@ -50,13 +50,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="recensioni" aria-labelledby="recensioni-titolo" className={`${sheet} bg-espresso-2 pb-28 pt-20 text-panna md:pb-36 md:pt-28`}>
+        <section id="recensioni" aria-labelledby="recensioni-titolo" className={`${sheet} bg-espresso pb-24 pt-20 text-panna md:pb-32 md:pt-28`}>
           <div className={`${wrap} mb-12 grid gap-6 md:mb-16 md:grid-cols-12 md:items-end`}>
             <div className="md:col-span-7">
               <StaggerText as="h2" text="Chi ci conosce, torna" className="serif block text-[clamp(2.7rem,7vw,5rem)] text-panna" />
             </div>
             <Reveal delay={0.1} className="md:col-span-5">
-              <p className="text-[1.12rem] text-panna/85 md:text-right">Le parole di alcuni dei nostri clienti affezionati.</p>
+              <p className="flex items-baseline gap-3 md:justify-end">
+                <span className="serif gold text-[3.6rem] leading-none">5.0</span>
+                <span className="flex gap-0.5 text-oro" aria-hidden="true">{Array.from({ length: 5 }, (_, k) => <Star key={k} size={18} />)}</span>
+              </p>
+              <p className="mt-1 text-[1.06rem] text-panna/85 md:text-right">Le parole di alcuni dei nostri clienti affezionati, su Google.</p>
             </Reveal>
           </div>
           <Reviews />
@@ -64,7 +68,7 @@ export default function Home() {
 
         <section id="contatti" aria-label="Contatti, orari e mappa" className={`${sheet} bg-crema py-16 md:py-28`}>
           <div className={wrap}>
-            <Info />
+            <Contact />
           </div>
         </section>
       </main>

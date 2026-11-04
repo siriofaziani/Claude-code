@@ -87,7 +87,7 @@ function DayLine() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h3 className="serif text-[clamp(2rem,4.4vw,3.2rem)] text-espresso">Una giornata al bancone</h3>
         <p className="text-[1rem] text-cacao">
-          {now?.closedToday ? "Oggi è lunedì: il bancone riposa." : now?.off ? "Ora siamo chiusi: ci vediamo al bancone." : now?.label ? <><span className="md:hidden">Adesso sono le {now.label}: siamo qui. </span>Dal martedì alla domenica.</> : "Dal martedì alla domenica."}
+          {now?.closedToday ? "Oggi è lunedì: il bancone riposa." : now?.off ? "Ora siamo chiusi: ci vediamo al bancone." : now?.label ? <><span>Adesso sono le {now.label}: il punto verde segna dove siamo. </span>Dal martedì alla domenica.</> : "Dal martedì alla domenica."}
         </p>
       </div>
 
@@ -109,7 +109,6 @@ function DayLine() {
               <span className="absolute inset-0 rounded-full bg-verde/50 animate-[breathe_2.4s_ease-out_infinite]" />
               <span className="h-3 w-3 rounded-full bg-verde ring-4 ring-crema" />
             </span>
-            <span className="absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-full bg-espresso px-3 py-1 text-[0.85rem] font-semibold text-panna md:block">Adesso, {now.label}</span>
           </motion.span>
         ) : null}
 

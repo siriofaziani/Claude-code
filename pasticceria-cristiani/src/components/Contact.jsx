@@ -9,20 +9,22 @@ import { whatsappHref, mapsHref } from "@/lib";
 import Hours from "./Hours";
 import OpenNow from "./OpenNow";
 import StaggerText from "./ui/StaggerText";
+import Magnetic from "./ui/Magnetic";
+import Photo from "./Photo";
 import { FacebookIcon, InstagramIcon, TripadvisorIcon, WhatsAppIcon } from "./Icons";
 
 const ease = [0.16, 1, 0.3, 1];
 
-/** Address, hours, the live map and the three ways to reach the counter, on one card. */
-export default function Info() {
+/** Address, hours, the live map and the three ways to reach the counter, on glass over the counter. */
+export default function Contact() {
   const ref = useRef(null);
   const reduce = useReduce();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 35%"] });
   const scale = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
 
   const actions = [
-    { href: shop.phoneHref, label: `Chiama ${shop.phone}`, icon: <Phone size={18} aria-hidden="true" />, cls: "btn-oro btn-shine" },
-    { href: whatsappHref(), label: `WhatsApp ${shop.whatsappLabel}`, icon: <WhatsAppIcon size={19} />, cls: "btn-line text-panna", ext: true },
+    { href: whatsappHref(), label: `WhatsApp ${shop.whatsappLabel}`, icon: <WhatsAppIcon size={19} />, cls: "btn-oro", ext: true },
+    { href: shop.phoneHref, label: `Chiama ${shop.phone}`, icon: <Phone size={18} aria-hidden="true" />, cls: "btn-line text-panna" },
     { href: mapsHref, label: "Indicazioni stradali", icon: <MapPin size={18} aria-hidden="true" />, cls: "btn-line text-panna", ext: true },
   ];
 
@@ -30,15 +32,18 @@ export default function Info() {
     <motion.div
       ref={ref}
       style={reduce ? undefined : { scale }}
-      className="overflow-hidden rounded-[2.25rem] bg-espresso text-panna will-change-transform"
+      className="relative isolate overflow-hidden rounded-[2.5rem] bg-espresso p-3 text-panna will-change-transform sm:p-5 lg:p-8"
     >
-      <div className="grid gap-10 p-6 sm:p-9 lg:grid-cols-12 lg:gap-12 lg:p-12">
+      <div aria-hidden="true" className="absolute inset-0 -z-10">
+        <Photo name="bancone" alt="" fill sizes="100vw" className="object-cover opacity-70" />
+        <span className="absolute inset-0 bg-[linear-gradient(120deg,rgb(28_26_24/0.75),rgb(28_26_24/0.35))]" />
+      </div>
+      <div className="glass grid gap-10 rounded-[2rem] p-6 sm:p-9 lg:grid-cols-12 lg:gap-12 lg:p-12">
         <div className="lg:col-span-5">
           <StaggerText as="h2" text="Vieni a trovarci" className="serif block text-[clamp(2.6rem,5.4vw,4.4rem)] text-panna" />
-          <address className="serif mt-6 text-[clamp(1.6rem,2.6vw,2.1rem)] not-italic leading-tight text-oro-chiaro">
-            {shop.address}
-            <br />
-            {shop.city} · Centocelle
+          <address className="mt-6 not-italic">
+            <span className="serif block text-[clamp(1.6rem,2.6vw,2.1rem)] leading-tight text-oro-chiaro">{shop.address}</span>
+            <span className="mt-1 block text-[1.05rem] text-panna/85">{shop.city} · Centocelle</span>
           </address>
           <OpenNow className="mt-6 bg-white/5 text-panna shadow-[inset_0_0_0_1px_rgb(236_216_166/0.18)]" />
           <motion.ul
@@ -50,16 +55,10 @@ export default function Info() {
           >
             {actions.map((a) => (
               <motion.li key={a.label} variants={reduce ? undefined : { hidden: { opacity: 0, y: 16 }, shown: { opacity: 1, y: 0, transition: { duration: 0.7, ease } } }}>
-                <motion.a
-                  href={a.href}
-                  {...(a.ext ? { target: "_blank", rel: "noopener" } : {})}
-                  whileHover={reduce ? undefined : { y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`btn w-full sm:w-auto ${a.cls}`}
-                >
+                <Magnetic href={a.href} {...(a.ext ? { target: "_blank", rel: "noopener" } : {})} className={`btn w-full sm:w-auto ${a.cls}`}>
                   {a.icon}
                   {a.label}
-                </motion.a>
+                </Magnetic>
               </motion.li>
             ))}
           </motion.ul>

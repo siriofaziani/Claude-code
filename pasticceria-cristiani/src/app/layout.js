@@ -1,10 +1,10 @@
-import { Bodoni_Moda, Figtree, Petit_Formal_Script } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans, Petit_Formal_Script } from "next/font/google";
 import { shop } from "@/data/content";
 import MotionRoot from "@/components/MotionRoot";
 import "./globals.css";
 
-const bodoni = Bodoni_Moda({ subsets: ["latin"], style: ["normal", "italic"], axes: ["opsz"], variable: "--font-bodoni", display: "swap" });
-const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap" });
+const fraunces = Fraunces({ subsets: ["latin"], style: ["normal", "italic"], axes: ["SOFT", "WONK", "opsz"], variable: "--font-fraunces", display: "swap" });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
 const plaque = Petit_Formal_Script({ subsets: ["latin"], weight: "400", variable: "--font-plaque", display: "swap" });
 
 export const metadata = {
@@ -13,7 +13,7 @@ export const metadata = {
   openGraph: { title: "Pasticceria Cristiani", description: "Centocelle, Roma. Ordina su WhatsApp.", images: ["/foto/bancone.webp"], locale: "it_IT", type: "website" },
 };
 
-export const viewport = { themeColor: "#1a100b", width: "device-width", initialScale: 1, viewportFit: "cover" };
+export const viewport = { themeColor: "#1c1a18", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -27,7 +27,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="it" className={`${bodoni.variable} ${figtree.variable} ${plaque.variable}`}>
+    <html lang="it" className={`${fraunces.variable} ${jakarta.variable} ${plaque.variable}`}>
       <body className="min-h-dvh overflow-x-clip">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <MotionRoot>{children}</MotionRoot>
