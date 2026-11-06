@@ -224,6 +224,5 @@ complete a 3 s** (forza dell'hook) e **DM "SITO"** (forza dell'offerta).
 
 ---
 
-Nel progetto c'è già un Reel animato del sito, costruito con Remotion (`reel/`). Lo stesso approccio può
-diventare la base di questo Reel: scene 2, 3 e 4 generate in codice dalle registrazioni schermo, con i tempi
-legati ai battiti del brano.
+**Video realizzato:** `reel/out/sito-reel.mp4`, montato in codice con Remotion (`reel/src/SitoReel.jsx`) dalle
+schermate del sito vero e da una base musicale originale a 140 BPM. Istruzioni per rigenerarlo in `reel/README.md`.

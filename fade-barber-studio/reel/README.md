@@ -29,3 +29,18 @@ npm run render   # crea out/fade-reel.mp4
 
 Le immagini del sito in `public/site-*.{jpg,png}` sono catture del sito da computer (finestra 1440x900);
 se il sito cambia, vanno rifatte (misure in `public/site-metrics.json`).
+
+## Reel promozionale "Il sito che la tua barberia merita" (SitoReel)
+
+Reel da 30 s per vendere il sito alle barberie (script: `../marketing/InstagramReelConcept.md`).
+Risultato: `out/sito-reel.mp4` (1080x1920, 30 fps, H.264, audio a -14 LUFS).
+
+1. Sito compilato e servito: `npm run build` nella cartella del sito, poi `python3 -m http.server 4177 --directory dist`.
+2. Schermate del sito: `node scripts/capture-promo.mjs http://localhost:4177/ public/promo`
+   (telefono 390x844 a scala 2, computer 1440x900; il video d'ingresso è ingrandito per tenere fuori la filigrana).
+3. Musica originale (140 BPM, generata da zero): `python3 scripts/make_promo_beat.py public/promo/beat.wav`.
+4. Video: `node scripts/render-promo.mjs` (oppure `--stills 60,300,760` per controllare singoli fotogrammi).
+
+Tutti i tagli sono in battiti del brano (`b(n)` in `src/SitoReel.jsx`): cambiando il brano con uno della libreria di
+Instagram a 140 BPM, con il drop sul battito 8 (3,43 s), i tagli restano a tempo.
+Per il logo dell'agenzia: oggi c'è la scritta "PIXELNOIR." nella scena finale (`Cta` in `src/SitoReel.jsx`).
