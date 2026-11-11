@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+/*
+  "Cantina": palette ricavata dalle foto del locale (legno scuro, luci ambrate, pietra chiara) e dal vino.
+  Legno #160d09 / #2a1a12 · bordeaux #5c1323 / vino #7e1d30 · rame #b87a4b · oro caldo #d6ab6a · pergamena #efe2cc.
+*/
+@theme {
+  --color-legno: #160d09;
+  --color-noce: #2a1a12;
+  --color-castagno: #3d271b;
+  --color-bordeaux: #5c1323;
+  --color-vino: #7e1d30;
+  --color-vino-chiaro: #a8324a;
+  --color-rame: #b87a4b;
+  --color-oro: #d6ab6a;
+  --color-pergamena: #efe2cc;
+  --color-carta: #f7efe2;
+  --color-inchiostro: #2a1a12;
+
+  --font-garamond: "Cormorant Garamond Variable", "Garamond", ui-serif, serif;
+  --font-sans: "Albert Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-vino: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    background: var(--color-legno);
+  }
+  body {
+    background: var(--color-legno);
+    color: var(--color-pergamena);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-vino);
+    color: var(--color-carta);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-oro);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+}
+
+@layer components {
+  .garamond {
+    font-family: var(--font-garamond);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+  }
+  .corsivo {
+    font-family: var(--font-garamond);
+    font-style: italic;
+    font-weight: 400;
+  }
+  /* occhiello tra due fili di rame */
+  .occhiello {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--color-oro);
+  }
+  .occhiello::before,
+  .occhiello::after {
+    content: "";
+    width: 1.6rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-rame));
+  }
+  .occhiello::after {
+    transform: scaleX(-1);
+  }
+
+  /* vetro caldo con filo di rame */
+  .vetro {
+    background: linear-gradient(155deg, rgb(61 39 27 / 0.62), rgb(22 13 9 / 0.5));
+    border: 1px solid rgb(214 171 106 / 0.28);
+    box-shadow:
+      inset 0 1px 0 rgb(239 226 204 / 0.12),
+      0 40px 80px -40px rgb(0 0 0 / 0.85);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+  /* cornice "etichetta di bottiglia": doppio filo di rame con angoli */
+  .etichetta {
+    position: relative;
+    border: 1px solid rgb(184 122 75 / 0.55);
+  }
+  .etichetta::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgb(184 122 75 / 0.25);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* pulsanti */
+  .bottone {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 3.4rem;
+    padding: 0 1.9rem;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+      transform 500ms var(--ease-vino),
+      box-shadow 500ms var(--ease-vino),
+      background-color 400ms ease,
+      color 400ms ease;
+  }
+  .bottone-vino {
+    background: linear-gradient(160deg, var(--color-vino-chiaro), var(--color-vino) 45%, var(--color-bordeaux));
+    color: var(--color-carta);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.2),
+      0 0 0 1px rgb(214 171 106 / 0.35),
+      0 18px 40px -16px rgb(126 29 48 / 0.9);
+  }
+  .bottone-vino::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 35%, rgb(214 171 106 / 0.45) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform 1000ms var(--ease-vino);
+  }
+  .bottone-vetro {
+    color: var(--color-pergamena);
+    border: 1px solid rgb(214 171 106 / 0.45);
+    background: rgb(239 226 204 / 0.06);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  @media (hover: hover) {
+    .bottone:hover {
+      transform: translateY(-2px);
+    }
+    .bottone-vino:hover {
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.25),
+        0 0 0 1px rgb(214 171 106 / 0.7),
+        0 0 0 6px rgb(214 171 106 / 0.12),
+        0 24px 50px -14px rgb(168 50 74 / 0.95);
+    }
+    .bottone-vino:hover::after {
+      transform: translateX(120%);
+    }
+    .bottone-vetro:hover {
+      background: rgb(214 171 106 / 0.14);
+      border-color: var(--color-oro);
+    }
+  }
+  .bottone:active {
+    transform: scale(0.97);
+  }
+
+  /* foto: si apre a cerchio come l'orlo di un calice; al passaggio zoom e riflesso di vetro */
+  .calice {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .calice .iride {
+    position: absolute;
+    inset: 0;
+    clip-path: circle(0% at 50% 50%);
+    transition: clip-path 1500ms var(--ease-vino);
+  }
+  .calice .iride[data-aperta] {
+    clip-path: circle(75% at 50% 50%);
+  }
+  .calice img {
+    transition:
+      transform 1600ms var(--ease-vino),
+      filter 800ms ease;
+  }
+  .calice::after {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 40%, rgb(255 236 210 / 0.28) 48%, rgb(255 236 210 / 0.06) 54%, transparent 60%);
+    transform: translateX(-60%);
+    transition: transform 1200ms var(--ease-vino);
+  }
+  .calice::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgb(214 171 106 / 0);
+    transition: box-shadow 600ms ease;
+  }
+  @media (hover: hover) {
+    .calice:hover img {
+      transform: scale(1.08);
+      filter: saturate(1.12) brightness(1.05);
+    }
+    .calice:hover::after {
+      transform: translateX(60%);
+    }
+    .calice:hover::before {
+      box-shadow: inset 0 0 0 1px rgb(214 171 106 / 0.7);
+    }
+  }
+
+  /* titolo che si riempie di vino dal basso (sfondo nel testo) */
+  .versa {
+    background-image: linear-gradient(0deg, var(--color-vino-chiaro) 0%, var(--color-oro) 50%, var(--color-pergamena) 50%);
+    background-size: 100% 200%;
+    background-position: 0% 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: versa 2.6s var(--ease-vino) 0.6s forwards;
+  }
+
+  .striscia {
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+  .striscia::-webkit-scrollbar {
+    display: none;
+  }
+  .nastro {
+    animation: nastro var(--durata, 60s) linear infinite;
+  }
+  .nastro-ferma:hover .nastro {
+    animation-play-state: paused;
+  }
+
+  /* grana calda sottile */
+  .grana::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+@keyframes versa {
+  to {
+    background-position: 0% 100%;
+  }
+}
+@keyframes candela {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(1.03);
+  }
+  40% {
+    opacity: 0.7;
+  }
+  60% {
+    opacity: 0.95;
+    transform: scale(1.05);
+  }
+  80% {
+    opacity: 0.8;
+  }
+}
+@keyframes nastro {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .nastro,
+  .candela {
+    animation: none !important;
+  }
+  .versa {
+    animation: none;
+    background-position: 0% 100%;
+  }
+  .calice .iride {
+    clip-path: none !important;
+    transition: none;
+  }
+}
