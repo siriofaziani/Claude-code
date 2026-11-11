@@ -1,0 +1,288 @@
+@import "tailwindcss";
+
+/*
+  "Riviera": l'anima del sito originale (indaco e azzurro del logo, bianco) portata in alta ristorazione:
+  carta color panna, sabbia, filo d'oro sottile, vetro bianco smerigliato, cornici ad arco mediterranee.
+*/
+@theme {
+  --color-panna: #fbf7ef;
+  --color-perla: #fffdf9;
+  --color-sabbia: #efe5d3;
+  --color-sabbia-scura: #ddcfb6;
+  --color-notte: #141f45;
+  --color-indaco: #34358f;
+  --color-indaco-chiaro: #4a4cb3;
+  --color-onda: #1fb0e3;
+  --color-onda-chiara: #bfe9f7;
+  --color-onda-scura: #0a78a6;
+  --color-oro: #b8955a;
+  --color-inchiostro: #1b2340;
+
+  --font-serif: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-mare: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--color-panna);
+    color: var(--color-inchiostro);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-onda-chiara);
+    color: var(--color-notte);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-onda);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  /* le ancore non finiscono sotto l'intestazione */
+  section[id] {
+    scroll-margin-top: 84px;
+  }
+}
+
+@layer components {
+  /* titoli: Fraunces leggero, ottica da display, morbido */
+  .titolo {
+    font-family: var(--font-serif);
+    font-weight: 330;
+    font-variation-settings: "opsz" 144, "SOFT" 60;
+    letter-spacing: -0.015em;
+    line-height: 1.04;
+  }
+  .corsivo {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+  }
+  /* occhiello: maiuscoletto spaziato con filo d'oro */
+  .occhiello {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-oro);
+  }
+  .occhiello::before {
+    content: "";
+    width: 2.25rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* vetro bianco smerigliato */
+  .vetro {
+    background: rgb(255 255 255 / 0.58);
+    border: 1px solid rgb(255 255 255 / 0.75);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.9) inset,
+      0 30px 60px -30px rgb(20 31 69 / 0.28);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+  }
+  .vetro-scuro {
+    background: rgb(20 31 69 / 0.42);
+    border: 1px solid rgb(255 255 255 / 0.22);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  /* pulsanti: pillola indaco con alone azzurro, e pillola di vetro */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 3.25rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      transform 500ms var(--ease-mare),
+      box-shadow 500ms var(--ease-mare),
+      background-color 300ms ease,
+      color 300ms ease;
+  }
+  .btn svg {
+    transition: transform 500ms var(--ease-mare);
+  }
+  .btn-indaco {
+    background: linear-gradient(135deg, var(--color-indaco-chiaro), var(--color-indaco) 60%, var(--color-notte));
+    color: #fff;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.12) inset,
+      0 14px 34px -14px rgb(52 53 143 / 0.75);
+  }
+  .btn-vetro {
+    background: rgb(255 255 255 / 0.55);
+    color: var(--color-notte);
+    border: 1px solid rgb(255 255 255 / 0.85);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 30px -18px rgb(20 31 69 / 0.4);
+  }
+  @media (hover: hover) {
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn:hover svg {
+      transform: translateX(4px);
+    }
+    .btn-indaco:hover {
+      box-shadow:
+        0 0 0 1px rgb(255 255 255 / 0.18) inset,
+        0 0 0 6px rgb(31 176 227 / 0.16),
+        0 22px 44px -16px rgb(31 176 227 / 0.65);
+    }
+    .btn-vetro:hover {
+      background: rgb(255 255 255 / 0.85);
+    }
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  /* cornici ad arco (finestra mediterranea) */
+  .arco {
+    border-radius: 999px 999px 28px 28px;
+  }
+  .arco-basso {
+    border-radius: 28px 28px 999px 999px;
+  }
+
+  /* foto: zoom lento e luce che segue il cursore (variabili --lx --ly impostate da JS) */
+  .foto {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .foto img {
+    transition: transform 1400ms var(--ease-mare);
+  }
+  .foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      420px circle at var(--lx, 50%) var(--ly, 40%),
+      rgb(255 255 255 / 0.35),
+      rgb(191 233 247 / 0.12) 35%,
+      transparent 65%
+    );
+    mix-blend-mode: soft-light;
+    transition: opacity 600ms ease;
+  }
+  @media (hover: hover) {
+    .foto:hover img {
+      transform: scale(1.07);
+    }
+    .foto:hover::after {
+      opacity: 1;
+    }
+  }
+
+  /* apertura delle foto: la cornice si allarga dal centro, come una finestra che si apre */
+  .apri {
+    clip-path: inset(18% 22% 18% 22% round 999px);
+    transition: clip-path 1500ms var(--ease-mare);
+  }
+  .apri[data-aperto] {
+    clip-path: inset(0 0 0 0 round 0px);
+  }
+  .apri.arco[data-aperto] {
+    clip-path: inset(0 0 0 0 round 999px 999px 28px 28px);
+  }
+
+  /* fluttuare leggero (solo transform) */
+  .fluttua {
+    animation: fluttua 7s ease-in-out infinite;
+  }
+  .fluttua-lento {
+    animation: fluttua 9s ease-in-out -3s infinite;
+  }
+
+  /* puntini tra piatto e prezzo, come nelle carte stampate */
+  .puntini {
+    flex: 1;
+    min-width: 1.5rem;
+    margin: 0 0.75rem;
+    transform: translateY(-0.3em);
+    border-bottom: 1px dotted rgb(184 149 90 / 0.55);
+  }
+
+  .scorri-x {
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+  .scorri-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* grana di carta sottilissima */
+  .carta {
+    background-image:
+      radial-gradient(rgb(184 149 90 / 0.07) 1px, transparent 1px),
+      radial-gradient(rgb(52 53 143 / 0.035) 1px, transparent 1px);
+    background-size:
+      22px 22px,
+      13px 13px;
+    background-position:
+      0 0,
+      7px 9px;
+  }
+}
+
+@keyframes fluttua {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) rotate(var(--r, 0deg));
+  }
+}
+
+@keyframes onda-scorre {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .fluttua,
+  .fluttua-lento {
+    animation: none;
+  }
+  .apri {
+    clip-path: none !important;
+    transition: none;
+  }
+  .foto img {
+    transition: none;
+  }
+}
