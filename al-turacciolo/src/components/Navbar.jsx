@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Phone } from "lucide-react";
+import { CalendarDays, Phone } from "lucide-react";
 
 import {
   ADDRESS,
@@ -80,11 +80,8 @@ export default function Navbar() {
           <div className="flex items-center gap-1.5">
             <span className="hidden sm:inline-flex">
               <Calamita>
-                <a
-                  href={PHONE_HREF}
-                  className="bottone bottone-vino min-h-11 px-5"
-                >
-                  <Phone size={15} aria-hidden="true" /> Prenota
+                <a href="#prenota" className="bottone bottone-vino min-h-11 px-5">
+                  <CalendarDays size={15} aria-hidden="true" /> Prenota un tavolo
                 </a>
               </Calamita>
             </span>

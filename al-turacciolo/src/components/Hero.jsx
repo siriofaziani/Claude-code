@@ -6,9 +6,9 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import { ArrowDown, Phone } from "lucide-react";
+import { ArrowDown, CalendarDays } from "lucide-react";
 
-import { HERO, PHONE_HREF, img } from "../data.js";
+import { HERO, img } from "../data.js";
 import { Calamita, VINO, useMouse } from "../fx.jsx";
 
 /** Cerchio di rame con testo che gira e il logo al centro. */
@@ -227,7 +227,7 @@ export default function Hero() {
             <motion.div {...on(1.3)} className="mt-9 flex flex-wrap gap-3">
               <Calamita>
                 <a href="#prenota" className="bottone bottone-vino">
-                  <Phone size={16} aria-hidden="true" /> {HERO.ctaCall}
+                  <CalendarDays size={16} aria-hidden="true" /> {HERO.ctaCall}
                 </a>
               </Calamita>
               <a href="#carta" className="bottone bottone-vetro">
