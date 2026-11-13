@@ -241,6 +241,35 @@
     animation: versa 2.6s var(--ease-vino) 0.6s forwards;
   }
 
+  /* schede inclinabili: riflesso caldo che segue il cursore */
+  .inclina {
+    transition: transform 700ms var(--ease-vino);
+    transform-style: preserve-3d;
+  }
+  .inclina[data-inclinata] {
+    transition: transform 120ms linear;
+  }
+  .inclina .riflesso {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgb(214 171 106 / 0.22), rgb(168 50 74 / 0.1) 40%, transparent 70%);
+    transition: opacity 500ms ease;
+  }
+  .inclina[data-inclinata] .riflesso {
+    opacity: 1;
+  }
+
+  /* carta pergamena con fibre sottili */
+  .pergamena-texture {
+    background-color: var(--color-carta);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.6' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.38  0 0 0 0 0.22  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>"),
+      radial-gradient(120% 80% at 50% 0%, transparent 60%, rgb(184 122 75 / 0.12));
+  }
+
   .striscia {
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
@@ -293,6 +322,14 @@
   }
   80% {
     opacity: 0.8;
+  }
+}
+@keyframes scendi {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
   }
 }
 @keyframes nastro {

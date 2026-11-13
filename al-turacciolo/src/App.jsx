@@ -1,6 +1,8 @@
 import Navbar from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
-import Storia from "./components/Storia.jsx";
+import AboutUs from "./components/AboutUs.jsx";
+import Booking from "./components/Booking.jsx";
+import { Luce } from "./fx.jsx";
 import Atmosfera from "./components/Atmosfera.jsx";
 import Carta from "./components/Carta.jsx";
 import Aperitivo from "./components/Aperitivo.jsx";
@@ -12,13 +14,15 @@ import BarraMobile from "./components/BarraMobile.jsx";
 export default function App() {
   return (
     <div className="grana">
+      <Luce />
       <Navbar />
       <main className="overflow-x-clip">
         <Hero />
-        <Storia />
+        <AboutUs />
         <Atmosfera />
         <Carta />
         <Aperitivo />
+        <Booking />
         <Dicono />
         <Vieni />
       </main>

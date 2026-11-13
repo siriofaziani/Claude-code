@@ -20,6 +20,12 @@ export const img = (name) => assets[`./assets/${name}.webp`];
 export const NAME = "Al Turacciolo";
 export const PHONE = "06 2440 3231";
 export const PHONE_HREF = "tel:+390624403231";
+/*
+  WhatsApp: le fonti riportano solo questo numero, che è un fisso. WhatsApp Business funziona anche sui fissi,
+  ma solo se il locale lo ha attivato: va verificato con il locale. Se usa un cellulare per WhatsApp,
+  basta cambiare questo numero (formato internazionale, solo cifre).
+*/
+export const WHATSAPP = "390624403231";
 export const ADDRESS = "Via Tor de' Schiavi, 126c";
 export const CITY = "00172 Roma · Centocelle";
 export const MAPS = "https://www.google.com/maps/search/?api=1&query=Enoteca+Al+Turacciolo+Via+Tor+de+Schiavi+126c+Roma";
@@ -31,12 +37,39 @@ export const EXT = { target: "_blank", rel: "noopener noreferrer" };
 /* L'unico orario che le fonti riportano allo stesso modo è quello dell'aperitivo (2night, 2020). */
 export const APERITIVO_ORARIO = "Ogni giorno dalle 17 alle 21";
 
+/* Prenotazione: fasce orarie e numero di persone del modulo. */
+export const BOOKING = {
+  label: "Prenota un tavolo",
+  title: ["Il tuo tavolo,", "in tre scelte"],
+  lead: "Scegli giorno, orario e quante persone siete: il messaggio è già scritto, lo invii su WhatsApp e ti rispondiamo noi.",
+  slots: ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"],
+  people: ["2", "3", "4", "5", "6+"],
+  note: "La prenotazione è confermata dal locale nella risposta.",
+};
+export function bookingMessage({ day, time, people }) {
+  const n = people === "6+" ? "6 o più" : people;
+  return `Ciao Enoteca Al Turacciolo, vorrei prenotare un tavolo per ${n} persone il giorno ${day} alle ore ${time}`;
+}
+export const whatsappLink = (msg) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+
+/* Mosaico del "Chi siamo": esterno, bancone, bottiglie, calici e atmosfera. */
+export const MOSAICO = [
+  { photo: "esterno", alt: "L'ingresso di sera, sotto l'insegna Enoteca Al Turacciolo", small: true },
+  { photo: "bancone", alt: "Il bancone in legno sotto la volta, con le bottiglie sugli scaffali" },
+  { photo: "bottiglia", alt: "Una bottiglia di rosso e un calice sul bancone" },
+  { photo: "calici", alt: "Due calici di vino e un piatto al bancone" },
+  { photo: "spritz", alt: "Uno spritz al bancone, con gli scaffali delle bottiglie dietro", small: true },
+  { photo: "bancone-fronte", alt: "Il bancone visto di fronte, con le lampade e gli scaffali", small: true },
+  { photo: "tagliere", alt: "Tagliere di salumi e formaggi con un bicchiere di miele" },
+];
+
 export const NAV = [
   { id: "home", label: "Benvenuti" },
   { id: "storia", label: "La storia" },
   { id: "atmosfera", label: "L'atmosfera" },
   { id: "carta", label: "La carta" },
   { id: "aperitivo", label: "L'aperitivo del Tura" },
+  { id: "prenota", label: "Prenota un tavolo" },
   { id: "dicono", label: "Dicono di noi" },
   { id: "vieni", label: "Vieni a trovarci" },
 ];
@@ -47,7 +80,7 @@ export const HERO = {
   kicker: "Enoteca · Centocelle · Roma",
   title: ["Vino,", "chiacchiere", "e buona musica."],
   lead: "Oltre cento etichette, quattro spine di birra artigianale, taglieri e cucina di casa: l'enoteca sotto casa dove fermarsi dall'aperitivo a tarda notte.",
-  ctaCall: "Chiama e prenota",
+  ctaCall: "Prenota un tavolo",
   ctaMenu: "Scopri la carta",
 };
 
