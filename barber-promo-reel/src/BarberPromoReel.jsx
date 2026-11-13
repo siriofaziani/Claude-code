@@ -8,7 +8,7 @@
  *
  * Scene (B = un battito a 140 BPM):
  *   0B–9B    1 · Il problema: "INVISIBILE ONLINE." · "CLIENTI PERSI." · "ZERO IDENTITÀ."
- *   9B–41B   2 · Il sito su un portatile: IMPATTO IMMEDIATO · QUALITÀ VISIBILE · FIDUCIA TOTALE · ZERO COMMISSIONI
+ *   9B–41B   2 · Il sito su un portatile: ENTRI NEL LOCALE · IDENTITÀ UNICA · GALLERIA TAGLI · PRENOTI IN 5 SECONDI
  *   41B–49B  3 · Chiusura PIXELNOIR (identica al reel di riferimento)
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
@@ -166,24 +166,6 @@ function IconWarn({ a }) {
     </Glow>
   );
 }
-function IconFire({ a }) {
-  const flick = useF((v) => `scale(${1 + 0.06 * Math.sin((v - a) * 21)}, ${1 + 0.1 * Math.sin((v - a) * 17 + 1)})`);
-  return (
-    <Glow color={C.gold}>
-      <defs>
-        <linearGradient id="fuoco" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0" stopColor="#E86A0C" />
-          <stop offset=".55" stopColor="#FFC93C" />
-          <stop offset="1" stopColor="#FFF1B8" />
-        </linearGradient>
-      </defs>
-      <motion.g style={{ transform: flick, transformOrigin: "50px 92px" }}>
-        <path d="M50 4 C60 24 80 36 80 60 C80 80 66 94 50 94 C34 94 20 82 20 62 C20 48 28 38 36 30 C36 42 42 50 48 52 C44 36 44 20 50 4 Z" fill="url(#fuoco)" />
-        <path d="M50 52 C56 62 64 66 64 76 C64 86 57 92 50 92 C43 92 36 86 36 77 C36 70 41 66 44 62 C45 68 48 70 50 70 C49 64 48 58 50 52 Z" fill="#FFF6D6" opacity=".85" />
-      </motion.g>
-    </Glow>
-  );
-}
 function IconScissors({ a }) {
   const snip = (s) => useF((v) => `rotate(${s * (14 * Math.abs(Math.sin((v - a) * 9)))}deg)`);
   const r1 = snip(1);
@@ -202,43 +184,81 @@ function IconScissors({ a }) {
     </Glow>
   );
 }
-const STAR = (() => {
-  const p = [];
-  for (let i = 0; i < 10; i++) {
-    const r = i % 2 ? 20 : 46;
-    const ang = (Math.PI / 5) * i - Math.PI / 2;
-    p.push(`${(50 + r * Math.cos(ang)).toFixed(2)},${(52 + r * Math.sin(ang)).toFixed(2)}`);
-  }
-  return p.join(" ");
-})();
-function IconStar({ a }) {
-  const spin = useF((v) => `rotate(${kf(v, [[a, -40], [a + 0.6, 0, E.outBack]])}deg) scale(${1 + 0.05 * Math.sin((v - a) * 6)})`);
+/** porta che si apre e lascia uscire la luce del locale */
+function IconDoor({ a }) {
+  const door = useF((v) => {
+    const k = pr(v, a + 0.25, a + 0.85, E.outCubic);
+    return `scaleX(${lerp(1, 0.26, k).toFixed(3)}) skewY(${lerp(0, -9, k).toFixed(2)}deg)`;
+  });
+  const spill = useF((v) => 0.85 * pr(v, a + 0.35, a + 0.9));
   return (
     <Glow color={C.gold}>
       <defs>
-        <linearGradient id="stella" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FFF1B8" />
-          <stop offset=".5" stopColor="#FFC93C" />
-          <stop offset="1" stopColor="#E89B0C" />
-        </linearGradient>
-      </defs>
-      <motion.polygon points={STAR} fill="url(#stella)" style={{ transform: spin, transformOrigin: "50px 52px" }} />
-    </Glow>
-  );
-}
-function IconBolt({ a }) {
-  const flash = useF((v) => 0.75 + 0.25 * Math.max(0, Math.sin((v - a) * 14)));
-  return (
-    <Glow color={C.gold}>
-      <defs>
-        <linearGradient id="fulmine" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="luceporta" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#FFF1B8" />
           <stop offset="1" stopColor="#FFB000" />
         </linearGradient>
       </defs>
-      <motion.path d="M60 2 L18 56 H46 L36 98 L82 38 H54 L66 2 Z" fill="url(#fulmine)" style={{ opacity: flash }} />
+      <rect x="30" y="12" width="40" height="78" fill="url(#luceporta)" />
+      <motion.polygon points="30,92 70,92 96,104 4,104" fill="#FFC93C" style={{ opacity: spill }} />
+      <motion.g style={{ transform: door, transformBox: "view-box", transformOrigin: "30px 50px" }}>
+        <rect x="30" y="12" width="40" height="78" fill="#1b1c20" stroke={C.gold} strokeWidth="3" />
+        <circle cx="62" cy="54" r="3.5" fill={C.gold} />
+      </motion.g>
+      <path d="M25 93 V8 H75 V93" fill="none" stroke={C.gold} strokeWidth="6" strokeLinejoin="round" />
+      <path d="M8 93 H92" stroke={C.white} strokeOpacity=".55" strokeWidth="5" strokeLinecap="round" />
     </Glow>
   );
+}
+/** impronta digitale che si disegna, con una linea di scansione */
+const PRINT = [
+  "M22 50 C24 30 38 16 54 16 C70 16 82 28 84 46",
+  "M30 72 C26 52 34 30 52 28 C68 27 76 40 75 56",
+  "M40 84 C34 66 36 46 52 42 C64 40 67 52 65 62 C63 74 67 82 72 87",
+  "M52 90 C47 78 47 64 51 56 C55 50 59 57 57 67",
+  "M84 62 C84 72 82 80 78 86",
+];
+function IconPrint({ a }) {
+  const scan = useF((v) => `translate3d(0, ${lerp(8, 92, pr(v, a + 0.2, a + 0.95, E.inOutCubic)).toFixed(1)}px, 0)`);
+  const scanOp = useF((v) => Math.sin(Math.PI * pr(v, a + 0.2, a + 0.95)));
+  return (
+    <Glow color={C.gold}>
+      {PRINT.map((d, k) => (
+        <PrintLine key={k} d={d} at={a + k * 0.08} />
+      ))}
+      <motion.rect x="8" y="0" width="84" height="4" rx="2" fill="#FFF1B8" style={{ transform: scan, opacity: scanOp, filter: "drop-shadow(0 0 6px #FFC93C)" }} />
+    </Glow>
+  );
+}
+function PrintLine({ d, at }) {
+  const len = useF((v) => pr(v, at, at + 0.45, E.outCubic));
+  return <motion.path d={d} fill="none" stroke={C.gold} strokeWidth="5.5" strokeLinecap="round" style={{ pathLength: len }} />;
+}
+/** cronometro: l'anello si chiude in 5 tacche, una per secondo, fino all'invio su WhatsApp */
+function IconTimer({ a }) {
+  const prog = (v) => pr(v, a + 0.3, CLICKS[2], E.lin);
+  const ring = useF(prog);
+  const hand = useF((v) => `rotate(${(prog(v) * 360).toFixed(1)}deg)`);
+  const done = useF((v) => `scale(${(v >= CLICKS[2] ? 1 + 0.12 * Math.sin(Math.PI * pr(v, CLICKS[2], CLICKS[2] + 0.3)) : 1).toFixed(3)})`);
+  return (
+    <Glow color={C.gold}>
+      <motion.g style={{ transform: done, transformBox: "view-box", transformOrigin: "50px 56px" }}>
+        <path d="M43 6 H57 M50 6 V16 M78 22 L84 16" stroke={C.white} strokeWidth="6" strokeLinecap="round" />
+        <circle cx="50" cy="56" r="38" fill="none" stroke={C.white} strokeOpacity=".22" strokeWidth="8" />
+        <motion.circle cx="50" cy="56" r="38" fill="none" stroke={C.gold} strokeWidth="8" strokeLinecap="round" transform="rotate(-90 50 56)" style={{ pathLength: ring }} />
+        {[0, 1, 2, 3, 4].map((k) => (
+          <TimerTick key={k} k={k} prog={prog} />
+        ))}
+        <motion.path d="M50 56 V28" stroke={C.white} strokeWidth="5" strokeLinecap="round" style={{ transform: hand, transformBox: "view-box", transformOrigin: "50px 56px" }} />
+        <circle cx="50" cy="56" r="5" fill={C.gold} />
+      </motion.g>
+    </Glow>
+  );
+}
+function TimerTick({ k, prog }) {
+  const ang = ((k + 1) / 5) * Math.PI * 2 - Math.PI / 2;
+  const on = useF((v) => (prog(v) >= (k + 1) / 5 - 0.001 ? 1 : 0.25));
+  return <motion.circle cx={50 + 38 * Math.cos(ang)} cy={56 + 38 * Math.sin(ang)} r="6" fill="#FFF1B8" style={{ opacity: on }} />;
 }
 
 /* ───────────────────────────── scena 1 · il problema ───────────────────────────── */
@@ -546,90 +566,129 @@ const CENTER = { x: 540, y: 1110 }; // centro dello schermo sul palco
 const [F1, F2, F3, F4, FO] = T.f;
 
 /** pagine impilate del sito, nell'ordine in cui le scorriamo */
-const PAGES = ["hero", "s2", "s3", "ba", "s4", "recensioni", "s5", "book"];
+const PAGES = ["hero", "chi", "galleria", "ba", "s5", "book"];
+/** istanti in cui lo scorrimento si ferma su una pagina: lampo sul vetro, piccola scossa, suono */
+const ARRIVE = [F1, F2 + 0.62, F3 + 0.55, F3 + 2.2, F4 + 0.62];
 const scrollAt = (v) =>
   kf(v, [
     [F2 - 0.02, 0],
-    [F2 + 0.7, 3, E.inOutQuint],
-    [F3 - 0.02, 3],
-    [F3 + 0.62, 5, E.inOutQuint],
-    [F4 - 0.02, 5],
-    [F4 + 0.62, 7, E.inOutQuint],
+    [F2 + 0.62, 1, E.inOutQuint],
+    [F3 - 0.02, 1],
+    [F3 + 0.55, 2, E.inOutQuint],
+    [F3 + 1.75, 2],
+    [F3 + 2.2, 3, E.inOutQuint],
+    [F4 - 0.02, 3],
+    [F4 + 0.62, 5, E.inOutQuint],
   ]);
+/** i tre clic della prenotazione: servizio, barbiere, invio su WhatsApp */
+const CLICKS = [F4 + 1.05, F4 + 1.62, F4 + 2.3];
 
-/** camera: zoom e punto dello schermo (coordinate 1440×900) da portare al centro */
+/**
+ * Camera: zoom e punto dello schermo (coordinate 1440×900) da portare al centro.
+ * 1 · ENTRI NEL LOCALE   spinta dentro la foto della vetrina mentre l'intro entra nel salone
+ * 2 · IDENTITÀ UNICA     Chi Siamo: titolo "una firma", poi logo e fondatori
+ * 3 · GALLERIA TAGLI     panoramica sui look, poi lo slider Prima & Dopo
+ * 4 · PRENOTI IN 5 SEC   servizio → barbiere → WhatsApp, seguendo il cursore
+ */
 const CAM = {
   zoom: [
     [F1 + 0.8, 1],
-    [F2 - 0.1, 1.14, E.inOutCubic],
-    [F2 + 0.35, 0.96],
-    [F2 + 1.1, 1.95, E.inOutExpo],
-    [F3 - 0.1, 2.08, E.lin],
-    [F3 + 0.3, 0.98],
-    [F3 + 1.05, 2.25, E.inOutExpo],
-    [F3 + 1.9, 2.35, E.lin],
-    [F3 + 2.5, 1.45],
-    [F4 - 0.1, 1.5, E.lin],
-    [F4 + 0.3, 0.98],
-    [F4 + 0.95, 1.42],
-    [F4 + 1.5, 1.46, E.lin],
-    [F4 + 2.0, 2.05],
+    [F1 + 1.7, 1.55, E.inOutCubic],
+    [F2 - 0.12, 2.25, E.lin],
+    [F2 + 0.3, 1.0, E.inOutCubic],
+    [F2 + 1.1, 1.75, E.inOutExpo],
+    [F2 + 1.6, 1.85, E.lin],
+    [F2 + 2.3, 2.05, E.inOutCubic],
+    [F3 - 0.1, 2.15, E.lin],
+    [F3 + 0.25, 1.0, E.inOutCubic],
+    [F3 + 0.85, 1.75, E.inOutExpo],
+    [F3 + 1.7, 1.8, E.lin],
+    [F3 + 2.0, 1.05, E.inOutCubic],
+    [F3 + 2.55, 1.9, E.inOutExpo],
+    [F4 - 0.1, 2.0, E.lin],
+    [F4 + 0.3, 0.98, E.inOutCubic],
+    [F4 + 0.85, 1.55, E.inOutExpo],
+    [F4 + 1.2, 1.6, E.lin],
+    [F4 + 1.45, 1.6],
+    [F4 + 2.15, 2.0, E.inOutCubic],
     [FO - 0.45, 2.15, E.lin],
     [FO, 7.5, E.inExpo],
   ],
   fx: [
-    [F2 + 0.35, 720],
-    [F2 + 1.1, 1170, E.inOutExpo],
-    [F3 - 0.1, 1170],
-    [F3 + 0.3, 720],
-    [F3 + 1.05, 1170, E.inOutExpo],
-    [F3 + 1.9, 1190, E.lin],
-    [F3 + 2.5, 520],
-    [F4 - 0.1, 700, E.lin],
+    [F1 + 0.8, 720],
+    [F1 + 1.7, 1065, E.inOutCubic],
+    [F2 - 0.12, 1065],
+    [F2 + 0.3, 720],
+    [F2 + 1.1, 430, E.inOutExpo],
+    [F2 + 1.6, 470, E.lin],
+    [F2 + 2.3, 640],
+    [F3 - 0.1, 650, E.lin],
+    [F3 + 0.25, 720],
+    [F3 + 0.85, 210, E.inOutExpo],
+    [F3 + 1.7, 1230],
+    [F3 + 2.0, 720],
+    [F3 + 2.55, 1170, E.inOutExpo],
+    [F4 - 0.1, 1170],
     [F4 + 0.3, 720],
-    [F4 + 0.95, 560],
-    [F4 + 1.5, 600, E.lin],
-    [F4 + 2.0, 1070],
+    [F4 + 0.85, 505, E.inOutExpo],
+    [F4 + 1.2, 505],
+    [F4 + 1.45, 560],
+    [F4 + 2.15, 1070],
     [FO - 0.3, 1070],
   ],
   fy: [
     [F1 + 0.8, 450],
-    [F2 - 0.1, 420],
-    [F2 + 0.35, 450],
-    [F2 + 1.1, 437, E.inOutExpo],
-    [F3 - 0.1, 437],
-    [F3 + 0.3, 450],
-    [F3 + 1.05, 283, E.inOutExpo],
-    [F3 + 1.9, 290, E.lin],
-    [F3 + 2.5, 600],
-    [F4 - 0.1, 620, E.lin],
+    [F1 + 1.7, 445],
+    [F2 - 0.12, 440],
+    [F2 + 0.3, 450],
+    [F2 + 1.1, 275, E.inOutExpo],
+    [F2 + 1.6, 285, E.lin],
+    [F2 + 2.3, 540],
+    [F3 - 0.1, 545, E.lin],
+    [F3 + 0.25, 450],
+    [F3 + 0.85, 610, E.inOutExpo],
+    [F3 + 1.7, 610],
+    [F3 + 2.0, 450],
+    [F3 + 2.55, 437, E.inOutExpo],
+    [F4 - 0.1, 437],
     [F4 + 0.3, 450],
-    [F4 + 0.95, 560],
-    [F4 + 1.5, 560, E.lin],
-    [F4 + 2.0, 740],
+    [F4 + 0.85, 515, E.inOutExpo],
+    [F4 + 1.2, 520],
+    [F4 + 1.45, 815],
+    [F4 + 2.15, 770],
     [FO - 0.3, 781],
   ],
   rx: [
     [F1, 14],
-    [F2 - 0.1, 7],
+    [F1 + 1.7, 6],
+    [F2 - 0.1, 3],
+    [F2 + 0.3, 9],
     [F2 + 1.1, 4],
-    [F3 + 0.3, 9],
-    [F3 + 1.05, 3],
-    [F3 + 2.5, 6],
+    [F2 + 2.3, 5],
+    [F3 + 0.25, 9],
+    [F3 + 0.85, 4],
+    [F3 + 2.0, 8],
+    [F3 + 2.55, 4],
     [F4 + 0.3, 10],
-    [F4 + 2.0, 4],
+    [F4 + 0.85, 5],
+    [F4 + 2.15, 4],
   ],
   ry: [
     [F1, 12],
-    [F2 - 0.1, -7],
-    [F2 + 1.1, -13],
-    [F3 - 0.1, -10],
-    [F3 + 0.3, 8],
-    [F3 + 1.05, -9],
-    [F3 + 2.5, 9],
-    [F4 - 0.1, 4],
-    [F4 + 0.3, -8],
-    [F4 + 2.0, -11],
+    [F1 + 1.7, -8],
+    [F2 - 0.1, -12],
+    [F2 + 0.3, 6],
+    [F2 + 1.1, 10],
+    [F2 + 2.3, -6],
+    [F3 + 0.25, 6],
+    [F3 + 0.85, 12],
+    [F3 + 1.7, -12],
+    [F3 + 2.0, -4],
+    [F3 + 2.55, -13],
+    [F4 + 0.3, 8],
+    [F4 + 0.85, 9],
+    [F4 + 1.45, 7],
+    [F4 + 2.15, -11],
     [FO, -4],
   ],
 };
@@ -664,15 +723,15 @@ function SceneSite() {
         style={{
           position: "absolute",
           inset: "0 0 auto 0",
-          height: 820,
-          background: "linear-gradient(180deg, rgba(12,13,15,.97) 0%, rgba(12,13,15,.9) 52%, rgba(12,13,15,0) 100%)",
+          height: 900,
+          background: "linear-gradient(180deg, rgba(12,13,15,.97) 0%, rgba(12,13,15,.93) 62%, rgba(12,13,15,0) 100%)",
           pointerEvents: "none",
         }}
       />
-      <FeatureText i={0} w1="IMPATTO" w2="IMMEDIATO." Icon={IconFire} a={F1 + 0.32} z={F2} />
-      <FeatureText i={1} w1="QUALITÀ" w2="VISIBILE." Icon={IconScissors} a={F2 + 0.2} z={F3} />
-      <FeatureText i={2} w1="FIDUCIA" w2="TOTALE." Icon={IconStar} a={F3 + 0.2} z={F4} />
-      <FeatureText i={3} w1="ZERO" w2="COMMISSIONI." Icon={IconBolt} a={F4 + 0.2} z={FO - 0.15} />
+      <FeatureText w1="ENTRI NEL" w2="LOCALE." Icon={IconDoor} a={F1 + 0.32} z={F2} />
+      <FeatureText w1="IDENTITÀ" w2="UNICA." Icon={IconPrint} a={F2 + 0.2} z={F3} />
+      <FeatureText w1="GALLERIA" w2="TAGLI." Icon={IconScissors} a={F3 + 0.2} z={F4} />
+      <FeatureText w1="PRENOTI IN" w2="5 SECONDI." Icon={IconTimer} a={F4 + 0.2} z={FO - 0.15} />
       <DiveOut />
     </motion.div>
   );
@@ -889,10 +948,10 @@ function Screen() {
     return `0 ${Math.min(26, sp * 2.2).toFixed(2)}`;
   });
   const glare = useF((v) => `translate3d(${(-260 + ((v * 140) % 1700)).toFixed(1)}px, 0, 0) skewX(-18deg)`);
-  const sweepOp = useF((v) => pulse(v, [F1, F2 + 0.7, F3 + 0.62, F4 + 0.62], 3.2));
+  const sweepOp = useF((v) => pulse(v, ARRIVE, 3.2));
   const sweep = useF((v) => {
     let start = F1;
-    for (const s of [F1, F2 + 0.7, F3 + 0.62, F4 + 0.62]) if (v >= s) start = s;
+    for (const s of ARRIVE) if (v >= s) start = s;
     return `translate3d(${lerp(-600, 1700, pr(v, start, start + 0.7, E.outCubic))}px, 0, 0) skewX(-20deg)`;
   });
   return (
@@ -955,46 +1014,149 @@ function Screen() {
 const IMG = { position: "absolute", left: 0, top: 0, width: 1440, height: 900, display: "block" };
 function Page({ name }) {
   if (name === "hero") return <HeroPage />;
+  if (name === "chi") return <ChiPage />;
+  if (name === "galleria") return <GalleryPage />;
   if (name === "ba") return <BeforeAfterPage />;
-  if (name === "recensioni") return <ReviewsPage />;
   if (name === "book") return <BookPage />;
   return <img src={cap(name)} alt="" style={IMG} draggable={false} />;
 }
+/** ritaglio di una schermata (per far "vivere" un dettaglio: zoom, riflesso) */
+const crop = (name, x, y) => ({
+  backgroundImage: `url(${cap(name)})`,
+  backgroundSize: "1440px 900px",
+  backgroundPosition: `${-x}px ${-y}px`,
+});
+/** passaggio di luce su un'area */
+function Sheen({ x, y, w, h, at, dur = 0.6, radius = 0 }) {
+  const tr = useF((v) => `translate3d(${lerp(-w * 0.6, w * 1.3, pr(v, at, at + dur, E.inOutCubic)).toFixed(1)}px, 0, 0) skewX(-20deg)`);
+  const op = useF((v) => Math.sin(Math.PI * pr(v, at, at + dur)));
+  return (
+    <div style={{ position: "absolute", left: x, top: y, width: w, height: h, overflow: "hidden", borderRadius: radius, pointerEvents: "none" }}>
+      <motion.div style={{ position: "absolute", top: 0, bottom: 0, width: Math.max(120, w * 0.35), transform: tr, opacity: op, background: "linear-gradient(90deg, transparent, rgba(255,240,200,.38), transparent)" }} />
+    </div>
+  );
+}
 
-/** IMPATTO IMMEDIATO: l'ingresso del sito come un video (fotogrammi dell'apertura in dissolvenza) */
+/** 1 · ENTRI NEL LOCALE: l'intro del sito passa dalla vetrina all'interno, la camera ci entra */
 function HeroPage() {
   const frames = ["hero-0", "hero-1", "hero-2", "hero-3", "hero-4"];
+  const light = useF((v) => 0.75 * Math.sin(Math.PI * pr(v, F1 + 1.1, F1 + 2.6)));
   return (
     <>
       {frames.map((f, k) => (
         <HeroFrame key={f} f={f} k={k} />
       ))}
+      {/* la luce del salone che si apre mentre si entra */}
+      <motion.div
+        style={{
+          position: "absolute",
+          left: 1065 - 380,
+          top: 450 - 380,
+          width: 760,
+          height: 760,
+          background: "radial-gradient(closest-side, rgba(255,226,150,.55), rgba(255,190,60,.15) 55%, transparent)",
+          opacity: light,
+          pointerEvents: "none",
+        }}
+      />
     </>
   );
 }
 function HeroFrame({ f, k }) {
   const op = useF((v) => {
     if (k === 0) return 1;
-    const idx = kf(v, [[F1 + 0.45, 0], [F2 - 0.25, 4, E.inOutCubic]]);
+    const idx = kf(v, [[F1 + 0.6, 0], [F2 - 0.35, 4, E.inOutCubic]]);
     return clamp(idx - k + 1);
   });
-  const zoom = useF((v) => `scale(${(1 + 0.05 * pr(v, F1, F2, E.lin)).toFixed(4)})`);
-  return <motion.img src={cap(f)} alt="" draggable={false} style={{ ...IMG, opacity: op, transform: zoom, transformOrigin: "60% 40%" }} />;
+  const zoom = useF((v) => `scale(${(1 + 0.1 * pr(v, F1 + 0.6, F2, E.inCubic)).toFixed(4)})`);
+  return <motion.img src={cap(f)} alt="" draggable={false} style={{ ...IMG, opacity: op, transform: zoom, transformOrigin: "74% 50%" }} />;
 }
 
-/** QUALITÀ VISIBILE: lo slider Prima & Dopo si muove davvero */
+/** 2 · IDENTITÀ UNICA: Chi Siamo, il titolo si sottolinea, il logo si accende con i fondatori */
+function ChiPage() {
+  const line = useF((v) => pr(v, F2 + 1.0, F2 + 1.45, E.outCubic));
+  const halo = useF((v) => pr(v, F2 + 1.95, F2 + 2.3) * (0.8 + 0.2 * Math.sin(v * 8)));
+  const pop = useF((v) => `scale(${(1 + 0.12 * Math.sin(Math.PI * pr(v, F2 + 2.15, F2 + 2.6)) + 0.03 * pr(v, F2 + 2.4, F2 + 2.7)).toFixed(4)})`);
+  const popOp = useF((v) => pr(v, F2 + 2.1, F2 + 2.2));
+  const names = useF((v) => `scaleX(${pr(v, F2 + 2.45, F2 + 2.85, E.outExpo).toFixed(3)})`);
+  return (
+    <>
+      <img src={cap("s2")} alt="" style={IMG} draggable={false} />
+      <Sheen x={40} y={195} w={800} h={190} at={F2 + 0.95} dur={0.7} />
+      <svg width="1440" height="900" style={{ position: "absolute", inset: 0, overflow: "visible", pointerEvents: "none" }}>
+        <motion.path
+          d="M44 384 C150 398 290 396 400 376"
+          fill="none"
+          stroke="#FFD60A"
+          strokeWidth="7"
+          strokeLinecap="round"
+          style={{ pathLength: line, filter: "drop-shadow(0 0 10px rgba(255,214,10,.9))" }}
+        />
+      </svg>
+      <motion.div
+        style={{
+          position: "absolute",
+          left: 603 - 220,
+          top: 535 - 180,
+          width: 440,
+          height: 360,
+          background: "radial-gradient(closest-side, rgba(255,201,60,.55), transparent)",
+          opacity: halo,
+        }}
+      />
+      <motion.div style={{ position: "absolute", left: 512, top: 462, width: 184, height: 150, ...crop("s2", 512, 462), transform: pop, opacity: popOp, filter: "drop-shadow(0 0 22px rgba(255,201,60,.7))" }} />
+      <Ripple x={603} y={535} at={F2 + 2.2} />
+      <motion.div style={{ position: "absolute", left: 740, top: 568, width: 136, height: 3, borderRadius: 2, background: "#FFD60A", boxShadow: "0 0 12px #FFD60A", transform: names, transformOrigin: "0 50%" }} />
+    </>
+  );
+}
+
+/** 3 · GALLERIA TAGLI: la camera passa sui look, ogni foto si accende come al passaggio del mouse */
+const CARDS = [40, 386, 732, 1078];
+const CARD = { y: 421, w: 322, h: 403 };
+function GalleryPage() {
+  return (
+    <>
+      <img src={cap("s3")} alt="" style={IMG} draggable={false} />
+      {CARDS.map((x, i) => (
+        <GalleryCard key={i} x={x} at={F3 + 0.72 + i * 0.27} />
+      ))}
+    </>
+  );
+}
+function GalleryCard({ x, at }) {
+  const lit = (v) => pr(v, at - 0.12, at + 0.18, E.outCubic) * (1 - 0.65 * pr(v, at + 0.45, at + 0.85));
+  const zoom = useF((v) => `scale(${(1 + 0.08 * lit(v)).toFixed(4)})`);
+  const on = useF((v) => (v > at - 0.15 ? 1 : 0));
+  const ring = useF((v) => {
+    const k = lit(v);
+    return `0 0 0 ${(3.5 * k).toFixed(2)}px #FFD60A, 0 0 ${(60 * k).toFixed(1)}px rgba(255,201,60,${(0.75 * k).toFixed(2)})`;
+  });
+  return (
+    <>
+      <motion.div style={{ position: "absolute", left: x, top: CARD.y, width: CARD.w, height: CARD.h, borderRadius: "16px 16px 0 0", overflow: "hidden", opacity: on }}>
+        <motion.div style={{ position: "absolute", inset: 0, ...crop("s3", x, CARD.y), transform: zoom }} />
+      </motion.div>
+      <motion.div style={{ position: "absolute", left: x, top: CARD.y, width: CARD.w, height: CARD.h + 76, borderRadius: 16, boxShadow: ring, pointerEvents: "none" }} />
+      <Sheen x={x} y={CARD.y} w={CARD.w} h={CARD.h} at={at - 0.05} dur={0.55} radius={16} />
+      <Ripple x={x + 286} y={457} at={at + 0.05} />
+    </>
+  );
+}
+
+/** lo slider Prima & Dopo si muove davvero (parte finale della galleria) */
 const BA = { x: 940, y: 150, w: 460, h: 575 };
+const BA_AT = F3 + 2.5;
 const baAt = (v) =>
   kf(v, [
-    [F2 + 1.15, 50],
-    [F2 + 1.75, 14, E.inOutCubic],
-    [F2 + 2.45, 88, E.inOutCubic],
-    [F2 + 3.05, 50, E.inOutCubic],
+    [BA_AT, 50],
+    [BA_AT + 0.32, 14, E.inOutCubic],
+    [BA_AT + 0.72, 86, E.inOutCubic],
   ]);
 function BeforeAfterPage() {
   const clip = useF((v) => `inset(0 ${(100 - baAt(v)).toFixed(2)}% 0 0)`);
   const left = useF((v) => `${baAt(v).toFixed(2)}%`);
-  const glow = useF((v) => 0.4 + 0.6 * pr(v, F2 + 0.9, F2 + 1.2));
+  const glow = useF((v) => 0.4 + 0.6 * pr(v, BA_AT - 0.2, BA_AT + 0.1));
   return (
     <>
       <img src={cap("ba-50")} alt="" style={IMG} draggable={false} />
@@ -1066,68 +1228,28 @@ function Pill({ side, children }) {
   );
 }
 
-/** FIDUCIA TOTALE: il 5.0 si accende, le stelle brillano una dopo l'altra */
-function ReviewsPage() {
-  const halo = useF((v) => pr(v, F3 + 0.9, F3 + 1.3) * (0.75 + 0.25 * Math.sin(v * 7)));
-  const ring = useF((v) => `0 0 0 ${(2 + 3 * pr(v, F3 + 1.0, F3 + 1.3)).toFixed(2)}px rgba(255,214,10,${(0.9 * pr(v, F3 + 1.0, F3 + 1.3)).toFixed(2)}), 0 0 60px rgba(255,201,60,${(0.55 * pr(v, F3 + 1.0, F3 + 1.4)).toFixed(2)})`);
-  return (
-    <>
-      <img src={cap("recensioni")} alt="" style={IMG} draggable={false} />
-      <motion.div
-        style={{
-          position: "absolute",
-          left: 960,
-          top: 180,
-          width: 500,
-          height: 210,
-          background: "radial-gradient(closest-side, rgba(255,201,60,.45), transparent)",
-          opacity: halo,
-          mixBlendMode: "screen",
-        }}
-      />
-      <motion.div style={{ position: "absolute", left: 1019, top: 240, width: 381, height: 85, borderRadius: 22, boxShadow: ring }} />
-      {[1154, 1172, 1190, 1208, 1226].map((x, k) => (
-        <Sparkle key={k} x={x} y={267} at={F3 + 1.1 + k * 0.1} size={24} />
-      ))}
-      {[320, 780, 1240].map((x0, c) =>
-        [0, 1, 2, 3, 4].map((k) => <Sparkle key={`${c}-${k}`} x={x0 + 7 + k * 18.5} y={458} at={F3 + 2.35 + c * 0.22 + k * 0.05} size={20} />),
-      )}
-    </>
-  );
-}
-function Sparkle({ x, y, at, size }) {
-  const tr = useF((v) => {
-    const k = pr(v, at, at + 0.35);
-    const s = 1 + 0.9 * Math.sin(Math.PI * k);
-    return `translate(-50%,-50%) scale(${s.toFixed(3)}) rotate(${(k * 72).toFixed(1)}deg)`;
-  });
-  const op = useF((v) => Math.sin(Math.PI * pr(v, at, at + 0.35)));
-  return (
-    <motion.div style={{ position: "absolute", left: x, top: y, width: size, height: size, transform: tr, opacity: op, filter: "drop-shadow(0 0 8px #FFD60A) drop-shadow(0 0 18px rgba(255,190,0,.8))" }}>
-      <svg viewBox="0 0 100 100" width={size} height={size}>
-        <polygon points={STAR} fill="#FFE27A" />
-      </svg>
-    </motion.div>
-  );
-}
-
-/** ZERO COMMISSIONI: scelta del servizio e invio diretto su WhatsApp */
-const CLICK1 = F4 + 1.2;
-const CLICK2 = F4 + 2.05;
+/** 4 · PRENOTI IN 5 SECONDI: servizio, barbiere, invio su WhatsApp. Tre clic, il riepilogo si aggiorna */
 function BookPage() {
-  const op1 = useF((v) => pr(v, CLICK1 + 0.02, CLICK1 + 0.22));
-  const press = useF((v) => `scale(${(1 - 0.05 * Math.sin(Math.PI * pr(v, CLICK2 - 0.04, CLICK2 + 0.16))).toFixed(4)})`);
+  const [c1, c2, c3] = CLICKS;
+  const step1 = useF((v) => pr(v, c1 + 0.02, c1 + 0.18));
+  const step2 = useF((v) => pr(v, c2 + 0.02, c2 + 0.2));
+  const press = useF((v) => `scale(${(1 - 0.05 * Math.sin(Math.PI * pr(v, c3 - 0.04, c3 + 0.16))).toFixed(4)})`);
   const btnGlow = useF((v) => {
-    const k = pr(v, CLICK2, CLICK2 + 0.15) * (0.7 + 0.3 * Math.sin((v - CLICK2) * 9));
+    const k = pr(v, c3, c3 + 0.15) * (0.7 + 0.3 * Math.sin((v - c3) * 9));
     return `0 0 0 ${(4 * k).toFixed(2)}px rgba(255,214,10,.5), 0 0 ${(70 * k).toFixed(1)}px rgba(37,211,102,${(0.75 * k).toFixed(2)})`;
   });
   return (
     <>
       <img src={cap("book-0")} alt="" style={IMG} draggable={false} />
-      <motion.img src={cap("book-1")} alt="" style={{ ...IMG, opacity: op1 }} draggable={false} />
+      {/* clic 1: "Taglio e Barba" (griglia dei servizi, prezzo e riga del riepilogo) */}
+      <motion.img src={cap("book-1")} alt="" draggable={false} style={{ ...IMG, opacity: step1, clipPath: "inset(366px 628px 236px 198px)" }} />
+      <motion.img src={cap("book-1")} alt="" draggable={false} style={{ ...IMG, opacity: step1, clipPath: "inset(300px 190px 476px 740px)" }} />
+      {/* clic 2: barbiere DAVID, il resto del riepilogo e il messaggio pronto */}
+      <motion.img src={cap("book-1")} alt="" draggable={false} style={{ ...IMG, opacity: step2 }} />
       <motion.div style={{ position: "absolute", left: 903, top: 754, width: 334, height: 54, borderRadius: 27, boxShadow: btnGlow, transform: press }} />
-      <Ripple x={350} y={515} at={CLICK1} />
-      <Ripple x={1070} y={781} at={CLICK2} color="rgba(37,211,102,.9)" />
+      <Ripple x={350} y={515} at={c1} />
+      <Ripple x={657} y={855} at={c2} />
+      <Ripple x={1070} y={781} at={c3} color="rgba(37,211,102,.9)" />
       <WaBubble />
     </>
   );
@@ -1135,10 +1257,10 @@ function BookPage() {
 function Ripple({ x, y, at, color = "rgba(255,214,10,.9)" }) {
   const tr = useF((v) => `translate(-50%,-50%) scale(${lerp(0.2, 3.2, pr(v, at, at + 0.6, E.outCubic)).toFixed(3)})`);
   const op = useF((v) => (v < at ? 0 : 1 - pr(v, at, at + 0.6)));
-  return <motion.div style={{ position: "absolute", left: x, top: y, width: 80, height: 80, borderRadius: "50%", border: `4px solid ${color}`, transform: tr, opacity: op }} />;
+  return <motion.div style={{ position: "absolute", left: x, top: y, width: 80, height: 80, borderRadius: "50%", border: `4px solid ${color}`, transform: tr, opacity: op, pointerEvents: "none" }} />;
 }
 function WaBubble() {
-  const a = CLICK2 + 0.12;
+  const a = CLICKS[2] + 0.12;
   const tr = useF((v) => {
     const k = pr(v, a, a + 0.45, E.outBack);
     return `translate(-50%,-50%) translate3d(0, ${lerp(30, -96, pr(v, a, a + 0.5, E.outCubic)).toFixed(1)}px, 0) scale(${k.toFixed(3)})`;
@@ -1157,31 +1279,36 @@ function WaBubble() {
   );
 }
 
-/** puntatore del mouse (coordinate dello schermo 1440×900) */
+/** puntatore del mouse (coordinate dello schermo 1440×900), segue la pagina mentre scorre */
+const PAGE_Y = (name, v) => (PAGES.indexOf(name) - scrollAt(v)) * 900;
 function Cursor() {
   const pos = useF((v) => {
-    let x = 1290, y = 720;
-    if (v < F3) {
-      const handleX = BA.x + (baAt(v) / 100) * BA.w;
-      x = kf(v, [[F2 + 0.75, 1330], [F2 + 1.1, BA.x + BA.w / 2]]);
-      if (v > F2 + 1.1) x = handleX;
-      y = kf(v, [[F2 + 0.75, 760], [F2 + 1.1, BA.y + BA.h / 2 + 6]]) - (v > F2 + 1.1 ? 3 * Math.sin((v - F2) * 5) : 0) + 3;
-      y += 3 * 900 - scrollAt(v) * 900; // segue la pagina mentre scorre
+    let x, y;
+    if (v < F4) {
+      // trascina la maniglia dello slider Prima & Dopo
+      const handle = BA.x + (baAt(v) / 100) * BA.w;
+      x = v < BA_AT ? kf(v, [[F3 + 2.3, 1330], [BA_AT, BA.x + BA.w / 2]]) : handle;
+      y = kf(v, [[F3 + 2.3, 760], [BA_AT, BA.y + BA.h / 2 + 4]]) + PAGE_Y("ba", v);
     } else {
-      x = kf(v, [[F4 + 0.6, 760], [CLICK1 - 0.08, 350, E.inOutCubic], [CLICK1 + 0.2, 380], [CLICK2 - 0.08, 1070, E.inOutCubic]]);
-      y = kf(v, [[F4 + 0.6, 680], [CLICK1 - 0.08, 515, E.inOutCubic], [CLICK1 + 0.2, 530], [CLICK2 - 0.08, 781, E.inOutCubic]]);
-      y += 7 * 900 - scrollAt(v) * 900;
+      const [c1, c2, c3] = CLICKS;
+      const path = [
+        [F4 + 0.55, 760, 700],
+        [c1 - 0.08, 350, 515],
+        [c1 + 0.12, 368, 528],
+        [c2 - 0.06, 657, 855],
+        [c2 + 0.12, 690, 842],
+        [c3 - 0.06, 1070, 781],
+      ];
+      x = kf(v, path.map(([t, px]) => [t, px, E.inOutCubic]));
+      y = kf(v, path.map(([t, , py]) => [t, py, E.inOutCubic])) + PAGE_Y("book", v);
     }
-    const down = Math.max(
-      Math.sin(Math.PI * pr(v, CLICK1 - 0.05, CLICK1 + 0.12)),
-      Math.sin(Math.PI * pr(v, CLICK2 - 0.05, CLICK2 + 0.12)),
-      v > F2 + 1.1 && v < F2 + 3.1 ? 0.6 : 0,
-    );
+    const tap = (c) => Math.sin(Math.PI * pr(v, c - 0.05, c + 0.12));
+    const down = Math.max(...CLICKS.map(tap), v > BA_AT && v < BA_AT + 0.75 ? 0.6 : 0);
     return `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${(1 - 0.14 * down).toFixed(3)})`;
   });
   const op = useF((v) => {
-    if (v < F3) return pr(v, F2 + 0.72, F2 + 0.9) * (1 - pr(v, F2 + 3.15, F2 + 3.3));
-    return pr(v, F4 + 0.6, F4 + 0.78) * (1 - pr(v, FO - 0.4, FO - 0.25));
+    if (v < F4) return pr(v, F3 + 2.28, F3 + 2.42) * (1 - pr(v, BA_AT + 0.8, BA_AT + 0.92));
+    return pr(v, F4 + 0.55, F4 + 0.7) * (1 - pr(v, FO - 0.4, FO - 0.25));
   });
   return (
     <motion.div style={{ position: "absolute", left: 0, top: 0, transform: pos, opacity: op, transformOrigin: "0 0", filter: "drop-shadow(0 4px 8px rgba(0,0,0,.5))" }}>
@@ -1352,12 +1479,12 @@ function OutroWord({ at, style, children }) {
 
 /* ───────────────────────────── ritmo globale: scosse e grana ───────────────────────────── */
 
-const IMPACTS = [...T.p, T.drop, T.f[1] + 0.7, T.f[2] + 0.62, T.f[3] + 0.62];
+const IMPACTS = [...T.p, T.drop, ...ARRIVE.slice(1)];
 function Shake({ children }) {
   const tr = useF((v) => {
     if (v >= T.outro) return "none";
     let a = 0;
-    for (const ti of IMPACTS) if (v >= ti) a = Math.max(a, (ti === T.drop ? 26 : 12) * Math.exp(-(v - ti) * 9));
+    for (const ti of IMPACTS) if (v >= ti) a = Math.max(a, (ti === T.drop ? 26 : ti < T.drop ? 12 : 8) * Math.exp(-(v - ti) * 9));
     const x = noise(v * 61) * a;
     const y = noise(v * 47 + 3) * a;
     return `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${(noise(v * 13) * a * 0.04).toFixed(3)}deg)`;

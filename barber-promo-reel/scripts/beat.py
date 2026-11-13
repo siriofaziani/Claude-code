@@ -5,7 +5,7 @@ Uso: python3 scripts/beat.py  ->  public/beat.wav  (44.1 kHz, stereo, 16 bit). S
 Struttura (B = un battito = 60/140 s):
   0B-9B   problema: drone scuro, tic dell'orologio, colpo profondo a ogni frase (0B, 3B, 6B), salita verso il drop
   9B      drop: impatto + piatto, parte il groove (cassa, clap, charleston, 808, accordi)
-  17B, 25B, 33B  cambio scena: soffio + piatto
+  17B, 25B, 33B  cambio scena: soffio + piatto; clic del cursore nella prenotazione
   41B     chiusura: impatto, il groove si ferma, resta un accordo che sfuma fino a 49B (21 s)
 """
 
@@ -207,6 +207,27 @@ for bar in range(8):
 for k in (17, 25, 33):
     add(whoosh(0.5), k * B - 0.42, 0.9)
     add(crash(1.8), k * B, 0.55)
+# galleria → slider Prima & Dopo: soffio sullo scorrimento
+add(whoosh(0.45), 25 * B + 1.75, 0.7)
+
+
+def click():
+    n = int(0.04 * SR)
+    t = np.arange(n) / SR
+    return (hp(rng.standard_normal(n), 3000) * np.exp(-t / 0.004) * 0.5 + np.sin(2 * np.pi * 1800 * t) * np.exp(-t / 0.01) * 0.3)
+
+
+def pop():
+    n = int(0.25 * SR)
+    t = np.arange(n) / SR
+    f = 500 + 900 * (1 - np.exp(-t / 0.03))
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.07) * 0.4
+
+
+# prenotazione: i tre clic (servizio, barbiere, WhatsApp) e il messaggio che parte
+for k, dt in enumerate((1.05, 1.62, 2.3)):
+    add(click(), 33 * B + dt, 0.9, pan=-0.2 + 0.2 * k)
+add(pop(), 33 * B + 2.42, 0.8)
 add(riser(B * 1.0), 40 * B, 0.9)
 add(whoosh(0.6), 41 * B - 0.5, 1.0)
 

@@ -12,10 +12,10 @@ Componente isolato: `src/BarberPromoReel.jsx` (React + Motion).
 |---|---|---|
 | 0:00–0:03.9 | 1 · Il problema | INVISIBILE ONLINE. ❌ · CLIENTI PERSI. 📉 · ZERO IDENTITÀ. ⚠️ |
 | 0:03.9 | Esplosione | lampo, onda d'urto, il portatile arriva in 3D |
-| 0:03.9–0:07.3 | Intro del sito | IMPATTO IMMEDIATO. 🔥 |
-| 0:07.3–0:10.7 | Slider Prima & Dopo (si muove davvero) | QUALITÀ VISIBILE. ✂️ |
-| 0:10.7–0:14.1 | Recensioni Google 5.0 | FIDUCIA TOTALE. ⭐ |
-| 0:14.1–0:17.6 | Prenotazione → WhatsApp | ZERO COMMISSIONI. ⚡ |
+| 0:03.9–0:07.3 | Intro del sito: la camera entra nella vetrina mentre l'animazione porta dentro il salone | ENTRI NEL LOCALE. 🚪 |
+| 0:07.3–0:10.7 | Chi Siamo: zoom su "DUE BARBIERI, una firma." (sottolineata), poi sul logo FADE e i fondatori | IDENTITÀ UNICA. |
+| 0:10.7–0:14.1 | Galleria: panoramica sui look (ogni foto si accende), poi lo slider Prima & Dopo trascinato | GALLERIA TAGLI. ✂️ |
+| 0:14.1–0:17.6 | Prenota: clic su "Taglio e Barba", su DAVID, poi "Invia su WhatsApp"; il cronometro si chiude in 5 tacche | PRENOTI IN 5 SECONDI. ⏱️ |
 | 0:17.6–0:21.0 | 3 · Chiusura | logo PIXELNOIR, "0:02", "Il tuo sito / cosa fa vedere in 2 secondi? / Commenta ANALISI" |
 
 La chiusura replica quella del reel di riferimento: logo estratto dal video, stessi testi, stesse posizioni, stessa sequenza
