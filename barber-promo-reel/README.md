@@ -39,7 +39,8 @@ Barra discreta in basso che si nasconde durante la riproduzione. Tasti: Spazio p
 H nasconde i controlli (per registrare lo schermo). Clic sul reel: play/pausa.
 
 ## Note
-- Musica: traccia fornita dal cliente (primi 27 s, sfumata in chiusura) in `public/beat.wav` (esportazione) e
+- Musica: traccia fornita dal cliente, presa da 2,47 s per 27 s: l'esplosione del brano (8,9 s) cade sull'arrivo del PC
+  (6,43 s nel reel) e l'ultimo colpo (29,0 s) sulla chiusura; in `public/beat.wav` (esportazione) e
   `src/beat.mp3` (anteprima). I tagli delle scene erano stati scritti sulla base a 140 BPM di `scripts/beat.py`,
   che resta disponibile come alternativa senza diritti di terzi.
 - Le icone sono SVG animati disegnati sul posto, al posto delle emoji, per restare coerenti con lo stile oro/antracite.
