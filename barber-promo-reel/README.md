@@ -29,7 +29,7 @@ npm install
 npm run dev            # anteprima con i controlli
 npm run build && npm run export   # rigenera out/fade-reel.mp4 (FPS=30 per la versione a 30 fps)
 npm run build:single   # rigenera l'anteprima in un file (dist-single/index.html)
-python3 scripts/beat.py           # rigenera la base musicale (public/beat.wav, solo numpy)
+python3 scripts/beat.py           # base generata via codice (sovrascrive public/beat.wav: oggi c'è la traccia scelta dal cliente)
 ```
 L'esportazione richiede ffmpeg e Playwright. Il tempo è deterministico: lo script imposta ogni fotogramma con
 `window.__reel.setTime()` (pagina aperta con `?export`), quindi il video non perde fotogrammi.
@@ -39,7 +39,9 @@ Barra discreta in basso che si nasconde durante la riproduzione. Tasti: Spazio p
 H nasconde i controlli (per registrare lo schermo). Clic sul reel: play/pausa.
 
 ## Note
-- Musica originale generata via codice (`scripts/beat.py`), senza diritti di terzi.
+- Musica: traccia fornita dal cliente (primi 27 s, sfumata in chiusura) in `public/beat.wav` (esportazione) e
+  `src/beat.mp3` (anteprima). I tagli delle scene erano stati scritti sulla base a 140 BPM di `scripts/beat.py`,
+  che resta disponibile come alternativa senza diritti di terzi.
 - Le icone sono SVG animati disegnati sul posto, al posto delle emoji, per restare coerenti con lo stile oro/antracite.
 - Schermate del sito in `src/cap/` (desktop 1440×900 a scala 1,5); `contatti.webp` è la sezione Contatti intera,
   `mappa-z0/1/2.webp` sono la mappa Google dopo il clic e dopo due doppi clic sul salone.
