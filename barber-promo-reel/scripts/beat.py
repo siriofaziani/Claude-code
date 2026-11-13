@@ -1,12 +1,13 @@
-"""Base musicale originale del reel (140 BPM, 21 s), sincronizzata con la timeline di BarberPromoReel.jsx.
+"""Base musicale originale del reel (140 BPM, 27 s), sincronizzata con la timeline di BarberPromoReel.jsx.
 
 Uso: python3 scripts/beat.py  ->  public/beat.wav  (44.1 kHz, stereo, 16 bit). Solo numpy, nessun campione esterno.
 
 Struttura (B = un battito = 60/140 s):
-  0B-9B   problema: drone scuro, tic dell'orologio, colpo profondo a ogni frase (0B, 3B, 6B), salita verso il drop
-  9B      drop: impatto + piatto, parte il groove (cassa, clap, charleston, 808, accordi)
-  17B, 25B, 33B  cambio scena: soffio + piatto; clic del cursore nella prenotazione
-  41B     chiusura: impatto, il groove si ferma, resta un accordo che sfuma fino a 49B (21 s)
+  0B-9B    problema: drone scuro, tic dell'orologio, colpo profondo a ogni frase (0B, 3B, 6B)
+  9B-15B   ponte "Pixel Noir": campanelli e accordo che si apre, poi salita verso il drop
+  15B      drop: impatto + piatto, parte il groove (cassa, clap, charleston, 808, accordi)
+  23B, 31B, 39B, 47B  cambio scena: soffio + piatto; clic del cursore (prenotazione, mappa)
+  55B      chiusura: impatto, il groove si ferma, resta un accordo che sfuma fino a 63B (27 s)
 """
 
 import os
@@ -17,7 +18,7 @@ import numpy as np
 SR = 44100
 BPM = 140
 B = 60 / BPM
-DUR = 49 * B  # 21.0 s
+DUR = 63 * B  # 27.0 s
 N = int(DUR * SR) + 1
 rng = np.random.default_rng(7)
 
@@ -172,20 +173,38 @@ for k in range(9):
 for k in (0, 3, 6):
     add(boom(1.6, 70, 34), k * B, 0.9)
     add(kick(0.5, 120, 40), k * B, 0.6)
-add(riser(2 * B), 7 * B, 1.0)
-for k in range(12):  # rullata che accelera
-    tt = 7 * B + (2 * B - 0.12) * (1 - (1 - k / 12) ** 1.6)
-    add(clap(0.12), tt, 0.25 + 0.5 * k / 12)
+add(riser(2 * B), 7 * B, 0.8)
 
-# 2) DROP + GROOVE --------------------------------------------------------------
-D = 9 * B
+
+def bell(midi, dur=2.6):
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    f = note_hz(midi)
+    s = np.sin(2 * np.pi * f * t) + 0.35 * np.sin(2 * np.pi * f * 2.76 * t) * np.exp(-t / 0.4) + 0.2 * np.sin(2 * np.pi * f * 5.4 * t) * np.exp(-t / 0.15)
+    return s * np.minimum(1, t / 0.003) * np.exp(-t / 0.9) * 0.16
+
+
+# 2) PONTE "PIXEL NOIR" -------------------------------------------------------------
+BR = 9 * B
+add(boom(2.2, 60, 30), BR, 0.55)
+add(pad([45, 52, 59, 60, 64], 6 * B + 0.6, bright=1500) * 1.5, BR, 1.0)
+for k, m in enumerate((69, 72, 76, 83, 81)):  # arpeggio di campanelli: La, Do, Mi, Si, La
+    add(bell(m), BR + 0.25 + k * B / 2, 0.9, pan=-0.4 + 0.2 * k)
+add(bell(88, 3.0), BR + 1.25, 0.7)  # scintilla su "Pixel Noir"
+add(riser(2 * B), 13 * B, 1.0)
+for k in range(12):  # rullata che accelera
+    tt = 13 * B + (2 * B - 0.12) * (1 - (1 - k / 12) ** 1.6)
+    add(clap(0.12), tt, 0.2 + 0.45 * k / 12)
+
+# 3) DROP + GROOVE --------------------------------------------------------------
+D = 15 * B
 add(boom(2.6, 90, 30), D, 1.1)
 add(crash(3.0), D, 1.0, pan=-0.2)
 add(crash(3.0), D + 0.01, 0.9, pan=0.2)
-END_GROOVE = 41 * B
+END_GROOVE = 55 * B
 prog = [45, 41, 36 + 12, 43]  # La, Fa, Do, Sol (808 un'ottava sotto)
 chords = [[57, 60, 64], [53, 57, 60], [55, 60, 64], [55, 59, 62]]
-for bar in range(8):
+for bar in range(10):
     t0 = D + bar * 4 * B
     # cassa: 1, (2 e), 3 e mezzo (stile trap a metà tempo)
     for o in (0, 1.5, 2.75) if bar % 2 == 0 else (0, 1.5, 2.5, 3.25):
@@ -193,10 +212,10 @@ for bar in range(8):
             add(kick(), t0 + o * B, 0.95)
     add(clap(), t0 + 2 * B, 0.85)
     # charleston in ottavi con rullate in sedicesimi
-    for s in range(16):
-        tt = t0 + s * B / 4
-        if s % 2 == 0 or (bar % 2 == 1 and s >= 12):
-            add(hat(), tt, 0.7 if s % 4 == 0 else 0.5, pan=0.25)
+    for s_ in range(16):
+        tt = t0 + s_ * B / 4
+        if s_ % 2 == 0 or (bar % 2 == 1 and s_ >= 12):
+            add(hat(), tt, 0.7 if s_ % 4 == 0 else 0.5, pan=0.25)
     if bar % 4 == 3:
         add(hat(open_=True), t0 + 3.5 * B, 0.6, pan=-0.3)
     note = prog[(bar // 2) % 4] - 12
@@ -204,17 +223,17 @@ for bar in range(8):
     add(pad(chords[(bar // 2) % 4], 4 * B + 0.3), t0, 1.0)
 
 # cambi scena: soffio prima, piatto sul taglio
-for k in (17, 25, 33):
+for k in (23, 31, 39, 47):
     add(whoosh(0.5), k * B - 0.42, 0.9)
     add(crash(1.8), k * B, 0.55)
-# galleria → slider Prima & Dopo: soffio sullo scorrimento
-add(whoosh(0.45), 25 * B + 1.75, 0.7)
+add(whoosh(0.45), 31 * B + 1.75, 0.7)  # galleria → slider Prima & Dopo
+add(whoosh(0.4), 47 * B + 1.05, 0.6)  # contatti → mappa
 
 
 def click():
     n = int(0.04 * SR)
     t = np.arange(n) / SR
-    return (hp(rng.standard_normal(n), 3000) * np.exp(-t / 0.004) * 0.5 + np.sin(2 * np.pi * 1800 * t) * np.exp(-t / 0.01) * 0.3)
+    return hp(rng.standard_normal(n), 3000) * np.exp(-t / 0.004) * 0.5 + np.sin(2 * np.pi * 1800 * t) * np.exp(-t / 0.01) * 0.3
 
 
 def pop():
@@ -226,13 +245,19 @@ def pop():
 
 # prenotazione: i tre clic (servizio, barbiere, WhatsApp) e il messaggio che parte
 for k, dt in enumerate((1.05, 1.62, 2.3)):
-    add(click(), 33 * B + dt, 0.9, pan=-0.2 + 0.2 * k)
-add(pop(), 33 * B + 2.42, 0.8)
-add(riser(B * 1.0), 40 * B, 0.9)
-add(whoosh(0.6), 41 * B - 0.5, 1.0)
+    add(click(), 39 * B + dt, 0.9, pan=-0.2 + 0.2 * k)
+add(pop(), 39 * B + 2.42, 0.8)
+# mappa: clic su "Tocca per esplorare", poi due doppi clic per ingrandire
+add(click(), 47 * B + 1.55, 0.9)
+for dt in (1.9, 2.25):
+    add(click(), 47 * B + dt - 0.07, 0.7, pan=0.15)
+    add(click(), 47 * B + dt, 0.8, pan=0.15)
+add(pop(), 47 * B + 2.3, 0.5)
+add(riser(B * 1.0), 54 * B, 0.9)
+add(whoosh(0.6), 55 * B - 0.5, 1.0)
 
-# 3) CHIUSURA ------------------------------------------------------------------
-O = 41 * B
+# 4) CHIUSURA ------------------------------------------------------------------
+O = 55 * B
 add(boom(3.2, 75, 28), O, 1.0)
 add(pad([45, 52, 57, 60, 64], DUR - O, bright=900) * 1.6, O, 1.0)
 add(tick(), O + 1.45, 0.8)

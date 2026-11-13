@@ -8,8 +8,10 @@
  *
  * Scene (B = un battito a 140 BPM):
  *   0B–9B    1 · Il problema: "INVISIBILE ONLINE." · "CLIENTI PERSI." · "ZERO IDENTITÀ."
- *   9B–41B   2 · Il sito su un portatile: ENTRI NEL LOCALE · IDENTITÀ UNICA · GALLERIA TAGLI · PRENOTI IN 5 SECONDI
- *   41B–49B  3 · Chiusura PIXELNOIR (identica al reel di riferimento)
+ *   9B–15B   2 · La svolta: "È qui che entra in gioco Pixel Noir." con una linea di luce oro
+ *   15B–55B  3 · Il sito su un portatile: HOME IMMERSIVA · IDENTITÀ UNICA · GALLERIA TAGLI · PRENOTI IN 5 SECONDI ·
+ *                TI TROVANO SUBITO
+ *   55B–63B  4 · Chiusura PIXELNOIR (identica al reel di riferimento)
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform } from "motion/react";
@@ -18,6 +20,7 @@ import "@fontsource-variable/archivo/wdth.css";
 import "@fontsource-variable/geist/index.css";
 import "@fontsource/instrument-serif/400.css";
 import beatUrl from "./beat.mp3";
+import homeClip from "./clip/home-scroll.mp4";
 
 const CAP = import.meta.glob("./cap/*.webp", { eager: true, import: "default" });
 const cap = (n) => CAP[`./cap/${n}.webp`];
@@ -27,10 +30,11 @@ const cap = (n) => CAP[`./cap/${n}.webp`];
 const B = 60 / 140;
 export const T = {
   p: [0, 3 * B, 6 * B],
-  drop: 9 * B,
-  f: [9 * B, 17 * B, 25 * B, 33 * B, 41 * B],
-  outro: 41 * B,
-  end: 49 * B,
+  bridge: 9 * B,
+  drop: 15 * B,
+  f: [15 * B, 23 * B, 31 * B, 39 * B, 47 * B, 55 * B],
+  outro: 55 * B,
+  end: 63 * B,
 };
 export const DURATION = T.end;
 
@@ -261,6 +265,32 @@ function TimerTick({ k, prog }) {
   return <motion.circle cx={50 + 38 * Math.cos(ang)} cy={56 + 38 * Math.sin(ang)} r="6" fill="#FFF1B8" style={{ opacity: on }} />;
 }
 
+/** segnaposto che cade sulla mappa e manda onde */
+function IconPin({ a }) {
+  const drop = useF((v) => `translate3d(0, ${lerp(-46, 0, pr(v, a + 0.15, a + 0.6, E.outBack)).toFixed(1)}px, 0)`);
+  const op = useF((v) => pr(v, a + 0.15, a + 0.3));
+  const wave = (v) => (((v - a - 0.55) % 1.1) + 1.1) % 1.1 / 1.1;
+  const ring = useF((v) => `scale(${lerp(0.3, 1.7, wave(v)).toFixed(3)})`);
+  const ringOp = useF((v) => (v < a + 0.55 ? 0 : 1 - wave(v)));
+  return (
+    <Glow color={C.gold}>
+      <defs>
+        <linearGradient id="segnaposto" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#FFF1B8" />
+          <stop offset=".5" stopColor="#FFC93C" />
+          <stop offset="1" stopColor="#E89B0C" />
+        </linearGradient>
+      </defs>
+      <motion.ellipse cx="50" cy="90" rx="28" ry="8" fill="none" stroke={C.gold} strokeWidth="3" style={{ transform: ring, transformBox: "view-box", transformOrigin: "50px 90px", opacity: ringOp }} />
+      <ellipse cx="50" cy="90" rx="11" ry="3.5" fill="#000" opacity=".55" />
+      <motion.g style={{ transform: drop, opacity: op }}>
+        <path d="M50 90 C50 90 21 60 21 39 A29 29 0 0 1 79 39 C79 60 50 90 50 90 Z" fill="url(#segnaposto)" />
+        <circle cx="50" cy="39" r="11" fill={C.ink} />
+      </motion.g>
+    </Glow>
+  );
+}
+
 /* ───────────────────────────── scena 1 · il problema ───────────────────────────── */
 
 const PHRASES = [
@@ -272,7 +302,7 @@ const PHRASES = [
 function Phrase({ i }) {
   const { w1, w2, Icon, mode } = PHRASES[i];
   const a = T.p[i];
-  const z = i < 2 ? T.p[i + 1] : T.drop;
+  const z = i < 2 ? T.p[i + 1] : T.bridge;
   const d = z - a;
   const vis = useVis(a, z);
   const s1 = fit(w1, 950, 176, 0.63);
@@ -446,12 +476,12 @@ function ScanSweep({ a, d }) {
 }
 
 function SceneProblem() {
-  const vis = useVis(0, T.drop + 0.05);
+  const vis = useVis(0, T.bridge + 0.05);
   const bg = useF((v) => {
-    const k = pr(v, 0, T.drop);
+    const k = pr(v, 0, T.bridge);
     return `radial-gradient(70% 45% at 50% 46%, rgba(255,201,60,${(0.05 + 0.07 * k).toFixed(3)}), transparent 70%), ${C.ink}`;
   });
-  const vign = useF((v) => 0.55 + 0.4 * pr(v, T.p[2] + 0.4, T.drop));
+  const vign = useF((v) => 0.55 + 0.4 * pr(v, T.p[2] + 0.4, T.bridge));
   return (
     <motion.div style={{ position: "absolute", inset: 0, visibility: vis, background: bg }}>
       <BigOutline />
@@ -490,6 +520,219 @@ function BigOutline() {
       {word}
     </motion.div>
   );
+}
+
+/* ───────────────────────────── ponte · la svolta: Pixel Noir ───────────────────────────── */
+
+const BRIDGE_WORDS = ["È", "qui", "che", "entra", "in", "gioco"];
+const LIGHT_Y = 1110; // la linea di luce si chiude nel punto da cui esplode il portatile
+
+function SceneBridge() {
+  const a = T.bridge;
+  const z = T.drop;
+  const vis = useVis(a - 0.02, z + 0.02);
+  const glow = useF((v) => pr(v, a, a + 0.8, E.outCubic) * (1 - 0.5 * pr(v, z - 0.35, z)));
+  // linea di luce: nasce dal centro, si allarga, poi si stringe in un punto subito prima del PC
+  const line = useF((v) => {
+    const open = pr(v, a + 0.05, a + 0.75, E.outExpo);
+    const close = pr(v, z - 0.42, z - 0.05, E.inExpo);
+    return `translate(-50%, -50%) scaleX(${(open * (1 - close) + 0.003).toFixed(4)})`;
+  });
+  const lineOp = useF((v) => pr(v, a, a + 0.12));
+  const flare = useF((v) => `translate(-50%, -50%) scale(${(0.35 + 0.25 * pr(v, a, a + 0.7, E.outCubic) + 1.1 * pr(v, z - 0.4, z, E.inExpo)).toFixed(3)})`);
+  const flareOp = useF((v) => (0.5 + 0.5 * pr(v, z - 0.45, z)) * pr(v, a, a + 0.2));
+  const textOp = useF((v) => 1 - pr(v, z - 0.5, z - 0.16, E.inCubic));
+  const textT = useF((v) => `scale(${(1 - 0.1 * pr(v, z - 0.5, z - 0.1, E.inCubic)).toFixed(4)})`);
+  const textBlur = useF((v) => bl(10 * pr(v, z - 0.5, z - 0.12)));
+  // il nome si apre dal centro, le lettere si avvicinano, poi un riflesso lo attraversa
+  const nameClip = useF((v) => {
+    const k = pr(v, a + 1.0, a + 1.5, E.outExpo);
+    return `inset(-30% ${(50 * (1 - k)).toFixed(2)}% -30% ${(50 * (1 - k)).toFixed(2)}%)`;
+  });
+  const nameSpace = useF((v) => `${lerp(0.36, 0.03, pr(v, a + 1.0, a + 1.9, E.outCubic)).toFixed(3)}em`);
+  const shine = useF((v) => `${lerp(130, -30, pr(v, a + 1.35, a + 2.05, E.inOutCubic)).toFixed(1)}% 0`);
+  const NAME = { ...HEAD, fontSize: 150, lineHeight: 1, display: "inline-block", whiteSpace: "nowrap" };
+  return (
+    <motion.div style={{ position: "absolute", inset: 0, visibility: vis, background: C.ink, overflow: "hidden" }}>
+      <motion.div style={{ position: "absolute", inset: 0, opacity: glow, background: `radial-gradient(70% 26% at 50% ${LIGHT_Y / 19.2}%, rgba(255,196,60,.2), transparent 70%)` }} />
+      {Array.from({ length: 26 }, (_, k) => (
+        <BridgeMote key={k} k={k} a={a} z={z} />
+      ))}
+      <motion.div style={{ position: "absolute", inset: 0, opacity: textOp, transform: textT, filter: textBlur, transformOrigin: `50% ${LIGHT_Y}px` }}>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: LIGHT_Y - 120,
+            transform: "translateY(-50%)",
+            textAlign: "center",
+            whiteSpace: "nowrap",
+            fontFamily: "'Instrument Serif', serif",
+            fontStyle: "italic",
+            fontSize: 104,
+            lineHeight: 1,
+            color: "#F2EBDD",
+          }}
+        >
+          {BRIDGE_WORDS.map((w, k) => (
+            <BridgeWord key={k} at={a + 0.3 + k * 0.09}>
+              {w}
+              {k < BRIDGE_WORDS.length - 1 ? " " : ""}
+            </BridgeWord>
+          ))}
+        </div>
+        <motion.div style={{ position: "absolute", left: 0, right: 0, top: LIGHT_Y + 130, transform: "translateY(-50%)", textAlign: "center", clipPath: nameClip }}>
+          <span style={{ position: "relative", display: "inline-block", filter: "drop-shadow(0 0 30px rgba(255,190,40,.45))" }}>
+            <motion.span style={{ ...NAME, ...GOLD_TEXT, letterSpacing: nameSpace }}>
+              <span style={{ fontWeight: 900 }}>PIXEL</span>
+              <span style={{ fontWeight: 300 }}>NOIR.</span>
+            </motion.span>
+            {/* riflesso: stessa scritta, luce bianca che scorre dentro le lettere */}
+            <motion.span
+              aria-hidden="true"
+              style={{
+                ...NAME,
+                position: "absolute",
+                left: 0,
+                top: 0,
+                letterSpacing: nameSpace,
+                color: "transparent",
+                backgroundImage: "linear-gradient(105deg, transparent 42%, rgba(255,255,255,.95) 50%, transparent 58%)",
+                backgroundSize: "300% 100%",
+                backgroundPosition: shine,
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+              }}
+            >
+              <span style={{ fontWeight: 900 }}>PIXEL</span>
+              <span style={{ fontWeight: 300 }}>NOIR.</span>
+            </motion.span>
+          </span>
+        </motion.div>
+      </motion.div>
+      <motion.div
+        style={{
+          position: "absolute",
+          left: 540,
+          top: LIGHT_Y,
+          width: 1000,
+          height: 4,
+          borderRadius: 4,
+          transform: line,
+          opacity: lineOp,
+          background: "linear-gradient(90deg, transparent, #FFD978 18%, #FFFDF2 50%, #FFD978 82%, transparent)",
+          boxShadow: "0 0 18px 2px rgba(255,201,60,.9), 0 0 70px 10px rgba(255,170,0,.45)",
+        }}
+      />
+      <motion.div
+        style={{
+          position: "absolute",
+          left: 540,
+          top: LIGHT_Y,
+          width: 360,
+          height: 360,
+          borderRadius: "50%",
+          transform: flare,
+          opacity: flareOp,
+          background: "radial-gradient(closest-side, #FFFDF2, rgba(255,214,120,.75) 25%, rgba(255,170,0,.18) 60%, transparent)",
+        }}
+      />
+    </motion.div>
+  );
+}
+function BridgeWord({ at, children }) {
+  const op = useF((v) => pr(v, at, at + 0.32));
+  const tr = useF((v) => `translate3d(0, ${lerp(26, 0, pr(v, at, at + 0.5, E.outCubic)).toFixed(1)}px, 0)`);
+  const blur = useF((v) => bl(8 * (1 - pr(v, at, at + 0.36))));
+  return <motion.span style={{ display: "inline-block", whiteSpace: "pre", opacity: op, transform: tr, filter: blur }}>{children}</motion.span>;
+}
+/** pulviscolo d'oro che sale lentamente nella luce */
+function BridgeMote({ k, a, z }) {
+  const x = 60 + ((Math.abs(noise(k * 2.3 + 5)) * 960) | 0);
+  const y0 = LIGHT_Y + 260 - ((Math.abs(noise(k * 4.1 + 1)) * 520) | 0);
+  const sp = 40 + Math.abs(noise(k * 1.9)) * 90;
+  const r = 2 + ((Math.abs(noise(k * 3.3)) * 4) | 0);
+  const tr = useF((v) => `translate3d(${(x + Math.sin(v * 1.1 + k) * 18).toFixed(1)}px, ${(y0 - (v - a) * sp).toFixed(1)}px, 0)`);
+  const op = useF((v) => pr(v, a + 0.2 + (k % 5) * 0.08, a + 0.7) * (1 - pr(v, z - 0.4, z - 0.1)) * (0.35 + 0.5 * Math.abs(Math.sin(v * 2 + k))));
+  return <motion.div style={{ position: "absolute", left: 0, top: 0, width: r, height: r, borderRadius: "50%", background: "#FFE08A", boxShadow: "0 0 10px #FFC93C", transform: tr, opacity: op }} />;
+}
+
+/* ───────────────────────────── video del sito sincronizzati con il reel ───────────────────────────── */
+
+/** clip registrati dal sito (inizio sulla timeline + elemento video) */
+const CLIPS = new Set();
+/** riproduzione: il video scorre da solo e viene riallineato solo se si discosta */
+function syncClips(v, playing) {
+  for (const c of CLIPS) {
+    const el = c.el;
+    if (!el || !(el.duration > 0)) continue;
+    const local = clamp(v - c.start, 0, el.duration - 0.02);
+    const inside = v >= c.start && v < c.start + el.duration;
+    if (playing && inside) {
+      if (el.paused) {
+        el.currentTime = local;
+        el.play().catch(() => {});
+      } else if (Math.abs(el.currentTime - local) > 0.08) el.currentTime = local;
+    } else {
+      if (!el.paused) el.pause();
+      if (Math.abs(el.currentTime - local) > 0.01) el.currentTime = local;
+    }
+  }
+}
+/** esportazione: porta ogni video al fotogramma esatto e aspetta che sia a schermo */
+function seekClips(v) {
+  return Promise.all(
+    [...CLIPS].map(
+      (c) =>
+        new Promise((res) => {
+          const el = c.el;
+          if (!el || !(el.duration > 0)) return res();
+          const local = clamp(v - c.start + 0.004, 0, el.duration - 0.004);
+          if (Math.abs(el.currentTime - local) < 0.001 && !el.seeking) return res();
+          const timer = setTimeout(res, 2500);
+          el.addEventListener(
+            "seeked",
+            () => {
+              const done = () => (clearTimeout(timer), res());
+              if (el.requestVideoFrameCallback) {
+                el.requestVideoFrameCallback(done);
+                setTimeout(done, 150);
+              } else done();
+            },
+            { once: true },
+          );
+          el.currentTime = local;
+        }),
+    ),
+  );
+}
+/** video caricato come blob: ricerca dei fotogrammi rapida e precisa, anche dal file unico */
+function useClip(ref, src, start) {
+  useEffect(() => {
+    const el = ref.current;
+    let url = null;
+    let dead = false;
+    const clip = { el, start };
+    clip.ready = new Promise((res) => {
+      el.addEventListener("loadeddata", res, { once: true });
+      el.addEventListener("error", res, { once: true });
+    });
+    CLIPS.add(clip);
+    fetch(src)
+      .then((r) => r.blob())
+      .then((b) => {
+        if (dead) return;
+        url = URL.createObjectURL(b);
+        el.src = url;
+      })
+      .catch(() => {});
+    return () => {
+      dead = true;
+      CLIPS.delete(clip);
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [ref, src, start]);
 }
 
 /* ───────────────────────────── esplosione del drop ───────────────────────────── */
@@ -549,7 +792,7 @@ function DropFX() {
           position: "absolute",
           inset: 0,
           opacity: flash,
-          background: "radial-gradient(60% 40% at 50% 58%, #fffdf3, #ffe08a 45%, #ffb800 100%)",
+          background: "radial-gradient(55% 34% at 50% 58%, #fffdf3, rgba(255,224,138,.9) 38%, rgba(255,184,0,.28) 72%, transparent)",
           mixBlendMode: "screen",
         }}
       />
@@ -563,38 +806,49 @@ const S = 0.62; // scala dello schermo (contenuto 1440×900 px)
 const SW = 1440 * S;
 const SH = 900 * S;
 const CENTER = { x: 540, y: 1110 }; // centro dello schermo sul palco
-const [F1, F2, F3, F4, FO] = T.f;
+const [F1, F2, F3, F4, F5, FO] = T.f;
 
-/** pagine impilate del sito, nell'ordine in cui le scorriamo */
-const PAGES = ["hero", "chi", "galleria", "ba", "s5", "book"];
-/** istanti in cui lo scorrimento si ferma su una pagina: lampo sul vetro, piccola scossa, suono */
-const ARRIVE = [F1, F2 + 0.62, F3 + 0.55, F3 + 2.2, F4 + 0.62];
+/** pagine del sito impilate come sul sito vero (altezza in px a 1440×900), nell'ordine in cui le scorriamo */
+const PAGE_H = { hero: 900, chi: 900, galleria: 900, ba: 900, s5: 900, book: 900, contatti: 1444 };
+const PAGES = Object.keys(PAGE_H);
+const TOP = {};
+PAGES.reduce((y, p) => ((TOP[p] = y), y + PAGE_H[p]), 0);
+const Q = E.inOutQuint;
+/** scorrimento della pagina (px) */
 const scrollAt = (v) =>
   kf(v, [
     [F2 - 0.02, 0],
-    [F2 + 0.62, 1, E.inOutQuint],
-    [F3 - 0.02, 1],
-    [F3 + 0.55, 2, E.inOutQuint],
-    [F3 + 1.75, 2],
-    [F3 + 2.2, 3, E.inOutQuint],
-    [F4 - 0.02, 3],
-    [F4 + 0.62, 5, E.inOutQuint],
+    [F2 + 0.62, TOP.chi, Q],
+    [F3 - 0.02, TOP.chi],
+    [F3 + 0.55, TOP.galleria, Q],
+    [F3 + 1.75, TOP.galleria],
+    [F3 + 2.2, TOP.ba, Q],
+    [F4 - 0.02, TOP.ba],
+    [F4 + 0.62, TOP.book, Q],
+    [F5 - 0.02, TOP.book],
+    [F5 + 0.6, TOP.contatti, Q],
+    [F5 + 1.05, TOP.contatti],
+    [F5 + 1.45, TOP.contatti + 290, E.inOutCubic],
   ]);
+/** istanti in cui lo scorrimento si ferma su una pagina: lampo sul vetro, piccola scossa, suono */
+const ARRIVE = [F1, F2 + 0.62, F3 + 0.55, F3 + 2.2, F4 + 0.62, F5 + 0.6];
 /** i tre clic della prenotazione: servizio, barbiere, invio su WhatsApp */
 const CLICKS = [F4 + 1.05, F4 + 1.62, F4 + 2.3];
+/** mappa: "Tocca per esplorare", poi due doppi clic che ingrandiscono sul salone */
+const MAP_CLICKS = [F5 + 1.55, F5 + 1.9, F5 + 2.25];
 
 /**
  * Camera: zoom e punto dello schermo (coordinate 1440×900) da portare al centro.
- * 1 · ENTRI NEL LOCALE   spinta dentro la foto della vetrina mentre l'intro entra nel salone
- * 2 · IDENTITÀ UNICA     Chi Siamo: titolo "una firma", poi logo e fondatori
- * 3 · GALLERIA TAGLI     panoramica sui look, poi lo slider Prima & Dopo
- * 4 · PRENOTI IN 5 SEC   servizio → barbiere → WhatsApp, seguendo il cursore
+ * 1 · HOME IMMERSIVA      il video originale dell'ingresso scorre; la camera si avvicina appena, senza tagliarlo
+ * 2 · IDENTITÀ UNICA      Chi Siamo: titolo "una firma", poi logo e fondatori
+ * 3 · GALLERIA TAGLI      panoramica sui look, poi lo slider Prima & Dopo
+ * 4 · PRENOTI IN 5 SEC    servizio → barbiere → WhatsApp, seguendo il cursore
+ * 5 · TI TROVANO SUBITO   indirizzo, mappa Google che si ingrandisce sul salone, contatti diretti
  */
 const CAM = {
   zoom: [
     [F1 + 0.8, 1],
-    [F1 + 1.7, 1.55, E.inOutCubic],
-    [F2 - 0.12, 2.25, E.lin],
+    [F2 - 0.12, 1.16, E.inOutCubic],
     [F2 + 0.3, 1.0, E.inOutCubic],
     [F2 + 1.1, 1.75, E.inOutExpo],
     [F2 + 1.6, 1.85, E.lin],
@@ -611,13 +865,18 @@ const CAM = {
     [F4 + 1.2, 1.6, E.lin],
     [F4 + 1.45, 1.6],
     [F4 + 2.15, 2.0, E.inOutCubic],
-    [FO - 0.45, 2.15, E.lin],
+    [F5 - 0.1, 2.1, E.lin],
+    [F5 + 0.3, 1.0, E.inOutCubic],
+    [F5 + 0.95, 1.6, E.inOutExpo],
+    [F5 + 1.15, 1.62, E.lin],
+    [F5 + 1.5, 1.3, E.inOutCubic],
+    [F5 + 1.85, 1.5, E.inOutCubic],
+    [FO - 0.45, 1.72, E.lin],
     [FO, 7.5, E.inExpo],
   ],
   fx: [
     [F1 + 0.8, 720],
-    [F1 + 1.7, 1065, E.inOutCubic],
-    [F2 - 0.12, 1065],
+    [F2 - 0.12, 760],
     [F2 + 0.3, 720],
     [F2 + 1.1, 430, E.inOutExpo],
     [F2 + 1.6, 470, E.lin],
@@ -634,11 +893,15 @@ const CAM = {
     [F4 + 1.2, 505],
     [F4 + 1.45, 560],
     [F4 + 2.15, 1070],
-    [FO - 0.3, 1070],
+    [F5 - 0.1, 1075, E.lin],
+    [F5 + 0.3, 720],
+    [F5 + 0.95, 1110, E.inOutExpo],
+    [F5 + 1.15, 1110],
+    [F5 + 1.5, 720],
+    [FO - 0.3, 720],
   ],
   fy: [
     [F1 + 0.8, 450],
-    [F1 + 1.7, 445],
     [F2 - 0.12, 440],
     [F2 + 0.3, 450],
     [F2 + 1.1, 275, E.inOutExpo],
@@ -656,12 +919,18 @@ const CAM = {
     [F4 + 1.2, 520],
     [F4 + 1.45, 815],
     [F4 + 2.15, 770],
-    [FO - 0.3, 781],
+    [F5 - 0.1, 775, E.lin],
+    [F5 + 0.3, 450],
+    [F5 + 0.95, 287, E.inOutExpo],
+    [F5 + 1.15, 290],
+    [F5 + 1.5, 400],
+    [F5 + 1.85, 330],
+    [FO - 0.3, 300],
   ],
   rx: [
     [F1, 14],
-    [F1 + 1.7, 6],
-    [F2 - 0.1, 3],
+    [F1 + 1.7, 7],
+    [F2 - 0.1, 5],
     [F2 + 0.3, 9],
     [F2 + 1.1, 4],
     [F2 + 2.3, 5],
@@ -672,11 +941,15 @@ const CAM = {
     [F4 + 0.3, 10],
     [F4 + 0.85, 5],
     [F4 + 2.15, 4],
+    [F5 + 0.3, 9],
+    [F5 + 0.95, 4],
+    [F5 + 1.5, 7],
+    [F5 + 2.4, 4],
   ],
   ry: [
     [F1, 12],
-    [F1 + 1.7, -8],
-    [F2 - 0.1, -12],
+    [F1 + 1.7, -6],
+    [F2 - 0.1, -9],
     [F2 + 0.3, 6],
     [F2 + 1.1, 10],
     [F2 + 2.3, -6],
@@ -689,7 +962,12 @@ const CAM = {
     [F4 + 0.85, 9],
     [F4 + 1.45, 7],
     [F4 + 2.15, -11],
-    [FO, -4],
+    [F5 - 0.1, -10],
+    [F5 + 0.3, 7],
+    [F5 + 0.95, -10],
+    [F5 + 1.5, 6],
+    [F5 + 2.6, -5],
+    [FO, -3],
   ],
 };
 const TARGET = { x: 540, y: 1150 };
@@ -728,10 +1006,11 @@ function SceneSite() {
           pointerEvents: "none",
         }}
       />
-      <FeatureText w1="ENTRI NEL" w2="LOCALE." Icon={IconDoor} a={F1 + 0.32} z={F2} />
+      <FeatureText w1="HOME" w2="IMMERSIVA." Icon={IconDoor} a={F1 + 0.32} z={F2} />
       <FeatureText w1="IDENTITÀ" w2="UNICA." Icon={IconPrint} a={F2 + 0.2} z={F3} />
       <FeatureText w1="GALLERIA" w2="TAGLI." Icon={IconScissors} a={F3 + 0.2} z={F4} />
-      <FeatureText w1="PRENOTI IN" w2="5 SECONDI." Icon={IconTimer} a={F4 + 0.2} z={FO - 0.15} />
+      <FeatureText w1="PRENOTI IN" w2="5 SECONDI." Icon={IconTimer} a={F4 + 0.2} z={F5} />
+      <FeatureText w1="TI TROVANO" w2="SUBITO." Icon={IconPin} a={F5 + 0.2} z={FO - 0.15} />
       <DiveOut />
     </motion.div>
   );
@@ -941,10 +1220,10 @@ function Laptop() {
 }
 
 function Screen() {
-  const strip = useF((v) => `translate3d(0, ${(-scrollAt(v) * 900).toFixed(2)}px, 0)`);
-  const stripFilter = useF((v) => (Math.abs(scrollAt(v + 0.012) - scrollAt(v - 0.012)) > 0.002 ? "url(#vblur)" : "none"));
+  const strip = useF((v) => `translate3d(0, ${(-scrollAt(v)).toFixed(2)}px, 0)`);
+  const stripFilter = useF((v) => (Math.abs(scrollAt(v + 0.012) - scrollAt(v - 0.012)) > 2 ? "url(#vblur)" : "none"));
   const vblur = useF((v) => {
-    const sp = Math.abs(scrollAt(v + 0.012) - scrollAt(v - 0.012)) / 0.024;
+    const sp = Math.abs(scrollAt(v + 0.012) - scrollAt(v - 0.012)) / 0.024 / 900;
     return `0 ${Math.min(26, sp * 2.2).toFixed(2)}`;
   });
   const glare = useF((v) => `translate3d(${(-260 + ((v * 140) % 1700)).toFixed(1)}px, 0, 0) skewX(-18deg)`);
@@ -974,8 +1253,8 @@ function Screen() {
       </svg>
       <div style={{ position: "absolute", left: 0, top: 0, width: 1440, height: 900, transform: `scale(${S})`, transformOrigin: "0 0" }}>
         <motion.div style={{ position: "absolute", left: 0, top: 0, width: 1440, transform: strip, filter: stripFilter }}>
-          {PAGES.map((p, k) => (
-            <div key={p} style={{ position: "absolute", left: 0, top: k * 900, width: 1440, height: 900, overflow: "hidden" }}>
+          {PAGES.map((p) => (
+            <div key={p} style={{ position: "absolute", left: 0, top: TOP[p], width: 1440, height: PAGE_H[p], overflow: "hidden" }}>
               <Page name={p} />
             </div>
           ))}
@@ -1018,6 +1297,7 @@ function Page({ name }) {
   if (name === "galleria") return <GalleryPage />;
   if (name === "ba") return <BeforeAfterPage />;
   if (name === "book") return <BookPage />;
+  if (name === "contatti") return <ContattiPage />;
   return <img src={cap(name)} alt="" style={IMG} draggable={false} />;
 }
 /** ritaglio di una schermata (per far "vivere" un dettaglio: zoom, riflesso) */
@@ -1037,39 +1317,14 @@ function Sheen({ x, y, w, h, at, dur = 0.6, radius = 0 }) {
   );
 }
 
-/** 1 · ENTRI NEL LOCALE: l'intro del sito passa dalla vetrina all'interno, la camera ci entra */
+/**
+ * 1 · HOME IMMERSIVA: il video originale dell'ingresso nel locale, registrato dal sito mentre la pagina scorre
+ * (video a scorrimento, testi e inquadrature del sito così come sono). Nessun ritocco sopra.
+ */
 function HeroPage() {
-  const frames = ["hero-0", "hero-1", "hero-2", "hero-3", "hero-4"];
-  const light = useF((v) => 0.75 * Math.sin(Math.PI * pr(v, F1 + 1.1, F1 + 2.6)));
-  return (
-    <>
-      {frames.map((f, k) => (
-        <HeroFrame key={f} f={f} k={k} />
-      ))}
-      {/* la luce del salone che si apre mentre si entra */}
-      <motion.div
-        style={{
-          position: "absolute",
-          left: 1065 - 380,
-          top: 450 - 380,
-          width: 760,
-          height: 760,
-          background: "radial-gradient(closest-side, rgba(255,226,150,.55), rgba(255,190,60,.15) 55%, transparent)",
-          opacity: light,
-          pointerEvents: "none",
-        }}
-      />
-    </>
-  );
-}
-function HeroFrame({ f, k }) {
-  const op = useF((v) => {
-    if (k === 0) return 1;
-    const idx = kf(v, [[F1 + 0.6, 0], [F2 - 0.35, 4, E.inOutCubic]]);
-    return clamp(idx - k + 1);
-  });
-  const zoom = useF((v) => `scale(${(1 + 0.1 * pr(v, F1 + 0.6, F2, E.inCubic)).toFixed(4)})`);
-  return <motion.img src={cap(f)} alt="" draggable={false} style={{ ...IMG, opacity: op, transform: zoom, transformOrigin: "74% 50%" }} />;
+  const ref = useRef(null);
+  useClip(ref, homeClip, F1);
+  return <video ref={ref} muted playsInline preload="auto" poster={cap("hero-0")} style={IMG} />;
 }
 
 /** 2 · IDENTITÀ UNICA: Chi Siamo, il titolo si sottolinea, il logo si accende con i fondatori */
@@ -1279,8 +1534,100 @@ function WaBubble() {
   );
 }
 
+/** 5 · TI TROVANO SUBITO: indirizzo, mappa Google interattiva che si ingrandisce sul salone, contatti diretti */
+const MAP = { x: 40, y: 384, w: 1360, h: 594 }; // riquadro della mappa nella pagina Contatti
+const PIN = { x: 680, y: 198.5 }; // segnaposto del salone nel riquadro (mappa iniziale)
+const PIN_Z = [198.5, 216, 254]; // altezza del segnaposto nelle tre inquadrature della mappa (z0, z1, z2)
+function ContattiPage() {
+  const [c1, c2, c3] = MAP_CLICKS;
+  const addr = useF((v) => `scaleX(${pr(v, F5 + 0.75, F5 + 1.1, E.outExpo).toFixed(3)})`);
+  const halo = useF((v) => pr(v, c2, c2 + 0.3) * (0.7 + 0.3 * Math.sin(v * 9)));
+  return (
+    <>
+      <img src={cap("contatti")} alt="" style={{ ...IMG, height: PAGE_H.contatti }} draggable={false} />
+      <Sheen x={850} y={245} w={530} h={95} at={F5 + 0.7} dur={0.6} />
+      <motion.div style={{ position: "absolute", left: 858, top: 334, width: 500, height: 5, borderRadius: 3, background: "#FFD60A", boxShadow: "0 0 14px #FFD60A", transform: addr, transformOrigin: "0 50%" }} />
+      <div style={{ position: "absolute", left: MAP.x, top: MAP.y, width: MAP.w, height: MAP.h, overflow: "hidden", borderRadius: "32px 32px 0 0" }}>
+        <MapLayer name="mappa-z0" k={0} />
+        <MapLayer name="mappa-z1" k={1} />
+        <MapLayer name="mappa-z2" k={2} />
+        <motion.div
+          style={{
+            position: "absolute",
+            left: PIN.x - 120,
+            top: PIN.y - 120,
+            width: 240,
+            height: 240,
+            background: "radial-gradient(closest-side, rgba(255,214,10,.55), transparent)",
+            opacity: halo,
+          }}
+        />
+      </div>
+      <Ripple x={MAP.x + 680} y={MAP.y + 536} at={c1} />
+      <Ripple x={MAP.x + PIN.x} y={MAP.y + PIN.y} at={c2} />
+      <Ripple x={MAP.x + PIN.x} y={MAP.y + PIN.y} at={c3} />
+      {/* contatti diretti: Chiama e WhatsApp si accendono */}
+      <CardGlow x={640} y={1010} w={359} h={135} at={F5 + 2.45} />
+      <CardGlow x={1010} y={1010} w={359} h={135} at={F5 + 2.6} />
+    </>
+  );
+}
+/**
+ * Una delle tre inquadrature della mappa: entra rimpicciolita attorno al segnaposto e si allarga
+ * (come lo zoom di Google), poi cresce ancora mentre arriva la successiva.
+ */
+function MapLayer({ name, k }) {
+  const [c1, c2, c3] = MAP_CLICKS;
+  const z = (v) => {
+    const zin = k === 0 ? 1 : lerp(0.5, 1, pr(v, k === 1 ? c2 : c3, (k === 1 ? c2 : c3) + 0.4, E.outCubic));
+    const zout = k === 2 ? 1 : lerp(1, 2, pr(v, k === 0 ? c2 : c3, (k === 0 ? c2 : c3) + 0.4, E.outCubic));
+    return zin * zout;
+  };
+  const tr = useF((v) => `scale(${z(v).toFixed(4)})`);
+  const op = useF((v) => {
+    if (k === 0) return pr(v, c1 + 0.05, c1 + 0.22); // sparisce il pulsante "Tocca per esplorare"
+    const a = k === 1 ? c2 : c3;
+    const fadeOut = k === 1 ? 1 - pr(v, c3 + 0.12, c3 + 0.4) : 1;
+    return pr(v, a + 0.04, a + 0.28) * fadeOut;
+  });
+  const dy = PIN.y - PIN_Z[k];
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: dy,
+        width: MAP.w,
+        height: MAP.h,
+        backgroundImage: `url(${cap(name)})`,
+        backgroundSize: "100% 100%",
+        transform: tr,
+        transformOrigin: `${PIN.x}px ${PIN_Z[k]}px`,
+        opacity: op,
+      }}
+    />
+  );
+}
+function CardGlow({ x, y, w, h, at }) {
+  const ring = useF((v) => {
+    const k = pr(v, at, at + 0.2, E.outCubic) * (0.75 + 0.25 * Math.sin((v - at) * 8));
+    return `0 0 0 ${(3 * k).toFixed(2)}px #FFD60A, 0 0 ${(50 * k).toFixed(1)}px rgba(255,201,60,${(0.7 * k).toFixed(2)})`;
+  });
+  const lift = useF((v) => `translate3d(0, ${(-6 * pr(v, at, at + 0.25, E.outCubic)).toFixed(1)}px, 0)`);
+  return (
+    <>
+      <motion.div style={{ position: "absolute", left: x, top: y, width: w, height: h, borderRadius: 22, ...crop("contatti", x, y), backgroundSize: `1440px ${PAGE_H.contatti}px`, transform: lift, boxShadow: ring }} />
+      <Ripple x={x + 40} y={y + 40} at={at + 0.05} />
+    </>
+  );
+}
+
 /** puntatore del mouse (coordinate dello schermo 1440×900), segue la pagina mentre scorre */
-const PAGE_Y = (name, v) => (PAGES.indexOf(name) - scrollAt(v)) * 900;
+const PAGE_Y = (name, v) => TOP[name] - scrollAt(v);
+const along = (v, path) => [
+  kf(v, path.map(([t, x]) => [t, x, E.inOutCubic])),
+  kf(v, path.map(([t, , y]) => [t, y, E.inOutCubic])),
+];
 function Cursor() {
   const pos = useF((v) => {
     let x, y;
@@ -1289,26 +1636,40 @@ function Cursor() {
       const handle = BA.x + (baAt(v) / 100) * BA.w;
       x = v < BA_AT ? kf(v, [[F3 + 2.3, 1330], [BA_AT, BA.x + BA.w / 2]]) : handle;
       y = kf(v, [[F3 + 2.3, 760], [BA_AT, BA.y + BA.h / 2 + 4]]) + PAGE_Y("ba", v);
-    } else {
+    } else if (v < F5) {
       const [c1, c2, c3] = CLICKS;
-      const path = [
+      [x, y] = along(v, [
         [F4 + 0.55, 760, 700],
         [c1 - 0.08, 350, 515],
         [c1 + 0.12, 368, 528],
         [c2 - 0.06, 657, 855],
         [c2 + 0.12, 690, 842],
         [c3 - 0.06, 1070, 781],
-      ];
-      x = kf(v, path.map(([t, px]) => [t, px, E.inOutCubic]));
-      y = kf(v, path.map(([t, , py]) => [t, py, E.inOutCubic])) + PAGE_Y("book", v);
+      ]);
+      y += PAGE_Y("book", v);
+    } else {
+      const [m1, m2, m3] = MAP_CLICKS;
+      const px = MAP.x + PIN.x;
+      const py = MAP.y + PIN.y + 10;
+      [x, y] = along(v, [
+        [F5 + 1.2, 1040, 1100],
+        [m1 - 0.08, 720, 920],
+        [m1 + 0.1, 726, 900],
+        [m2 - 0.1, px, py],
+        [m3, px + 1, py],
+      ]);
+      y += PAGE_Y("contatti", v);
     }
-    const tap = (c) => Math.sin(Math.PI * pr(v, c - 0.05, c + 0.12));
-    const down = Math.max(...CLICKS.map(tap), v > BA_AT && v < BA_AT + 0.75 ? 0.6 : 0);
+    const tap = (c) => Math.sin(Math.PI * pr(v, c - 0.05, c + 0.1));
+    const [m1, m2, m3] = MAP_CLICKS;
+    const taps = [...CLICKS, m1, m2 - 0.07, m2, m3 - 0.07, m3];
+    const down = Math.max(...taps.map(tap), v > BA_AT && v < BA_AT + 0.75 ? 0.6 : 0);
     return `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${(1 - 0.14 * down).toFixed(3)})`;
   });
   const op = useF((v) => {
     if (v < F4) return pr(v, F3 + 2.28, F3 + 2.42) * (1 - pr(v, BA_AT + 0.8, BA_AT + 0.92));
-    return pr(v, F4 + 0.55, F4 + 0.7) * (1 - pr(v, FO - 0.4, FO - 0.25));
+    if (v < F5) return pr(v, F4 + 0.55, F4 + 0.7) * (1 - pr(v, F5 - 0.35, F5 - 0.2));
+    return pr(v, F5 + 1.15, F5 + 1.3) * (1 - pr(v, FO - 0.4, FO - 0.25));
   });
   return (
     <motion.div style={{ position: "absolute", left: 0, top: 0, transform: pos, opacity: op, transformOrigin: "0 0", filter: "drop-shadow(0 4px 8px rgba(0,0,0,.5))" }}>
@@ -1484,7 +1845,7 @@ function Shake({ children }) {
   const tr = useF((v) => {
     if (v >= T.outro) return "none";
     let a = 0;
-    for (const ti of IMPACTS) if (v >= ti) a = Math.max(a, (ti === T.drop ? 26 : ti < T.drop ? 12 : 8) * Math.exp(-(v - ti) * 9));
+    for (const ti of IMPACTS) if (v >= ti) a = Math.max(a, (ti === T.drop ? 26 : ti < T.bridge ? 12 : 8) * Math.exp(-(v - ti) * 9));
     const x = noise(v * 61) * a;
     const y = noise(v * 47 + 3) * a;
     return `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${(noise(v * 13) * a * 0.04).toFixed(3)}deg)`;
@@ -1550,20 +1911,33 @@ export default function BarberPromoReel() {
     window.__reel = {
       duration: DURATION,
       fps: 60,
-      ready: Promise.all([document.fonts.ready, ...imgs.map((i) => (i.complete ? i.decode().catch(() => {}) : new Promise((r) => (i.onload = i.onerror = r))))]),
-      setTime: (s) =>
-        new Promise((r) => {
-          t.set(s);
-          requestAnimationFrame(() => requestAnimationFrame(r));
-        }),
+      ready: Promise.all([
+        document.fonts.ready,
+        ...imgs.map((i) => (i.complete ? i.decode().catch(() => {}) : new Promise((r) => (i.onload = i.onerror = r)))),
+        ...[...CLIPS].map((c) => c.ready),
+      ]),
+      setTime: async (s) => {
+        t.set(s);
+        await seekClips(s);
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      },
     };
+  }, [exportMode, t]);
+
+  // video del sito: seguono il tempo (scorrono da soli in riproduzione, fermi sul fotogramma giusto in pausa)
+  const playingRef = useRef(false);
+  useEffect(() => {
+    if (exportMode) return undefined;
+    return t.on("change", (v) => syncClips(v, playingRef.current));
   }, [exportMode, t]);
 
   const stop = useCallback(() => {
     cancelAnimationFrame(clock.current.raf);
     audio.current?.pause();
+    playingRef.current = false;
+    syncClips(t.get(), false);
     setPlaying(false);
-  }, []);
+  }, [t]);
 
   const play = useCallback(
     (from) => {
@@ -1574,6 +1948,7 @@ export default function BarberPromoReel() {
       el.play().catch(() => {});
       clock.current.t0 = performance.now();
       clock.current.s0 = start;
+      playingRef.current = true;
       setPlaying(true);
       setStarted(true);
       const tick = (now) => {
@@ -1641,6 +2016,7 @@ export default function BarberPromoReel() {
       <TimeCtx.Provider value={t}>
         <Shake>
           <SceneProblem />
+          <SceneBridge />
           <SceneSite />
           <DropFX />
         </Shake>
