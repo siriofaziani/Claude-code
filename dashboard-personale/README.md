@@ -13,12 +13,29 @@ Dashboard per abitudini giornaliere, timer di studio, finanze, CRM dell'agenzia 
 | `icons/` | Icone (192, 512, maskable, Apple touch, favicon) e screenshot del pannello di installazione |
 | `vendor/chart.umd.js` | Chart.js 4.4.1 in locale, così i grafici funzionano offline (licenza MIT in `vendor/`) |
 
-## Temi
+## Stili, palette e layout
 
-Cinque palette, selezionabili dal pallino colorato in alto a destra o da *Impostazioni → Tema & palette*:
-**Midnight Gold** (predefinito), **Emerald Executive**, **Royal Navy & Platinum**, **Minimal Titanium** e **Bordeaux Reserve**.
-Cambiano solo i colori, grafici compresi: sezioni e dati restano identici. La scelta resta salvata sul dispositivo.
-I temi sono definiti come variabili CSS nei blocchi `[data-theme="…"]` di `index.html`.
+Si scelgono dal pallino colorato in alto a destra (selettore rapido) o da *Impostazioni → Aspetto & layout*.
+
+**Stili completi** (palette + layout abbinati):
+
+| Stile | Palette | Layout |
+|---|---|---|
+| Midnight Executive | Midnight Gold | Classic: riepilogo in alto, task al centro, finanze e CRM subito sotto |
+| Emerald Grid & Focus | Emerald Executive | Focus: timer di studio e task in primo piano, widget secondari in colonna laterale |
+| Royal Navy & Analytics | Royal Navy & Platinum | Analytics: ticker in stile mercati, grafici e resoconto finanziario in evidenza, task in un pannello laterale |
+| Minimal Titanium & Compact | Minimal Titanium | Compact: moduli densi, tab orizzontali, barra laterale a icone |
+
+Palette (5, inclusa **Bordeaux Reserve**) e layout (4) si possono anche combinare liberamente.
+Funzioni e dati restano identici in ogni combinazione.
+
+La scelta è salvata nel `localStorage` del dispositivo (chiavi `qg.theme` e `qg.layout`, più i dati dell'app),
+quindi resta memorizzata sia nel browser del PC sia nell'app installata sul telefono.
+Ogni dispositivo ha però il suo archivio: per copiare dati e stile da un dispositivo all'altro usa
+*Esporta backup* e *Importa backup*, perché il file include anche palette e layout.
+
+Nel codice le palette sono variabili CSS nei blocchi `[data-theme="…"]`, i layout sono regole `[data-layout="…"]`
+più le composizioni della Home in `renderHome()`.
 
 ## Installarla sul telefono
 

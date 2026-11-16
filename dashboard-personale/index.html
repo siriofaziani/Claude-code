@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="it" data-theme="gold">
+<html lang="it" data-theme="gold" data-layout="classic">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Quartier Generale</title>
 <meta name="description" content="Dashboard personale: abitudini, finanze, CRM e statistiche.">
 <meta name="theme-color" content="#070708">
-<script>(function(){try{var t=localStorage.getItem('qg.theme'),m={gold:'#070708',emerald:'#040706',navy:'#050a17',titanium:'#17181a',bordeaux:'#0a0507'};if(t&&m[t]){document.documentElement.setAttribute('data-theme',t);document.querySelector('meta[name="theme-color"]').setAttribute('content',m[t]);}}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('qg.theme'),m={gold:'#070708',emerald:'#040706',navy:'#050a17',titanium:'#17181a',bordeaux:'#0a0507'};if(t&&m[t]){document.documentElement.setAttribute('data-theme',t);document.querySelector('meta[name="theme-color"]').setAttribute('content',m[t]);}var l=localStorage.getItem('qg.layout');if(/^(classic|focus|analytics|compact)$/.test(l||''))document.documentElement.setAttribute('data-layout',l);}catch(e){}})();</script>
 <meta name="color-scheme" content="dark">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -574,6 +574,219 @@ body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
 .theme-card.on .tc-check{opacity:1;transform:none}
 html.theming,html.theming *{transition:background-color .5s ease,border-color .5s ease,color .5s ease,box-shadow .5s ease,fill .5s ease,stroke .5s ease!important}
 
+/* ---------- Layout della Home ---------- */
+.home{display:flex;flex-direction:column;gap:18px}
+.home>.install{margin-bottom:0}
+.focus-grid,.ana-grid{display:grid;gap:18px;align-items:start}
+.focus-grid{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr)}
+.ana-grid{grid-template-columns:minmax(0,2.1fr) minmax(300px,1fr)}
+.focus-panel{padding:26px}
+.focus-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.focus-title{font-family:var(--serif);font-size:36px;font-weight:600;margin:6px 0 0;line-height:1.05}
+.focus-timer-row{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:16px 0 16px}
+.focus-timer{font-size:88px;letter-spacing:-.01em}
+.tracker-panel .card-head{margin-bottom:14px}
+.tp-sum{display:flex;align-items:center;gap:16px;padding:12px 14px;margin-bottom:14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
+.tp-greet{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.1}
+.qlist{display:grid;gap:8px}
+.qlist.cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+.qrow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;grid-template-rows:auto auto;gap:5px 12px;align-items:center;padding:10px 10px 10px 12px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.22);transition:border-color .2s,background .2s}
+.qrow:hover{border-color:var(--line-3)}
+.qrow.done{border-color:rgba(var(--s-rgb),.2);background:linear-gradient(180deg,rgba(var(--s-rgb),.06),rgba(0,0,0,.2))}
+.qrow-ic{grid-row:1/3;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:var(--muted)}
+.qrow.done .qrow-ic{background:var(--em-a);color:var(--em)}
+.qrow.progress .qrow-ic{background:var(--gold-a);color:var(--gold)}
+.qrow.over .qrow-ic{background:var(--ruby-a);color:var(--ruby)}
+.qrow-t{display:flex;align-items:baseline;gap:8px;min-width:0}
+.qrow-t b{font-size:13.5px;font-weight:600;white-space:nowrap}
+.qrow-t span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qrow .bar{grid-column:2}
+.qrow-act{grid-column:3;grid-row:1/3}
+.qrow-act .btn-sm{height:30px}
+.mstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px}
+.mstats .eyebrow{display:block;font-size:9.5px;letter-spacing:.13em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mstats>div{padding:12px 14px;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid var(--line);min-width:0}
+.mstats b{display:block;font-family:var(--serif);font-size:25px;font-weight:600;line-height:1.1;margin-top:5px;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mlist{display:flex;flex-direction:column;margin-top:6px}
+.mli{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line);font-size:13.5px;text-decoration:none;color:inherit}
+.mli:first-child{border-top:0}
+.mli:hover span:nth-child(2){color:var(--text)}
+.mli .dot{width:8px;height:8px;border-radius:50%}
+.mli span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mli span:nth-child(2){color:var(--text-2);transition:color .2s}
+.mli b{font-weight:600;font-variant-numeric:tabular-nums}
+.klist{display:flex;flex-direction:column}
+.kli{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.kli:first-child{border-top:0;padding-top:0}
+.kli-ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:var(--gold-a);color:var(--gold)}
+.kli-l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kli-s{font-size:12px;color:var(--faint);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kli b{font-family:var(--serif);font-size:24px;font-weight:600;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+.lg-sq{width:10px;height:10px;border-radius:3px;display:block}
+.lg-ln{width:12px;height:2px;display:block}
+/* Ticker stile mercati (layout Analytics) */
+#ticker:empty{display:none}
+.ticker{display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;margin-bottom:18px;border:1px solid var(--line);border-radius:16px;
+  background:linear-gradient(180deg,rgba(var(--card-rgb),calc(var(--card-o1) * 1.3)),rgba(var(--card-rgb),var(--card-o2)));box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.ticker::-webkit-scrollbar{display:none}
+.tk{flex:1 0 auto;display:flex;flex-direction:column;gap:3px;padding:12px 18px;border-left:1px solid var(--line);min-width:132px}
+.tk:first-child{border-left:0}
+.tk-l{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+.tk-v{font-family:var(--mono);font-size:15.5px;color:var(--text);white-space:nowrap;font-weight:500}
+.tk-d{font-family:var(--mono);font-size:11px;white-space:nowrap}
+.tk-d.up{color:var(--em-2)} .tk-d.down{color:var(--ruby-2)} .tk-d.flat{color:var(--muted)}
+/* Compact: intestazione densa e tab */
+.compact-head{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.45fr);gap:22px;align-items:center;padding:18px 20px}
+.ch-greet{font-family:var(--serif);font-size:28px;font-weight:600;line-height:1.05;margin:4px 0 6px}
+.ch-greet em{font-style:italic;font-weight:500;color:var(--gold-2)}
+.ch-line{font-size:13px;color:var(--text-2);margin:0;line-height:1.55}
+.chips-kpi{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.ck{padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.24);border:1px solid var(--line);min-width:0}
+.ck span{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ck b{display:block;font-family:var(--serif);font-size:21px;font-weight:600;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:lining-nums tabular-nums}
+.ctabs{display:flex;gap:4px;padding:4px;margin-bottom:16px;border-radius:14px;background:rgba(0,0,0,.3);border:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.ctabs::-webkit-scrollbar{display:none}
+.ctabs button{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:var(--muted);font:500 13px var(--sans);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,box-shadow .2s}
+.ctabs button:hover{color:var(--text)}
+.ctabs button.on{background:var(--surface-3);color:var(--text);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 4px 12px -6px rgba(0,0,0,.8)}
+.ctabs button .ic{width:15px;height:15px}
+.ctabs button.on .ic{color:var(--gold)}
+.ctabs .cnt{font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--gold-a);color:var(--gold-2)}
+.ctab-panel{animation:viewIn .35s var(--ease) both}
+
+/* ---------- Layout: regole globali ---------- */
+[data-layout="focus"] .habit[data-h="study"]{border-color:var(--gold-b);background:linear-gradient(160deg,rgba(var(--a-rgb),.08),rgba(var(--card-rgb),var(--card-o2)) 55%)}
+@media (min-width:901px){
+  [data-layout="focus"] .habits .habit[data-h="study"]{grid-column:1/-1}
+  [data-layout="focus"] .habit[data-h="study"] .habit-body{flex-direction:row;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+  [data-layout="focus"] .habit[data-h="study"] .timer{font-size:80px}
+}
+[data-layout="compact"] .main{padding-top:26px}
+[data-layout="compact"] .topbar{margin-bottom:20px}
+[data-layout="compact"] .page-title{font-size:34px}
+[data-layout="compact"] .card{padding:16px 18px;border-radius:15px}
+[data-layout="compact"] .grid,[data-layout="compact"] .kpis,[data-layout="compact"] .habits,[data-layout="compact"] .clients,[data-layout="compact"] .stack,[data-layout="compact"] .home{gap:12px}
+[data-layout="compact"] .mt-18{margin-top:12px}
+[data-layout="compact"] .mt-24{margin-top:16px}
+[data-layout="compact"] .kpi{padding:14px 16px}
+[data-layout="compact"] .kpi-val{font-size:30px;margin-top:10px}
+[data-layout="compact"] .card-title{font-size:20px}
+[data-layout="compact"] .card-head{margin-bottom:12px}
+[data-layout="compact"] .habits{grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+[data-layout="compact"] .habit{gap:12px}
+[data-layout="compact"] .habit-name{font-size:20px}
+[data-layout="compact"] .habit-ic{width:36px;height:36px;border-radius:11px}
+[data-layout="compact"] .timer{font-size:46px}
+[data-layout="compact"] .chart-box{height:220px}
+[data-layout="compact"] .chart-box.tall{height:250px}
+[data-layout="compact"] .client{gap:10px}
+[data-layout="compact"] .client-name{font-size:22px}
+[data-layout="compact"] .daybar{padding:14px 18px;margin-bottom:12px}
+@media (min-width:901px){
+  [data-layout="compact"] .app{grid-template-columns:80px minmax(0,1fr)}
+  [data-layout="compact"] .sidebar{padding:22px 14px;align-items:center;gap:24px}
+  [data-layout="compact"] .brand{padding:0}
+  [data-layout="compact"] .brand>div:last-child,[data-layout="compact"] .nav-label{display:none}
+  [data-layout="compact"] .nav a{justify-content:center;width:50px;height:46px;padding:0}
+  [data-layout="compact"] .nav a>span:not(.badge){display:none}
+  [data-layout="compact"] .nav a .badge{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;font-size:10px}
+  [data-layout="compact"] .nav a.active::before{left:-14px}
+  [data-layout="compact"] .side-foot{align-items:center}
+  [data-layout="compact"] .side-foot .btn{font-size:0;width:46px;height:46px;padding:0;gap:0;justify-content:center!important}
+  [data-layout="compact"] .live-chip{padding:12px;justify-content:center}
+  [data-layout="compact"] .live-chip .small,[data-layout="compact"] .live-chip b{display:none}
+  [data-layout="compact"] .save-state span{display:none}
+}
+
+/* ---------- Impostazioni: stili e layout ---------- */
+.set-tabs{display:flex;width:100%;margin-bottom:22px}
+.set-tabs button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px}
+.set-tabs button .ic{width:16px;height:16px}
+.set-tabs button.on .ic{color:var(--gold)}
+.style-now{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;margin-bottom:20px;border-radius:13px;background:rgba(0,0,0,.25);border:1px solid var(--line);font-size:13.5px}
+.style-now b{font-weight:600}
+.style-now .pill{margin-left:auto}
+.set-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.set-t{font-family:var(--serif);font-size:21px;font-weight:600;margin:3px 0 0;line-height:1.1}
+.wf{display:grid;gap:4px;height:92px;padding:7px;border-radius:10px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.wf i{display:block;min-width:0;min-height:0;border-radius:4px;background:rgba(var(--card-rgb),.06);border:1px solid var(--line-2)}
+.wf i.acc{background:linear-gradient(135deg,rgba(var(--a-rgb),.38),rgba(var(--a-rgb),.08));border-color:rgba(var(--a-rgb),.42)}
+.wf i.ok{background:rgba(var(--s-rgb),.2);border-color:rgba(var(--s-rgb),.38)}
+.wf i.tab{background:rgba(var(--card-rgb),.12);border-radius:99px}
+.wf i svg{display:block;width:100%;height:100%}
+.wf-classic{grid-template-columns:repeat(5,1fr);grid-template-rows:1.7fr .7fr 1fr}
+.wf-classic i:nth-child(1){grid-column:1/-1}
+.wf-classic i:nth-child(7){grid-column:1/4}
+.wf-classic i:nth-child(8){grid-column:4/6}
+.wf-focus{grid-template-columns:1.8fr 1fr;grid-template-rows:repeat(3,1fr)}
+.wf-focus i:nth-child(1){grid-row:1/3}
+.wf-analytics{grid-template-columns:2.2fr 1fr;grid-template-rows:.38fr 1.5fr 1fr}
+.wf-analytics i:nth-child(1){grid-column:1/-1}
+.wf-analytics i:nth-child(3){grid-column:2;grid-row:2/4}
+.wf-analytics i:nth-child(4){grid-column:1;grid-row:3}
+.wf-compact{grid-template-columns:repeat(4,1fr);grid-template-rows:.8fr .45fr repeat(3,1fr);gap:3px}
+.wf-compact i:nth-child(1){grid-row:2;grid-column:1/-1}
+.wf-compact i:nth-child(2){grid-row:1;grid-column:1/-1}
+.preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.preset-card{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;align-items:center;padding:12px;border-radius:16px;border:1px solid var(--line-2);
+  background:radial-gradient(260px 140px at 100% 0%,rgba(var(--g1),calc(var(--g1-o) * 1.6)),transparent 70%),var(--surface);color:var(--text);text-align:left;cursor:pointer;font:inherit;transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+.preset-card:hover{transform:translateY(-2px);border-color:var(--line-3)}
+.preset-card.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 18px 40px -20px rgba(var(--a-rgb),.65)}
+.pc-meta{min-width:0;padding-right:22px}
+.pc-meta small{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.pc-meta b{display:block;font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.12}
+.pc-meta span{display:block;font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
+.layout-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.layout-card{position:relative;display:flex;flex-direction:column;gap:10px;padding:10px;border-radius:15px;border:1px solid var(--line-2);background:rgba(0,0,0,.22);color:var(--text);text-align:left;cursor:pointer;font:inherit;transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+.layout-card:hover{transform:translateY(-2px);border-color:var(--line-3)}
+.layout-card.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.layout-card .wf{height:84px}
+.layout-card b{display:block;font-size:13.5px;font-weight:600;padding-right:20px}
+.layout-card span{display:block;font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:3px}
+.layout-card .tc-check{top:auto;bottom:10px;right:10px}
+.preset-card.on .tc-check,.layout-card.on .tc-check{opacity:1;transform:none}
+.layout-card .tc-check{top:104px;bottom:auto}
+.pop-sec{padding:10px 10px 4px;margin-top:6px;border-top:1px solid var(--line)}
+.sw-row{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.sw-btn{padding:0;border:0;background:none;cursor:pointer;border-radius:11px;line-height:0}
+.sw-btn .swatch{width:36px;height:36px;border-radius:11px;transition:box-shadow .2s}
+.sw-btn.on .swatch{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--gold-2)}
+.seg-full{display:flex;width:100%;margin-top:9px}
+.seg-full button{flex:1;padding:0 6px}
+
+@media (max-width:1100px){
+  .focus-grid,.ana-grid{grid-template-columns:minmax(0,1fr)}
+  .compact-head{grid-template-columns:auto minmax(0,1fr)}
+  .compact-head .chips-kpi{grid-column:1/-1}
+  .layout-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .qlist.cols{grid-template-columns:minmax(0,1fr)}
+  .chips-kpi{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .ck{padding:8px 10px}
+  .ck span{font-size:8.5px;letter-spacing:.1em}
+  .ck b{font-size:17px}
+  .card-head{flex-wrap:wrap}
+  .focus-panel{padding:20px}
+  .focus-title{font-size:28px}
+  .focus-timer{font-size:58px}
+  .mstats{gap:8px}
+  .mstats>div{padding:10px}
+  .mstats b{font-size:19px}
+  .tk{min-width:118px;padding:10px 14px}
+  .ticker{margin-bottom:14px}
+  .compact-head{gap:14px;padding:16px}
+  .ch-greet{font-size:24px}
+  .preset-grid{grid-template-columns:minmax(0,1fr)}
+  .preset-card{grid-template-columns:118px minmax(0,1fr);gap:12px}
+  .preset-card .wf{height:80px}
+  .set-tabs button span{font-size:12px}
+  .set-tabs button .ic{display:none}
+  .style-now .pill{margin-left:0}
+}
+@media (max-width:420px){ .layout-grid{grid-template-columns:minmax(0,1fr)} .layout-card .tc-check{top:12px;right:12px} }
+
+
 /* ---------- Responsive ---------- */
 @media (max-width:1280px){
   .minis{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -677,12 +890,13 @@ html.theming,html.theming *{transition:background-color .5s ease,border-color .5
       <div class="top-actions">
         <div class="clock" id="clock">--:--</div>
         <div class="theme-pick" id="themePick">
-          <button class="btn btn-icon" id="themeBtn" data-act="theme-menu" aria-label="Cambia tema" aria-haspopup="menu" aria-expanded="false" title="Tema & palette"><span class="theme-dot"></span></button>
+          <button class="btn btn-icon" id="themeBtn" data-act="theme-menu" aria-label="Stile, palette e layout" aria-haspopup="menu" aria-expanded="false" title="Stile, palette e layout"><span class="theme-dot"></span></button>
           <div class="theme-pop" id="themePop" role="menu" aria-label="Temi" hidden></div>
         </div>
         <button class="btn btn-icon" data-act="settings" aria-label="Impostazioni"><span data-ic="sliders"></span></button>
       </div>
     </header>
+    <div id="ticker"></div>
     <div id="view"></div>
   </main>
 </div>
@@ -749,6 +963,7 @@ const IC = {
   leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19 13 11"/>',
   arrowUp:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   share:'<path d="M12 3.5v11"/><path d="m8 7.5 4-4 4 4"/><path d="M9 10.5H7a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5h-2"/>',
+  grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/>',
   palette:'<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7h2.1a4.5 4.5 0 0 0 4.5-4.5C21 6.7 17 3.5 12 3.5z"/><circle cx="7.6" cy="11" r="1.1"/><circle cx="10.4" cy="7.4" r="1.1"/><circle cx="15" cy="7.8" r="1.1"/>',
   plusSquare:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8.5v7M8.5 12h7"/>',
   dots:'<circle cx="12" cy="5.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="18.5" r="1.3"/>',
@@ -1281,7 +1496,7 @@ let route = 'home', viewDay = todayKey();
 function renderNav(){
   const todo = S.clients.filter(c=>c.stage==='da_contattare').length;
   const missing = 7 - score(todayKey());
-  $('#nav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}">${icon(r.icon)}<span>${r.label==='Task'?'Task giornaliere':r.label==='Clienti'?'CRM Clienti':r.label==='Finanze'?'Finanze':r.label}</span>${r.id==='tracker'&&missing>0?`<span class="badge">${missing}</span>`:''}${r.id==='crm'&&todo?`<span class="badge">${todo}</span>`:''}</a>`).join('');
+  $('#nav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}" title="${r.title}">${icon(r.icon)}<span>${r.label==='Task'?'Task giornaliere':r.label==='Clienti'?'CRM Clienti':r.label==='Finanze'?'Finanze':r.label}</span>${r.id==='tracker'&&missing>0?`<span class="badge">${missing}</span>`:''}${r.id==='crm'&&todo?`<span class="badge">${todo}</span>`:''}</a>`).join('');
   $('#mnav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}">${icon(r.icon)}<span>${r.label}</span></a>`).join('');
   renderLiveChip();
 }
@@ -1296,6 +1511,7 @@ function go(){
   $('#topEyebrow').innerHTML = cap(fmtDate(todayKey(),{weekday:'long', day:'numeric', month:'long', year:'numeric'}));
   $('#pageTitle').innerHTML = meta.title;
   renderNav();
+  $('#ticker').innerHTML = currentLayout() === 'analytics' ? tickerHTML() : '';
   const v = $('#view');
   v.className = 'view'; void v.offsetWidth;
   ({home:renderHome, tracker:renderTracker, finanza:renderFinance, crm:renderCRM, stats:renderStats})[route]();
@@ -1306,74 +1522,281 @@ function rerender(keepScroll=true){ const y = window.scrollY; go(); if (keepScro
 window.addEventListener('hashchange', () => { go(); window.scrollTo(0,0); });
 
 /* =========================================================
-   HOME
+   HOME · blocchi riutilizzabili e 4 disposizioni
    ========================================================= */
 function greeting(){ const h = new Date().getHours(); return h < 5 ? 'Buonanotte' : h < 13 ? 'Buongiorno' : h < 18 ? 'Buon pomeriggio' : 'Buonasera'; }
-function renderHome(){
+const TONE_ICON = {push:'bolt', scale:'trend', warn:'shield', tip:'compass'}, TONE_TAG = {push:'Spinta', scale:'Scaling', warn:'Attenzione', tip:'Consiglio'};
+function homeData(){
   const t = todayKey(), st = status(t), sc = score(t);
   const missing = HABITS.filter(h => !st[h.id]).map(h => h.name.toLowerCase());
-  const name = S.profile.name ? `, <em>${esc(S.profile.name)}</em>` : '';
-  const line = sc === 7 ? 'Giornata perfetta: tutti e 7 gli obiettivi sono chiusi. Questo è lo standard da replicare.'
-    : sc === 0 ? 'La giornata è una pagina bianca. Il primo passo decide il ritmo: parti dalla task più importante.'
-    : `Hai completato <strong>${sc} obiettivi su 7</strong>. Per chiudere la giornata mancano ${missing.join(', ')}.`;
   const past7 = range(addDays(t,-6), t).filter(tracked);
-  const study7 = sum(past7.map(studySecs))/3600, km7 = sum(past7.map(k => +(S.days[k]?.km)||0));
-  const [ms, me] = monthBounds(0), incM = incomeIn(ms, me);
+  const [ms, me] = monthBounds(0);
   const active = S.clients.filter(c => !['chiuso','scartato'].includes(c.stage));
-  const pipe = sum(active.map(c => +c.price||0));
-  const cur = currentStreak(), best = bestStreak();
-  const ins = insights(), trick = TRICKS[dayOfYear() % TRICKS.length], mind = MINDSET[(dayOfYear()*7) % MINDSET.length];
-  const rem = reminders();
-  const toneIcon = {push:'bolt', scale:'trend', warn:'shield', tip:'compass'}, toneTag = {push:'Spinta', scale:'Scaling', warn:'Attenzione', tip:'Consiglio'};
+  return {
+    t, st, sc, missing, past7, active,
+    name: S.profile.name ? `, <em>${esc(S.profile.name)}</em>` : '',
+    line: sc === 7 ? 'Giornata perfetta: tutti e 7 gli obiettivi sono chiusi. Questo è lo standard da replicare.'
+      : sc === 0 ? 'La giornata è una pagina bianca. Il primo passo decide il ritmo: parti dalla task più importante.'
+      : `Hai completato <strong>${sc} obiettivi su 7</strong>. Per chiudere la giornata mancano ${missing.join(', ')}.`,
+    study7: sum(past7.map(studySecs))/3600,
+    km7: sum(past7.map(k => +(S.days[k]?.km)||0)),
+    runs5: past7.filter(k => (+(S.days[k]?.km)||0) >= RUN_GOAL).length,
+    incM: incomeIn(ms, me),
+    pipe: sum(active.map(c => +c.price||0)),
+    cur: currentStreak(), best: bestStreak(),
+  };
+}
+const goLink = (href, label='Apri') => `<a class="btn btn-sm btn-ghost" href="${href}">${label} ${icon('right')}</a>`;
 
-  $('#view').innerHTML = `${installBanner()}
-  <section class="card card-gold hero">
+/* ---- Riepilogo e numeri ---- */
+function heroHTML(D){
+  return `<section class="card card-gold hero">
     <div>
       <div class="eyebrow">Riepilogo di oggi</div>
-      <h2 class="hero-greet">${greeting()}${name}.</h2>
-      <p class="hero-line">${line}</p>
+      <h2 class="hero-greet">${greeting()}${D.name}.</h2>
+      <p class="hero-line">${D.line}</p>
       <div class="row wrap mt-18">
         <a class="btn btn-gold" href="#tracker">${icon('tasks')} Apri il tracker</a>
         ${S.timer ? `<a class="btn btn-em" href="#tracker">${icon('clock')} Studio in corso · <span data-live="hero">${fmtClock(studySecs(S.timer.day))}</span></a>` : `<button class="btn" data-act="quick-study">${icon('play','ic-fill')} Avvia timer studio</button>`}
       </div>
     </div>
-    ${ring(sc/7, 176, 11, `<div class="ring-num" style="font-size:52px">${Math.round(sc/7*100)}<span style="font-size:24px">%</span></div><div class="ring-sub">${sc} / 7 completati</div>`)}
+    ${ring(D.sc/7, 176, 11, `<div class="ring-num" style="font-size:52px">${Math.round(D.sc/7*100)}<span style="font-size:24px">%</span></div><div class="ring-sub">${D.sc} / 7 completati</div>`)}
     <div class="minis">
-      ${HABITS.map(h => { const c = chromeOf(h.id, t); return `<a class="mini ${c.state}" href="#tracker" title="${esc(h.target)}"><span class="mini-ic">${icon(h.icon)}</span><span class="mini-name">${h.name}</span><span class="mini-val" ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></a>`; }).join('')}
-    </div>
-  </section>
-
-  <section class="kpis mt-18">
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Serie vincente</span>${icon('fire')}</div><div class="kpi-val">${cur}<small>${cur===1?'giorno':'giorni'}</small></div><div class="kpi-sub">Record: ${best} · giornate ≥ ${WIN}/7</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Studio · 7 giorni</span>${icon('book')}</div><div class="kpi-val">${N1.format(study7)}<small>ore</small></div><div class="kpi-sub">Media ${fmtDur(study7*3600/Math.max(1,past7.length))} al giorno</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Corsa · 7 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(km7)}<small>km</small></div><div class="kpi-sub">${past7.filter(k => (+(S.days[k]?.km)||0) >= RUN_GOAL).length} uscite da 5 km+</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Entrate · ${fmtDate(t,{month:'long'})}</span>${icon('euro')}</div><div class="kpi-val em">${EUR0.format(incM)}</div><div class="kpi-sub">Abbonamenti: ${EUR.format(subsMonthly())}/mese</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pipeline CRM</span>${icon('briefcase')}</div><div class="kpi-val gold">${EUR0.format(pipe)}</div><div class="kpi-sub">${plural(active.length,'trattativa aperta','trattative aperte')}</div></div>
-  </section>
-
-  <section class="grid g-main mt-18">
-    <div class="card">
-      <div class="card-head"><div><div class="eyebrow">Analisi in tempo reale</div><h3 class="card-title">Daily Insights & Growth Tricks</h3></div><span class="pill plain progress">${icon('spark')} ${ins.length} spunti</span></div>
-      <div>${ins.map(x => `<div class="insight ${x.tone}"><div class="insight-ic">${icon(toneIcon[x.tone])}</div><div><h4>${esc(x.title)}<span class="tag">${toneTag[x.tone]}</span></h4><p>${esc(x.text)}</p></div></div>`).join('')}</div>
-      <div class="quote">
-        <div><div class="eyebrow gold">Trucco del giorno · ${esc(trick[0])}</div><p class="t">${esc(trick[1])}</p></div>
-        <div><div class="eyebrow gold">Mindset</div><p class="q">“${esc(mind)}”</p></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head"><div><div class="eyebrow">Promemoria attivi</div><h3 class="card-title">Da non perdere</h3></div><span class="pill plain">${rem.length + S.reminders.filter(r=>!r.done).length}</span></div>
-      <div>
-        ${rem.map(r => `<a class="rem ${r.tone}" href="${r.href}"><span class="rem-ic">${icon(r.icon)}</span><div><div class="rem-t">${esc(r.title)}</div><div class="rem-m">${esc(r.meta)}</div></div></a>`).join('')}
-        ${S.reminders.filter(r=>!r.done).map(r => { const n = r.date ? diffDays(t, r.date) : null; return `<div class="rem ${n!==null&&n<0?'ruby':n===0?'gold':''}"><button class="rem-check" data-act="rem-done" data-id="${r.id}" aria-label="Segna come fatto">${icon('check')}</button><div><div class="rem-t">${esc(r.text)}</div><div class="rem-m">${r.date ? cap(relDays(n)) + ' · ' + fmtDate(r.date,{day:'numeric',month:'short'}) : 'Personale'}</div></div><button class="btn btn-icon btn-sm btn-ghost x" data-act="rem-del" data-id="${r.id}" aria-label="Elimina">${icon('x')}</button></div>`; }).join('')}
-        ${!rem.length && !S.reminders.some(r=>!r.done) ? '<div class="empty"><div class="serif">Tutto sotto controllo</div>Nessun promemoria in sospeso.</div>' : ''}
-      </div>
-      <form class="row mt-18" data-form="rem" style="gap:8px">
-        <input class="input" name="text" placeholder="Nuovo promemoria…" maxlength="120" required>
-        <input class="input" name="date" type="date" style="max-width:150px" aria-label="Data">
-        <button class="btn btn-icon btn-gold" aria-label="Aggiungi">${icon('plus')}</button>
-      </form>
+      ${HABITS.map(h => { const c = chromeOf(h.id, D.t); return `<a class="mini ${c.state}" href="#tracker" title="${esc(h.target)}"><span class="mini-ic">${icon(h.icon)}</span><span class="mini-name">${h.name}</span><span class="mini-val" ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></a>`; }).join('')}
     </div>
   </section>`;
+}
+function kpisHTML(D){
+  return `<section class="kpis">
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Serie vincente</span>${icon('fire')}</div><div class="kpi-val">${D.cur}<small>${D.cur===1?'giorno':'giorni'}</small></div><div class="kpi-sub">Record: ${D.best} · giornate ≥ ${WIN}/7</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Studio · 7 giorni</span>${icon('book')}</div><div class="kpi-val">${N1.format(D.study7)}<small>ore</small></div><div class="kpi-sub">Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))} al giorno</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Corsa · 7 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(D.km7)}<small>km</small></div><div class="kpi-sub">${D.runs5} uscite da 5 km+</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Entrate · ${fmtDate(D.t,{month:'long'})}</span>${icon('euro')}</div><div class="kpi-val em">${EUR0.format(D.incM)}</div><div class="kpi-sub">Abbonamenti: ${EUR.format(subsMonthly())}/mese</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pipeline CRM</span>${icon('briefcase')}</div><div class="kpi-val gold">${EUR0.format(D.pipe)}</div><div class="kpi-sub">${plural(D.active.length,'trattativa aperta','trattative aperte')}</div></div>
+  </section>`;
+}
+function kpiListCard(D){
+  const rows = [
+    ['fire','Serie vincente', `${D.cur} ${D.cur===1?'giorno':'giorni'}`, `Record ${D.best}`],
+    ['book','Studio · 7 giorni', `${N1.format(D.study7)} h`, `Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))}/giorno`],
+    ['route','Corsa · 7 giorni', `${N1.format(D.km7)} km`, `${D.runs5} uscite da 5 km+`],
+    ['euro',`Entrate · ${fmtDate(D.t,{month:'long'})}`, EUR0.format(D.incM), `Abbonamenti ${EUR.format(subsMonthly())}/mese`],
+    ['briefcase','Pipeline CRM', EUR0.format(D.pipe), plural(D.active.length,'trattativa aperta','trattative aperte')],
+  ];
+  return `<section class="card"><div class="card-head"><div><div class="eyebrow">Numeri chiave</div><h3 class="card-title">La tua settimana</h3></div></div>
+    <div class="klist">${rows.map(r => `<div class="kli"><span class="kli-ic">${icon(r[0])}</span><div style="min-width:0"><div class="kli-l">${r[1]}</div><div class="kli-s">${r[3]}</div></div><b>${r[2]}</b></div>`).join('')}</div></section>`;
+}
+
+/* ---- Insights & promemoria ---- */
+function insightsInner(){
+  const ins = insights(), trick = TRICKS[dayOfYear() % TRICKS.length], mind = MINDSET[(dayOfYear()*7) % MINDSET.length];
+  return `<div>${ins.map(x => `<div class="insight ${x.tone}"><div class="insight-ic">${icon(TONE_ICON[x.tone])}</div><div><h4>${esc(x.title)}<span class="tag">${TONE_TAG[x.tone]}</span></h4><p>${esc(x.text)}</p></div></div>`).join('')}</div>
+    <div class="quote">
+      <div><div class="eyebrow gold">Trucco del giorno · ${esc(trick[0])}</div><p class="t">${esc(trick[1])}</p></div>
+      <div><div class="eyebrow gold">Mindset</div><p class="q">“${esc(mind)}”</p></div>
+    </div>`;
+}
+function insightsCard(){
+  return `<section class="card"><div class="card-head"><div><div class="eyebrow">Analisi in tempo reale</div><h3 class="card-title">Daily Insights & Growth Tricks</h3></div><span class="pill plain progress">${icon('spark')} ${insights().length} spunti</span></div>${insightsInner()}</section>`;
+}
+const remindersCount = () => reminders().length + S.reminders.filter(r => !r.done).length;
+function remindersInner(){
+  const t = todayKey(), rem = reminders();
+  return `<div>
+      ${rem.map(r => `<a class="rem ${r.tone}" href="${r.href}"><span class="rem-ic">${icon(r.icon)}</span><div><div class="rem-t">${esc(r.title)}</div><div class="rem-m">${esc(r.meta)}</div></div></a>`).join('')}
+      ${S.reminders.filter(r=>!r.done).map(r => { const n = r.date ? diffDays(t, r.date) : null; return `<div class="rem ${n!==null&&n<0?'ruby':n===0?'gold':''}"><button class="rem-check" data-act="rem-done" data-id="${r.id}" aria-label="Segna come fatto">${icon('check')}</button><div><div class="rem-t">${esc(r.text)}</div><div class="rem-m">${r.date ? cap(relDays(n)) + ' · ' + fmtDate(r.date,{day:'numeric',month:'short'}) : 'Personale'}</div></div><button class="btn btn-icon btn-sm btn-ghost x" data-act="rem-del" data-id="${r.id}" aria-label="Elimina">${icon('x')}</button></div>`; }).join('')}
+      ${!rem.length && !S.reminders.some(r=>!r.done) ? '<div class="empty"><div class="serif">Tutto sotto controllo</div>Nessun promemoria in sospeso.</div>' : ''}
+    </div>
+    <form class="row mt-18" data-form="rem" style="gap:8px">
+      <input class="input" name="text" placeholder="Nuovo promemoria…" maxlength="120" required>
+      <input class="input" name="date" type="date" style="max-width:150px" aria-label="Data">
+      <button class="btn btn-icon btn-gold" aria-label="Aggiungi">${icon('plus')}</button>
+    </form>`;
+}
+function remindersCard(){
+  return `<section class="card"><div class="card-head"><div><div class="eyebrow">Promemoria attivi</div><h3 class="card-title">Da non perdere</h3></div><span class="pill plain">${remindersCount()}</span></div>${remindersInner()}</section>`;
+}
+
+/* ---- Task rapide (pannelli laterali, focus, tab) ---- */
+function quickList({cols=false} = {}){
+  const t = todayKey(), d = S.days[t] || blankDay();
+  return `<div class="qlist ${cols?'cols':''}">${HABITS.map(h => {
+    const c = chromeOf(h.id, t);
+    let act;
+    if (h.id === 'study') act = S.timer ? `<button class="btn btn-sm btn-ruby" data-act="q-timer">${icon('stop','ic-fill')} Stop</button>` : `<button class="btn btn-sm btn-em" data-act="q-timer">${icon('play','ic-fill')} Avvia</button>`;
+    else if (h.id === 'skin') act = `<button class="btn btn-sm ${d.skin?'btn-outline-gold':''}" data-act="q-skin" aria-pressed="${!!d.skin}">${d.skin?icon('check')+' Fatta':'Segna'}</button>`;
+    else if (h.id === 'social') act = `<button class="btn btn-sm" data-act="q-social" title="Aggiungi 5 minuti">+5′</button>`;
+    else if (h.id === 'run') act = `<button class="btn btn-sm" data-act="q-run" title="Aggiungi 1 km">+1 km</button>`;
+    else act = `<a class="btn btn-sm btn-ghost btn-icon" href="#tracker" aria-label="Apri ${esc(h.name)} nel tracker">${icon('right')}</a>`;
+    return `<div class="qrow ${c.state}"><span class="qrow-ic">${icon(h.icon)}</span>
+      <div class="qrow-t"><b>${h.name}</b><span ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></div>
+      <div class="bar thin ${c.bar||(c.done?'done':'')}"><i style="width:${c.pct*100}%"></i></div>
+      <div class="qrow-act">${act}</div></div>`;
+  }).join('')}</div>`;
+}
+function focusPanel(D){
+  const s = studySecs(D.t), running = !!S.timer, done = s >= STUDY_GOAL;
+  return `<section class="card card-gold focus-panel">
+    <div class="focus-top">
+      <div><div class="eyebrow">Modalità focus · ${greeting()}${D.name}</div><h2 class="focus-title">Studio di oggi</h2></div>
+      ${ring(D.sc/7, 96, 8, `<div class="ring-num" style="font-size:28px">${D.sc}<span style="font-size:14px">/7</span></div><div class="ring-sub" style="font-size:8.5px">task</div>`)}
+    </div>
+    <div class="focus-timer-row">
+      <div><div class="timer focus-timer ${running?'running':''}" data-live="focus-timer">${fmtClock(s)}</div>
+        <div class="timer-sub">${done ? `Obiettivo superato di ${fmtDur(s-STUDY_GOAL)}` : `Mancano ${fmtDur(STUDY_GOAL-s)} alle 2 ore`}${running?' · <span class="em">timer attivo</span>':''}</div></div>
+      <div class="row wrap">${running ? `<button class="btn btn-ruby" data-act="q-timer">${icon('stop','ic-fill')} Stop</button>` : `<button class="btn btn-em" data-act="q-timer">${icon('play','ic-fill')} Avvia</button>`}
+        <button class="btn" data-act="q-study-add" data-v="900">+15m</button><button class="btn" data-act="q-study-add" data-v="1800">+30m</button></div>
+    </div>
+    <div class="bar ${done?'done':''}"><i data-live="focus-bar" style="width:${Math.min(100, s/STUDY_GOAL*100)}%"></i></div>
+    <hr class="hair">
+    <div class="row between" style="margin-bottom:12px"><div class="eyebrow">Task del giorno · ${D.sc}/7</div><a class="small gold" href="#tracker" style="text-decoration:none">Tracker completo →</a></div>
+    ${quickList({cols:true})}
+  </section>`;
+}
+function trackerPanel(D){
+  return `<section class="card card-gold tracker-panel">
+    <div class="card-head"><div><div class="eyebrow">Pannello rapido</div><h3 class="card-title">Task di oggi</h3></div>${goLink('#tracker','Tracker')}</div>
+    <div class="tp-sum">${ring(D.sc/7, 92, 8, `<div class="ring-num" style="font-size:26px">${D.sc}<span style="font-size:13px">/7</span></div>`)}
+      <div style="min-width:0"><div class="tp-greet">${greeting()}${D.name}.</div><p class="small muted" style="margin:4px 0 0">${D.sc===7?'Giornata perfetta: tutto chiuso.':D.sc>=WIN?'Giornata vincente: chiudi in bellezza.':`${WIN-D.sc} alla giornata vincente.`}</p></div></div>
+    ${quickList()}
+  </section>`;
+}
+
+/* ---- Finanze & CRM ---- */
+function renewalsList(n=3){
+  const t = todayKey(), subs = S.subs.slice().sort((a,b) => a.renewal.localeCompare(b.renewal)).slice(0,n);
+  if (!subs.length) return '';
+  return `<div class="mlist">${subs.map(s => { const d = diffDays(t, s.renewal); return `<a class="mli" href="#finanza"><span class="dot" style="background:${esc(s.color||'#c9a76a')}"></span><span>${esc(s.name)}</span><span class="small ${d<=7?'gold':'muted'}">${cap(relDays(d))}</span><b>${EUR.format(s.price)}</b></a>`; }).join('')}</div>`;
+}
+function finMini({bare=false} = {}){
+  const [ms, me] = monthBounds(0), inc = incomeIn(ms, me), cost = subsMonthly(), net = inc - cost;
+  const inner = `<div class="mstats"><div><span class="eyebrow">Entrate</span><b class="em">${EUR0.format(inc)}</b></div><div><span class="eyebrow">Abbonamenti</span><b>${EUR0.format(cost)}</b></div><div><span class="eyebrow">Netto</span><b class="${net>=0?'gold':'ruby'}">${EUR0.format(net)}</b></div></div>
+    <div class="eyebrow mt-18">Prossimi rinnovi</div>${renewalsList()}`;
+  return bare ? inner : `<section class="card mini-card"><div class="card-head"><div><div class="eyebrow">Finanze · ${fmtDate(todayKey(),{month:'long'})}</div><h3 class="card-title">Entrate & abbonamenti</h3></div>${goLink('#finanza')}</div>${inner}</section>`;
+}
+function crmMini({bare=false} = {}){
+  const all = S.clients, active = all.filter(c => !['chiuso','scartato'].includes(c.stage)), won = all.filter(c => c.stage === 'chiuso');
+  const hot = active.slice().sort((a,b) => ((+b.rating||0)-(+a.rating||0)) || ((+b.price||0)-(+a.price||0))).slice(0,3);
+  const counts = Object.fromEntries(Object.keys(STAGES).map(k => [k, all.filter(c => c.stage===k).length]));
+  const inner = `<div class="mstats"><div><span class="eyebrow">Aperte</span><b>${active.length}</b></div><div><span class="eyebrow">Pipeline</span><b class="gold">${EUR0.format(sum(active.map(c=>+c.price||0)))}</b></div><div><span class="eyebrow">Venduto</span><b class="em">${EUR0.format(sum(won.map(c=>+c.price||0)))}</b></div></div>
+    ${all.length ? `<div class="pipe mt-18">${Object.entries(STAGES).filter(([k])=>counts[k]).map(([k,s]) => `<i style="width:${counts[k]/all.length*100}%;background:${s.color}" title="${s.label}: ${counts[k]}"></i>`).join('')}</div>` : ''}
+    ${hot.length ? `<div class="eyebrow mt-18">Trattative più calde</div><div class="mlist">${hot.map(c => `<a class="mli" href="#crm"><span class="dot" style="background:${STAGES[c.stage].color}"></span><span>${esc(c.name)}</span><span class="small muted">${c.appt ? cap(apptInfo(c.appt).rel) : STAGES[c.stage].label}</span><b>${+c.price ? EUR0.format(+c.price) : '—'}</b></a>`).join('')}</div>`
+      : `<div class="empty mt-18" style="padding:20px"><div class="serif" style="font-size:19px">Pipeline vuota</div><button class="btn btn-sm btn-gold mt-12" data-act="client-new">${icon('plus')} Nuovo cliente</button></div>`}`;
+  return bare ? inner : `<section class="card mini-card"><div class="card-head"><div><div class="eyebrow">CRM agenzia web</div><h3 class="card-title">Trattative</h3></div>${goLink('#crm')}</div>${inner}</section>`;
+}
+
+/* ---- Analytics: ticker e grafici ---- */
+function tickerHTML(){
+  const t = todayKey(), w = range(addDays(t,-6), t).filter(tracked), pw = range(addDays(t,-13), addDays(t,-7)).filter(tracked);
+  const km = k => +(S.days[k]?.km)||0;
+  const soc = ks => { const v = ks.map(k => S.days[k]?.social).filter(x => x !== null && x !== undefined && x !== '').map(Number); return v.length ? avg(v) : null; };
+  const [ms, me] = monthBounds(0), [ps, pe] = monthBounds(-1), incM = incomeIn(ms, me), incP = incomeIn(ps, pe);
+  const sw = sum(w.map(studySecs))/3600, sp = sum(pw.map(studySecs))/3600, kw = sum(w.map(km)), kp = sum(pw.map(km)), so = soc(w), sop = soc(pw);
+  const pipe = sum(S.clients.filter(c => !['chiuso','scartato'].includes(c.stage)).map(c => +c.price||0));
+  const dl = (c, p, fmt, inv=false) => {
+    if (c === null || p === null || p === undefined) return '';
+    const d = c - p, cls = Math.abs(d) < 1e-9 ? 'flat' : (inv ? d < 0 : d > 0) ? 'up' : 'down';
+    return `<span class="tk-d ${cls}">${d > 0 ? '▲' : d < 0 ? '▼' : '■'} ${fmt(Math.abs(d))}</span>`;
+  };
+  const items = [
+    ['Oggi', `${score(t)}/7`, `<span class="tk-d ${score(t)>=WIN?'up':'flat'}">${score(t)>=WIN?'giornata vincente':'in corso'}</span>`],
+    ['Studio 7G', `${N1.format(sw)} h`, pw.length ? dl(sw, sp, v => N1.format(v)+' h') : ''],
+    ['Corsa 7G', `${N1.format(kw)} km`, pw.length ? dl(kw, kp, v => N1.format(v)+' km') : ''],
+    ['Social / giorno', so === null ? '—' : `${Math.round(so)} min`, pw.length ? dl(so, sop, v => Math.round(v)+' min', true) : ''],
+    ['Entrate mese', EUR0.format(incM), incP ? dl(incM, incP, v => EUR0.format(v)) : ''],
+    ['Abbonamenti', `${EUR.format(subsMonthly())}/m`, ''],
+    ['Pipeline CRM', EUR0.format(pipe), ''],
+    ['Serie', `${currentStreak()} gg`, `<span class="tk-d flat">record ${bestStreak()}</span>`],
+  ];
+  return `<div class="ticker" role="list" aria-label="Indicatori principali">${items.map(([l,v,d]) => `<div class="tk" role="listitem"><span class="tk-l">${l}</span><span class="tk-v">${v}</span>${d}</div>`).join('')}</div>`;
+}
+function trendCard(){
+  const t = todayKey(), cur = range(addDays(t,-13), t).filter(tracked), prev = range(addDays(t,-27), addDays(t,-14)).filter(tracked);
+  const c1 = cur.length ? avg(cur.map(score))/7 : 0, c0 = prev.length ? avg(prev.map(score))/7 : null, d = c0 === null ? null : Math.round((c1-c0)*100);
+  return `<section class="card">
+    <div class="card-head"><div><div class="eyebrow">Performance · ultimi 14 giorni</div><h3 class="card-title">Completamento & ore di studio</h3></div>
+      <div class="row small muted" style="gap:14px"><span class="row" style="gap:6px"><i class="lg-sq" style="background:var(--gold-2)"></i>Studio</span><span class="row" style="gap:6px"><i class="lg-ln" style="background:var(--em)"></i>Completamento</span></div></div>
+    <div class="mstats"><div><span class="eyebrow">Media completamento</span><b>${Math.round(c1*100)}%</b></div><div><span class="eyebrow">Studio 14 giorni</span><b>${N1.format(sum(cur.map(studySecs))/3600)} h</b></div><div><span class="eyebrow">Vs 14 giorni prima</span><b class="${d===null?'':d>=0?'em':'ruby'}">${d===null?'—':(d>0?'+':'')+d+' pt'}</b></div></div>
+    <div class="chart-box tall mt-18"><canvas id="cHomeTrend"></canvas></div>
+  </section>`;
+}
+function finChartCard(){
+  const t = todayKey(), [ms, me] = monthBounds(0), inc = incomeIn(ms, me), y = t.slice(0,4);
+  return `<section class="card">
+    <div class="card-head"><div><div class="eyebrow">Resoconto finanziario</div><h3 class="card-title">Entrate & abbonamenti · 6 mesi</h3></div>${goLink('#finanza','Dettagli')}</div>
+    <div class="mstats"><div><span class="eyebrow">Entrate ${fmtDate(t,{month:'short'}).replace('.','')}</span><b class="em">${EUR0.format(inc)}</b></div><div><span class="eyebrow">Abbonamenti</span><b>${EUR.format(subsMonthly())}</b></div><div><span class="eyebrow">Anno ${y}</span><b class="gold">${EUR0.format(incomeIn(`${y}-01-01`, `${y}-12-31`))}</b></div></div>
+    <div class="chart-box mt-18"><canvas id="cHomeFin"></canvas></div>
+    <div class="eyebrow mt-18">Prossimi rinnovi</div>${renewalsList()}
+  </section>`;
+}
+function drawHomeCharts(){
+  chartDefaults();
+  const PL = pal(), t = todayKey(), keys = range(addDays(t,-13), t);
+  const labels = keys.map(k => fmtDate(k,{day:'numeric', month:'short'}).replace('.',''));
+  const bs = baseScales({ticks:{callback:v => v+'h', maxTicksLimit:5, padding:8}});
+  mkChart('cHomeTrend', {type:'bar', data:{labels, datasets:[
+    {type:'line', label:'Completamento', data:keys.map(k => tracked(k) ? Math.round(score(k)/7*100) : null), yAxisID:'y1', borderColor:PL.s, borderWidth:2, tension:.35, fill:true, backgroundColor:gradFill(rg(PL.sRgb,.18), rg(PL.sRgb,0)), pointRadius:2.5, pointBackgroundColor:PL.s2, pointBorderWidth:0, spanGaps:true, order:1},
+    {label:'Ore di studio', data:keys.map(k => +(studySecs(k)/3600).toFixed(2)), yAxisID:'y', backgroundColor:gradFill(PL.a2, rg(PL.aRgb,.25)), borderRadius:5, maxBarThickness:22, order:2}]},
+    options:{interaction:{mode:'index', intersect:false}, scales:{x:bs.x, y:bs.y, y1:{position:'right', min:0, max:100, grid:{display:false}, border:{display:false}, ticks:{callback:v => v+'%', maxTicksLimit:5}}},
+      plugins:{tooltip:{callbacks:{label:c => c.dataset.yAxisID === 'y1' ? ` Completamento: ${c.raw ?? '—'}%` : ` Studio: ${N1.format(c.raw)} h`}}}}});
+  const months = []; for (let i=5; i>=0; i--){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); months.push(ymd(d).slice(0,7)); }
+  const inc = months.map(mk => incomeIn(mk+'-01', mk+'-31')), cst = months.map(mk => mk >= S.createdAt.slice(0,7) ? +subsCostForMonth(mk).toFixed(2) : 0);
+  mkChart('cHomeFin', {type:'bar', data:{labels:months.map(mk => cap(fmtDate(mk+'-01',{month:'short'}).replace('.',''))), datasets:[
+    {label:'Entrate', data:inc, backgroundColor:rg(PL.sRgb,.85), borderRadius:6, maxBarThickness:30, order:2},
+    {label:'Abbonamenti', data:cst, backgroundColor:rg(PL.rRgb,.7), borderRadius:6, maxBarThickness:30, order:3},
+    {type:'line', label:'Netto', data:inc.map((v,i) => +(v-cst[i]).toFixed(2)), borderColor:PL.a2, borderWidth:2, cubicInterpolationMode:'monotone', pointRadius:3, pointBackgroundColor:PL.a2, order:1}]},
+    options:{scales:baseScales({ticks:{callback:v => EUR0.format(v), maxTicksLimit:5, padding:8}}), interaction:{mode:'index', intersect:false}, plugins:{tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${EUR.format(c.raw)}`}}}}});
+}
+
+/* ---- Compact: intestazione densa e tab ---- */
+const HOME_TABS = [['oggi','Oggi','tasks'],['insights','Insights','spark'],['promemoria','Promemoria','bell'],['finanze','Finanze','wallet'],['crm','CRM','briefcase']];
+function compactTabPanel(tab, D){
+  switch(tab){
+    case 'insights': return insightsInner();
+    case 'promemoria': return remindersInner();
+    case 'finanze': return `<div class="row between" style="margin-bottom:12px"><span class="small muted">Mese di ${fmtDate(D.t,{month:'long'})}</span>${goLink('#finanza','Finanze')}</div>${finMini({bare:true})}`;
+    case 'crm': return `<div class="row between" style="margin-bottom:12px"><span class="small muted">Pipeline dell'agenzia</span>${goLink('#crm','CRM')}</div>${crmMini({bare:true})}`;
+    default: return quickList({cols:true});
+  }
+}
+function compactHome(D){
+  const tab = HOME_TABS.some(x => x[0] === S.ui.homeTab) ? S.ui.homeTab : 'oggi';
+  const cnt = {oggi:`${D.sc}/7`, insights:insights().length, promemoria:remindersCount(), crm:D.active.length};
+  const ck = (l, v, cls='') => `<div class="ck"><span>${l}</span><b class="${cls}">${v}</b></div>`;
+  return `<section class="card card-gold compact-head">
+      ${ring(D.sc/7, 84, 7, `<div class="ring-num" style="font-size:24px">${Math.round(D.sc/7*100)}<span style="font-size:12px">%</span></div>`)}
+      <div style="min-width:0"><div class="eyebrow">Riepilogo di oggi</div><h2 class="ch-greet">${greeting()}${D.name}.</h2><p class="ch-line">${D.line}</p></div>
+      <div class="chips-kpi">${ck('Serie', `${D.cur} gg`)}${ck('Studio 7g', `${N1.format(D.study7)} h`)}${ck('Corsa 7g', `${N1.format(D.km7)} km`)}${ck('Entrate', EUR0.format(D.incM), 'em')}${ck('Pipeline', EUR0.format(D.pipe), 'gold')}</div>
+    </section>
+    <section class="card compact-tabs">
+      <div class="ctabs" role="tablist" aria-label="Sezioni della Home">${HOME_TABS.map(([id,l,ic]) => `<button role="tab" aria-selected="${tab===id}" class="${tab===id?'on':''}" data-act="home-tab" data-v="${id}">${icon(ic)}${l}${cnt[id]!==undefined?`<span class="cnt">${cnt[id]}</span>`:''}</button>`).join('')}</div>
+      <div class="ctab-panel" id="ctabPanel" role="tabpanel">${compactTabPanel(tab, D)}</div>
+    </section>`;
+}
+
+/* ---- Composizione per layout ---- */
+function renderHome(){
+  const L = currentLayout(), D = homeData();
+  let body;
+  if (L === 'focus') body = `<div class="focus-grid">
+      <div class="stack">${focusPanel(D)}${insightsCard()}</div>
+      <aside class="stack">${kpiListCard(D)}${remindersCard()}${finMini()}${crmMini()}</aside>
+    </div>`;
+  else if (L === 'analytics') body = `<div class="ana-grid">
+      <div class="stack">${trendCard()}${finChartCard()}<div class="grid g-2">${crmMini()}${kpiListCard(D)}</div>${insightsCard()}</div>
+      <aside class="stack">${trackerPanel(D)}${remindersCard()}</aside>
+    </div>`;
+  else if (L === 'compact') body = compactHome(D);
+  else body = `${heroHTML(D)}${kpisHTML(D)}<div class="grid g-2">${finMini()}${crmMini()}</div><div class="grid g-main">${insightsCard()}${remindersCard()}</div>`;
+  $('#view').innerHTML = `<div class="home home-${L}">${installBanner()}${body}</div>`;
+  if (L === 'analytics') drawHomeCharts();
+}
+function quickChange(fn){
+  const k = todayKey(), before = score(k);
+  fn(getDay(k, true)); save();
+  const after = score(k);
+  if (after > before){ if (after === 7) toast('Giornata perfetta: 7 obiettivi su 7. Standard da campione.', {tone:'em', icon:'crown'}); else if (after === WIN) toast(`Giornata vincente sbloccata: ${WIN}/7.`, {tone:'em', icon:'fire'}); }
+  rerender();
 }
 
 /* =========================================================
@@ -1875,31 +2298,39 @@ function reportHTML(M, P, days){
 /* =========================================================
    SETTINGS
    ========================================================= */
-function settingsModal(){
-  openModal({eyebrow:'Impostazioni', title:'Aspetto, profilo & backup', wide:true, body:`
-    <div class="row between wrap" style="margin-bottom:12px;gap:8px"><div class="eyebrow">Tema & palette</div><span class="small muted">Cambia solo i colori: sezioni e dati restano identici.</span></div>
-    ${themeCardsHTML()}
-    <hr class="hair">
-    <form data-form="profile" class="form-grid">
-      <div class="field full"><label>Come vuoi essere chiamato</label><input class="input" name="name" value="${esc(S.profile.name)}" maxlength="40" placeholder="Il tuo nome"></div>
-      <div class="full row" style="justify-content:flex-end"><button class="btn btn-gold">Salva profilo</button></div>
-    </form>
-    <hr class="hair">
-    <div class="eyebrow" style="margin-bottom:6px">App sul telefono</div>
-    <p class="small muted" style="margin:0 0 14px">${PWA.isApp ? 'Stai usando la versione installata: si apre a schermo intero e funziona anche offline.' : 'Aggiungi la dashboard alla schermata Home di iPhone o Android: icona dedicata, schermo intero, apertura istantanea anche offline.'}</p>
-    <div class="row wrap">${PWA.deferred ? `<button class="btn btn-gold" data-act="install">${icon('download')} Installa ora</button>` : ''}<button class="btn" data-act="install-guide">${icon('phone')} Guida «Aggiungi alla schermata Home»</button></div>
-    <hr class="hair">
-    <div class="eyebrow" style="margin-bottom:6px">Backup dei dati</div>
-    <p class="small muted" style="margin:0 0 14px">I dati sono salvati nel browser (localStorage) di questo dispositivo. Esporta un backup periodico per non perderli se cancelli la cronologia o cambi computer.</p>
-    <div class="row wrap"><button class="btn" data-act="export">${icon('download')} Esporta backup JSON</button><label class="btn">${icon('upload')} Importa backup<input type="file" accept="application/json,.json" data-act="import" hidden></label></div>
-    <hr class="hair">
-    <div class="eyebrow" style="margin-bottom:6px;color:var(--ruby)">Zona pericolosa</div>
-    <p class="small muted" style="margin:0 0 12px">Cancella tutti i dati e riparti da zero. Operazione irreversibile.</p>
-    <button class="btn btn-ruby" data-act="reset">${icon('trash')} Azzera tutti i dati</button>`});
+const SET_TABS = [['aspetto','Aspetto & layout','palette'],['profilo','Profilo & dati','user'],['app','App sul telefono','phone']];
+function settingsModal(tab='aspetto'){
+  openModal({eyebrow:'Impostazioni', title:'Personalizza la tua dashboard', wide:true, body:`
+    <div class="seg set-tabs" role="tablist" aria-label="Sezioni impostazioni">${SET_TABS.map(([id,l,ic]) => `<button role="tab" aria-selected="${tab===id}" class="${tab===id?'on':''}" data-act="set-tab" data-v="${id}">${icon(ic)}<span>${l}</span></button>`).join('')}</div>
+    <div data-set-panel="aspetto" ${tab!=='aspetto'?'hidden':''}>${appearancePanelHTML()}</div>
+    <div data-set-panel="profilo" ${tab!=='profilo'?'hidden':''}>
+      <form data-form="profile" class="form-grid">
+        <div class="field full"><label>Come vuoi essere chiamato</label><input class="input" name="name" value="${esc(S.profile.name)}" maxlength="40" placeholder="Il tuo nome"></div>
+        <div class="full row" style="justify-content:flex-end"><button class="btn btn-gold">Salva profilo</button></div>
+      </form>
+      <hr class="hair">
+      <div class="eyebrow" style="margin-bottom:6px">Backup dei dati</div>
+      <p class="small muted" style="margin:0 0 14px">I dati e lo stile scelto sono salvati nel browser (localStorage) di questo dispositivo. Esporta un backup periodico per non perderli e per trasferirli su un altro dispositivo: il file include anche palette e layout.</p>
+      <div class="row wrap"><button class="btn" data-act="export">${icon('download')} Esporta backup JSON</button><label class="btn">${icon('upload')} Importa backup<input type="file" accept="application/json,.json" data-act="import" hidden></label></div>
+      <hr class="hair">
+      <div class="eyebrow" style="margin-bottom:6px;color:var(--ruby)">Zona pericolosa</div>
+      <p class="small muted" style="margin:0 0 12px">Cancella tutti i dati e riparti da zero. Palette e layout restano quelli attuali. Operazione irreversibile.</p>
+      <button class="btn btn-ruby" data-act="reset">${icon('trash')} Azzera tutti i dati</button>
+    </div>
+    <div data-set-panel="app" ${tab!=='app'?'hidden':''}>
+      <p class="small muted" style="margin:0 0 14px">${PWA.isApp ? 'Stai usando la versione installata: si apre a schermo intero e funziona anche offline.' : 'Aggiungi la dashboard alla schermata Home di iPhone o Android: icona dedicata, schermo intero, apertura istantanea anche offline.'}</p>
+      <div class="row wrap">${PWA.deferred ? `<button class="btn btn-gold" data-act="install">${icon('download')} Installa ora</button>` : ''}<button class="btn" data-act="install-guide">${icon('phone')} Guida «Aggiungi alla schermata Home»</button></div>
+    </div>`});
+  syncAppearanceUI();
+}
+function setSettingsTab(id){
+  $$('[data-set-panel]').forEach(p => p.hidden = p.dataset.setPanel !== id);
+  $$('.set-tabs [data-act="set-tab"]').forEach(b => { const on = b.dataset.v === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); });
+  $('.modal').scrollTop = 0;
 }
 
 /* =========================================================
-   TEMI & PALETTE
+   ASPETTO · PALETTE, LAYOUT E STILI COMPLETI
    ========================================================= */
 const THEMES = [
   {id:'gold',     name:'Midnight Gold',         tag:'Il classico',  desc:'Nero profondo, antracite e dettagli oro-bronzo.', meta:'#070708'},
@@ -1908,25 +2339,84 @@ const THEMES = [
   {id:'titanium', name:'Minimal Titanium',      tag:'Minimal',      desc:'Grigio titanio opaco e bianco puro. Essenziale.', meta:'#17181a'},
   {id:'bordeaux', name:'Bordeaux Reserve',      tag:'Bonus',        desc:'Vino profondo e champagne, da private club.',     meta:'#0a0507'},
 ];
+const LAYOUTS = [
+  {id:'classic',   name:'Executive Classic', short:'Classico',  desc:'Griglia bilanciata: riepilogo in alto, task al centro, finanze e CRM subito sotto.'},
+  {id:'focus',     name:'Grid & Focus',      short:'Focus',     desc:'Timer di studio e task in primo piano; numeri, finanze e CRM in colonna laterale.'},
+  {id:'analytics', name:'Analytics',         short:'Analytics', desc:'Asimmetrico stile Wall Street: ticker, grafici e resoconto in evidenza, task nel pannello laterale.'},
+  {id:'compact',   name:'Compact',           short:'Compatto',  desc:'Moduli densi, tab orizzontali e barra laterale a icone: meno scroll, massima pulizia.'},
+];
+const PRESETS = [
+  {id:'executive', name:'Midnight Executive',        theme:'gold',     layout:'classic',   tag:'Classico'},
+  {id:'focus',     name:'Emerald Grid & Focus',      theme:'emerald',  layout:'focus',     tag:'Focus sul tracker'},
+  {id:'analytics', name:'Royal Navy & Analytics',    theme:'navy',     layout:'analytics', tag:'Dati & finanze'},
+  {id:'compact',   name:'Minimal Titanium & Compact',theme:'titanium', layout:'compact',   tag:'Essenziale & moderno'},
+];
 const currentTheme = () => document.documentElement.dataset.theme || 'gold';
-function applyTheme(id, {silent=false} = {}){
+const currentLayout = () => document.documentElement.dataset.layout || 'classic';
+const currentPreset = () => PRESETS.find(p => p.theme === currentTheme() && p.layout === currentLayout());
+function fadeAppearance(){ const r = document.documentElement; r.classList.add('theming'); clearTimeout(fadeAppearance.t); fadeAppearance.t = setTimeout(() => r.classList.remove('theming'), 650); }
+function syncAppearanceUI(){
+  const th = currentTheme(), ly = currentLayout();
+  const mark = (el, on) => { el.classList.toggle('on', on); el.setAttribute('aria-checked', String(on)); };
+  $$('[data-theme-opt]').forEach(el => mark(el, el.dataset.themeOpt === th));
+  $$('[data-layout-opt]').forEach(el => mark(el, el.dataset.layoutOpt === ly));
+  $$('[data-preset-opt]').forEach(el => { const p = PRESETS.find(x => x.id === el.dataset.presetOpt); mark(el, !!p && p.theme === th && p.layout === ly); });
+  $$('[data-style-now]').forEach(el => el.innerHTML = styleNowHTML());
+}
+function applyTheme(id, {silent=false, render=true} = {}){
   const t = THEMES.find(x => x.id === id) || THEMES[0], root = document.documentElement, changed = root.dataset.theme !== t.id;
-  if (changed && !silent){ root.classList.add('theming'); clearTimeout(applyTheme.t); applyTheme.t = setTimeout(() => root.classList.remove('theming'), 650); }
+  if (changed && !silent) fadeAppearance();
   root.dataset.theme = t.id;
   try { localStorage.setItem('qg.theme', t.id); } catch(e){}
   const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', t.meta);
   if (S.ui.theme !== t.id){ S.ui.theme = t.id; save(); }
-  $$('[data-theme-opt]').forEach(el => { const on = el.dataset.themeOpt === t.id; el.classList.toggle('on', on); el.setAttribute('aria-checked', String(on)); });
-  if (changed && !silent){ rerender(); toast(`Tema ${t.name} attivato.`, {tone:'em', icon:'palette'}); }
+  syncAppearanceUI();
+  if (changed && !silent && render){ rerender(); toast(`Palette ${t.name} attivata.`, {tone:'em', icon:'palette'}); }
+  return changed;
 }
-function themeOptionsHTML(){
-  const cur = currentTheme();
-  return THEMES.map(t => `<button class="theme-opt ${cur===t.id?'on':''}" role="menuitemradio" aria-checked="${cur===t.id}" data-act="theme-set" data-v="${t.id}" data-theme-opt="${t.id}">
-    <span class="swatch" data-theme="${t.id}"></span><span class="theme-opt-t"><b>${t.name}</b><small>${t.tag}</small></span>${icon('check','theme-ok')}</button>`).join('');
+function applyLayout(id, {silent=false, render=true} = {}){
+  const l = LAYOUTS.find(x => x.id === id) || LAYOUTS[0], root = document.documentElement, changed = root.dataset.layout !== l.id;
+  if (changed && !silent) fadeAppearance();
+  root.dataset.layout = l.id;
+  try { localStorage.setItem('qg.layout', l.id); } catch(e){}
+  if (S.ui.layout !== l.id){ S.ui.layout = l.id; save(); }
+  syncAppearanceUI();
+  if (changed && !silent && render){ go(); window.scrollTo(0,0); toast(`Layout ${l.name} attivato.`, {tone:'em', icon:'grid'}); }
+  return changed;
+}
+function applyPreset(id){
+  const p = PRESETS.find(x => x.id === id); if (!p) return;
+  const a = applyTheme(p.theme, {render:false}), b = applyLayout(p.layout, {render:false});
+  if (a || b){ go(); window.scrollTo(0,0); toast(`Stile ${p.name} attivato.`, {tone:'em', icon:'crown'}); }
+}
+function styleNowHTML(){
+  const p = currentPreset(), th = THEMES.find(t => t.id === currentTheme()), ly = LAYOUTS.find(l => l.id === currentLayout());
+  return `<span class="small muted">In uso:</span> <b>${th.name}</b> <span class="faint">+</span> <b>${ly.name}</b> ${p ? `<span class="pill done">Stile ${p.name}</span>` : '<span class="pill progress">Combinazione personalizzata</span>'}`;
+}
+
+/* ---- Anteprime ---- */
+function wireframe(layout){
+  const n = {classic:8, focus:5, analytics:4, compact:13}[layout] || 8;
+  const cls = i => {
+    if (layout === 'classic') return i === 0 ? 'acc' : i === 6 ? 'ok' : '';
+    if (layout === 'focus') return i === 0 ? 'acc' : '';
+    if (layout === 'analytics') return i === 1 ? 'acc' : i === 2 ? 'ok' : '';
+    return i === 0 ? 'tab' : i === 1 ? 'acc' : '';
+  };
+  const chart = '<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><polyline points="2,34 14,27 26,30 38,18 50,22 62,11 74,15 86,7 98,10" fill="none" stroke="var(--gold-2)" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>';
+  return `<div class="wf wf-${layout}" aria-hidden="true">${Array.from({length:n}, (_, i) => `<i class="${cls(i)}">${layout==='analytics'&&i===1?chart:''}</i>`).join('')}</div>`;
+}
+function presetCardsHTML(){
+  return `<div class="preset-grid" role="radiogroup" aria-label="Stili completi">${PRESETS.map(p => {
+    const th = THEMES.find(t => t.id === p.theme), ly = LAYOUTS.find(l => l.id === p.layout);
+    return `<button class="preset-card" data-theme="${p.theme}" data-preset-opt="${p.id}" data-act="preset-set" data-v="${p.id}" role="radio" aria-checked="false">
+      ${wireframe(p.layout)}
+      <div class="pc-meta"><small>${p.tag}</small><b>${p.name}</b><span>${th.name} · layout ${ly.short.toLowerCase()}</span></div>
+      <span class="tc-check">${icon('check')}</span></button>`;
+  }).join('')}</div>`;
 }
 function themeCardsHTML(){
-  const cur = currentTheme();
-  return `<div class="theme-grid" role="radiogroup" aria-label="Tema">${THEMES.map(t => `<button class="theme-card ${cur===t.id?'on':''}" data-theme="${t.id}" data-theme-opt="${t.id}" data-act="theme-set" data-v="${t.id}" role="radio" aria-checked="${cur===t.id}">
+  return `<div class="theme-grid" role="radiogroup" aria-label="Palette colori">${THEMES.map(t => `<button class="theme-card" data-theme="${t.id}" data-theme-opt="${t.id}" data-act="theme-set" data-v="${t.id}" role="radio" aria-checked="false">
     <div class="tc-canvas" aria-hidden="true">
       <div class="tc-top"><span class="tc-mark">QG</span><span class="tc-lines"><i></i><i></i></span></div>
       <div class="tc-row"><span class="tc-num">71<small>%</small></span><span class="tc-pill">Completato</span></div>
@@ -1937,10 +2427,36 @@ function themeCardsHTML(){
     <span class="tc-check">${icon('check')}</span>
   </button>`).join('')}</div>`;
 }
+function layoutCardsHTML(){
+  return `<div class="layout-grid" role="radiogroup" aria-label="Disposizione dei riquadri">${LAYOUTS.map(l => `<button class="layout-card" data-layout-opt="${l.id}" data-act="layout-set" data-v="${l.id}" role="radio" aria-checked="false">
+    ${wireframe(l.id)}<div><b>${l.name}</b><span>${l.desc}</span></div><span class="tc-check">${icon('check')}</span></button>`).join('')}</div>`;
+}
+function appearancePanelHTML(){
+  return `<div class="style-now" data-style-now>${styleNowHTML()}</div>
+    <div class="set-h"><div><div class="eyebrow">Stili completi</div><h4 class="set-t">Palette e layout abbinati</h4></div><span class="small muted">Un tocco e cambia tutto</span></div>
+    ${presetCardsHTML()}
+    <hr class="hair">
+    <div class="set-h"><div><div class="eyebrow">Personalizza</div><h4 class="set-t">Palette colori</h4></div><span class="small muted">Cambia solo i colori</span></div>
+    ${themeCardsHTML()}
+    <hr class="hair">
+    <div class="set-h"><div><div class="eyebrow">Personalizza</div><h4 class="set-t">Disposizione dei riquadri</h4></div><span class="small muted">Cambia solo la struttura</span></div>
+    ${layoutCardsHTML()}
+    <div class="note mt-18">${icon('bulb')}<div>Palette e layout si combinano liberamente e restano salvati su questo dispositivo, anche nell'app installata. Ogni dispositivo ha però il suo archivio: per portare dati e stile dal PC al telefono usa <em>Esporta backup</em> e poi <em>Importa backup</em> (scheda Profilo & dati).</div></div>`;
+}
+
+/* ---- Selettore rapido in alto ---- */
 function toggleThemeMenu(force){
   const pop = $('#themePop'), btn = $('#themeBtn'); if (!pop) return;
   const open = force ?? pop.hidden;
-  if (open) pop.innerHTML = `<div class="eyebrow" style="padding:8px 10px 8px">Tema & palette</div>${themeOptionsHTML()}<button class="theme-more" data-act="theme-more"><span>Anteprime complete in Impostazioni</span>${icon('right')}</button>`;
+  if (open){
+    pop.innerHTML = `<div class="eyebrow" style="padding:8px 10px">Stili completi</div>
+      ${PRESETS.map(p => `<button class="theme-opt" role="menuitemradio" aria-checked="false" data-act="preset-set" data-v="${p.id}" data-preset-opt="${p.id}">
+        <span class="swatch" data-theme="${p.theme}"></span><span class="theme-opt-t"><b>${p.name}</b><small>${p.tag}</small></span>${icon('check','theme-ok')}</button>`).join('')}
+      <div class="pop-sec"><div class="eyebrow">Palette</div><div class="sw-row">${THEMES.map(t => `<button class="sw-btn" data-theme="${t.id}" data-theme-opt="${t.id}" data-act="theme-set" data-v="${t.id}" role="menuitemradio" aria-checked="false" title="${t.name}" aria-label="${t.name}"><span class="swatch"></span></button>`).join('')}</div></div>
+      <div class="pop-sec"><div class="eyebrow">Layout</div><div class="seg seg-full" role="group" aria-label="Layout">${LAYOUTS.map(l => `<button data-layout-opt="${l.id}" data-act="layout-set" data-v="${l.id}" role="menuitemradio" aria-checked="false" title="${l.name}">${l.short}</button>`).join('')}</div></div>
+      <button class="theme-more" data-act="theme-more"><span>Tutte le opzioni in Impostazioni</span>${icon('right')}</button>`;
+    syncAppearanceUI();
+  }
   pop.hidden = !open; btn.setAttribute('aria-expanded', String(open));
 }
 document.addEventListener('click', e => { const pop = $('#themePop'); if (pop && !pop.hidden && !e.target.closest('#themePick')) toggleThemeMenu(false); });
@@ -2060,7 +2576,16 @@ document.addEventListener('click', e => {
   switch(act){
     case 'settings': settingsModal(); break;
     case 'theme-menu': toggleThemeMenu(); break;
-    case 'theme-set': applyTheme(v); if (!$('#themePop').hidden) toggleThemeMenu(false); break;
+    case 'theme-set': applyTheme(v); break;
+    case 'layout-set': applyLayout(v); break;
+    case 'preset-set': applyPreset(v); break;
+    case 'set-tab': setSettingsTab(v); break;
+    case 'home-tab': { S.ui.homeTab = v; save(); const panel = $('#ctabPanel'); if (panel){ panel.outerHTML = `<div class="ctab-panel" id="ctabPanel" role="tabpanel">${compactTabPanel(v, homeData())}</div>`; $$('.ctabs [data-act="home-tab"]').forEach(b => { const on = b.dataset.v === v; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); }); } break; }
+    case 'q-timer': S.timer ? stopTimer() : startTimer(); renderNav(); rerender(); break;
+    case 'q-skin': quickChange(dd => { dd.skin = !dd.skin; }); break;
+    case 'q-social': quickChange(dd => { dd.social = Math.max(0, (+dd.social||0) + 5); }); break;
+    case 'q-run': quickChange(dd => { dd.km = +((+dd.km||0) + 1).toFixed(2); }); break;
+    case 'q-study-add': quickChange(dd => { dd.studySec = Math.max(0, (dd.studySec||0) + +v); }); break;
     case 'theme-more': toggleThemeMenu(false); settingsModal(); break;
     case 'install': if (!$('#modal').hidden) closeModal(); promptInstall(); break;
     case 'install-guide': installModal(); break;
@@ -2104,7 +2629,7 @@ document.addEventListener('click', e => {
       toast('Backup esportato.', {tone:'em', icon:'download'}); break;
     }
     case 'reset': {
-      const w = prompt('Per confermare scrivi AZZERA'); if (w === 'AZZERA'){ S = defaults(); S.ui.theme = currentTheme(); viewDay = todayKey(); save(); closeModal(); rerender(); toast('Dati azzerati. Si riparte.', {tone:'em'}); }
+      const w = prompt('Per confermare scrivi AZZERA'); if (w === 'AZZERA'){ S = defaults(); S.ui.theme = currentTheme(); S.ui.layout = currentLayout(); viewDay = todayKey(); save(); closeModal(); rerender(); toast('Dati azzerati. Si riparte.', {tone:'em'}); }
       break;
     }
   }
@@ -2117,7 +2642,7 @@ document.addEventListener('change', e => {
   else if (el.matches('[data-act="import"]')){
     const f = el.files[0]; if (!f) return;
     const r = new FileReader();
-    r.onload = () => { try { const data = JSON.parse(r.result); if (!data || typeof data !== 'object' || !data.days || !Array.isArray(data.subs)) throw new Error('formato'); if (!confirm('Importare il backup? I dati attuali verranno sostituiti.')) return; localStorage.setItem(KEY, JSON.stringify(data)); S = load(); applyTheme(S.ui.theme || currentTheme(), {silent:true}); closeModal(); rerender(); toast('Backup importato con successo.', {tone:'em'}); } catch(err){ toast('File non valido: non è un backup di Quartier Generale.', {tone:'ruby'}); } };
+    r.onload = () => { try { const data = JSON.parse(r.result); if (!data || typeof data !== 'object' || !data.days || !Array.isArray(data.subs)) throw new Error('formato'); if (!confirm('Importare il backup? I dati attuali verranno sostituiti.')) return; localStorage.setItem(KEY, JSON.stringify(data)); S = load(); applyTheme(S.ui.theme || currentTheme(), {silent:true}); applyLayout(S.ui.layout || currentLayout(), {silent:true}); closeModal(); rerender(); toast('Backup importato con successo.', {tone:'em'}); } catch(err){ toast('File non valido: non è un backup di Quartier Generale.', {tone:'ruby'}); } };
     r.readAsText(f);
   }
 });
@@ -2172,7 +2697,9 @@ setInterval(() => {
     const s = studySecs(S.timer.day), txt = fmtClock(s);
     $$('[data-live="chip"],[data-live="hero"]').forEach(x => x.textContent = txt);
     if (route === 'tracker' && viewDay === S.timer.day){ const tm = $('[data-live="timer"]'); if (tm) tm.textContent = txt; if (now.getSeconds() % 5 === 0) refreshChrome('study'); }
-    const sm = $('[data-live="study-mini"]'); if (sm) sm.textContent = `${fmtDur(s)} / 2h`;
+    $$('[data-live="study-mini"]').forEach(x => x.textContent = `${fmtDur(s)} / 2h`);
+    $$('[data-live="focus-timer"]').forEach(x => x.textContent = txt);
+    $$('[data-live="focus-bar"]').forEach(x => x.style.width = Math.min(100, s/STUDY_GOAL*100) + '%');
     if (s >= STUDY_GOAL && s - 1.05 < STUDY_GOAL){ toast('Obiettivo studio raggiunto: 2 ore di focus. Rispetto.', {tone:'em', icon:'crown', ms:6000}); if (route === 'tracker') replaceCard('study'); else if (route === 'home') rerender(); }
   }
   if (now.getMinutes() !== lastMinute){ lastMinute = now.getMinutes(); }
@@ -2182,6 +2709,7 @@ setInterval(() => {
    BOOT
    ========================================================= */
 applyTheme(S.ui.theme || currentTheme(), {silent:true});
+applyLayout(S.ui.layout || currentLayout(), {silent:true});
 rollSubs();
 const addedSalary = syncSalary();
 save();
