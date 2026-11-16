@@ -285,7 +285,9 @@ input[type=date]::-webkit-calendar-picker-indicator,input[type=datetime-local]::
 .hero-greet{font-family:var(--serif);font-size:46px;font-weight:600;line-height:1.02;margin:10px 0 12px;letter-spacing:-.01em}
 .hero-greet em{font-style:italic;font-weight:500;color:var(--gold-2)}
 .hero-line{color:var(--text-2);font-size:15px;max-width:58ch;margin:0}
-.minis{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-top:26px;grid-column:1/-1}
+.minis{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:26px;grid-column:1/-1}
+.sleep-times{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+input[type=time]::-webkit-calendar-picker-indicator{filter:invert(.75);cursor:pointer}
 .mini{display:flex;flex-direction:column;gap:10px;padding:14px 12px;border-radius:15px;border:1px solid var(--line);background:rgba(0,0,0,.25);text-decoration:none;color:inherit;transition:border-color .2s,transform .2s var(--ease),background .2s;min-width:0}
 .mini:hover{border-color:var(--line-3);transform:translateY(-2px)}
 .mini-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:var(--muted);position:relative}
@@ -964,6 +966,7 @@ const IC = {
   arrowUp:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   share:'<path d="M12 3.5v11"/><path d="m8 7.5 4-4 4 4"/><path d="M9 10.5H7a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5h-2"/>',
   grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/>',
+  moon:'<path d="M19.8 14.6A8.3 8.3 0 0 1 9.4 4.2a8.3 8.3 0 1 0 10.4 10.4z"/><path d="M16.5 3.5v3M15 5h3"/>',
   palette:'<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7h2.1a4.5 4.5 0 0 0 4.5-4.5C21 6.7 17 3.5 12 3.5z"/><circle cx="7.6" cy="11" r="1.1"/><circle cx="10.4" cy="7.4" r="1.1"/><circle cx="15" cy="7.8" r="1.1"/>',
   plusSquare:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8.5v7M8.5 12h7"/>',
   dots:'<circle cx="12" cy="5.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="18.5" r="1.3"/>',
@@ -1013,7 +1016,7 @@ const plural = (n, one, many) => `${n} ${n===1?one:many}`;
 /* =========================================================
    CONSTANTS
    ========================================================= */
-const STUDY_GOAL = 7200, SOCIAL_LIMIT = 60, RUN_GOAL = 5, WIN = 5;
+const STUDY_GOAL = 7200, SOCIAL_LIMIT = 60, RUN_GOAL = 5, SLEEP_GOAL = 8, WIN_MISS = 2;
 const HABITS = [
   {id:'study',  name:'Studio',              target:'Almeno 2 ore di studio',        icon:'book'},
   {id:'home',   name:'Attività domestica',  target:'Almeno una cosa produttiva',    icon:'house'},
@@ -1022,6 +1025,7 @@ const HABITS = [
   {id:'cinema', name:'Cinema',              target:'Almeno 1 film ogni 3 giorni',   icon:'film'},
   {id:'learn',  name:'Imparare',            target:'Una cosa nuova ogni giorno',    icon:'bulb'},
   {id:'skin',   name:'Skincare',            target:'Routine quotidiana',            icon:'drop'},
+  {id:'sleep',  name:'Sonno',               target:'Almeno 8 ore a notte',          icon:'moon', since:true},
 ];
 const HOME_ACTS = ['Rifatto il letto','Apparecchiato','Lavato i piatti','Passato l\'aspirapolvere','Uscito con Morgana','Fatto il bucato','Riordinato','Fatto la spesa','Cucinato'];
 const STAGES = {
@@ -1047,7 +1051,7 @@ const KEY = 'qg.dashboard.v1';
 function defaults(){
   const t = todayKey();
   return {
-    v:1, createdAt:t, profile:{name:''},
+    v:1, createdAt:t, sleepSince:t, profile:{name:''},
     days:{}, timer:null,
     subs:[
       {id:uid(), name:'Claude Code',     price:22,    period:'mese', renewal:nextOccurrence(12,6), auto:true,  anchor:6, since:t, color:'#d97757'},
@@ -1086,7 +1090,7 @@ window.addEventListener('beforeunload', () => { try { localStorage.setItem(KEY, 
 /* =========================================================
    DAYS & HABIT LOGIC
    ========================================================= */
-const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', skin:false});
+const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', skin:false, sleep:null, bed:'', wake:''});
 function getDay(k, create=false){
   let d = S.days[k];
   if (!d){ d = blankDay(); if (create) S.days[k] = d; }
@@ -1121,9 +1125,23 @@ function status(k){
     cinema: cinemaInfo(k).covered,
     learn: (d.learned||'').trim().length >= 3,
     skin: !!d.skin,
+    ...(k >= (S.sleepSince || S.createdAt) ? {sleep: (+d.sleep||0) >= SLEEP_GOAL} : {}),
   };
 }
+// Le task introdotte dopo (es. il sonno) contano solo dal giorno in cui sono state aggiunte
+const habitsFor = k => HABITS.filter(h => !h.since || k >= (S.sleepSince || S.createdAt));
+const total = k => habitsFor(k).length;
 const score = k => Object.values(status(k)).filter(Boolean).length;
+const ratio = k => score(k) / total(k);
+const winNeed = k => total(k) - WIN_MISS;
+const isWin = k => score(k) >= winNeed(k);
+const isPerfect = k => score(k) === total(k);
+function sleepFromTimes(bed, wake){
+  if (!/^\d{2}:\d{2}$/.test(bed||'') || !/^\d{2}:\d{2}$/.test(wake||'')) return null;
+  const m = t => +t.slice(0,2)*60 + +t.slice(3,5);
+  let d = m(wake) - m(bed); if (d <= 0) d += 1440;
+  return Math.round(d/60*4)/4;
+}
 
 function chromeOf(id, k){
   const d = S.days[k] || blankDay();
@@ -1164,14 +1182,22 @@ function chromeOf(id, k){
     case 'skin': {
       return {done:!!d.skin, pct:d.skin?1:0, state:d.skin?'done':'todo', meta: d.skin ? 'Routine completata' : 'Segna la routine quando l\'hai fatta', mini: d.skin?'Fatta':'Da fare'};
     }
+    case 'sleep': {
+      const v = d.sleep;
+      if (v === null || v === '' || v === undefined) return {done:false, pct:0, state:'todo', meta:'Inserisci le ore dormite stanotte', mini:'Da registrare'};
+      const h = +v, done = h >= SLEEP_GOAL;
+      return {done, pct:Math.min(1, h/SLEEP_GOAL), state: done ? 'done' : 'progress',
+        meta: done ? (h > SLEEP_GOAL ? `Recupero completo: +${fmtDur((h-SLEEP_GOAL)*3600)} oltre le 8 ore` : 'Obiettivo centrato: 8 ore') : `Sotto obiettivo di ${fmtDur((SLEEP_GOAL-h)*3600)}`,
+        mini: `${fmtDur(h*3600)} / 8h`};
+    }
   }
 }
 const PILL = {done:'Completato', progress:'In corso', todo:'Da fare', over:'Sforato'};
 const pill = st => `<span class="pill ${st==='todo'?'':st}">${PILL[st]}</span>`;
 
-function streakAt(k){ let n = 0; while (k >= S.createdAt && score(k) >= WIN){ n++; k = addDays(k,-1); } return n; }
-function currentStreak(){ const t = todayKey(); return score(t) >= WIN ? streakAt(t) : streakAt(addDays(t,-1)); }
-function bestStreak(){ let best = 0, cur = 0; for (const k of range(S.createdAt, todayKey())){ if (score(k) >= WIN){ cur++; best = Math.max(best,cur); } else cur = 0; } return best; }
+function streakAt(k){ let n = 0; while (k >= S.createdAt && isWin(k)){ n++; k = addDays(k,-1); } return n; }
+function currentStreak(){ const t = todayKey(); return isWin(t) ? streakAt(t) : streakAt(addDays(t,-1)); }
+function bestStreak(){ let best = 0, cur = 0; for (const k of range(S.createdAt, todayKey())){ if (isWin(k)){ cur++; best = Math.max(best,cur); } else cur = 0; } return best; }
 
 /* =========================================================
    FINANCE LOGIC
@@ -1406,7 +1432,7 @@ function insights(){
   const t = todayKey(), h = new Date().getHours(), d = S.days[t] || blankDay(), st = status(t), sc = score(t), out = [];
   const add = (p, tone, title, text) => out.push({p, tone, title, text});
   const past7 = range(addDays(t,-7), addDays(t,-1)).filter(tracked);
-  const avg7 = past7.length ? avg(past7.map(score))/7 : null;
+  const avg7 = past7.length ? avg(past7.map(ratio)) : null, NT = total(t);
   const studyNow = studySecs(t);
   const missing = HABITS.filter(x => !st[x.id]).map(x => x.name.toLowerCase());
 
@@ -1444,8 +1470,19 @@ function insights(){
   // Imparare
   if (!st.learn && h >= 18) add(5,'push','Cosa hai imparato oggi?','Due righe bastano: un concetto di studio, una frase di un cliente, un errore da non ripetere. È il tuo diario di crescita.');
   // Overall
-  if (sc === 7) add(11,'scale','Giornata perfetta: 7 su 7','Hai chiuso tutto. Annota cosa ha funzionato oggi — orari, energia, ordine delle task: è la ricetta da replicare.');
-  else if (sc >= WIN && h >= 15) add(6,'push',`Sei a ${sc}/7: chiudi in bellezza`, `Mancano: ${missing.join(', ')}. Una giornata vincente si decide nelle ultime ore.`);
+  // Sonno
+  if (d.sleep !== null && d.sleep !== '' && d.sleep !== undefined){
+    const sl = +d.sleep;
+    if (sl < 6.5) add(9,'warn','Notte corta: gestisci l\'energia', `Hai dormito ${fmtDur(sl*3600)}. Oggi lavora a blocchi brevi da 25 minuti, niente caffeina dopo le 15 e letto entro le 23: il sonno perso si paga in concentrazione e decisioni.`);
+    else if (sl < SLEEP_GOAL) add(6,'push','Sonno quasi a target', `${fmtDur(sl*3600)} stanotte: mancano ${fmtDur((SLEEP_GOAL-sl)*3600)} alle 8 ore. Stasera anticipa di mezz'ora: schermi via 30 minuti prima di dormire.`);
+    else if (sl >= 8) add(4,'scale','Recupero completo','8 ore di sonno: è il moltiplicatore nascosto di studio, corsa e trattative. Sfrutta il picco di lucidità per la task più difficile.');
+  } else if (h >= 6 && h < 13) add(5,'tip','Registra il sonno di stanotte','Inserisci orario a letto e sveglia nel tracker: le ore si calcolano da sole. Il sonno è la base di tutte le altre abitudini.');
+  if (past7.length >= 3){
+    const sl7 = past7.map(k => S.days[k]?.sleep).filter(v => v !== null && v !== undefined && v !== '').map(Number);
+    if (sl7.length >= 3 && avg(sl7) < 7.5) add(7,'warn','Debito di sonno in accumulo', `Media di ${fmtDur(avg(sl7)*3600)} a notte negli ultimi giorni. Fissa una sveglia anche per andare a letto: la costanza dell'orario conta più del weekend di recupero.`);
+  }
+  if (sc === NT) add(11,'scale',`Giornata perfetta: ${NT} su ${NT}`,'Hai chiuso tutto. Annota cosa ha funzionato oggi — orari, energia, ordine delle task: è la ricetta da replicare.');
+  else if (sc >= winNeed(t) && h >= 15) add(6,'push',`Sei a ${sc}/${NT}: chiudi in bellezza`, `Mancano: ${missing.join(', ')}. Una giornata vincente si decide nelle ultime ore.`);
   if (avg7 !== null && past7.length >= 3){
     if (avg7 >= .85) add(8,'scale','Stai performando: è ora di scalare', `Media del ${Math.round(avg7*100)}% negli ultimi giorni. Alza l'asticella su un solo parametro: +1 attività contattata al giorno o +30 minuti di studio. Crescita composta, non caos.`);
     else if (avg7 < .45) add(8,'push','Riduci l\'attrito, non aumentare la forza di volontà', `Media del ${Math.round(avg7*100)}% negli ultimi giorni. Regola dei 2 minuti: per ogni abitudine fai solo la versione minima — 1 pagina, 1 km, 1 piatto. Il momentum farà il resto.`);
@@ -1495,7 +1532,7 @@ function reminders(){
 let route = 'home', viewDay = todayKey();
 function renderNav(){
   const todo = S.clients.filter(c=>c.stage==='da_contattare').length;
-  const missing = 7 - score(todayKey());
+  const missing = total(todayKey()) - score(todayKey());
   $('#nav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}" title="${r.title}">${icon(r.icon)}<span>${r.label==='Task'?'Task giornaliere':r.label==='Clienti'?'CRM Clienti':r.label==='Finanze'?'Finanze':r.label}</span>${r.id==='tracker'&&missing>0?`<span class="badge">${missing}</span>`:''}${r.id==='crm'&&todo?`<span class="badge">${todo}</span>`:''}</a>`).join('');
   $('#mnav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}">${icon(r.icon)}<span>${r.label}</span></a>`).join('');
   renderLiveChip();
@@ -1527,17 +1564,17 @@ window.addEventListener('hashchange', () => { go(); window.scrollTo(0,0); });
 function greeting(){ const h = new Date().getHours(); return h < 5 ? 'Buonanotte' : h < 13 ? 'Buongiorno' : h < 18 ? 'Buon pomeriggio' : 'Buonasera'; }
 const TONE_ICON = {push:'bolt', scale:'trend', warn:'shield', tip:'compass'}, TONE_TAG = {push:'Spinta', scale:'Scaling', warn:'Attenzione', tip:'Consiglio'};
 function homeData(){
-  const t = todayKey(), st = status(t), sc = score(t);
-  const missing = HABITS.filter(h => !st[h.id]).map(h => h.name.toLowerCase());
+  const t = todayKey(), st = status(t), sc = score(t), n = total(t);
+  const missing = habitsFor(t).filter(h => !st[h.id]).map(h => h.name.toLowerCase());
   const past7 = range(addDays(t,-6), t).filter(tracked);
   const [ms, me] = monthBounds(0);
   const active = S.clients.filter(c => !['chiuso','scartato'].includes(c.stage));
   return {
-    t, st, sc, missing, past7, active,
+    t, st, sc, n, missing, past7, active,
     name: S.profile.name ? `, <em>${esc(S.profile.name)}</em>` : '',
-    line: sc === 7 ? 'Giornata perfetta: tutti e 7 gli obiettivi sono chiusi. Questo è lo standard da replicare.'
+    line: sc === n ? `Giornata perfetta: tutti e ${n} gli obiettivi sono chiusi. Questo è lo standard da replicare.`
       : sc === 0 ? 'La giornata è una pagina bianca. Il primo passo decide il ritmo: parti dalla task più importante.'
-      : `Hai completato <strong>${sc} obiettivi su 7</strong>. Per chiudere la giornata mancano ${missing.join(', ')}.`,
+      : `Hai completato <strong>${sc} obiettivi su ${n}</strong>. Per chiudere la giornata mancano ${missing.join(', ')}.`,
     study7: sum(past7.map(studySecs))/3600,
     km7: sum(past7.map(k => +(S.days[k]?.km)||0)),
     runs5: past7.filter(k => (+(S.days[k]?.km)||0) >= RUN_GOAL).length,
@@ -1560,15 +1597,15 @@ function heroHTML(D){
         ${S.timer ? `<a class="btn btn-em" href="#tracker">${icon('clock')} Studio in corso · <span data-live="hero">${fmtClock(studySecs(S.timer.day))}</span></a>` : `<button class="btn" data-act="quick-study">${icon('play','ic-fill')} Avvia timer studio</button>`}
       </div>
     </div>
-    ${ring(D.sc/7, 176, 11, `<div class="ring-num" style="font-size:52px">${Math.round(D.sc/7*100)}<span style="font-size:24px">%</span></div><div class="ring-sub">${D.sc} / 7 completati</div>`)}
+    ${ring(D.sc/D.n, 176, 11, `<div class="ring-num" style="font-size:52px">${Math.round(D.sc/D.n*100)}<span style="font-size:24px">%</span></div><div class="ring-sub">${D.sc} / ${D.n} completati</div>`)}
     <div class="minis">
-      ${HABITS.map(h => { const c = chromeOf(h.id, D.t); return `<a class="mini ${c.state}" href="#tracker" title="${esc(h.target)}"><span class="mini-ic">${icon(h.icon)}</span><span class="mini-name">${h.name}</span><span class="mini-val" ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></a>`; }).join('')}
+      ${habitsFor(D.t).map(h => { const c = chromeOf(h.id, D.t); return `<a class="mini ${c.state}" href="#tracker" title="${esc(h.target)}"><span class="mini-ic">${icon(h.icon)}</span><span class="mini-name">${h.name}</span><span class="mini-val" ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></a>`; }).join('')}
     </div>
   </section>`;
 }
 function kpisHTML(D){
   return `<section class="kpis">
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Serie vincente</span>${icon('fire')}</div><div class="kpi-val">${D.cur}<small>${D.cur===1?'giorno':'giorni'}</small></div><div class="kpi-sub">Record: ${D.best} · giornate ≥ ${WIN}/7</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Serie vincente</span>${icon('fire')}</div><div class="kpi-val">${D.cur}<small>${D.cur===1?'giorno':'giorni'}</small></div><div class="kpi-sub">Record: ${D.best} · giornate ≥ ${D.n-WIN_MISS}/${D.n}</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Studio · 7 giorni</span>${icon('book')}</div><div class="kpi-val">${N1.format(D.study7)}<small>ore</small></div><div class="kpi-sub">Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))} al giorno</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Corsa · 7 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(D.km7)}<small>km</small></div><div class="kpi-sub">${D.runs5} uscite da 5 km+</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Entrate · ${fmtDate(D.t,{month:'long'})}</span>${icon('euro')}</div><div class="kpi-val em">${EUR0.format(D.incM)}</div><div class="kpi-sub">Abbonamenti: ${EUR.format(subsMonthly())}/mese</div></div>
@@ -1620,13 +1657,14 @@ function remindersCard(){
 /* ---- Task rapide (pannelli laterali, focus, tab) ---- */
 function quickList({cols=false} = {}){
   const t = todayKey(), d = S.days[t] || blankDay();
-  return `<div class="qlist ${cols?'cols':''}">${HABITS.map(h => {
+  return `<div class="qlist ${cols?'cols':''}">${habitsFor(t).map(h => {
     const c = chromeOf(h.id, t);
     let act;
     if (h.id === 'study') act = S.timer ? `<button class="btn btn-sm btn-ruby" data-act="q-timer">${icon('stop','ic-fill')} Stop</button>` : `<button class="btn btn-sm btn-em" data-act="q-timer">${icon('play','ic-fill')} Avvia</button>`;
     else if (h.id === 'skin') act = `<button class="btn btn-sm ${d.skin?'btn-outline-gold':''}" data-act="q-skin" aria-pressed="${!!d.skin}">${d.skin?icon('check')+' Fatta':'Segna'}</button>`;
     else if (h.id === 'social') act = `<button class="btn btn-sm" data-act="q-social" title="Aggiungi 5 minuti">+5′</button>`;
     else if (h.id === 'run') act = `<button class="btn btn-sm" data-act="q-run" title="Aggiungi 1 km">+1 km</button>`;
+    else if (h.id === 'sleep') act = `<button class="btn btn-sm ${+d.sleep>=SLEEP_GOAL?'btn-outline-gold':''}" data-act="q-sleep" title="Registra 8 ore di sonno">${+d.sleep>=SLEEP_GOAL?icon('check')+' 8h':'8h'}</button>`;
     else act = `<a class="btn btn-sm btn-ghost btn-icon" href="#tracker" aria-label="Apri ${esc(h.name)} nel tracker">${icon('right')}</a>`;
     return `<div class="qrow ${c.state}"><span class="qrow-ic">${icon(h.icon)}</span>
       <div class="qrow-t"><b>${h.name}</b><span ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></div>
@@ -1639,7 +1677,7 @@ function focusPanel(D){
   return `<section class="card card-gold focus-panel">
     <div class="focus-top">
       <div><div class="eyebrow">Modalità focus · ${greeting()}${D.name}</div><h2 class="focus-title">Studio di oggi</h2></div>
-      ${ring(D.sc/7, 96, 8, `<div class="ring-num" style="font-size:28px">${D.sc}<span style="font-size:14px">/7</span></div><div class="ring-sub" style="font-size:8.5px">task</div>`)}
+      ${ring(D.sc/D.n, 96, 8, `<div class="ring-num" style="font-size:28px">${D.sc}<span style="font-size:14px">/${D.n}</span></div><div class="ring-sub" style="font-size:8.5px">task</div>`)}
     </div>
     <div class="focus-timer-row">
       <div><div class="timer focus-timer ${running?'running':''}" data-live="focus-timer">${fmtClock(s)}</div>
@@ -1649,15 +1687,15 @@ function focusPanel(D){
     </div>
     <div class="bar ${done?'done':''}"><i data-live="focus-bar" style="width:${Math.min(100, s/STUDY_GOAL*100)}%"></i></div>
     <hr class="hair">
-    <div class="row between" style="margin-bottom:12px"><div class="eyebrow">Task del giorno · ${D.sc}/7</div><a class="small gold" href="#tracker" style="text-decoration:none">Tracker completo →</a></div>
+    <div class="row between" style="margin-bottom:12px"><div class="eyebrow">Task del giorno · ${D.sc}/${D.n}</div><a class="small gold" href="#tracker" style="text-decoration:none">Tracker completo →</a></div>
     ${quickList({cols:true})}
   </section>`;
 }
 function trackerPanel(D){
   return `<section class="card card-gold tracker-panel">
     <div class="card-head"><div><div class="eyebrow">Pannello rapido</div><h3 class="card-title">Task di oggi</h3></div>${goLink('#tracker','Tracker')}</div>
-    <div class="tp-sum">${ring(D.sc/7, 92, 8, `<div class="ring-num" style="font-size:26px">${D.sc}<span style="font-size:13px">/7</span></div>`)}
-      <div style="min-width:0"><div class="tp-greet">${greeting()}${D.name}.</div><p class="small muted" style="margin:4px 0 0">${D.sc===7?'Giornata perfetta: tutto chiuso.':D.sc>=WIN?'Giornata vincente: chiudi in bellezza.':`${WIN-D.sc} alla giornata vincente.`}</p></div></div>
+    <div class="tp-sum">${ring(D.sc/D.n, 92, 8, `<div class="ring-num" style="font-size:26px">${D.sc}<span style="font-size:13px">/${D.n}</span></div>`)}
+      <div style="min-width:0"><div class="tp-greet">${greeting()}${D.name}.</div><p class="small muted" style="margin:4px 0 0">${D.sc===D.n?'Giornata perfetta: tutto chiuso.':D.sc>=D.n-WIN_MISS?'Giornata vincente: chiudi in bellezza.':`${D.n-WIN_MISS-D.sc} alla giornata vincente.`}</p></div></div>
     ${quickList()}
   </section>`;
 }
@@ -1699,7 +1737,8 @@ function tickerHTML(){
     return `<span class="tk-d ${cls}">${d > 0 ? '▲' : d < 0 ? '▼' : '■'} ${fmt(Math.abs(d))}</span>`;
   };
   const items = [
-    ['Oggi', `${score(t)}/7`, `<span class="tk-d ${score(t)>=WIN?'up':'flat'}">${score(t)>=WIN?'giornata vincente':'in corso'}</span>`],
+    ['Oggi', `${score(t)}/${total(t)}`, `<span class="tk-d ${isWin(t)?'up':'flat'}">${isWin(t)?'giornata vincente':'in corso'}</span>`],
+    ['Sonno', (S.days[t]?.sleep ?? '') === '' || S.days[t]?.sleep === null ? '—' : fmtDur(+S.days[t].sleep*3600), (+S.days[t]?.sleep||0) ? `<span class="tk-d ${+S.days[t].sleep>=SLEEP_GOAL?'up':'down'}">obiettivo 8h</span>` : '<span class="tk-d flat">da registrare</span>'],
     ['Studio 7G', `${N1.format(sw)} h`, pw.length ? dl(sw, sp, v => N1.format(v)+' h') : ''],
     ['Corsa 7G', `${N1.format(kw)} km`, pw.length ? dl(kw, kp, v => N1.format(v)+' km') : ''],
     ['Social / giorno', so === null ? '—' : `${Math.round(so)} min`, pw.length ? dl(so, sop, v => Math.round(v)+' min', true) : ''],
@@ -1712,7 +1751,7 @@ function tickerHTML(){
 }
 function trendCard(){
   const t = todayKey(), cur = range(addDays(t,-13), t).filter(tracked), prev = range(addDays(t,-27), addDays(t,-14)).filter(tracked);
-  const c1 = cur.length ? avg(cur.map(score))/7 : 0, c0 = prev.length ? avg(prev.map(score))/7 : null, d = c0 === null ? null : Math.round((c1-c0)*100);
+  const c1 = cur.length ? avg(cur.map(ratio)) : 0, c0 = prev.length ? avg(prev.map(ratio)) : null, d = c0 === null ? null : Math.round((c1-c0)*100);
   return `<section class="card">
     <div class="card-head"><div><div class="eyebrow">Performance · ultimi 14 giorni</div><h3 class="card-title">Completamento & ore di studio</h3></div>
       <div class="row small muted" style="gap:14px"><span class="row" style="gap:6px"><i class="lg-sq" style="background:var(--gold-2)"></i>Studio</span><span class="row" style="gap:6px"><i class="lg-ln" style="background:var(--em)"></i>Completamento</span></div></div>
@@ -1735,7 +1774,7 @@ function drawHomeCharts(){
   const labels = keys.map(k => fmtDate(k,{day:'numeric', month:'short'}).replace('.',''));
   const bs = baseScales({ticks:{callback:v => v+'h', maxTicksLimit:5, padding:8}});
   mkChart('cHomeTrend', {type:'bar', data:{labels, datasets:[
-    {type:'line', label:'Completamento', data:keys.map(k => tracked(k) ? Math.round(score(k)/7*100) : null), yAxisID:'y1', borderColor:PL.s, borderWidth:2, tension:.35, fill:true, backgroundColor:gradFill(rg(PL.sRgb,.18), rg(PL.sRgb,0)), pointRadius:2.5, pointBackgroundColor:PL.s2, pointBorderWidth:0, spanGaps:true, order:1},
+    {type:'line', label:'Completamento', data:keys.map(k => tracked(k) ? Math.round(ratio(k)*100) : null), yAxisID:'y1', borderColor:PL.s, borderWidth:2, tension:.35, fill:true, backgroundColor:gradFill(rg(PL.sRgb,.18), rg(PL.sRgb,0)), pointRadius:2.5, pointBackgroundColor:PL.s2, pointBorderWidth:0, spanGaps:true, order:1},
     {label:'Ore di studio', data:keys.map(k => +(studySecs(k)/3600).toFixed(2)), yAxisID:'y', backgroundColor:gradFill(PL.a2, rg(PL.aRgb,.25)), borderRadius:5, maxBarThickness:22, order:2}]},
     options:{interaction:{mode:'index', intersect:false}, scales:{x:bs.x, y:bs.y, y1:{position:'right', min:0, max:100, grid:{display:false}, border:{display:false}, ticks:{callback:v => v+'%', maxTicksLimit:5}}},
       plugins:{tooltip:{callbacks:{label:c => c.dataset.yAxisID === 'y1' ? ` Completamento: ${c.raw ?? '—'}%` : ` Studio: ${N1.format(c.raw)} h`}}}}});
@@ -1761,10 +1800,10 @@ function compactTabPanel(tab, D){
 }
 function compactHome(D){
   const tab = HOME_TABS.some(x => x[0] === S.ui.homeTab) ? S.ui.homeTab : 'oggi';
-  const cnt = {oggi:`${D.sc}/7`, insights:insights().length, promemoria:remindersCount(), crm:D.active.length};
+  const cnt = {oggi:`${D.sc}/${D.n}`, insights:insights().length, promemoria:remindersCount(), crm:D.active.length};
   const ck = (l, v, cls='') => `<div class="ck"><span>${l}</span><b class="${cls}">${v}</b></div>`;
   return `<section class="card card-gold compact-head">
-      ${ring(D.sc/7, 84, 7, `<div class="ring-num" style="font-size:24px">${Math.round(D.sc/7*100)}<span style="font-size:12px">%</span></div>`)}
+      ${ring(D.sc/D.n, 84, 7, `<div class="ring-num" style="font-size:24px">${Math.round(D.sc/D.n*100)}<span style="font-size:12px">%</span></div>`)}
       <div style="min-width:0"><div class="eyebrow">Riepilogo di oggi</div><h2 class="ch-greet">${greeting()}${D.name}.</h2><p class="ch-line">${D.line}</p></div>
       <div class="chips-kpi">${ck('Serie', `${D.cur} gg`)}${ck('Studio 7g', `${N1.format(D.study7)} h`)}${ck('Corsa 7g', `${N1.format(D.km7)} km`)}${ck('Entrate', EUR0.format(D.incM), 'em')}${ck('Pipeline', EUR0.format(D.pipe), 'gold')}</div>
     </section>
@@ -1795,7 +1834,7 @@ function quickChange(fn){
   const k = todayKey(), before = score(k);
   fn(getDay(k, true)); save();
   const after = score(k);
-  if (after > before){ if (after === 7) toast('Giornata perfetta: 7 obiettivi su 7. Standard da campione.', {tone:'em', icon:'crown'}); else if (after === WIN) toast(`Giornata vincente sbloccata: ${WIN}/7.`, {tone:'em', icon:'fire'}); }
+  if (after > before){ if (after === total(k)) toast(`Giornata perfetta: ${after} obiettivi su ${after}. Standard da campione.`, {tone:'em', icon:'crown'}); else if (after === winNeed(k)) toast(`Giornata vincente sbloccata: ${after}/${total(k)}.`, {tone:'em', icon:'fire'}); }
   rerender();
 }
 
@@ -1849,6 +1888,16 @@ function habitCard(id){
         ${prev ? `<div class="small muted">Ultima lezione (${relDays(diffDays(k, prev[0]))}): <span style="color:var(--text-2)">“${esc(prev[1].slice(0,110))}${prev[1].length>110?'…':''}”</span></div>` : ''}`;
       break;
     }
+    case 'sleep': {
+      body = `<div class="sleep-times">
+          <div class="field"><label>A letto</label><input class="input" type="time" data-field="bed" value="${esc(d.bed||'')}" aria-label="Ora in cui sei andato a letto"></div>
+          <div class="field"><label>Sveglia</label><input class="input" type="time" data-field="wake" value="${esc(d.wake||'')}" aria-label="Ora della sveglia"></div>
+        </div>
+        <div class="stepper"><button class="btn btn-icon" data-act="sleep-step" data-v="-0.5" aria-label="Meno mezz'ora">${icon('minus')}</button><div class="unit-wrap"><input class="input input-num" type="number" min="0" max="24" step="0.25" inputmode="decimal" data-field="sleep" value="${d.sleep ?? ''}" placeholder="0"><span>ore</span></div><button class="btn btn-icon" data-act="sleep-step" data-v="0.5" aria-label="Più mezz'ora">${icon('plus')}</button></div>
+        <div class="row wrap" style="gap:6px">${[6,7,7.5,8,9].map(n => `<button class="btn btn-sm ${+d.sleep===n?'btn-outline-gold':''}" data-act="sleep-set" data-v="${n}">${N1.format(n)} h</button>`).join('')}</div>
+        <div class="small muted">Sonno della notte appena passata. Inserendo gli orari, le ore si calcolano da sole.</div>`;
+      break;
+    }
     case 'skin':
       body = `<button class="toggle-big ${d.skin?'on':''}" data-act="skin-toggle" aria-pressed="${d.skin}"><span class="sw"></span><span><b>${d.skin?'Skincare fatta':'Skincare non ancora fatta'}</b><small>${d.skin?'Ottimo: la costanza è tutto.':'Tocca per segnare la routine completata'}</small></span></button>`;
       break;
@@ -1860,18 +1909,18 @@ function habitCard(id){
   </article>`;
 }
 function dayBar(){
-  const k = viewDay, sc = score(k), isToday = k === todayKey();
+  const k = viewDay, sc = score(k), n = total(k), isToday = k === todayKey();
   return `<div class="daynav">
       <button class="btn btn-icon" data-act="day-prev" aria-label="Giorno precedente">${icon('left')}</button>
       <div class="date">${isToday ? 'Oggi, ' + fmtDate(k,{day:'numeric', month:'long'}) : cap(fmtDate(k,{weekday:'long', day:'numeric', month:'long'}))}</div>
       <button class="btn btn-icon" data-act="day-next" aria-label="Giorno successivo" ${isToday?'disabled':''}>${icon('right')}</button>
       ${!isToday ? `<button class="btn btn-sm btn-outline-gold" data-act="day-today">Torna a oggi</button>` : ''}
     </div>
-    <div class="dayprog"><div class="row between"><span class="eyebrow">Completamento</span><span class="small ${sc===7?'em':'muted'}">${sc===7?'Giornata perfetta':sc>=WIN?'Giornata vincente':`${WIN-sc} alla giornata vincente`}</span></div><div class="bar ${sc===7?'done':''}"><i style="width:${sc/7*100}%"></i></div></div>
-    <div class="score num">${sc}<span class="muted" style="font-size:18px">/7</span></div>`;
+    <div class="dayprog"><div class="row between"><span class="eyebrow">Completamento</span><span class="small ${sc===n?'em':'muted'}">${sc===n?'Giornata perfetta':sc>=n-WIN_MISS?'Giornata vincente':`${n-WIN_MISS-sc} alla giornata vincente`}</span></div><div class="bar ${sc===n?'done':''}"><i style="width:${sc/n*100}%"></i></div></div>
+    <div class="score num">${sc}<span class="muted" style="font-size:18px">/${n}</span></div>`;
 }
 function renderTracker(){
-  $('#view').innerHTML = `<section class="card daybar" id="dayBar">${dayBar()}</section><section class="habits" id="habits">${HABITS.map(h => habitCard(h.id)).join('')}</section>`;
+  $('#view').innerHTML = `<section class="card daybar" id="dayBar">${dayBar()}</section><section class="habits" id="habits">${habitsFor(viewDay).map(h => habitCard(h.id)).join('')}</section>`;
 }
 function refreshChrome(id){
   const el = $(`.habit[data-h="${id}"]`); if (!el) return;
@@ -1891,8 +1940,8 @@ function afterHabitChange(id, replace=true){
   if (id === 'cinema') ['cinema'].forEach(refreshChrome);
   const sc = score(viewDay);
   if (viewDay === todayKey() && prevScore !== null && sc > prevScore){
-    if (sc === 7) toast('Giornata perfetta: 7 obiettivi su 7. Standard da campione.', {tone:'em', icon:'crown'});
-    else if (sc === WIN) toast(`Giornata vincente sbloccata: ${WIN}/7.`, {tone:'em', icon:'fire'});
+    if (sc === total(viewDay)) toast(`Giornata perfetta: ${sc} obiettivi su ${sc}. Standard da campione.`, {tone:'em', icon:'crown'});
+    else if (sc === winNeed(viewDay)) toast(`Giornata vincente sbloccata: ${sc}/${total(viewDay)}.`, {tone:'em', icon:'fire'});
   }
   prevScore = sc;
 }
@@ -2143,19 +2192,22 @@ function bucketsFor(days){
 function periodMetrics(a, b){
   const keys = range(a, b).filter(tracked);
   const n = keys.length;
-  const rates = {}; HABITS.forEach(h => rates[h.id] = 0);
+  const rates = {}, den = {}; HABITS.forEach(h => { rates[h.id] = 0; den[h.id] = 0; });
   const sts = keys.map(k => status(k));
-  sts.forEach(s => HABITS.forEach(h => { if (s[h.id]) rates[h.id]++; }));
-  HABITS.forEach(h => rates[h.id] = n ? rates[h.id]/n : 0);
+  sts.forEach(s => HABITS.forEach(h => { if (h.id in s){ den[h.id]++; if (s[h.id]) rates[h.id]++; } }));
+  HABITS.forEach(h => rates[h.id] = den[h.id] ? rates[h.id]/den[h.id] : 0);
   const socialLogged = keys.map(k => S.days[k]?.social).filter(v => v !== null && v !== undefined && v !== '').map(Number);
   const runs = keys.map(k => +(S.days[k]?.km)||0).filter(x => x > 0);
   const byDow = Array.from({length:7}, () => []);
-  keys.forEach((k,i) => byDow[(parse(k).getDay()+6)%7].push(sts[i] ? Object.values(sts[i]).filter(Boolean).length : 0));
+  const rts = keys.map(ratio);
+  keys.forEach((k,i) => byDow[(parse(k).getDay()+6)%7].push(rts[i]));
+  const sleepLogged = keys.map(k => S.days[k]?.sleep).filter(v => v !== null && v !== undefined && v !== '').map(Number);
   return {
-    n, keys, rates,
-    completion: n ? avg(sts.map(s => Object.values(s).filter(Boolean).length))/7 : 0,
+    n, keys, rates, den,
+    completion: n ? avg(rts) : 0,
     perfect: sts.filter(s => Object.values(s).every(Boolean)).length,
-    wins: sts.filter(s => Object.values(s).filter(Boolean).length >= WIN).length,
+    wins: keys.filter(isWin).length,
+    sleepAvg: sleepLogged.length ? avg(sleepLogged) : null, sleepOk: sleepLogged.filter(v => v >= SLEEP_GOAL).length,
     studyH: sum(keys.map(studySecs))/3600,
     km: sum(runs), runDays: runs.length,
     socialAvg: socialLogged.length ? avg(socialLogged) : null, socialOver: socialLogged.filter(v => v >= SOCIAL_LIMIT).length,
@@ -2163,7 +2215,7 @@ function periodMetrics(a, b){
     learned: keys.filter(k => (S.days[k]?.learned||'').trim().length >= 3).length,
     income: incomeIn(a, b),
     leads: S.clients.filter(c => c.created && c.created >= a && c.created <= b).length,
-    dow: byDow.map(x => x.length ? avg(x)/7 : null),
+    dow: byDow.map(x => x.length ? avg(x) : null),
   };
 }
 const HABIT_FIX = {
@@ -2174,6 +2226,7 @@ const HABIT_FIX = {
   cinema:'Scegli il film della settimana la domenica: una watchlist pronta elimina la paralisi della scelta.',
   learn:'Chiudi la giornata con 2 minuti di journaling: "Oggi ho imparato che…". Anche una trattativa insegna qualcosa.',
   skin:'Lascia i prodotti accanto allo spazzolino: ciò che è visibile viene eseguito.',
+  sleep:'Fissa un orario di sonno costante con una sveglia anche per andare a letto, e spegni gli schermi 30 minuti prima: 8 ore sono il carburante di tutte le altre abitudini.',
 };
 function renderStats(){
   const days = S.ui.statsDays, t = todayKey();
@@ -2186,8 +2239,8 @@ function renderStats(){
   $('#view').innerHTML = `
   <section class="card card-gold" style="padding:20px 22px">
     <div class="row between wrap" style="gap:16px">
-      <div><div class="eyebrow">Oggi in sintesi</div><div class="serif" style="font-size:26px;font-weight:600;margin-top:2px">${sc}/7 obiettivi · ${fmtDur(studySecs(t))} di studio · ${N1.format(+dToday.km||0)} km · ${dToday.social!==null&&dToday.social!==''&&dToday.social!==undefined?dToday.social+' min social':'social non registrati'}</div></div>
-      <div class="row" style="gap:6px">${HABITS.map(h => `<span class="mini-ic" title="${h.name}" style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;${today[h.id]?'background:var(--em-a);color:var(--em)':'background:rgba(255,255,255,.04);color:var(--faint)'}">${icon(h.icon)}</span>`).join('')}</div>
+      <div><div class="eyebrow">Oggi in sintesi</div><div class="serif" style="font-size:26px;font-weight:600;margin-top:2px">${sc}/${total(t)} obiettivi · ${fmtDur(studySecs(t))} di studio · ${(+dToday.sleep||0) ? fmtDur(+dToday.sleep*3600)+' di sonno' : 'sonno non registrato'} · ${N1.format(+dToday.km||0)} km · ${dToday.social!==null&&dToday.social!==''&&dToday.social!==undefined?dToday.social+' min social':'social non registrati'}</div></div>
+      <div class="row wrap" style="gap:6px">${habitsFor(t).map(h => `<span class="mini-ic" title="${h.name}" style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;${today[h.id]?'background:var(--em-a);color:var(--em)':'background:rgba(255,255,255,.04);color:var(--faint)'}">${icon(h.icon)}</span>`).join('')}</div>
     </div>
   </section>
 
@@ -2201,7 +2254,7 @@ function renderStats(){
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Ore di studio</span>${icon('book')}</div><div class="kpi-val">${N1.format(M.studyH)}<small>h</small></div><div class="kpi-sub">${dl(M.studyH, P.studyH, v => N1.format(v)+' h')} · ${Math.round(M.n?M.studyH/(M.n*2)*100:0)}% del target</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Km corsi</span>${icon('route')}</div><div class="kpi-val">${N1.format(M.km)}<small>km</small></div><div class="kpi-sub">${dl(M.km, P.km, v => N1.format(v)+' km')} · ${plural(M.runDays,'uscita','uscite')}</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Social / giorno</span>${icon('phone')}</div><div class="kpi-val">${M.socialAvg===null?'—':Math.round(M.socialAvg)}<small>min</small></div><div class="kpi-sub">${M.socialAvg===null?'Nessun dato':`${dl(M.socialAvg, P.socialAvg??M.socialAvg, v => Math.round(v)+' min', true)} · ${M.socialOver} giorni oltre`}</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Giornate vincenti</span>${icon('fire')}</div><div class="kpi-val">${M.wins}<small>/ ${M.n}</small></div><div class="kpi-sub">${M.perfect} perfette · ${M.films} film visti</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Giornate vincenti</span>${icon('fire')}</div><div class="kpi-val">${M.wins}<small>/ ${M.n}</small></div><div class="kpi-sub">${M.perfect} perfette · ${M.sleepAvg===null?`${M.films} film visti`:`sonno medio ${fmtDur(M.sleepAvg*3600)}`}</div></div>
   </section>
 
   <section class="card mt-18">
@@ -2214,7 +2267,7 @@ function renderStats(){
     <div class="card"><div class="card-head"><div><div class="eyebrow">Corpo</div><h3 class="card-title">Km di corsa</h3></div><span class="em serif" style="font-size:22px">${N1.format(M.km)} km</span></div><div class="chart-box"><canvas id="cRun"></canvas></div></div>
     <div class="card"><div class="card-head"><div><div class="eyebrow">Disciplina digitale</div><h3 class="card-title">Minuti sui social</h3></div><span class="pill plain">limite 60 min</span></div><div class="chart-box"><canvas id="cSocial"></canvas></div></div>
     <div class="card"><div class="card-head"><div><div class="eyebrow">Costanza</div><h3 class="card-title">Tasso di successo per abitudine</h3></div></div>
-      <div class="habit-rates">${HABITS.map(h => { const v = M.rates[h.id]; return `<div class="hr-row"><span class="row" style="gap:8px">${icon(h.icon)}${h.name}</span><div class="bar ${v>=.7?'done':v<.35&&M.n?'over':''}"><i style="width:${v*100}%"></i></div><b>${Math.round(v*100)}%</b></div>`; }).join('')}</div>
+      <div class="habit-rates">${HABITS.map(h => { const v = M.rates[h.id]; return `<div class="hr-row"><span class="row" style="gap:8px">${icon(h.icon)}${h.name}</span><div class="bar ${v>=.7?'done':v<.35&&M.den[h.id]?'over':''}"><i style="width:${v*100}%"></i></div><b>${M.den[h.id] ? Math.round(v*100)+'%' : '—'}</b></div>`; }).join('')}</div>
     </div>
   </section>
 
@@ -2238,17 +2291,17 @@ function renderStats(){
   const weeks = 20, end = t, endDow = (parse(end).getDay()+6)%7, start = addDays(end, -(weeks*7 - 1) + (6-endDow));
   $('#heat').innerHTML = range(start, addDays(end, 6-endDow)).map(k => {
     if (k > t || k < S.createdAt) return `<i class="na" title="${k > t ? '' : fmtDate(k,{day:'numeric', month:'short'})+': non tracciato'}"></i>`;
-    const s = score(k), l = s === 0 ? '' : s <= 2 ? 'l1' : s <= 4 ? 'l2' : s <= 6 ? 'l3' : 'l4';
-    return `<i class="${l} ${k===t?'td':''}" title="${fmtDate(k,{weekday:'short', day:'numeric', month:'short'})}: ${s}/7"></i>`;
+    const s = score(k), r = ratio(k), l = s === 0 ? '' : r <= .3 ? 'l1' : r <= .6 ? 'l2' : r < 1 ? 'l3' : 'l4';
+    return `<i class="${l} ${k===t?'td':''}" title="${fmtDate(k,{weekday:'short', day:'numeric', month:'short'})}: ${s}/${total(k)}"></i>`;
   }).join('');
 
   // Charts
   chartDefaults();
   const PL = pal();
   const B = bucketsFor(days), L = B.map(b => b.label);
-  const compData = B.map(b => { const ks = b.keys.filter(tracked); return ks.length ? Math.round(avg(ks.map(score))/7*100) : null; });
+  const compData = B.map(b => { const ks = b.keys.filter(tracked); return ks.length ? Math.round(avg(ks.map(ratio))*100) : null; });
   mkChart('cCompletion', {type:'line', data:{labels:L, datasets:[{label:'Completamento', data:compData, borderColor:PL.a, borderWidth:2, tension:.35, fill:true, backgroundColor:gradFill(rg(PL.aRgb,.32), rg(PL.aRgb,0)), pointRadius: days<=31?3:2, pointBackgroundColor:PL.a2, pointBorderWidth:0, pointHoverRadius:6, spanGaps:true},
-    {label:'Soglia vincente', data:L.map(()=>Math.round(WIN/7*100)), borderColor:rg(PL.sRgb,.5), borderDash:[5,5], borderWidth:1, pointRadius:0, fill:false}]},
+    {label:'Soglia vincente', data:L.map(()=>Math.round(winNeed(t)/total(t)*100)), borderColor:rg(PL.sRgb,.5), borderDash:[5,5], borderWidth:1, pointRadius:0, fill:false}]},
     options:{scales:baseScales({max:100, ticks:{callback:v=>v+'%', maxTicksLimit:5, padding:8}}), interaction:{mode:'index', intersect:false}, plugins:{tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${c.raw??'—'}%`}}}}});
   const studyData = B.map(b => +(sum(b.keys.map(studySecs))/3600).toFixed(2));
   const goalStudy = B.map(b => b.keys.filter(tracked).length * 2);
@@ -2270,13 +2323,13 @@ function renderStats(){
     {label:'Abbonamenti', data:cst, backgroundColor:rg(PL.rRgb,.7), borderRadius:6, maxBarThickness:26, order:3},
     {type:'line', label:'Netto', data:inc.map((v,i) => +(v-cst[i]).toFixed(2)), borderColor:PL.a2, borderWidth:2, cubicInterpolationMode:'monotone', pointRadius:3, pointBackgroundColor:PL.a2, order:1}]},
     options:{scales:baseScales({beginAtZero:true, ticks:{callback:v=>EUR0.format(v), maxTicksLimit:5, padding:8}}), interaction:{mode:'index', intersect:false}, plugins:{tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${EUR.format(c.raw)}`}}}}});
-  mkChart('cDow', {type:'bar', data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'], datasets:[{data:M.dow.map(v => v===null?0:Math.round(v*100)), backgroundColor:M.dow.map(v => v===null?'rgba(255,255,255,.06)':v>=WIN/7?rg(PL.sRgb,.8):rg(PL.aRgb,.7)), borderRadius:5, maxBarThickness:22}]},
+  mkChart('cDow', {type:'bar', data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'], datasets:[{data:M.dow.map(v => v===null?0:Math.round(v*100)), backgroundColor:M.dow.map(v => v===null?'rgba(255,255,255,.06)':v>=winNeed(t)/total(t)?rg(PL.sRgb,.8):rg(PL.aRgb,.7)), borderRadius:5, maxBarThickness:22}]},
     options:{scales:{x:{grid:{display:false}, border:{display:false}}, y:{display:false, max:100, beginAtZero:true}}, plugins:{tooltip:{callbacks:{label:c => ` ${c.raw}% medio`}}}}});
 }
 function reportHTML(M, P, days){
   if (!M.n) return `<p>Non ci sono ancora giorni tracciati nel periodo. Inizia dal <strong>tracker giornaliero</strong>: dopo qualche giorno qui comparirà un'analisi completa con trend, punti di forza e un piano d'azione.</p>`;
   const per = {7:'questa settimana', 30:'questo mese', 90:'questo trimestre', 365:'quest\'anno'}[days];
-  const sorted = HABITS.map(h => ({...h, r:M.rates[h.id]})).sort((a,b) => b.r - a.r);
+  const sorted = HABITS.filter(h => M.den[h.id] > 0).map(h => ({...h, r:M.rates[h.id]})).sort((a,b) => b.r - a.r);
   const best = sorted[0], worst = sorted.slice().reverse().slice(0,3).filter(h => h.r < .85);
   const dc = P.n ? Math.round((M.completion - P.completion)*100) : null;
   const dowNames = ['lunedì','martedì','mercoledì','giovedì','venerdì','sabato','domenica'];
@@ -2285,9 +2338,10 @@ function reportHTML(M, P, days){
   const studyPct = M.studyH / (M.n*2);
   const verdict = M.completion >= .85 ? 'un livello da élite' : M.completion >= .7 ? 'un ritmo solido e professionale' : M.completion >= .5 ? 'una base discreta, con margini chiari di crescita' : 'un avvio ancora irregolare';
   const p = [];
-  p.push(`Nel periodo (${per}) hai tracciato <strong>${plural(M.n,'giorno','giorni')}</strong> con un completamento medio del <strong>${Math.round(M.completion*100)}%</strong>: ${verdict}. ${dc===null?'':dc>0?`Rispetto al periodo precedente sei cresciuto di <strong class="em">${dc} punti</strong>: il sistema sta funzionando.`:dc<0?`Rispetto al periodo precedente hai perso <strong class="ruby">${-dc} punti</strong>: niente drammi, ma serve un reset sulle basi.`:'Sei stabile rispetto al periodo precedente.'} Giornate vincenti (≥ ${WIN}/7): <strong>${M.wins}</strong>, di cui <strong>${M.perfect}</strong> perfette.`);
+  p.push(`Nel periodo (${per}) hai tracciato <strong>${plural(M.n,'giorno','giorni')}</strong> con un completamento medio del <strong>${Math.round(M.completion*100)}%</strong>: ${verdict}. ${dc===null?'':dc>0?`Rispetto al periodo precedente sei cresciuto di <strong class="em">${dc} punti</strong>: il sistema sta funzionando.`:dc<0?`Rispetto al periodo precedente hai perso <strong class="ruby">${-dc} punti</strong>: niente drammi, ma serve un reset sulle basi.`:'Sei stabile rispetto al periodo precedente.'} Giornate vincenti (al massimo ${WIN_MISS} task mancate): <strong>${M.wins}</strong>, di cui <strong>${M.perfect}</strong> perfette.`);
   p.push(`<strong>Punto di forza:</strong> ${best.name.toLowerCase()} con il ${Math.round(best.r*100)}% di successo. ${worst.length ? `<strong>Da migliorare:</strong> ${worst.map(h => `${h.name.toLowerCase()} (${Math.round(h.r*100)}%)`).join(', ')}.` : 'Tutte le abitudini sono sopra l\'85%: livello eccellente.'}`);
   p.push(`<strong>Studio:</strong> ${N1.format(M.studyH)} ore, il ${Math.round(studyPct*100)}% del target teorico di ${M.n*2} ore. ${studyPct>=1?'Sei sopra obiettivo: valuta di alzare la qualità con esercizi pratici.':studyPct>=.7?'Vicino al target: un blocco extra nel weekend chiude il gap.':'Sotto target: sposta lo studio nella fascia oraria in cui hai più energia e proteggila.'} <strong>Corsa:</strong> ${N1.format(M.km)} km in ${plural(M.runDays,'uscita','uscite')}${M.runDays?` (media ${N1.format(M.km/M.runDays)} km)`:''}. ${M.socialAvg!==null?`<strong>Social:</strong> media di ${Math.round(M.socialAvg)} minuti al giorno, ${plural(M.socialOver,'giorno','giorni')} oltre il limite.`:''}`);
+  if (M.sleepAvg !== null) p.push(`<strong>Sonno:</strong> media di ${fmtDur(M.sleepAvg*3600)} a notte, ${plural(M.sleepOk,'notte','notti')} da 8 ore o più. ${M.sleepAvg >= SLEEP_GOAL ? 'Base solida: il recupero sostiene studio e corsa.' : M.sleepAvg >= 7 ? 'Quasi a target: anticipa di 30 minuti l\'orario a letto.' : 'Debito di sonno evidente: è la prima leva da sistemare, prima ancora dello studio.'}`);
   if (bestDow && worstDow && bestDow[1] !== worstDow[1]) p.push(`Il tuo giorno migliore è il <strong>${dowNames[bestDow[1]]}</strong> (${Math.round(bestDow[0]*100)}%), il più debole il <strong>${dowNames[worstDow[1]]}</strong> (${Math.round(worstDow[0]*100)}%). Replica la struttura del ${dowNames[bestDow[1]]} — orari, sveglia, ordine delle task — nei giorni più fragili.`);
   p.push(`<strong>Business:</strong> ${EUR.format(M.income)} di entrate registrate nel periodo${M.leads?` e ${plural(M.leads,'nuovo lead','nuovi lead')} in pipeline`:''}. ${M.leads<Math.max(1,Math.round(M.n/7))?'Obiettivo consigliato: almeno 2 nuove attività contattate a settimana.':'Buon ritmo di prospezione: ora concentrati sui follow-up.'}`);
   const plan = (worst.length ? worst : sorted.slice(-3)).slice(0,3).map(h => [h.name, HABIT_FIX[h.id]]);
@@ -2585,6 +2639,7 @@ document.addEventListener('click', e => {
     case 'q-skin': quickChange(dd => { dd.skin = !dd.skin; }); break;
     case 'q-social': quickChange(dd => { dd.social = Math.max(0, (+dd.social||0) + 5); }); break;
     case 'q-run': quickChange(dd => { dd.km = +((+dd.km||0) + 1).toFixed(2); }); break;
+    case 'q-sleep': quickChange(dd => { dd.sleep = (+dd.sleep||0) >= SLEEP_GOAL ? null : SLEEP_GOAL; dd.bed = dd.wake = ''; }); break;
     case 'q-study-add': quickChange(dd => { dd.studySec = Math.max(0, (dd.studySec||0) + +v); }); break;
     case 'theme-more': toggleThemeMenu(false); settingsModal(); break;
     case 'install': if (!$('#modal').hidden) closeModal(); promptInstall(); break;
@@ -2605,6 +2660,8 @@ document.addEventListener('click', e => {
     case 'run-set': { prevScore = score(k); d().km = +v; afterHabitChange('run'); break; }
     case 'film-del': { prevScore = score(k); d().films.splice(+v,1); afterHabitChange('cinema'); break; }
     case 'skin-toggle': { prevScore = score(k); const dd = d(); dd.skin = !dd.skin; afterHabitChange('skin'); break; }
+    case 'sleep-step': { prevScore = score(k); const dd = d(); dd.sleep = clamp(+((+dd.sleep||0) + +v).toFixed(2), 0, 24); dd.bed = dd.wake = ''; afterHabitChange('sleep'); break; }
+    case 'sleep-set': { prevScore = score(k); const dd = d(); dd.sleep = +v; dd.bed = dd.wake = ''; afterHabitChange('sleep'); break; }
     // home reminders
     case 'rem-done': { const r = S.reminders.find(x => x.id === id); if (r){ r.done = true; save(); toast('Promemoria completato.', {tone:'em'}); rerender(); } break; }
     case 'rem-del': S.reminders = S.reminders.filter(x => x.id !== id); save(); rerender(); break;
@@ -2655,6 +2712,12 @@ document.addEventListener('input', e => {
   if (f === 'home-note'){ d.home.note = el.value; save(); return; }
   if (f === 'learned'){ d.learned = el.value; afterHabitChange('learn', false); return; }
   if (f === 'social'){ d.social = el.value === '' ? null : Math.max(0, Math.round(+el.value)); afterHabitChange('social', false); return; }
+  if (f === 'sleep'){ d.sleep = el.value === '' ? null : clamp(+el.value, 0, 24); afterHabitChange('sleep', false); return; }
+  if (f === 'bed' || f === 'wake'){
+    d[f] = el.value; const h = sleepFromTimes(d.bed, d.wake);
+    if (h !== null){ d.sleep = h; const inp = $('[data-field="sleep"]'); if (inp) inp.value = h; }
+    afterHabitChange('sleep', false); return;
+  }
   if (f === 'km'){ d.km = el.value === '' ? null : Math.max(0, +el.value); afterHabitChange('run', false); const w = $('[data-live="run-week"]'); if (w) w.textContent = N1.format(sum(range(addDays(viewDay,-6), viewDay).map(x => +(S.days[x]?.km)||0))) + ' km'; return; }
 });
 document.addEventListener('submit', e => {
