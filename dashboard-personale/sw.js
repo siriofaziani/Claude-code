@@ -4,7 +4,7 @@
    - Pagina e file locali: "stale-while-revalidate" (risponde subito dalla cache, aggiorna in background).
    - Google Fonts: cache-first (una volta scaricati restano disponibili offline).
    Quando modifichi l'app, aumenta VERSION: comparirà l'avviso "Nuova versione disponibile". */
-const VERSION = 'qg-v2.0.0';
+const VERSION = 'qg-v2.1.0';
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 const SHELL = [

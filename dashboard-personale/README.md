@@ -13,6 +13,13 @@ Dashboard per abitudini giornaliere, timer di studio, finanze, CRM dell'agenzia 
 | `icons/` | Icone (192, 512, maskable, Apple touch, favicon) e screenshot del pannello di installazione |
 | `vendor/chart.umd.js` | Chart.js 4.4.1 in locale, così i grafici funzionano offline (licenza MIT in `vendor/`) |
 
+## Temi
+
+Cinque palette, selezionabili dal pallino colorato in alto a destra o da *Impostazioni → Tema & palette*:
+**Midnight Gold** (predefinito), **Emerald Executive**, **Royal Navy & Platinum**, **Minimal Titanium** e **Bordeaux Reserve**.
+Cambiano solo i colori, grafici compresi: sezioni e dati restano identici. La scelta resta salvata sul dispositivo.
+I temi sono definiti come variabili CSS nei blocchi `[data-theme="…"]` di `index.html`.
+
 ## Installarla sul telefono
 
 iPhone e Android installano solo pagine servite in **https**. Aprendo `index.html` con un doppio clic l'app funziona,
