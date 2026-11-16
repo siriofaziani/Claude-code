@@ -1,0 +1,33 @@
+{
+  "id": "./",
+  "name": "Quartier Generale",
+  "short_name": "QG Dashboard",
+  "description": "Dashboard personale: abitudini giornaliere, timer di studio, finanze, CRM per l'agenzia web e statistiche.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#070708",
+  "theme_color": "#070708",
+  "categories": ["productivity", "finance", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Task di oggi", "short_name": "Task", "description": "Apri il tracker giornaliero", "url": "./#tracker", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "CRM clienti", "short_name": "CRM", "description": "Pipeline dell'agenzia web", "url": "./#crm", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Finanze", "short_name": "Finanze", "description": "Abbonamenti ed entrate", "url": "./#finanza", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Statistiche", "short_name": "Statistiche", "description": "Grafici e analisi", "url": "./#stats", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ],
+  "screenshots": [
+    { "src": "icons/screenshot-mobile.jpg", "sizes": "780x1688", "type": "image/jpeg", "form_factor": "narrow", "label": "Panoramica della giornata" },
+    { "src": "icons/screenshot-desktop.jpg", "sizes": "1440x900", "type": "image/jpeg", "form_factor": "wide", "label": "Statistiche e analisi" }
+  ]
+}
