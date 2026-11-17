@@ -55,7 +55,7 @@ e funziona anche offline. I dati sono salvati in automatico sul dispositivo (`lo
 - **Calendario:** vista **settimanale ampia** predefinita, con ogni giorno leggibile senza doverlo selezionare (orari, studio,
   ripassi in lilla con l'etichetta del giro, attività, allenamenti), e vista mensile. Il «+» di ogni giorno aggiunge pagine, attività
   o allenamenti; sotto la settimana ci sono i moduli per assegnare pagine e aggiungere attività.
-- **Benessere:** corsa (km, obiettivo 5 km) e palestra con orario. Per la sala pesi si selezionano i **gruppi muscolari** allenati
+- **Benessere:** corsa (km, obiettivo 5 km) e palestra (sempre **sala pesi**) con orario. Per la sala pesi si selezionano i **gruppi muscolari** allenati
   (anche più di uno), anche con le schede rapide Push, Pull, Gambe, Braccia, Core e Full body. La mappa del recupero mostra da quanti
   giorni non alleni ogni gruppo. Tutto compare in automatico nel calendario.
 - **Statistiche:** pagine studiate e ripassate, stato degli esami e dei giri di ripasso, attività fisica e gruppi muscolari, più un

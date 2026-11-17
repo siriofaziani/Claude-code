@@ -673,6 +673,9 @@ html.cf-lock,html.cf-lock body{overflow:hidden}
 .bf-l em{display:block;font-style:normal;font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:none;color:var(--faint);margin-top:2px}
 @media (max-width:900px){ .bf-l em{display:inline;margin:0 0 0 6px} .tp-custom .input{width:118px} }
 
+.gym-fixed{display:flex;align-items:center;gap:8px;height:42px;padding:0 13px;border-radius:12px;background:var(--teal-a);border:1px solid var(--teal-b);color:var(--teal-3);font-weight:700;font-size:14px}
+.gym-fixed .ic{width:16px;height:16px}
+
 /* ---------- Modal & toast ---------- */
 .modal-wrap{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
 .modal-bg{position:absolute;inset:0;background:rgba(27,35,43,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s both}
@@ -1032,7 +1035,7 @@ function dayItems(k){
   S.events.filter(ev => ev.date === k).forEach(ev => { const c = EVENT_CATS[ev.cat] || EVENT_CATS.altro; items.push({kind:'event', time:ev.time||'', end:ev.end||'', title:ev.title, sub:c.label + (ev.notes ? ' · ' + ev.notes : ''), color:c.color, icon:c.icon, id:ev.id}); });
   const f = fitOf(k);
   if (ranOn(k)) items.push({kind:'run', time:f.run.time||'', title:`Corsa · ${N1.format(+f.run.km)} km`, sub: +f.run.km >= RUN_GOAL ? 'Obiettivo 5 km raggiunto' : `Obiettivo ${RUN_GOAL} km`, color:'#3b8a82', icon:'route'});
-  if (gymOn(k)){ const ms = f.gym.muscles || []; items.push({kind:'gym', time:f.gym.time||'', title:`Palestra${ms.length ? ' · ' + musclesLabel(ms) : f.gym.type ? ' · ' + f.gym.type : ''}`, sub: ms.length ? (f.gym.type || 'Sala pesi') + ' · ' + plural(ms.length,'gruppo muscolare','gruppi muscolari') : 'Allenamento', color:'#b5826f', icon:'dumbbell'}); }
+  if (gymOn(k)){ const ms = f.gym.muscles || []; items.push({kind:'gym', time:f.gym.time||'', title:`Palestra${ms.length ? ' · ' + musclesLabel(ms) : ' · Sala pesi'}`, sub: ms.length ? 'Sala pesi · ' + plural(ms.length,'gruppo muscolare','gruppi muscolari') : 'Allenamento', color:'#b5826f', icon:'dumbbell'}); }
   blocksOn(k).forEach(b => { const L = blockLabel(b); if (!L.e) return; items.push({kind:'study', rev:isReview(b), round:roundOf(b), time:b.time||'', end:b.end||'', slot:b.slot||'', title:`${L.e.name} · ${pagesOf(b)} pp.`, chip:`${b.done ? '✓ ' : ''}${isReview(b) ? '↻ ' : ''}${pagesOf(b)}p · ${L.e.name.split(' ')[0]}`, sub:L.sub, color:L.e.color, icon:isReview(b) ? 'refresh' : 'book', id:b.id, done:b.done}); });
   // ordine cronologico; un esame senza orario resta in cima, le voci senza orario in fondo
   return items.sort((a,b) => (a.kind === 'exam' && !a.time ? -1 : 0) - (b.kind === 'exam' && !b.time ? -1 : 0) || timeKey(a).localeCompare(timeKey(b)));
@@ -1727,7 +1730,7 @@ const muscleName = id => (MUSCLES.find(m => m.id === id) || {name:id}).name;
 const musclesOf = k => (fitOf(k).gym.muscles || []);
 const musclesLabel = ids => ids.length <= 3 ? ids.map(muscleName).join(', ') : ids.slice(0,3).map(muscleName).join(', ') + ` +${ids.length - 3}`;
 function lastTrained(mid, from=todayKey()){ for (let i = 0; i < 180; i++){ const k = addDays(from, -i); if (gymOn(k) && musclesOf(k).includes(mid)) return k; } return null; }
-function touchGym(f){ if (!f.gym.done){ f.gym.done = true; if (!f.gym.type) f.gym.type = 'Pesi'; if (!f.gym.time && fitDay === todayKey()) f.gym.time = new Date().toTimeString().slice(0,5); } }
+function touchGym(f){ if (!f.gym.done){ f.gym.done = true; f.gym.type = 'Sala pesi'; if (!f.gym.time && fitDay === todayKey()) f.gym.time = new Date().toTimeString().slice(0,5); } }
 
 function renderFitness(){
   const k = fitDay, t = todayKey(), f = fitOf(k), km = +f.run.km || 0, ws = weekStart(k), week = range(ws, addDays(ws,6)), sel = f.gym.muscles || [];
@@ -1752,7 +1755,7 @@ function renderFitness(){
       <div class="card-head" style="margin-bottom:0"><div><div class="eyebrow">Forza</div><h3 class="card-title">Palestra</h3></div><span class="pill ${f.gym.done ? 'teal' : ''}">${f.gym.done ? (sel.length ? plural(sel.length,'gruppo','gruppi') + ' allenati' : 'Fatta') : 'Da fare'}</span></div>
       <button class="toggle ${f.gym.done?'on':''}" data-act="gym-toggle" aria-pressed="${!!f.gym.done}"><span class="sw"></span><span><b>${f.gym.done ? 'Allenamento completato' : 'Sono andata in palestra'}</b><small>${f.gym.done ? (sel.length ? musclesLabel(sel) : 'Seleziona qui sotto i gruppi muscolari allenati') : 'Tocca per registrare, oppure scegli subito i muscoli'}</small></span></button>
       <div class="form-grid"><div class="field"><label for="gymT">Orario</label><input class="input" id="gymT" type="time" data-field="gym-time" value="${f.gym.time||''}"></div>
-        <div class="field"><label for="gymY">Tipo</label><select class="input" id="gymY" data-field="gym-type">${['','Pesi','Pilates','Yoga','Funzionale','Corsi','Cardio'].map(x => `<option value="${x}" ${x===f.gym.type?'selected':''}>${x || 'Non specificato'}</option>`).join('')}</select></div></div>
+        <div class="field"><label>Tipo</label><div class="gym-fixed">${icon('dumbbell')} Sala pesi</div></div></div>
       <div class="weights">
         <div class="row between wrap" style="gap:8px"><div><div class="eyebrow">Sala pesi</div><b class="weights-t">Gruppi muscolari allenati</b></div>${sel.length ? `<button class="btn btn-sm btn-ghost" data-act="mus-clear">${icon('x')} Azzera</button>` : ''}</div>
         <div class="presets"><span class="small muted">Schede rapide</span>${MUSCLE_PRESETS.map((p, i) => `<button class="btn btn-sm ${p[1].every(m => sel.includes(m)) ? 'btn-teal' : ''}" data-act="mus-preset" data-v="${i}">${p[0]}</button>`).join('')}</div>
@@ -2002,7 +2005,7 @@ document.addEventListener('click', e => {
     case 'fit-week': { const n = addDays(fitDay, +v); fitDay = n > t ? t : n; rerender(); break; }
     case 'run-step': { const f = fitW(fitDay); f.run.km = clamp(+((+f.run.km || 0) + +v).toFixed(1), 0, 100); if (!f.run.time && fitDay === t) f.run.time = new Date().toTimeString().slice(0,5); save(); rerender(); break; }
     case 'run-set': { const f = fitW(fitDay); f.run.km = +v; if (!f.run.time && fitDay === t) f.run.time = new Date().toTimeString().slice(0,5); save(); if (+v >= RUN_GOAL) toast(`${v} km: obiettivo corsa raggiunto e aggiunto al calendario.`, {tone:'ok', icon:'route'}); rerender(); break; }
-    case 'gym-toggle': { const f = fitW(fitDay); f.gym.done = !f.gym.done; if (f.gym.done && !f.gym.time && fitDay === t) f.gym.time = new Date().toTimeString().slice(0,5); save(); if (f.gym.done) toast('Palestra registrata e sincronizzata nel calendario.', {tone:'ok', icon:'dumbbell'}); rerender(); break; }
+    case 'gym-toggle': { const f = fitW(fitDay); f.gym.done = !f.gym.done; if (f.gym.done) f.gym.type = 'Sala pesi'; if (f.gym.done && !f.gym.time && fitDay === t) f.gym.time = new Date().toTimeString().slice(0,5); save(); if (f.gym.done) toast('Palestra registrata e sincronizzata nel calendario.', {tone:'ok', icon:'dumbbell'}); rerender(); break; }
     // Statistiche
     case 'stats-days': S.ui.statsDays = +v; save(); rerender(); break;
     // Backup
