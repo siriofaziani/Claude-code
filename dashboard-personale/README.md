@@ -32,11 +32,19 @@ In tutti e quattro i layout la Home ha due grafici, che condividono il periodo (
   - media giornaliera, costanza, serie e proiezione del mese;
   - mappa della costanza delle ultime 18 settimane e profilo per giorno della settimana.
 
-Passando il dito o il mouse su un giorno, quel giorno si evidenzia in entrambi i grafici e compare il dettaglio:
+Passando il mouse su un giorno, quel giorno si evidenzia in entrambi i grafici.
+
+Toccando o cliccando un giorno si apre il riquadro di dettaglio:
 - task completate;
 - studio, acqua e pillole;
 - media mobile;
 - icone delle task fatte.
+
+Il riquadro si chiude con la **X** in alto a destra (o con Esc). Per rivederlo basta toccare di nuovo il giorno.
+
+Lo storico parte da **martedì 17 novembre 2026**. All'apertura l'app rimuove una sola volta i dati di lunedì 16 e dei giorni
+precedenti, insieme a un eventuale timer rimasto acceso quel giorno. Le impostazioni, le finanze, il CRM e i promemoria
+restano invariati. La data è nella costante `HISTORY_START` in `index.html`.
 
 Con il timer acceso i grafici si aggiornano in tempo reale.
 

@@ -1274,6 +1274,17 @@ button.sc-lg.off i{opacity:.3}
 .gp-today span{font-size:12px;color:var(--muted);white-space:nowrap}
 @media (max-width:900px){ .gp-card .sc-num{font-size:60px} .gp-k b{font-size:19px} }
 :is([data-theme="navy"],[data-theme="titanium"]) .sw-idx{background:var(--em);box-shadow:0 0 6px var(--em)}
+/* Dettaglio del giorno: riquadro fisso con pulsante di chiusura */
+.sc-tip{pointer-events:auto;cursor:default;padding-top:11px}
+.sc-tip .sc-tip-h{padding-right:34px}
+.cc-x{position:absolute;top:8px;right:8px;width:28px;height:28px;padding:0;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);background:rgba(255,255,255,.06);color:var(--text-2);cursor:pointer;z-index:2;transition:transform .3s var(--spring),background-color .2s,color .2s,border-color .2s}
+.cc-x .ic{width:14px;height:14px}
+@media (hover:hover){ .cc-x:hover{background:var(--ruby-a);border-color:var(--ruby-b);color:var(--ruby-2)} }
+.cc-x:active{transform:scale(.88)}
+.cc-x::after{content:"";position:absolute;inset:-8px}
+.sc-plot{cursor:pointer}
+.sc-tip-r span{white-space:nowrap;flex:none}
+@media (max-width:900px){ .sc-tip{width:232px} }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -1497,6 +1508,17 @@ function learnTitle(txt){
   return m ? m[1] : (t.length > 80 ? t.slice(0, 78).trim() + '…' : t);
 }
 // Migrazione: i vecchi appunti di «Imparare» diventano apprendimenti manuali «Non classificato»
+// Storico ripartito da martedì 17 novembre 2026: lunedì 16 (e qualsiasi giorno precedente) non è più tracciato.
+// Le impostazioni, le finanze, il CRM e i promemoria restano invariati.
+const HISTORY_START = '2026-11-17';
+function resetHistory(st){
+  const days = st.days || {};
+  Object.keys(days).forEach(k => { if (k < HISTORY_START) delete days[k]; });
+  if (st.pillsDone) Object.keys(st.pillsDone).forEach(id => { const d = st.pillsDone[id]; if (d && d.date && d.date < HISTORY_START) delete st.pillsDone[id]; });
+  if (st.timer && st.timer.day < HISTORY_START) st.timer = null;
+  ['createdAt', 'sleepSince', 'waterSince'].forEach(f => { if (!st[f] || st[f] < HISTORY_START) st[f] = HISTORY_START; });
+  return st;
+}
 function migrate(st){
   if (!st.pillsDone || typeof st.pillsDone !== 'object') st.pillsDone = {};
   if (!Array.isArray(st.learnLabels)) st.learnLabels = [];
@@ -1507,6 +1529,7 @@ function migrate(st){
     if (t && !d.learnItems.length) d.learnItems.push({id:uid(), type:'manual', sector:'altro', label:'Non classificato', title:learnTitle(t), text:t, at:0, legacy:true});
     if (t) d.learned = '';
   });
+  resetHistory(st);
   return st;
 }
 let S = load();
@@ -1834,7 +1857,7 @@ function openModal({eyebrow='', title='', body='', wide=false, onMount}){
 }
 function closeModal(){ $('#modal').hidden = true; document.body.style.overflow = ''; modalClose && modalClose(); modalClose = null; }
 $('#modal').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (!$('#modal').hidden) closeModal(); else if (scSync.pin) ccClose(); });
 const stars = (v, id, size='') => `<div class="stars ${size}" role="radiogroup" aria-label="Probabilità di chiusura">${[1,2,3,4,5].map(i=>`<button type="button" class="star ${i<=v?'on':''}" data-act="rate" data-id="${id}" data-v="${i}" aria-label="${i} stelle">${icon('star')}</button>`).join('')}</div>`;
 const RATING_LABEL = ['Non valutato','Molto bassa','Bassa','Media','Alta','Quasi chiuso'];
 
@@ -2248,7 +2271,7 @@ function drawHomeCharts(){
 const SC_RANGES = [7, 14, 30, 90];
 const scRange = () => SC_RANGES.includes(+S.ui.scRange) ? +S.ui.scRange : 30;
 const scHide = {ma:false, avg:false};
-const scSync = {idx:null, D:null, pinned:false};
+const scSync = {idx:null, D:null, hover:null, pin:null};
 let scAnimate = true;
 const hOf = k => studySecs(k) / 3600;
 const weekdayIx = k => (parse(k).getDay() + 6) % 7;
@@ -2454,13 +2477,14 @@ const CC = {
 };
 function bindCC(src){
   const plot = $(CC[src].plot); if (!plot) return;
-  const move = e => { const c = charts[CC[src].chart]; if (!c || !c.chartArea) return;
+  const idxAt = e => { const c = charts[CC[src].chart]; if (!c || !c.chartArea) return null;
     const r = c.canvas.getBoundingClientRect(), x = e.clientX - r.left, a = c.chartArea;
-    if (x < a.left - 4 || x > a.right + 4){ if (e.pointerType !== 'touch') scSetIndex(null); return; }
-    scSetIndex(clamp(Math.round(c.scales.x.getValueForPixel(x)), 0, c.data.labels.length - 1), src); };
-  plot.addEventListener('pointermove', move);
-  plot.addEventListener('pointerdown', move);
-  plot.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') scSetIndex(null); });
+    if (x < a.left - 4 || x > a.right + 4 || e.clientY < r.top || e.clientY > r.bottom) return null;
+    return clamp(Math.round(c.scales.x.getValueForPixel(x)), 0, c.data.labels.length - 1); };
+  const inTip = e => e.target.closest && e.target.closest('.sc-tip');
+  plot.addEventListener('pointermove', e => { if (e.pointerType === 'touch' || inTip(e)) return; const i = idxAt(e); if (i !== scSync.hover){ scSync.hover = i; ccRender(); } });
+  plot.addEventListener('pointerleave', e => { if (e.pointerType === 'touch') return; scSync.hover = null; ccRender(); });
+  plot.addEventListener('click', e => { if (inTip(e)) return; const i = idxAt(e); if (i === null) return; scSync.pin = {src, i}; ccRender(); });
 }
 
 /* ---- Grafico secondario: solo studio ---- */
@@ -2520,19 +2544,26 @@ function scTipHTML(i){
     <div class="sc-tip-hb">${hs.map(h => `<span class="${stt[h.id] ? 'ok' : ''}" title="${h.name}: ${stt[h.id] ? 'fatto' : 'non fatto'}">${icon(h.icon)}</span>`).join('')}</div>
     ${vals ? `<div class="sc-tip-x">${vals}</div>` : ''}`;
 }
-function scSetIndex(i, src='sc'){
-  if (i === scSync.idx && src === scSync.src) return;
-  scSync.idx = i; scSync.src = src;
+// Evidenziazione: il passaggio del mouse illumina il giorno; il click (o il tocco) apre il dettaglio, la X lo chiude.
+function ccRender(){
+  const pin = scSync.pin, i = scSync.hover !== null ? scSync.hover : pin ? pin.i : null;
+  const changed = i !== scSync.idx; scSync.idx = i;
   Object.entries(CC).forEach(([id, c]) => {
     const ch = charts[c.chart], plot = $(c.plot), tip = $(c.tip); if (!ch || !plot || !tip) return;
-    ch.update('none');
+    if (changed) ch.update('none');
     plot.classList.toggle('hover', i !== null);
-    if (i === null || id !== src){ tip.hidden = true; return; }
-    tip.innerHTML = c.html(i); tip.hidden = false;
-    const x = ch.scales.x.getPixelForValue(i) + ch.canvas.offsetLeft, w = tip.offsetWidth, W = plot.clientWidth;
-    tip.style.left = `${x + 16 + w > W ? Math.max(0, x - 16 - w) : x + 16}px`;
+    if (!pin || pin.src !== id){ tip.hidden = true; return; }
+    if (tip.hidden || tip.dataset.i !== String(pin.i)){
+      tip.innerHTML = `<button type="button" class="cc-x" data-act="cc-close" aria-label="Chiudi il dettaglio" title="Chiudi">${icon('x')}</button>${c.html(pin.i)}`;
+      tip.dataset.i = String(pin.i); tip.hidden = false;
+      const x = ch.scales.x.getPixelForValue(pin.i) + ch.canvas.offsetLeft, w = tip.offsetWidth, W = plot.clientWidth;
+      tip.style.left = `${x + 16 + w > W ? Math.max(0, x - 16 - w) : x + 16}px`;
+    }
   });
 }
+function ccClose(){ scSync.pin = null; scSync.hover = null; ccRender(); }
+// compatibilità: usata da altre parti del codice per azzerare l'evidenziazione
+function scSetIndex(i){ if (i === null){ scSync.hover = null; ccRender(); } }
 function drawStudyCC(){
   const plot = $('#scPlot'); if (!plot || !window.Chart) return;
   chartDefaults();
@@ -2586,7 +2617,7 @@ function drawStudyCC(){
       scales:{x:xs(true), y:{min:0, max:top, afterFit:fitY, grid:{color:rg(PL.aRgb, .07), drawTicks:false}, border:{display:false}, ticks:{stepSize: top > 6 ? 2 : 1, padding:8, callback:v => v + 'h'}}}}});
   bindCC('sc');
 }
-function drawCC(){ scSync.idx = null; scSync.src = null; drawGeneral(); drawStudyCC(); countUp($('#view')); }
+function drawCC(){ scSync.idx = null; scSync.hover = null; scSync.pin = null; drawGeneral(); drawStudyCC(); countUp($('#view')); }
 function scLive(){
   const c = charts.cStudy, D = scSync.D; if (!c || !D) return;
   const t = D.t, h = +hOf(t).toFixed(3), last = D.keys.length - 1, w = range(addDays(t,-6), t).filter(tracked);
@@ -2596,7 +2627,7 @@ function scLive(){
   $$('[data-live="sc-total"]').forEach(x => x.textContent = N1.format(tot));
   $$('[data-live="sc-today"]').forEach(x => x.textContent = fmtDur(studySecs(t)));
   const g = charts.cGeneral; if (g){ g.data.datasets[2].data[last] = +Math.min(150, studySecs(t)/STUDY_GOAL*100).toFixed(1); g.update('none'); }
-  if (scSync.idx === last){ const tip = $(CC[scSync.src || 'sc'].tip); if (tip) tip.innerHTML = CC[scSync.src || 'sc'].html(last); }
+  if (scSync.pin && scSync.pin.i === last){ const tip = $(CC[scSync.pin.src].tip); if (tip){ tip.dataset.i = ''; ccRender(); } }
 }
 function scRefresh(){
   const card = $('#studyCC'), gp = $('#gpCC'); if (!card && !gp) return;
@@ -3703,6 +3734,7 @@ document.addEventListener('click', e => {
     case 'layout-set': applyLayout(v); break;
     case 'preset-set': applyPreset(v); break;
     case 'set-tab': setSettingsTab(v); break;
+    case 'cc-close': ccClose(); break;
     case 'sc-range': S.ui.scRange = +v; save(); scRefresh(); break;
     case 'gp-toggle': { gpHide[v] = !gpHide[v]; el.classList.toggle('off', gpHide[v]); el.setAttribute('aria-pressed', String(!gpHide[v])); const c = charts.cGeneral; if (c){ c.setDatasetVisibility(GP_DS[v], !gpHide[v]); c.update(); } break; }
     case 'sc-toggle': { scHide[v] = !scHide[v]; el.classList.toggle('off', scHide[v]); el.setAttribute('aria-pressed', String(!scHide[v])); const c = charts.cStudy; if (c){ if (v === 'ma') c.setDatasetVisibility(1, !scHide.ma); c.update(); } break; }
