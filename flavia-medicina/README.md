@@ -18,6 +18,23 @@ e funziona anche offline. I dati sono salvati in automatico sul dispositivo (`lo
   - **Pianificazione automatica:** «Distribuisci fino all'esame» spalma sui giorni disponibili le pagine del primo giro oppure
     un giro di ripasso.
   - **Arretrati e libretto:** i blocchi non completati si spostano a oggi con un tocco; gli esami superati restano con voto e media.
+- **Inserimento rapido:**
+  - **Nuovo esame**, in tre passaggi numerati:
+    1. nome del corso e colore;
+    2. data dell'appello, con il conto alla rovescia;
+    3. libri, sbobine e slide, con le pagine di ciascuno e il totale calcolato subito.
+
+    I pulsanti «+ Libro», «+ Sbobine», «+ Slide» e «+ Appunti» aggiungono una fonte con un tocco. Il titolo è facoltativo.
+  - **Assegna pagine:** esame e fonte si scelgono toccando le etichette, non da menu a tendina.
+    - La pagina iniziale è già proposta; i tasti 10, 20, 30 o 50 pp. completano l'intervallo.
+    - Il giorno si sceglie tra i prossimi 7, oppure con «Altro» per qualsiasi data.
+    - Argomento, orario e «già studiate» sono raccolti in «facoltativo».
+    - Il pulsante riassume l'operazione, per esempio «Assegna pp. 41–85 a domani».
+- **Calendario a schermo intero:** il pulsante «Schermo intero» è nel calendario della Home e nella sezione Calendario.
+  - Viste: **Mese**, con tutte le attività di ogni giorno; **Settimana**, con 7 colonne alte; **Agenda**, con 4 settimane in
+    elenco, che è la vista predefinita su iPhone.
+  - Dal calendario espanso puoi spuntare le pagine, modificare le attività e aggiungere con il «+» di ogni giorno.
+  - Si chiude con la **X** in alto a destra, che resta sempre visibile, oppure con Esc.
 - **Calendario:** vista **settimanale ampia** predefinita, con ogni giorno leggibile senza doverlo selezionare (orari, studio,
   ripassi in lilla con l'etichetta del giro, attività, allenamenti), e vista mensile. Il «+» di ogni giorno aggiunge pagine, attività
   o allenamenti; sotto la settimana ci sono i moduli per assegnare pagine e aggiungere attività.

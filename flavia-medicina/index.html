@@ -484,6 +484,169 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:p
 .bar.rev2>i{background:linear-gradient(90deg,var(--rev-2),var(--rev))}
 .bar.rev2>i.pl{background:rgba(138,106,174,.22)}
 
+/* ---------- Moduli semplificati ---------- */
+.bform{display:flex;flex-direction:column;gap:14px}
+.bf-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;align-items:start}
+.bf-l{padding-top:9px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pick{display:flex;flex-wrap:wrap;gap:6px}
+.pk{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);background:#fff;font:600 13px var(--sans);color:var(--text-2);cursor:pointer;transition:all .2s var(--ease);max-width:100%}
+.pk:hover{border-color:var(--rose-b)}
+.pk:active{transform:scale(.96)}
+.pk small{font-size:11px;font-weight:600;color:var(--muted)}
+.pk.ex i{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
+.pk.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.pk.on small{color:rgba(255,255,255,.7)}
+.pk.ex.on{background:color-mix(in srgb,var(--c) 14%,#fff);border-color:var(--c);color:color-mix(in srgb,var(--c) 70%,#1b232b)}
+.pk.ex.on i{box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.bform .sess{display:inline-flex;width:auto}
+.bform .rounds{margin-top:8px}
+.pp{display:flex;align-items:center;gap:8px}
+.pp .input{width:96px;flex:none;font-size:17px;font-weight:700;height:44px}
+.pp-sep{color:var(--faint);font-weight:700}
+.pp-n{font-size:12.5px;font-weight:700;color:var(--teal-3);white-space:nowrap}
+.pp-quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.qk{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;border-radius:999px;border:1px dashed var(--line-3);background:transparent;font:600 12px var(--sans);color:var(--text-2);cursor:pointer;transition:all .2s}
+.qk .ic{width:13px;height:13px}
+.qk:hover{border-style:solid;border-color:var(--rose-b);color:var(--rose-3);background:var(--rose-a)}
+.qk:active{transform:scale(.95)}
+.bhint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5}
+.bhint:empty{display:none}
+.dchip.other{justify-content:center;gap:3px}
+.dchip.other .ic{width:16px;height:16px}
+.bf-date{max-width:220px}
+.bf-more{border-top:1px solid var(--line);padding-top:12px}
+.bf-more summary{list-style:none;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--text-2)}
+.bf-more summary::-webkit-details-marker{display:none}
+.bf-more summary .ic{width:15px;height:15px;color:var(--rose);transition:transform .25s var(--ease)}
+.bf-more[open] summary .ic{transform:rotate(45deg)}
+.bf-go{width:100%;height:46px;font-size:14px}
+.xform{display:flex;flex-direction:column;gap:20px}
+.x-step{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px}
+.x-n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:800 12px var(--sans);color:var(--rose-3);background:var(--rose-a);border:1px solid var(--rose-b);margin-top:2px}
+.x-b{display:flex;flex-direction:column;gap:9px;min-width:0}
+.x-l{font-size:13px;font-weight:700;color:var(--text)}
+.x-l .muted{font-weight:500}
+.x-name{height:50px;font-size:17px;font-weight:600}
+.x-colors span{width:22px;height:22px;border-width:2px}
+.x-cd{color:var(--teal-3);font-weight:700}
+.x-tot{font-size:12px;color:var(--muted)}
+.x-tot b{color:var(--text);font-size:13px}
+.xform .src-row{grid-template-columns:minmax(0,1fr) 120px 36px;padding:10px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.xform .src-row .src-label{grid-column:1/-1;height:36px;font-size:13px;background:#fff}
+.xform .src-row+.src-row{margin-top:8px}
+.src-quick{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px}
+.src-quick .small{margin-right:2px}
+.x-out{padding-top:6px;border-top:1px solid var(--line)}
+@media (max-width:900px){
+  .bf-row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .bf-l{padding-top:0}
+  .pp .input{width:84px}
+  .xform .src-row{grid-template-columns:minmax(0,1fr) 96px 32px;gap:6px;padding:8px}
+  .xform .src-row .src-label{order:0}
+  .xform .src-row .src-type{padding-right:28px;background-position:right 8px center}
+}
+
+/* ---------- Calendario a schermo intero ---------- */
+.cf-open .ic{width:15px;height:15px}
+html.cf-lock,html.cf-lock body{overflow:hidden}
+.cfull{position:fixed;inset:0;z-index:95;background:#f6f5f2;overflow-y:auto;overscroll-behavior:contain;animation:cfFade .3s ease both}
+@keyframes cfFade{from{opacity:0}to{opacity:1}}
+.cf-shell{animation:cfIn .4s var(--ease) both}
+@keyframes cfIn{from{transform:translateY(10px) scale(.99)}to{transform:none}}
+.cf-shell{max-width:1680px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) 26px calc(30px + env(safe-area-inset-bottom))}
+.cf-head{padding-right:66px!important;position:sticky;top:calc(-18px - env(safe-area-inset-top));z-index:3;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0 12px;margin-top:-4px;background:linear-gradient(180deg,rgba(246,245,242,.98) 80%,rgba(246,245,242,0))}
+.cf-tl{min-width:0;margin-right:auto}
+.cf-title{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1.05;margin:2px 0 0}
+.cf-ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cf-ctl .seg button{display:inline-flex;align-items:center;gap:6px}
+.cf-ctl .seg .ic{width:15px;height:15px}
+.cf-x{position:fixed;top:calc(22px + env(safe-area-inset-top));right:24px;z-index:6;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;border:0;background:var(--ink);color:#fff;cursor:pointer;box-shadow:0 10px 24px -10px rgba(27,35,43,.7);transition:transform .2s var(--ease),background .2s}
+.cf-x .ic{width:20px;height:20px}
+.cf-x:hover{background:#2a343e;transform:rotate(90deg)}
+.cf-x:active{transform:scale(.9)}
+.cf-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--text-2);font-weight:600;margin:0 0 14px}
+.cf-legend span{display:inline-flex;align-items:center;gap:6px}
+.cf-legend i{width:9px;height:9px;border-radius:3px}
+.cf-legend .muted{font-weight:500}
+.cfd{display:flex;flex-direction:column;gap:6px;min-width:0;padding:9px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:0 1px 2px rgba(28,36,44,.03)}
+.cfd.today{border-color:var(--rose);box-shadow:0 0 0 1px var(--rose),0 10px 24px -16px rgba(150,97,80,.6)}
+.cfd.out{background:transparent;box-shadow:none;opacity:.55}
+.cfd.past .cfi{opacity:.8}
+.cfd-h{display:flex;align-items:center;gap:7px}
+.cfd-n{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1}
+.cfd-n.today{display:grid;place-items:center;min-width:30px;height:30px;padding:0 6px;border-radius:999px;background:var(--rose);color:#fff;font-size:18px}
+.cfd-w{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cfd-p{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;background:var(--rose-a);color:var(--rose-3);white-space:nowrap}
+.cfd-p.ok{background:var(--teal-a);color:var(--teal-3)}
+.cfd-add{margin-left:auto;width:26px;height:26px;border-radius:8px;border:1px solid var(--line-2);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;flex:none;padding:0}
+.cfd-add .ic{width:14px;height:14px}
+.cfd-add:hover{color:var(--rose-3);border-color:var(--rose-b);background:var(--rose-a)}
+.cfd-list{display:flex;flex-direction:column;gap:5px}
+.cfd-free{display:flex;align-items:center;justify-content:center;gap:6px;flex:1;min-height:70px;border-radius:12px;border:1px dashed var(--line-2);background:transparent;color:var(--faint);font:600 12px var(--sans);cursor:pointer}
+.cfd-free:hover{color:var(--rose-3);border-color:var(--rose-b)}
+.cfi{display:flex;align-items:flex-start;gap:6px;padding:7px 8px;border-radius:10px;background:color-mix(in srgb,var(--c) 8%,#fff);border-left:3px solid var(--c);min-width:0;cursor:default}
+.cfi[role=button]{cursor:pointer}
+.cfi[role=button]:hover{background:color-mix(in srgb,var(--c) 14%,#fff)}
+.cfi.review{background:linear-gradient(140deg,rgba(138,106,174,.10),#fff 80%);border-left-style:dashed}
+.cfi.done b{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--c) 50%,transparent);opacity:.7}
+.cfi-m{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cfi-t{font-size:10.5px;font-weight:800;color:color-mix(in srgb,var(--c) 75%,#1b232b);font-variant-numeric:tabular-nums}
+.cfi b{font-size:12.5px;font-weight:700;line-height:1.3;color:var(--text);overflow-wrap:anywhere}
+.cfi small{font-size:11px;color:var(--muted);line-height:1.35}
+.cfi .stag{align-self:flex-start;font-size:8.5px;padding:1px 6px}
+.cfi .stag.ex{background:var(--ruby-a);color:var(--ruby);border:0}
+.cfi .check.sm{flex:none}
+.cfi.cmp{padding:4px 6px;border-left-width:2.5px}
+.cfi.cmp b{font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cfi.cmp .stag{display:none}
+.cfi.cmp .check.sm{width:18px;height:18px}
+.cfm{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(132px,auto);gap:7px}
+.cfm-dow{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;padding:4px 0;align-self:end}
+.cfm>.cfm-dow{grid-row:1}
+.cfw{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:stretch}
+.cfw .cfd{min-height:calc(100vh - 220px);padding:11px}
+.cfw .cfd-n{font-size:30px}
+.cfa{display:flex;flex-direction:column;gap:8px;max-width:980px;margin:0 auto}
+.cfa-wk{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:10px 0 0;padding-left:4px}
+.cfa-d{display:grid;grid-template-columns:62px minmax(0,1fr) 28px;gap:12px;align-items:start;padding:12px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.cfa-d.today{border-color:var(--rose);box-shadow:0 0 0 1px var(--rose)}
+.cfa-d.empty{padding:8px 12px;background:transparent}
+.cfa-d.past{opacity:.75}
+.cfa-date{display:flex;flex-direction:column;align-items:center;line-height:1}
+.cfa-date b{font-family:var(--serif);font-size:30px;font-weight:600}
+.cfa-date span{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.cfa-d.today .cfa-date b,.cfa-d.today .cfa-date span{color:var(--rose-3)}
+.cfa-d.empty .cfa-date b{font-size:20px}
+.cfa-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;min-width:0}
+.cfa-free{font-size:12px;color:var(--faint);padding-top:4px}
+@media (max-width:1100px){ .cfw{grid-template-columns:repeat(7,minmax(190px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px} .cfw .cfd{scroll-snap-align:start} }
+@media (max-width:760px){
+  .cf-shell{padding-left:12px;padding-right:12px}
+  .cf-head{gap:10px}
+  .cf-title{font-size:25px}
+  .cf-x{top:calc(12px + env(safe-area-inset-top));right:12px;width:46px;height:46px}
+  .cf-head{padding-right:0!important}
+  .cf-tl{padding-right:58px}
+  .cf-ctl{width:100%;justify-content:space-between}
+  .cf-ctl .seg button span{display:none}
+  .cf-ctl .seg button{padding:0 12px}
+  .cf-legend .muted{display:none}
+  .cfm{gap:3px;grid-auto-rows:minmax(86px,auto)}
+  .cfm .cfd{padding:4px;border-radius:9px;gap:3px}
+  .cfm .cfd-h{flex-wrap:wrap;gap:2px}
+  .cfm .cfd-n{font-size:15px}
+  .cfm .cfd-n.today{min-width:22px;height:22px;font-size:13px}
+  .cfm .cfd-w,.cfm .cfd-p,.cfm .cfd-add{display:none}
+  .cfm .cfi.cmp{padding:2px 3px;border-left-width:2px;border-radius:5px}
+  .cfm .cfi.cmp b{font-size:9px;font-weight:700}
+  .cfm .cfi.cmp .cfi-t,.cfm .cfi.cmp .check{display:none}
+  .cfm-dow{font-size:9px;letter-spacing:.06em}
+  .cfw{grid-template-columns:repeat(7,82%)}
+  .cfw .cfd{min-height:calc(100vh - 250px)}
+  .cfa-d{grid-template-columns:46px minmax(0,1fr) 26px;gap:10px;padding:10px}
+  .cfa-items{grid-template-columns:minmax(0,1fr)}
+}
+
 /* ---------- Modal & toast ---------- */
 .modal-wrap{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
 .modal-bg{position:absolute;inset:0;background:rgba(27,35,43,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s both}
@@ -580,6 +743,7 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:p
     <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
+<div class="cfull" id="calFull" role="dialog" aria-modal="true" aria-label="Calendario a schermo intero" hidden></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
@@ -602,6 +766,8 @@ const IC = {
   left:'<path d="m14.5 5.5-6.5 6.5 6.5 6.5"/>', right:'<path d="m9.5 5.5 6.5 6.5-6.5 6.5"/>',
   clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   x:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+  expand:'<path d="M4 9.5V4h5.5M20 9.5V4h-5.5M4 14.5V20h5.5M20 14.5V20h-5.5"/>',
+  list:'<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
   download:'<path d="M12 4v11M7 10.5l5 5 5-5M4.5 20h15"/>', upload:'<path d="M12 16V5M7 9.5l5-5 5 5M4.5 20h15"/>',
   route:'<circle cx="6" cy="18.5" r="2"/><circle cx="18" cy="5.5" r="2"/><path d="M8 18.5h8.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H16"/>',
@@ -959,9 +1125,10 @@ function go(){
   const v = $('#view'); v.className = ''; void v.offsetWidth; v.className = 'view';
   ({home:renderHome, studio:renderStudio, calendario:renderCalendar, benessere:renderFitness, stats:renderStats})[route]();
   document.title = `${meta.label} · Flavia Med`;
+  if (cf.open) renderCalFull();
 }
 function rerender(){ const y = window.scrollY; go(); window.scrollTo(0, y); }
-window.addEventListener('hashchange', () => { go(); window.scrollTo(0,0); });
+window.addEventListener('hashchange', () => { closeCalFull(); go(); window.scrollTo(0,0); });
 
 /* =========================================================
    COMPONENTI CONDIVISI
@@ -1095,11 +1262,11 @@ function examCard(e){
       <div class="exam-foot"><div class="ef"><span class="eyebrow">Studiate</span><b>${st.done}</b></div><div class="ef"><span class="eyebrow">Rimanenti</span><b>${st.remaining}</b></div><div class="ef"><span class="eyebrow">Pianificate</span><b>${st.planned}</b></div></div>
       ${(() => { const rr = reviewRounds(e); return rr.length ? `<div class="rounds-box"><div class="eyebrow rev-c">${icon('refresh')} Giri di ripasso</div>${rr.map(x => `<div class="rr"><span class="stag rev">${x.r}° giro</span><div class="bar rev2"><i class="pl" style="width:${x.tot ? x.planned/x.tot*100 : 0}%"></i><i style="width:${x.tot ? x.done/x.tot*100 : 0}%"></i></div><span class="pp">${x.done}/${x.tot}</span></div>`).join('')}<small class="muted">Pieno: pagine ripassate · chiaro: pagine già assegnate in calendario</small></div>` : ''; })()}
       <div class="exam-msg">${icon('target')}<span>${msg}</span></div>
-      ${(() => { const up = S.plan.filter(b => b.examId === e.id && !b.done && b.date >= todayKey()).sort((a,b) => a.date.localeCompare(b.date) || a.from - b.from); return up.length ? `<div class="upnext"><span class="eyebrow">In calendario</span>${up.slice(0,4).map(b => `<span class="upc ${isReview(b) ? 'rev' : ''}">${isReview(b) ? `↻ R${roundOf(b)} · ` : ''}${cap(fmtDate(b.date,{weekday:'short', day:'numeric'}).replace('.',''))} · pp. ${b.from}–${b.to}</span>`).join('')}${up.length > 4 ? `<span class="small muted">+${up.length - 4}</span>` : ''}</div>` : ''; })()}
+      ${(() => { const up = S.plan.filter(b => b.examId === e.id && !b.done && b.date >= todayKey()).sort((a,b) => a.date.localeCompare(b.date) || a.from - b.from); return up.length ? `<div class="upnext"><span class="eyebrow">In calendario</span>${up.slice(0,3).map(b => `<span class="upc ${isReview(b) ? 'rev' : ''}">${isReview(b) ? `↻ R${roundOf(b)} · ` : ''}${cap(fmtDate(b.date,{weekday:'short', day:'numeric'}).replace('.',''))} · pp. ${b.from}–${b.to}</span>`).join('')}${up.length > 3 ? `<span class="small muted">+${up.length - 3}</span>` : ''}</div>` : ''; })()}
       <div class="exam-act">
         <button class="btn btn-sm btn-ink" data-act="block-new" data-v="${e.id}">${icon('cal')} Assegna pagine</button>
-        <button class="btn btn-sm btn-rev" data-act="review-new" data-v="${e.id}">${icon('refresh')} Pianifica ripasso</button>
-        <button class="btn btn-sm btn-teal" data-act="exam-auto" data-id="${e.id}" ${e.date ? '' : 'disabled'}>${icon('wand')} Distribuisci fino all'esame</button>
+        <button class="btn btn-sm btn-rev" data-act="review-new" data-v="${e.id}" title="Pianifica ripasso">${icon('refresh')} Ripasso</button>
+        <button class="btn btn-sm btn-teal" data-act="exam-auto" data-id="${e.id}" ${e.date ? '' : 'disabled'} title="Distribuisci le pagine fino all'esame">${icon('wand')} Auto-piano</button>
         <button class="btn btn-sm btn-icon btn-ghost" data-act="exam-edit" data-id="${e.id}" aria-label="Modifica esame">${icon('edit')}</button>
       </div>
     </div>
@@ -1124,36 +1291,50 @@ function plannerHTML(){
 let blockDraft = {examId:null, sourceId:null, date:null, size:null, lastTo:null, kind:'study', round:null};
 let justAdded = [];
 const srcOptions = (e, sel) => e.sources.map(s => `<option value="${s.id}" ${s.id === sel ? 'selected' : ''}>${esc(srcName(s))} · ${s.pages} pp.</option>`).join('');
+const srcChips = (e, sel) => e.sources.map(s => `<button type="button" class="pk ${s.id === sel ? 'on' : ''}" data-act="b-src" data-v="${s.id}" role="radio" aria-checked="${s.id === sel}">${esc(srcName(s))}<small>${s.pages} pp.</small></button>`).join('');
 function blockFormInner(opts={}){
   const ex = activeExams().filter(e => e.sources.length);
   if (!ex.length) return `<div class="empty"><div class="serif">Prima un esame</div>Crea un esame con almeno una fonte per assegnare le pagine ai giorni.<div class="mt-12"><button class="btn btn-rose btn-sm" data-act="exam-new">${icon('plus')} Nuovo esame</button></div></div>`;
   const e = ex.find(x => x.id === (opts.examId || blockDraft.examId)) || ex[0];
   const t = todayKey(), date = opts.date || blockDraft.date || t, u = 'b' + uid(), chips = range(t, addDays(t, 6));
   const kind = blockDraft.kind === 'review' ? 'review' : 'study', round = blockDraft.round || suggestRound(e);
-  return `<form data-form="block" class="form-grid bform" data-ctx="${opts.ctx || 'page'}">
-    <div class="field full"><label for="${u}e">Esame</label><select class="input" id="${u}e" name="examId" data-act="b-exam">${ex.map(x => `<option value="${x.id}" ${x.id === e.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>
-    <div class="field full"><label for="${u}s">Fonte</label><select class="input" id="${u}s" name="sourceId" data-act="b-src">${srcOptions(e, e.id === blockDraft.examId ? blockDraft.sourceId : null)}</select></div>
-    <div class="field full"><label>Tipo di sessione</label>
-      <div class="seg sess" role="radiogroup" aria-label="Tipo di sessione"><button type="button" role="radio" aria-checked="${kind === 'study'}" class="${kind === 'study' ? 'on' : ''}" data-act="b-kind" data-v="study">${icon('book')} Studio · primo giro</button><button type="button" role="radio" aria-checked="${kind === 'review'}" class="${kind === 'review' ? 'on rev' : ''}" data-act="b-kind" data-v="review">${icon('refresh')} Ripasso</button></div>
-      <input type="hidden" name="kind" value="${kind}"></div>
-    <div class="field full rounds-f" ${kind === 'review' ? '' : 'hidden'}><label>Ciclo di ripasso</label>
-      <div class="rounds" role="radiogroup" aria-label="Giro di ripasso">${[1,2,3,4,5].map(r => `<button type="button" role="radio" aria-checked="${r === round}" class="rchip ${r === round ? 'on' : ''}" data-act="b-round" data-v="${r}">${r}° giro</button>`).join('')}</div>
-      <input type="hidden" name="round" value="${round}"></div>
-    <div class="field"><label for="${u}f">Da pagina</label><input class="input input-num" id="${u}f" name="from" type="number" min="1" inputmode="numeric" required></div>
-    <div class="field"><label for="${u}t">A pagina</label><input class="input input-num" id="${u}t" name="to" type="number" min="1" inputmode="numeric" required></div>
-    <div class="field full"><label for="${u}a">Argomento o capitolo (facoltativo)</label><input class="input" id="${u}a" name="topic" maxlength="80" placeholder="Es. Cap. 5 · Apparato cardiovascolare"></div>
-    <div class="field full"><label for="${u}d">Giorno del calendario</label>
-      <div class="daychips" role="group" aria-label="Scegli il giorno">${chips.map(k => `<button type="button" class="dchip ${k === date ? 'on' : ''}" data-act="b-day" data-v="${k}"><span>${k === t ? 'Oggi' : k === addDays(t,1) ? 'Domani' : fmtDate(k,{weekday:'short'}).replace('.','')}</span><b>${parse(k).getDate()}</b></button>`).join('')}</div>
-      <input class="input mt-8" id="${u}d" name="date" type="date" value="${date}" required data-act="b-date" aria-label="Oppure scegli una data"></div>
-    <div class="field"><label for="${u}h">Orario (facoltativo)</label><input class="input" id="${u}h" name="time" type="time"></div>
-    <div class="field" style="justify-content:flex-end"><label class="check-row" style="height:42px"><input type="checkbox" name="done"> Già studiate</label></div>
-    <div class="full small muted bhint"></div>
-    <div class="full"><button class="btn btn-rose" style="width:100%">${icon('cal')} Assegna al giorno</button></div>
+  const sid = (e.id === blockDraft.examId && srcById(e, blockDraft.sourceId) ? blockDraft.sourceId : e.sources[0].id);
+  const otherDate = !chips.includes(date);
+  return `<form data-form="block" class="bform" data-ctx="${opts.ctx || 'page'}" novalidate>
+    <input type="hidden" name="examId" value="${e.id}"><input type="hidden" name="sourceId" value="${sid}"><input type="hidden" name="kind" value="${kind}"><input type="hidden" name="round" value="${round}">
+    <div class="bf-row"><span class="bf-l">Esame</span><div class="pick" role="radiogroup" aria-label="Esame">${ex.map(x => `<button type="button" class="pk ex ${x.id === e.id ? 'on' : ''}" style="--c:${x.color}" data-act="b-exam" data-v="${x.id}" role="radio" aria-checked="${x.id === e.id}"><i></i>${esc(x.name)}</button>`).join('')}</div></div>
+    <div class="bf-row"><span class="bf-l">Fonte</span><div class="pick src-pick" role="radiogroup" aria-label="Fonte">${srcChips(e, sid)}</div></div>
+    <div class="bf-row"><span class="bf-l">Sessione</span><div>
+      <div class="seg sess" role="radiogroup" aria-label="Tipo di sessione"><button type="button" role="radio" aria-checked="${kind === 'study'}" class="${kind === 'study' ? 'on' : ''}" data-act="b-kind" data-v="study">${icon('book')} Studio</button><button type="button" role="radio" aria-checked="${kind === 'review'}" class="${kind === 'review' ? 'on rev' : ''}" data-act="b-kind" data-v="review">${icon('refresh')} Ripasso</button></div>
+      <div class="rounds rounds-f" role="radiogroup" aria-label="Giro di ripasso" ${kind === 'review' ? '' : 'hidden'}>${[1,2,3,4,5].map(r => `<button type="button" role="radio" aria-checked="${r === round}" class="rchip ${r === round ? 'on' : ''}" data-act="b-round" data-v="${r}">${r}° giro</button>`).join('')}</div></div></div>
+    <div class="bf-row"><span class="bf-l">Pagine</span><div>
+      <div class="pp"><input class="input input-num" id="${u}f" name="from" type="number" min="1" inputmode="numeric" aria-label="Da pagina" placeholder="da"><span class="pp-sep">→</span><input class="input input-num" id="${u}t" name="to" type="number" min="1" inputmode="numeric" aria-label="A pagina" placeholder="a"><span class="pp-n"></span></div>
+      <div class="pp-quick" role="group" aria-label="Quante pagine">${[10,20,30,50].map(n => `<button type="button" class="qk" data-act="b-size" data-v="${n}">${n} pp.</button>`).join('')}</div>
+      <div class="bhint"></div></div></div>
+    <div class="bf-row"><span class="bf-l">Giorno</span><div>
+      <div class="daychips" role="group" aria-label="Scegli il giorno">${chips.map(k => `<button type="button" class="dchip ${k === date ? 'on' : ''}" data-act="b-day" data-v="${k}"><span>${k === t ? 'Oggi' : k === addDays(t,1) ? 'Domani' : fmtDate(k,{weekday:'short'}).replace('.','')}</span><b>${parse(k).getDate()}</b></button>`).join('')}<button type="button" class="dchip other ${otherDate ? 'on' : ''}" data-act="b-other" aria-label="Scegli un'altra data">${icon('cal')}<span>Altro</span></button></div>
+      <input class="input mt-8 bf-date" id="${u}d" name="date" type="date" value="${date}" data-act="b-date" aria-label="Data" ${otherDate ? '' : 'hidden'}></div></div>
+    <details class="bf-more"><summary>${icon('plus')} Argomento, orario o pagine già studiate <span class="muted">· facoltativo</span></summary>
+      <div class="form-grid mt-12">
+        <div class="field full"><label for="${u}a">Argomento o capitolo</label><input class="input" id="${u}a" name="topic" maxlength="80" placeholder="Es. Cap. 5 · Apparato cardiovascolare"></div>
+        <div class="field"><label for="${u}h">Orario</label><input class="input" id="${u}h" name="time" type="time"></div>
+        <div class="field" style="justify-content:flex-end"><label class="check-row" style="height:42px"><input type="checkbox" name="done"> Già studiate</label></div>
+      </div></details>
+    <button class="btn btn-rose bf-go">${icon('cal')} <span class="bf-go-t">Assegna al giorno</span></button>
   </form>`;
+}
+function bfSummary(form){
+  if (!form || !form.from) return;
+  const from = Math.round(+form.from.value), to = Math.round(+form.to.value), ok = from >= 1 && to >= from, t = todayKey(), k = form.date.value || t;
+  const n = $('.pp-n', form); if (n) n.textContent = ok ? `${to - from + 1} pagine` : '';
+  const day = k === t ? 'oggi' : k === addDays(t,1) ? 'domani' : fmtDate(k,{weekday:'long', day:'numeric', month:'short'});
+  const rv = form.kind.value === 'review', lab = $('.bf-go-t', form);
+  if (lab) lab.textContent = ok ? `${rv ? `Ripasso ${form.round.value}° giro` : 'Assegna'} pp. ${from}–${to} a ${day}` : `Assegna a ${day}`;
 }
 function fillBlockForm(form){
   const e = examById(form.examId.value); if (!e) return;
   const s = srcById(e, form.sourceId.value) || e.sources[0]; if (!s) return;
+  form.sourceId.value = s.id;
   const t = todayKey(), st = examStats(e), size = clamp(blockDraft.size || st.pace || 20, 1, 300);
   // Continua la sequenza (es. oggi 10–40 → domani 41–…) se si prosegue con la stessa fonte
   const kind = form.kind.value === 'review' ? 'review' : 'study', round = +form.round.value || 1, segs = segmentsFor(e, s, kind, round);
@@ -1163,12 +1344,13 @@ function fillBlockForm(form){
   const from = cont ? Math.max(cont[0], blockDraft.lastTo + 1) : (segs[0] ? segs[0][0] : null);
   const up = S.plan.filter(b => b.examId === e.id && !b.done && b.date >= t).sort((a,b) => a.date.localeCompare(b.date) || a.from - b.from).slice(0, 4);
   const hint = $('.bhint', form);
-  if (from === null){ form.from.value = form.to.value = ''; hint.innerHTML = kind === 'review' ? `Tutte le pagine di «${esc(srcName(s))}» sono già nel ${round}° giro di ripasso: scegli il giro successivo.` : `Tutte le pagine di «${esc(srcName(s))}» sono già studiate o assegnate a un giorno: per tornarci sopra scegli «Ripasso».`; return; }
+  if (from === null){ form.from.value = form.to.value = ''; bfSummary(form); hint.innerHTML = kind === 'review' ? `Tutte le pagine di «${esc(srcName(s))}» sono già nel ${round}° giro di ripasso: scegli il giro successivo.` : `Tutte le pagine di «${esc(srcName(s))}» sono già studiate o assegnate a un giorno: per tornarci sopra scegli «Ripasso».`; return; }
   form.from.value = from; form.to.value = Math.min(s.pages, from + (rsize || size) - 1); form.from.max = form.to.max = s.pages;
-  hint.innerHTML = `${kind === 'review' ? `<span class="stag rev">↻ Ripasso · ${round}° giro</span> Prima pagina non ancora inserita in questo giro: <b>${from}</b> di ${s.pages}. Ripassate finora: ${roundCoverage(e, round, true)}/${st.total} pp.` : `Prima pagina libera: <b>${from}</b> di ${s.pages}.${st.pace ? ` Ritmo consigliato per ${esc(e.name)}: <b>${st.pace} pp./giorno</b>.` : ''}`}${up.length ? `<div class="upnext mt-8" style="--c:${e.color}"><span class="eyebrow">Già in calendario</span>${up.map(b => `<span class="upc ${isReview(b) ? 'rev' : ''}">${isReview(b) ? `↻ R${roundOf(b)} · ` : ''}${cap(fmtDate(b.date,{weekday:'short', day:'numeric'}).replace('.',''))} · pp. ${b.from}–${b.to}</span>`).join('')}</div>` : ''}`;
+  hint.innerHTML = `${kind === 'review' ? `<span class="stag rev">↻ ${round}° giro</span> ripassate ${roundCoverage(e, round, true)}/${st.total} pp. · prima pagina da inserire: <b>${from}</b>` : `Prima pagina libera <b>${from}</b> di ${s.pages}${st.pace ? ` · ritmo consigliato <b>${st.pace} pp./giorno</b>` : ''}`}${up.length ? `<div class="upnext mt-8" style="--c:${e.color}"><span class="eyebrow">Già in calendario</span>${up.slice(0,3).map(b => `<span class="upc ${isReview(b) ? 'rev' : ''}">${isReview(b) ? `↻ R${roundOf(b)} · ` : ''}${cap(fmtDate(b.date,{weekday:'short', day:'numeric'}).replace('.',''))} · ${b.from}–${b.to}</span>`).join('')}</div>` : ''}`;
+  bfSummary(form);
 }
 const initBlockForms = (root=document) => $$('form[data-form="block"]', root).forEach(fillBlockForm);
-function setBlockDay(form, k){ form.date.value = k; $$('.dchip', form).forEach(c => c.classList.toggle('on', c.dataset.v === k)); }
+function setBlockDay(form, k){ form.date.value = k; const inChips = $$('.dchip[data-v]', form).some(c => c.dataset.v === k); $$('.dchip', form).forEach(c => c.classList.toggle('on', c.dataset.v ? c.dataset.v === k : !inChips)); form.date.hidden = inChips; bfSummary(form); }
 function justAddedHTML(){
   if (!justAdded.length) return '';
   return `<div class="just"><div class="label" style="margin-bottom:8px">Assegnati ora</div>${justAdded.map(id => S.plan.find(b => b.id === id)).filter(Boolean).map(b => { const L = blockLabel(b); return `<div class="just-r" style="--c:${L.e.color}"><span class="exdot"></span><b>${cap(fmtDate(b.date,{weekday:'long', day:'numeric', month:'short'}))}</b><span>${isReview(b) ? `↻ Ripasso ${roundOf(b)}° giro · ` : ''}${esc(L.e.name)} · ${esc(L.s ? srcName(L.s) : '')} · pp. ${b.from}–${b.to}</span></div>`; }).join('')}
@@ -1200,28 +1382,39 @@ function renderStudio(examFocus){
   </section>`;
   initBlockForms();
 }
+const SRC_QUICK = [['Libro di testo','Libro'],['Sbobine','Sbobine'],['Slide del professore','Slide'],['Appunti personali','Appunti']];
 function examModal(e){
   const isNew = !e;
   e = e || {name:'', date:'', color:EXAM_COLORS[S.exams.length % EXAM_COLORS.length], sources:[{id:uid(), type:'Libro di testo', label:'', pages:''}], status:'attivo', grade:'', notes:''};
   const srcRow = s => `<div class="src-row" data-sid="${s.id}">
-      <select class="input" name="type" aria-label="Tipo di fonte">${SOURCE_TYPES.map(x => `<option ${x===s.type?'selected':''}>${x}</option>`).join('')}</select>
-      <input class="input src-label" name="label" placeholder="Titolo (es. Martini, Fisiologia)" value="${esc(s.label||'')}" maxlength="60">
-      <div class="unit"><input class="input input-num" name="pages" type="number" min="1" placeholder="Pagine" value="${s.pages||''}" required inputmode="numeric"><span>pp.</span></div>
-      <button type="button" class="btn btn-icon btn-ghost" data-act="src-del-row" aria-label="Rimuovi fonte">${icon('x')}</button></div>`;
-  openModal({eyebrow: isNew ? 'Nuovo esame' : 'Modifica esame', title: isNew ? 'Aggiungi un esame' : e.name, wide:true, body:`
-    <form data-form="exam" data-id="${e.id||''}" class="stack" style="gap:16px">
-      <div class="form-grid">
-        <div class="field full"><label for="eName">Nome del corso</label><input class="input" id="eName" name="name" required maxlength="70" placeholder="Es. Anatomia Umana, Fisiologia, Patologia generale" value="${esc(e.name)}" autofocus></div>
-        <div class="field"><label for="eDate">Data dell'appello</label><input class="input" id="eDate" name="date" type="date" value="${e.date||''}"></div>
-        <div class="field"><label>Colore</label><div class="colors">${EXAM_COLORS.map(c => `<label><input type="radio" name="color" value="${c}" ${c===e.color?'checked':''}><span style="--c:${c}"></span></label>`).join('')}</div></div>
-      </div>
-      <div><div class="row between" style="margin-bottom:10px"><span class="label">Materiale di studio</span><button type="button" class="btn btn-sm btn-teal" data-act="src-add-row">${icon('plus')} Aggiungi fonte</button></div>
+      <select class="input src-type" name="type" aria-label="Tipo di fonte">${SOURCE_TYPES.map(x => `<option ${x===s.type?'selected':''}>${x}</option>`).join('')}</select>
+      <div class="unit"><input class="input input-num" name="pages" type="number" min="1" placeholder="Pagine" value="${s.pages||''}" inputmode="numeric" aria-label="Numero di pagine"><span>pp.</span></div>
+      <button type="button" class="btn btn-icon btn-ghost src-x" data-act="src-del-row" aria-label="Rimuovi fonte">${icon('x')}</button>
+      <input class="input src-label" name="label" placeholder="Titolo o autore (facoltativo)" value="${esc(s.label||'')}" maxlength="60" aria-label="Titolo della fonte"></div>`;
+  openModal({eyebrow: isNew ? 'Nuovo esame' : 'Modifica esame', title: isNew ? 'Aggiungi un esame' : e.name, body:`
+    <form data-form="exam" data-id="${e.id||''}" class="xform" novalidate>
+      <div class="x-step"><span class="x-n">1</span><div class="x-b">
+        <label class="x-l" for="eName">Nome del corso</label>
+        <input class="input x-name" id="eName" name="name" maxlength="70" placeholder="Es. Anatomia Umana" value="${esc(e.name)}" autofocus autocomplete="off">
+        <div class="colors x-colors" role="radiogroup" aria-label="Colore">${EXAM_COLORS.map(c => `<label><input type="radio" name="color" value="${c}" ${c===e.color?'checked':''}><span style="--c:${c}"></span></label>`).join('')}</div></div></div>
+      <div class="x-step"><span class="x-n">2</span><div class="x-b">
+        <label class="x-l" for="eDate">Data dell'appello <span class="muted">· anche dopo</span></label>
+        <div class="row" style="gap:10px"><input class="input" id="eDate" name="date" type="date" value="${e.date||''}" style="max-width:220px"><span class="x-cd small" id="eCd"></span></div></div></div>
+      <div class="x-step"><span class="x-n">3</span><div class="x-b">
+        <div class="row between"><span class="x-l">Libri, sbobine e slide</span><span class="x-tot" id="srcTot"></span></div>
         <div id="srcRows">${e.sources.map(srcRow).join('')}</div>
-        <p class="small muted" style="margin:8px 0 0">Libro, sbobine, slide del professore…: per ciascuna fonte indica il numero totale di pagine. Le pagine studiate verranno scalate in automatico.</p></div>
-      ${!isNew ? `<div class="form-grid"><div class="field"><label for="eStatus">Esito</label><select class="input" id="eStatus" name="status"><option value="attivo" ${e.status!=='superato'?'selected':''}>In preparazione</option><option value="superato" ${e.status==='superato'?'selected':''}>Superato</option></select></div>
+        <div class="src-quick"><span class="small muted">Aggiungi</span>${SRC_QUICK.map(([ty, lab]) => `<button type="button" class="qk" data-act="src-add-row" data-v="${ty}">${icon('plus')} ${lab}</button>`).join('')}</div></div></div>
+      ${!isNew ? `<div class="form-grid x-out"><div class="field"><label for="eStatus">Esito</label><select class="input" id="eStatus" name="status"><option value="attivo" ${e.status!=='superato'?'selected':''}>In preparazione</option><option value="superato" ${e.status==='superato'?'selected':''}>Superato</option></select></div>
         <div class="field"><label for="eGrade">Voto</label><select class="input" id="eGrade" name="grade"><option value="">—</option>${[...Array(13)].map((_,i) => 18+i).map(v => `<option ${String(v)===String(e.grade)?'selected':''}>${v}</option>`).join('')}<option ${e.grade==='30L'?'selected':''}>30L</option></select></div></div>` : ''}
       <div class="modal-foot">${!isNew ? `<button type="button" class="btn btn-ghost" data-act="exam-del" data-id="${e.id}" style="margin-right:auto;color:var(--ruby)">${icon('trash')} Elimina</button>` : ''}<button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-rose">${isNew ? 'Crea esame' : 'Salva modifiche'}</button></div>
-    </form>`, onMount: b => { b._srcRow = srcRow; }});
+    </form>`, onMount: b => { b._srcRow = srcRow; examFormLive($('form', b)); }});
+}
+function examFormLive(form){
+  if (!form) return;
+  const pages = $$('#srcRows [name="pages"]', form).map(x => Math.max(0, Math.round(+x.value || 0))), n = pages.filter(Boolean).length, tot = sum(pages);
+  const T = $('#srcTot', form); if (T) T.innerHTML = tot ? `<b>${tot}</b> pagine · ${plural(n, 'fonte', 'fonti')}` : 'Indica le pagine di ogni fonte';
+  const d = form.date && form.date.value, C = $('#eCd', form);
+  if (C) C.textContent = d ? (() => { const x = diffDays(todayKey(), d); return x > 0 ? `tra ${plural(x, 'giorno', 'giorni')}` : x === 0 ? 'oggi' : 'data passata'; })() : '';
 }
 function autoPlanModal(e){
   const t = todayKey();
@@ -1288,7 +1481,7 @@ function weekBoard(opts={}){
   return `<div class="wb-head">
       <div><div class="eyebrow">${opts.eyebrow || 'Settimana'}</div>
         <div class="daynav"><button class="btn btn-icon btn-sm" data-act="wk-prev" aria-label="Settimana precedente">${icon('left')}</button><h3 class="wb-title">${fmtDate(ws,{day:'numeric', month:'long'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'long'})}</h3><button class="btn btn-icon btn-sm" data-act="wk-next" aria-label="Settimana successiva">${icon('right')}</button></div></div>
-      <div class="row wrap" style="gap:8px">${tot ? `<span class="pill ${done >= tot ? 'teal' : 'rose'}">${done}/${tot} pagine nella settimana</span>` : ''}${ws !== weekStart(t) ? `<button class="btn btn-sm" data-act="wk-today">Questa settimana</button>` : ''}${opts.extra || ''}</div>
+      <div class="row wrap" style="gap:8px">${tot ? `<span class="pill ${done >= tot ? 'teal' : 'rose'}">${done}/${tot} pagine nella settimana</span>` : ''}${ws !== weekStart(t) ? `<button class="btn btn-sm" data-act="wk-today">Questa settimana</button>` : ''}${opts.extra || ''}<button class="btn btn-sm btn-ink cf-open" data-act="calfull-open" title="Apri il calendario a schermo intero">${icon('expand')} Schermo intero</button></div>
     </div>
     <div class="wb" id="weekBoard">${days.map(k => {
       const it = dayItems(k).map(i => ({...i, day:k})), sd = studyDay(k);
@@ -1352,6 +1545,7 @@ function renderCalendar(){
   <div class="cal-bar">
     <div class="daynav"><button class="btn btn-icon" data-act="cal-prev" aria-label="Mese precedente">${icon('left')}</button><h2 class="cal-title">${fmtDate(first,{month:'long', year:'numeric'})}</h2><button class="btn btn-icon" data-act="cal-next" aria-label="Mese successivo">${icon('right')}</button></div>
     <button class="btn btn-sm" data-act="cal-today">Oggi</button>
+    <button class="btn btn-sm btn-ink" data-act="calfull-open" data-v="month">${icon('expand')} Schermo intero</button>
     <div style="margin-left:auto">${seg}</div>
     <button class="btn btn-rose" data-act="day-add" data-v="${calSel}">${icon('plus')} Aggiungi</button>
   </div>
@@ -1367,6 +1561,68 @@ function renderCalendar(){
     </aside>
   </div>`;
 }
+/* ---- Calendario a schermo intero ---- */
+const CF_VIEWS = [['month','Mese','cal'],['week','Settimana','layers'],['agenda','Agenda','list']];
+const cf = {open:false, view:null, cursor:todayKey()};
+function cfItem(i, compact){
+  const tag = i.kind === 'study' ? `<span class="stag ${i.rev ? 'rev' : ''}">${i.rev ? `↻ ${i.round}° giro` : 'Studio'}</span>` : i.kind === 'exam' ? '<span class="stag ex">Appello</span>' : '';
+  const act = i.kind === 'study' ? `<button class="check sm ${i.done ? 'on' : ''}" data-act="blk-toggle" data-id="${i.id}" aria-label="${i.done ? 'Segna come da fare' : 'Segna come fatto'}" aria-pressed="${!!i.done}">${icon('check')}</button>` : '';
+  const click = i.kind === 'event' ? `data-act="event-edit" data-id="${i.id}" role="button" tabindex="0"` : i.kind === 'gym' || i.kind === 'run' ? `data-act="fit-open" data-v="${i.day}" role="button" tabindex="0"` : '';
+  return `<div class="cfi ${i.kind} ${i.rev ? 'review' : ''} ${i.done ? 'done' : ''} ${compact ? 'cmp' : ''}" style="--c:${i.color}" ${click}>
+    <div class="cfi-m">${i.time ? `<span class="cfi-t">${i.time}${i.end ? '–' + i.end : ''}</span>` : ''}${tag}<b>${esc(i.title)}</b>${compact ? '' : `<small>${esc(i.sub || '')}</small>`}</div>${act}</div>`;
+}
+function cfDayHead(k, t){ return `<div class="cfd-h"><span class="cfd-n ${k === t ? 'today' : ''}">${parse(k).getDate()}</span><span class="cfd-w">${k === t ? 'Oggi' : fmtDate(k,{weekday:'short'}).replace('.','')}</span>${(() => { const sd = studyDay(k); return sd.planned ? `<span class="cfd-p ${sd.done >= sd.planned ? 'ok' : ''}">${sd.done}/${sd.planned} pp.</span>` : ''; })()}<button class="cfd-add" data-act="day-add" data-v="${k}" aria-label="Aggiungi a ${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}">${icon('plus')}</button></div>`; }
+function renderCalFull(){
+  const box = $('#calFull'); if (!box) return;
+  const t = todayKey(), v = cf.view, c = cf.cursor;
+  let title, body;
+  if (v === 'month'){
+    const first = c.slice(0,8) + '01', m = parse(first).getMonth(), start = weekStart(first), cells = [];
+    for (let i = 0; i < 42; i++){ const k = addDays(start, i); if (i >= 35 && parse(k).getMonth() !== m) break; cells.push(k); }
+    title = cap(fmtDate(first,{month:'long', year:'numeric'}));
+    body = `<div class="cfm">${['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map(d => `<div class="cfm-dow">${d}</div>`).join('')}${cells.map(k => { const it = dayItems(k).map(i => ({...i, day:k}));
+      return `<section class="cfd ${parse(k).getMonth() !== m ? 'out' : ''} ${k === t ? 'today' : ''} ${k < t ? 'past' : ''}">${cfDayHead(k, t)}<div class="cfd-list">${it.map(i => cfItem(i, true)).join('')}</div></section>`; }).join('')}</div>`;
+  } else if (v === 'week'){
+    const ws = weekStart(c), days = range(ws, addDays(ws, 6));
+    title = `${fmtDate(ws,{day:'numeric', month:'long'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'long', year:'numeric'})}`;
+    body = `<div class="cfw">${days.map(k => { const it = dayItems(k).map(i => ({...i, day:k}));
+      return `<section class="cfd ${k === t ? 'today' : ''} ${k < t ? 'past' : ''}">${cfDayHead(k, t)}<div class="cfd-list">${it.length ? it.map(i => cfItem(i)).join('') : `<button class="cfd-free" data-act="day-add" data-v="${k}">${icon('plus')} Giornata libera</button>`}</div></section>`; }).join('')}</div>`;
+  } else {
+    const ws = weekStart(c), days = range(ws, addDays(ws, 27));
+    title = `${fmtDate(ws,{day:'numeric', month:'short'})} – ${fmtDate(addDays(ws,27),{day:'numeric', month:'short', year:'numeric'})}`;
+    body = `<div class="cfa">${days.map(k => { const it = dayItems(k).map(i => ({...i, day:k}));
+      return `${dow(k) === 0 ? `<div class="cfa-wk">Settimana dal ${fmtDate(k,{day:'numeric', month:'long'})}</div>` : ''}<section class="cfa-d ${k === t ? 'today' : ''} ${k < t ? 'past' : ''} ${it.length ? '' : 'empty'}"><div class="cfa-date"><b>${parse(k).getDate()}</b><span>${k === t ? 'Oggi' : fmtDate(k,{weekday:'short'}).replace('.','')}</span></div>
+        <div class="cfa-items">${it.length ? it.map(i => cfItem(i)).join('') : '<span class="cfa-free">Libero</span>'}</div><button class="cfd-add" data-act="day-add" data-v="${k}" aria-label="Aggiungi">${icon('plus')}</button></section>`; }).join('')}</div>`;
+  }
+  const lg = [['#3b8a82','Studio'],['#8a6aae','Ripasso'],['#c0605b','Esame'],['#c98a99','Attività'],['#b5826f','Allenamento']];
+  box.innerHTML = `<button class="cf-x" data-act="calfull-close" aria-label="Chiudi il calendario a schermo intero" title="Chiudi (Esc)">${icon('x')}</button><div class="cf-shell">
+    <header class="cf-head">
+      <div class="cf-tl"><div class="eyebrow">Calendario completo</div><h2 class="cf-title">${title}</h2></div>
+      <div class="cf-ctl">
+        <div class="daynav"><button class="btn btn-icon btn-sm" data-act="cf-prev" aria-label="Indietro">${icon('left')}</button><button class="btn btn-sm" data-act="cf-today">Oggi</button><button class="btn btn-icon btn-sm" data-act="cf-next" aria-label="Avanti">${icon('right')}</button></div>
+        <div class="seg" role="tablist" aria-label="Vista">${CF_VIEWS.map(([id, lab, ic]) => `<button role="tab" class="${v === id ? 'on' : ''}" aria-selected="${v === id}" data-act="cf-view" data-v="${id}">${icon(ic)}<span>${lab}</span></button>`).join('')}</div>
+      </div>
+    </header>
+    <div class="cf-legend">${lg.map(([c, l]) => `<span><i style="background:${c}"></i>${l}</span>`).join('')}<span class="muted">Tocca un'attività per modificarla · il + aggiunge al giorno</span></div>
+    <div class="cf-body" id="cfBody">${body}</div>
+  </div>`;
+}
+function openCalFull(view){
+  cf.open = true; cf.view = view || cf.view || S.ui.cfView || (matchMedia('(max-width:760px)').matches ? 'agenda' : 'month');
+  cf.cursor = route === 'calendario' && (S.ui.calView === 'month') ? calCursor : weekCursor;
+  const box = $('#calFull'); box.hidden = false; document.documentElement.classList.add('cf-lock');
+  renderCalFull(); box.scrollTop = 0;
+  const td = $('.cfd.today, .cfa-d.today', box); if (td){ const r = td.getBoundingClientRect(); if (cf.view === 'week') td.scrollIntoView({block:'nearest', inline:'start'}); else if (r.bottom > innerHeight - 20) box.scrollTop += r.top - 170; }
+  setTimeout(() => $('.cf-x', box)?.focus({preventScroll:true}), 60);
+}
+function closeCalFull(){ if (!cf.open) return; cf.open = false; const box = $('#calFull'); box.hidden = true; box.innerHTML = ''; document.documentElement.classList.remove('cf-lock'); }
+function cfShift(dir){
+  if (cf.view === 'month'){ const d = parse(cf.cursor.slice(0,8) + '01'); d.setMonth(d.getMonth() + dir); cf.cursor = ymd(d); }
+  else cf.cursor = addDays(cf.cursor, dir * (cf.view === 'week' ? 7 : 28));
+  renderCalFull(); $('#calFull').scrollTop = 0;
+}
+// in fase di cattura: se c'è un modale aperto, Esc chiude solo quello
+window.addEventListener('keydown', e => { if (e.key === 'Escape' && cf.open && $('#modal').hidden) closeCalFull(); }, true);
 let swipeX = null;
 document.addEventListener('touchstart', e => { if (route === 'calendario' && e.target.closest('#calGrid')) swipeX = e.touches[0].clientX; }, {passive:true});
 document.addEventListener('touchend', e => { if (swipeX === null) return; const dx = e.changedTouches[0].clientX - swipeX; swipeX = null; if (Math.abs(dx) > 60) shiftCal(dx < 0 ? 1 : -1); }, {passive:true});
@@ -1619,14 +1875,26 @@ document.addEventListener('click', e => {
     case 'exam-edit': examModal(examById(id)); break;
     case 'exam-del': { const ex = examById(id); if (ex && confirm(`Eliminare l'esame «${ex.name}» e tutti i suoi blocchi di studio?`)){ S.exams = S.exams.filter(x => x.id !== id); S.plan = S.plan.filter(b => b.examId !== id); save(); closeModal(); rerender(); toast('Esame eliminato.'); } break; }
     case 'exam-auto': autoPlanModal(examById(id)); break;
-    case 'src-add-row': { const box = $('#srcRows'); box.insertAdjacentHTML('beforeend', $('#modalBody')._srcRow({id:uid(), type:'Sbobine', label:'', pages:''})); box.lastElementChild.querySelector('[name="pages"]').focus(); break; }
-    case 'src-del-row': { const rows = $$('#srcRows .src-row'); if (rows.length > 1) el.closest('.src-row').remove(); else toast('Serve almeno una fonte.'); break; }
+    case 'src-add-row': { const box = $('#srcRows'); box.insertAdjacentHTML('beforeend', $('#modalBody')._srcRow({id:uid(), type:v || 'Sbobine', label:'', pages:''})); box.lastElementChild.querySelector('[name="pages"]').focus(); examFormLive(box.closest('form')); break; }
+    case 'src-del-row': { const rows = $$('#srcRows .src-row'); if (rows.length > 1){ const f = el.closest('form'); el.closest('.src-row').remove(); examFormLive(f); } else toast('Serve almeno una fonte.'); break; }
     case 'review-new': { const ex = examById(v); blockDraft = {...blockDraft, examId:v, sourceId:null, kind:'review', round:suggestRound(ex), lastTo:null, size:null}; blockModal(planDay >= t ? planDay : t, v); break; }
     case 'b-kind': { const f = el.closest('form'); f.kind.value = v; $$('[data-act="b-kind"]', f).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.classList.toggle('rev', on && v === 'review'); x.setAttribute('aria-checked', String(on)); }); $('.rounds-f', f).hidden = v !== 'review'; if (v === 'review'){ const r = suggestRound(examById(f.examId.value)); f.round.value = r; $$('.rchip', f).forEach(x => x.classList.toggle('on', +x.dataset.v === r)); } blockDraft.kind = v; blockDraft.lastTo = null; fillBlockForm(f); break; }
     case 'b-round': { const f = el.closest('form'); f.round.value = v; $$('.rchip', f).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.setAttribute('aria-checked', String(on)); }); blockDraft.round = +v; blockDraft.lastTo = null; fillBlockForm(f); break; }
     case 'block-new': blockDraft = {...blockDraft, kind:'study', lastTo: blockDraft.examId === v ? blockDraft.lastTo : null}; blockModal(blockDraft.examId === v && blockDraft.date && blockDraft.date >= t ? blockDraft.date : (planDay >= t ? planDay : t), v); break;
     case 'b-day': setBlockDay(el.closest('form'), v); break;
+    case 'b-other': { const f = el.closest('form'); f.date.hidden = false; $$('.dchip', f).forEach(c => c.classList.toggle('on', c === el)); f.date.focus(); try { f.date.showPicker && f.date.showPicker(); } catch(_){} break; }
+    case 'b-exam': { const f = el.closest('form'), ex = examById(v); if (!ex) break; f.examId.value = v; $$('[data-act="b-exam"]', f).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.setAttribute('aria-checked', String(on)); });
+      f.sourceId.value = ex.sources[0] ? ex.sources[0].id : ''; $('.src-pick', f).innerHTML = srcChips(ex, f.sourceId.value); blockDraft.size = null; blockDraft.lastTo = null;
+      if (f.kind.value === 'review'){ const r = suggestRound(ex); f.round.value = r; $$('.rchip', f).forEach(x => x.classList.toggle('on', +x.dataset.v === r)); } fillBlockForm(f); break; }
+    case 'b-src': { const f = el.closest('form'); f.sourceId.value = v; $$('[data-act="b-src"]', f).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.setAttribute('aria-checked', String(on)); }); fillBlockForm(f); break; }
+    case 'b-size': { const f = el.closest('form'), e = examById(f.examId.value), sc = srcById(e, f.sourceId.value), from = Math.max(1, Math.round(+f.from.value) || 1); f.from.value = from; f.to.value = Math.min(sc ? sc.pages : from + +v - 1, from + +v - 1); blockDraft.size = +v; bfSummary(f); break; }
     case 'day-add': dayAddModal(v); break;
+    case 'calfull-open': openCalFull(v); break;
+    case 'calfull-close': closeCalFull(); break;
+    case 'cf-view': cf.view = v; S.ui.cfView = v; save(); renderCalFull(); $('#calFull').scrollTop = 0; break;
+    case 'cf-prev': cfShift(-1); break;
+    case 'cf-next': cfShift(1); break;
+    case 'cf-today': cf.cursor = t; renderCalFull(); break;
     case 'add-block': blockModal(v); break;
     case 'add-event': eventModal(null, v); break;
     case 'add-fit': case 'fit-open': closeModal(); fitDay = v > t ? t : v; if (route === 'benessere') rerender(); else location.hash = '#benessere'; break;
@@ -1688,6 +1956,8 @@ document.addEventListener('change', e => {
 document.addEventListener('input', e => {
   const el = e.target, f = el.dataset.field;
   if (el.closest('form[data-form="autoplan"]')) { updateAutoPreview(); return; }
+  if (el.closest('form[data-form="block"]')) { bfSummary(el.closest('form')); return; }
+  if (el.closest('form[data-form="exam"]')) { examFormLive(el.closest('form')); return; }
   if (!f) return;
   const w = fitW(fitDay);
   if (f === 'run-km'){ w.run.km = el.value === '' ? null : clamp(+el.value, 0, 100); save(); refreshRunUI(); }
@@ -1699,7 +1969,7 @@ document.addEventListener('submit', e => {
   const fd = Object.fromEntries(new FormData(form).entries()), t = todayKey();
   switch(type){
     case 'exam': {
-      const sources = $$('#srcRows .src-row').map(r => ({id:r.dataset.sid || uid(), type:$('[name="type"]', r).value, label:$('[name="label"]', r).value.trim(), pages:Math.max(1, Math.round(+$('[name="pages"]', r).value || 0))})).filter(s => s.pages > 0);
+      const sources = $$('#srcRows .src-row').map(r => ({id:r.dataset.sid || uid(), type:$('[name="type"]', r).value, label:$('[name="label"]', r).value.trim(), pages:Math.max(0, Math.round(+$('[name="pages"]', r).value || 0))})).filter(s => s.pages > 0);
       if (!fd.name.trim()) return toast('Inserisci il nome del corso.');
       if (!sources.length) return toast('Aggiungi almeno una fonte con il numero di pagine.');
       const data = {name:fd.name.trim(), date:fd.date || '', color:fd.color || EXAM_COLORS[0], sources};
@@ -1709,7 +1979,7 @@ document.addEventListener('submit', e => {
     }
     case 'block': {
       const ex = examById(fd.examId), s = srcById(ex, fd.sourceId), from = Math.round(+fd.from), to = Math.round(+fd.to), date = fd.date || t;
-      if (!ex || !s) return; if (!(from >= 1) || !(to >= from)) return toast('Controlla l\'intervallo di pagine.');
+      if (!ex || !s) return toast('Scegli esame e fonte.'); if (!(from >= 1) || !(to >= from)) return toast('Inserisci le pagine: da quale a quale.');
       if (to > s.pages) return toast(`«${esc(srcName(s))}» ha ${s.pages} pagine.`);
       const kind = fd.kind === 'review' ? 'review' : 'study', round = kind === 'review' ? clamp(+fd.round || 1, 1, 9) : null, topic = (fd.topic || '').trim();
       const overlap = S.plan.some(b => b.examId === ex.id && b.sourceId === s.id && (kind === 'review' ? isReview(b) && roundOf(b) === round : !isReview(b)) && b.from <= to && b.to >= from);

@@ -2,7 +2,7 @@
    App shell in cache all'installazione (apertura istantanea e offline), pagine e file locali
    in «stale-while-revalidate», Google Fonts in cache-first.
    Dopo ogni modifica dell'app aumenta VERSION: comparirà l'avviso «Nuova versione disponibile». */
-const VERSION = 'fm-v1.2.0';
+const VERSION = 'fm-v1.3.0';
 const SHELL_CACHE = `${VERSION}-shell`, RUNTIME_CACHE = `${VERSION}-runtime`;
 const SHELL = ['./', './index.html', './manifest.json', './vendor/chart.umd.js', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png',
   './icons/icon-maskable-192.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'];
