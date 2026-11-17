@@ -22,6 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="vendor/chart.umd.js"></script>
+<script src="pillole.js"></script>
 <script>window.Chart || document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"><\/script>')</script>
 <style>
 :root{
@@ -789,6 +790,74 @@ html.theming,html.theming *{transition:background-color .5s ease,border-color .5
 @media (max-width:420px){ .layout-grid{grid-template-columns:minmax(0,1fr)} .layout-card .tc-check{top:12px;right:12px} }
 
 
+/* ---------- Imparare: generatore, quiz e settori ---------- */
+.learn-mode button{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.learn-mode .ic{width:14px;height:14px}
+.sector-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sector-btn{display:flex;align-items:center;gap:10px;min-width:0;padding:10px;border-radius:13px;border:1px solid var(--line);background:rgba(0,0,0,.22);color:var(--text);text-align:left;cursor:pointer;font:inherit;transition:border-color .2s,background .2s,transform .2s var(--ease)}
+.sector-btn:hover{border-color:color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 8%,rgba(0,0,0,.22));transform:translateY(-1px)}
+.sector-btn b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:12.5px;font-weight:600;line-height:1.25;overflow:hidden}
+.sector-btn small{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+.sector-btn.empty{opacity:.55}
+.sec-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.sec-ic .ic{width:16px;height:16px}
+.sec-ic.sm{width:28px;height:28px;border-radius:9px}
+.sec-ic.sm .ic{width:14px;height:14px}
+.sec-tag{font-weight:600;color:var(--c,var(--muted))}
+.chip-tag{display:inline-flex;align-items:center;font-size:11.5px;padding:2px 10px;margin:3px 2px 0 0;border-radius:99px;border:1px solid color-mix(in srgb,var(--c) 35%,transparent);background:color-mix(in srgb,var(--c) 10%,transparent)}
+.litems{display:flex;flex-direction:column;gap:6px}
+.litem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 6px 8px 10px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--line);border-left:2px solid var(--c)}
+.litem b{display:block;font-size:13px;font-weight:600;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.litem small{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
+.pill-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.pill-meta .ic{width:14px;height:14px}
+.sec-chip{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 12px;border-radius:99px;font-size:12px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);border:1px solid color-mix(in srgb,var(--c) 32%,transparent)}
+.pill-kicker{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.35;color:var(--text-2);margin:0 0 18px}
+.pill-body p{font-size:15px;line-height:1.8;color:var(--text-2);margin:0 0 14px}
+.pill-body p:first-child::first-letter{font-family:var(--serif);font-size:3.3em;font-weight:600;float:left;line-height:.88;margin:5px 10px 0 0;color:var(--c)}
+.pill-box{padding:15px 17px;border-radius:14px;border:1px solid var(--line);border-left:2px solid var(--c);background:rgba(0,0,0,.25);margin-top:12px}
+.pill-box.apply{border-color:var(--gold-b);border-left-color:var(--gold);background:var(--gold-a)}
+.pill-box .eyebrow{display:flex;align-items:center;gap:7px}
+.pill-box .ic{width:14px;height:14px}
+.pill-box p{margin:7px 0 0;font-size:14px;line-height:1.65;color:var(--text-2)}
+.modal-foot.wrap{flex-wrap:wrap}
+.quiz-q{padding:16px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.22);margin-top:12px;transition:border-color .3s}
+.quiz-q.is-ok{border-color:var(--em-b)}
+.quiz-q.is-ko{border-color:var(--ruby-b)}
+.quiz-n{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--c);font-weight:700}
+.quiz-q h5{font-size:15px;font-weight:600;margin:6px 0 12px;line-height:1.45}
+.quiz-opts{display:grid;gap:8px}
+.quiz-opt{display:block;width:100%;text-align:left;padding:11px 14px;border-radius:11px;border:1px solid var(--line-2);background:rgba(255,255,255,.02);color:var(--text);font:inherit;font-size:13.5px;line-height:1.45;cursor:pointer;transition:border-color .2s,background .2s,color .2s,opacity .2s}
+.quiz-opt:hover:not(:disabled){border-color:var(--gold-b);background:var(--gold-a)}
+.quiz-opt:disabled{cursor:default}
+.quiz-opt:disabled:not(.ok):not(.ko){opacity:.45}
+.quiz-opt.ok{border-color:var(--em-b);background:var(--em-a);color:var(--em-2)}
+.quiz-opt.ko{border-color:var(--ruby-b);background:var(--ruby-a);color:var(--ruby-2)}
+.quiz-why{font-size:13px;color:var(--text-2);margin-top:12px;line-height:1.55}
+.quiz-sum{display:flex;align-items:center;gap:18px;margin-top:18px;padding:18px;border-radius:16px;border:1px solid var(--gold-b);background:linear-gradient(135deg,var(--gold-a),rgba(0,0,0,.2));animation:pop .4s var(--ease) both}
+.quiz-score{display:flex;flex-direction:column;align-items:center;min-width:72px}
+.quiz-score .serif{font-size:46px;font-weight:600;line-height:1;color:var(--gold-2);font-variant-numeric:lining-nums}
+.quiz-score small{font-size:20px;color:var(--muted)}
+.learn-quote{margin:0 0 18px;padding:14px 16px;border-left:2px solid var(--gold);border-radius:0 12px 12px 0;background:rgba(0,0,0,.25);font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.5;color:var(--text-2)}
+.learn-stats{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start}
+.sec-rows{display:flex;flex-direction:column;gap:12px}
+.sec-row{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr) 28px;gap:12px;align-items:center;font-size:13px}
+.sec-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sec-bar{height:8px;border-radius:8px;background:rgba(255,255,255,.06);overflow:hidden}
+.sec-bar i{display:block;height:100%;border-radius:inherit;background:var(--c);transition:width .6s var(--ease)}
+.sec-row b{font-family:var(--mono);font-weight:500;text-align:right}
+.learn-text p{margin:0 0 12px;color:var(--text-2);line-height:1.7;font-size:14px}
+.learn-text p strong{color:var(--text)}
+@media (max-width:900px){
+  .learn-stats{grid-template-columns:minmax(0,1fr);gap:20px}
+  .sec-row{grid-template-columns:minmax(0,140px) minmax(0,1fr) 24px}
+  .pill-kicker{font-size:18px}
+  .pill-body p{font-size:14.5px}
+  .quiz-sum{flex-direction:column;align-items:flex-start;gap:10px}
+}
+@media (max-width:900px){ .hide-sm{display:none} }
+@media (max-width:380px){ .sector-grid{grid-template-columns:minmax(0,1fr)} }
+
 /* ---------- Responsive ---------- */
 @media (max-width:1280px){
   .minis{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -967,6 +1036,10 @@ const IC = {
   share:'<path d="M12 3.5v11"/><path d="m8 7.5 4-4 4 4"/><path d="M9 10.5H7a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5h-2"/>',
   grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/>',
   moon:'<path d="M19.8 14.6A8.3 8.3 0 0 1 9.4 4.2a8.3 8.3 0 1 0 10.4 10.4z"/><path d="M16.5 3.5v3M15 5h3"/>',
+  cpu:'<rect x="6" y="6" width="12" height="12" rx="2.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9.5 3v3M14.5 3v3M9.5 18v3M14.5 18v3M3 9.5h3M3 14.5h3M18 9.5h3M18 14.5h3"/>',
+  landmark:'<path d="M3.5 9 12 4.5 20.5 9"/><path d="M5 9.5h14"/><path d="M6.5 10.5v6M10 10.5v6M14 10.5v6M17.5 10.5v6"/><path d="M4.5 17.5h15M3.5 20h17"/>',
+  brain:'<path d="M9.5 4.5A2.8 2.8 0 0 0 6.7 7.3 3 3 0 0 0 4.5 10.2c0 1 .5 1.9 1.2 2.4a3 3 0 0 0 1 4.6 2.8 2.8 0 0 0 2.8 2.8V4.5z"/><path d="M14.5 4.5a2.8 2.8 0 0 1 2.8 2.8 3 3 0 0 1 2.2 2.9c0 1-.5 1.9-1.2 2.4a3 3 0 0 1-1 4.6 2.8 2.8 0 0 1-2.8 2.8V4.5z"/><path d="M9.5 10h-2M14.5 14h2"/>',
+  globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.4 2.6 3.6 5.4 3.6 8.5s-1.2 5.9-3.6 8.5c-2.4-2.6-3.6-5.4-3.6-8.5s1.2-5.9 3.6-8.5z"/>',
   palette:'<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7h2.1a4.5 4.5 0 0 0 4.5-4.5C21 6.7 17 3.5 12 3.5z"/><circle cx="7.6" cy="11" r="1.1"/><circle cx="10.4" cy="7.4" r="1.1"/><circle cx="15" cy="7.8" r="1.1"/>',
   plusSquare:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8.5v7M8.5 12h7"/>',
   dots:'<circle cx="12" cy="5.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="18.5" r="1.3"/>',
@@ -1059,7 +1132,7 @@ function defaults(){
       {id:uid(), name:'Gemini Pro',      price:4.99,  period:'mese', renewal:'2027-10-07',         auto:false, anchor:7, since:t, color:'#8ab4f8'},
     ],
     incomes:[], salary:{amount:0, since:t.slice(0,7), skipped:[]},
-    clients:[], reminders:[],
+    clients:[], reminders:[], pillsDone:{}, learnLabels:[],
     ui:{statsDays:30, crmFilter:'all', crmSort:'appt'},
   };
 }
@@ -1068,8 +1141,27 @@ function load(){
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaults();
     const d = JSON.parse(raw), base = defaults();
-    return {...base, ...d, profile:{...base.profile, ...(d.profile||{})}, salary:{...base.salary, ...(d.salary||{})}, ui:{...base.ui, ...(d.ui||{})}};
+    return migrate({...base, ...d, profile:{...base.profile, ...(d.profile||{})}, salary:{...base.salary, ...(d.salary||{})}, ui:{...base.ui, ...(d.ui||{})}});
   } catch(e){ console.warn('Stato non leggibile, ripristino default', e); return defaults(); }
+}
+// Titolo breve per un appunto: prima frase o primi caratteri
+function learnTitle(txt){
+  const t = String(txt || '').trim().replace(/\s+/g, ' ');
+  const m = t.match(/^(.{12,90}?[.!?])(\s|$)/);
+  return m ? m[1] : (t.length > 80 ? t.slice(0, 78).trim() + '…' : t);
+}
+// Migrazione: i vecchi appunti di «Imparare» diventano apprendimenti manuali «Non classificato»
+function migrate(st){
+  if (!st.pillsDone || typeof st.pillsDone !== 'object') st.pillsDone = {};
+  if (!Array.isArray(st.learnLabels)) st.learnLabels = [];
+  Object.values(st.days || {}).forEach(d => {
+    if (!d) return;
+    if (!Array.isArray(d.learnItems)) d.learnItems = [];
+    const t = (d.learned || '').trim();
+    if (t && !d.learnItems.length) d.learnItems.push({id:uid(), type:'manual', sector:'altro', label:'Non classificato', title:learnTitle(t), text:t, at:0, legacy:true});
+    if (t) d.learned = '';
+  });
+  return st;
 }
 let S = load();
 let saveT = null;
@@ -1090,12 +1182,13 @@ window.addEventListener('beforeunload', () => { try { localStorage.setItem(KEY, 
 /* =========================================================
    DAYS & HABIT LOGIC
    ========================================================= */
-const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', skin:false, sleep:null, bed:'', wake:''});
+const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', learnItems:[], learnDraft:'', skin:false, sleep:null, bed:'', wake:''});
 function getDay(k, create=false){
   let d = S.days[k];
   if (!d){ d = blankDay(); if (create) S.days[k] = d; }
   if (!d.home) d.home = {acts:[], note:''};
   if (!d.films) d.films = [];
+  if (!Array.isArray(d.learnItems)) d.learnItems = [];
   return d;
 }
 const tracked = k => k >= S.createdAt && k <= todayKey();
@@ -1123,7 +1216,7 @@ function status(k){
     social: soc !== null && soc !== '' && soc !== undefined && +soc < SOCIAL_LIMIT,
     run: (+d.km||0) >= RUN_GOAL,
     cinema: cinemaInfo(k).covered,
-    learn: (d.learned||'').trim().length >= 3,
+    learn: (d.learnItems||[]).length > 0 || (d.learned||'').trim().length >= 3,
     skin: !!d.skin,
     ...(k >= (S.sleepSince || S.createdAt) ? {sleep: (+d.sleep||0) >= SLEEP_GOAL} : {}),
   };
@@ -1176,8 +1269,10 @@ function chromeOf(id, k){
       return {done:ci.covered, pct: ci.covered ? 1 : 0, state: ci.covered?'done':'todo', meta, mini};
     }
     case 'learn': {
-      const t = (d.learned||'').trim(), done = t.length >= 3, w = t ? t.split(/\s+/).length : 0;
-      return {done, pct:done?1:0, state:done?'done':'todo', meta: done ? `${plural(w,'parola','parole')} annotate` : 'Annota una lezione, anche piccola', mini: done ? 'Annotato' : 'Da scrivere'};
+      const items = d.learnItems || [], n = items.length, legacy = (d.learned||'').trim().length >= 3, done = n > 0 || legacy;
+      return {done, pct:done?1:0, state:done?'done':'todo',
+        meta: n ? `${plural(n,'apprendimento','apprendimenti')} · ${listJoin([...new Set(items.map(sectorShort))])}` : legacy ? 'Appunto registrato' : 'Leggi una pillola o annota cosa hai imparato',
+        mini: n ? (n === 1 ? sectorShort(items[0]) : `${n} · ${sectorShort(items[n-1])}`) : legacy ? 'Annotato' : 'Da fare'};
     }
     case 'skin': {
       return {done:!!d.skin, pct:d.skin?1:0, state:d.skin?'done':'todo', meta: d.skin ? 'Routine completata' : 'Segna la routine quando l\'hai fatta', mini: d.skin?'Fatta':'Da fare'};
@@ -1430,7 +1525,7 @@ const baseScales = (yOpts={}) => ({
    ========================================================= */
 function insights(){
   const t = todayKey(), h = new Date().getHours(), d = S.days[t] || blankDay(), st = status(t), sc = score(t), out = [];
-  const add = (p, tone, title, text) => out.push({p, tone, title, text});
+  const add = (p, tone, title, text, kind='') => out.push({p, tone, title, text, kind});
   const past7 = range(addDays(t,-7), addDays(t,-1)).filter(tracked);
   const avg7 = past7.length ? avg(past7.map(ratio)) : null, NT = total(t);
   const studyNow = studySecs(t);
@@ -1468,7 +1563,14 @@ function insights(){
   if (!ci.covered) add(6,'tip','Serata film','Sei fuori dalla finestra dei 3 giorni. Stasera scegli un film che ti ispiri — una storia di imprenditori o un grande classico — e annota una lezione.');
   else if (ci.left === 0 && !ci.today) add(4,'tip','Ultimo giorno della finestra film','Da domani il conteggio scade: se riesci, guarda un film stasera.');
   // Imparare
-  if (!st.learn && h >= 18) add(5,'push','Cosa hai imparato oggi?','Due righe bastano: un concetto di studio, una frase di un cliente, un errore da non ripetere. È il tuo diario di crescita.');
+  // Imparare: settore consigliato e mappa di crescita
+  const L30 = learnStats(addDays(t,-29), t);
+  if (!st.learn){
+    const cand = LEARN_SECTORS.map(s => ({s, n:(L30.list.find(g => g.key === s.id) || {n:0}).n, left:pillsLeft(s.id).length})).filter(x => x.left).sort((a,b) => a.n - b.n)[0];
+    if (cand) add(h >= 18 ? 7 : 5, 'tip', `Pillola consigliata: ${cand.s.short}`, `${cand.n ? `Negli ultimi 30 giorni solo ${plural(cand.n,'apprendimento','apprendimenti')} in ${cand.s.name}` : `Questo mese non hai ancora esplorato ${cand.s.name}`}: apri il Generatore di Sapere, 2 minuti di lettura e 3 domande veloci.${L30.items.length ? ' ' + learnSummary(L30, "Nell'ultimo mese", false) : ''}`, 'learn');
+    else add(h >= 18 ? 7 : 5, 'push', 'Cosa hai imparato oggi?', 'Hai letto tutte le pillole disponibili: annota a mano un concetto di studio, un articolo o una lezione da una trattativa.', 'learn');
+  }
+  if (st.learn && L30.items.length) add(6, 'scale', 'La tua mappa di crescita', learnSummary(L30, "Nell'ultimo mese", false) + (L30.quizN ? ` Nei quiz: ${Math.round(L30.quizOk / L30.quizN * 100)}% di risposte corrette.` : '') + (L30.untouched.length ? ` Ancora da esplorare: ${L30.untouched.map(s => s.short).join(', ')}.` : ''), 'learn');
   // Overall
   // Sonno
   if (d.sleep !== null && d.sleep !== '' && d.sleep !== undefined){
@@ -1502,7 +1604,10 @@ function insights(){
 
   out.sort((a,b) => b.p - a.p);
   const seen = new Set();
-  return out.filter(x => { const k = x.tone + x.title.slice(0,8); if (seen.has(x.title)) return false; seen.add(x.title); return true; }).slice(0,4);
+  const uniq = out.filter(x => { if (seen.has(x.title)) return false; seen.add(x.title); return true; });
+  const top = uniq.slice(0,4), li = uniq.find(x => x.kind === 'learn');
+  if (li && !top.includes(li)) top[top.length - 1] = li;
+  return top;
 }
 
 /* =========================================================
@@ -1664,6 +1769,7 @@ function quickList({cols=false} = {}){
     else if (h.id === 'skin') act = `<button class="btn btn-sm ${d.skin?'btn-outline-gold':''}" data-act="q-skin" aria-pressed="${!!d.skin}">${d.skin?icon('check')+' Fatta':'Segna'}</button>`;
     else if (h.id === 'social') act = `<button class="btn btn-sm" data-act="q-social" title="Aggiungi 5 minuti">+5′</button>`;
     else if (h.id === 'run') act = `<button class="btn btn-sm" data-act="q-run" title="Aggiungi 1 km">+1 km</button>`;
+    else if (h.id === 'learn') act = `<button class="btn btn-sm ${c.done?'btn-outline-gold':''}" data-act="q-learn" title="Generatore di Sapere">${icon('spark')} ${c.done?'Altra':'Pillola'}</button>`;
     else if (h.id === 'sleep') act = `<button class="btn btn-sm ${+d.sleep>=SLEEP_GOAL?'btn-outline-gold':''}" data-act="q-sleep" title="Registra 8 ore di sonno">${+d.sleep>=SLEEP_GOAL?icon('check')+' 8h':'8h'}</button>`;
     else act = `<a class="btn btn-sm btn-ghost btn-icon" href="#tracker" aria-label="Apri ${esc(h.name)} nel tracker">${icon('right')}</a>`;
     return `<div class="qrow ${c.state}"><span class="qrow-ic">${icon(h.icon)}</span>
@@ -1883,9 +1989,7 @@ function habitCard(id){
       break;
     }
     case 'learn': {
-      const prev = range(addDays(k,-7), addDays(k,-1)).reverse().map(x => [x, S.days[x]?.learned]).find(x => x[1] && x[1].trim());
-      body = `<textarea class="input" data-field="learned" rows="4" placeholder="Oggi ho imparato che…">${esc(d.learned)}</textarea>
-        ${prev ? `<div class="small muted">Ultima lezione (${relDays(diffDays(k, prev[0]))}): <span style="color:var(--text-2)">“${esc(prev[1].slice(0,110))}${prev[1].length>110?'…':''}”</span></div>` : ''}`;
+      body = learnCardBody(k);
       break;
     }
     case 'sleep': {
@@ -1955,6 +2059,223 @@ function stopTimer(){
   const d = getDay(S.timer.day, true), el = (Date.now() - S.timer.start)/1000;
   d.studySec = (d.studySec||0) + el; S.timer = null; save();
   toast(`Sessione registrata: ${fmtDur(el)}.`, {tone:'em', icon:'check'});
+}
+
+/* =========================================================
+   IMPARARE · GENERATORE DI SAPERE & INSERIMENTO MANUALE
+   ========================================================= */
+const LEARN_SECTORS = [
+  {id:'cinema',   name:'Cinema & Arte',                          short:'Cinema & Arte',        icon:'film',     color:'#d99ab9'},
+  {id:'economia', name:'Economia, Finanza & Marketing',          short:'Economia & Finanza',   icon:'euro',     color:'var(--gold)'},
+  {id:'ai',       name:'Intelligenza Artificiale & Informatica', short:'IA & Informatica',     icon:'cpu',      color:'var(--sky)'},
+  {id:'storia',   name:'Storia & Mondo',                         short:'Storia & Mondo',       icon:'landmark', color:'var(--amber)'},
+  {id:'mindset',  name:'Mindset, Psicologia & Negoziazione',     short:'Mindset & Negoziazione', icon:'brain',  color:'var(--em)'},
+  {id:'geo',      name:'Geopolitica & Strategia Globale',        short:'Geopolitica',          icon:'globe',    color:'#b4a2e6'},
+];
+const PILLS = Array.isArray(window.QG_PILLS) ? window.QG_PILLS : [];
+const sectorOf = id => LEARN_SECTORS.find(s => s.id === id);
+const sectorLabel = it => it.sector === 'altro' ? (it.label || 'Altro') : (sectorOf(it.sector)?.name || 'Altro');
+const sectorShort = it => it.sector === 'altro' ? (it.label || 'Altro') : (sectorOf(it.sector)?.short || 'Altro');
+const sectorColor = it => it.sector === 'altro' ? 'var(--muted)' : (sectorOf(it.sector)?.color || 'var(--muted)');
+const sectorIcon = it => it.sector === 'altro' ? 'edit' : (sectorOf(it.sector)?.icon || 'bulb');
+const pillsLeft = sid => PILLS.filter(p => p.sector === sid && !(S.pillsDone || {})[p.id]);
+const learnItems = k => (S.days[k] && S.days[k].learnItems) || [];
+const listJoin = a => a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' e ' + a[a.length-1];
+const shuffle = a => { for (let i = a.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const learnDay = () => route === 'tracker' ? viewDay : todayKey();
+let learnMode = 'gen';
+const LQ = {pill:null, order:null, answers:[], day:null};
+
+/* ---- Card del tracker ---- */
+function sectorGridHTML(){
+  return `<div class="sector-grid">${LEARN_SECTORS.map(s => { const left = pillsLeft(s.id).length;
+    return `<button class="sector-btn ${left?'':'empty'}" style="--c:${s.color}" data-act="pill-open" data-v="${s.id}" title="${s.name}">
+      <span class="sec-ic">${icon(s.icon)}</span><span style="min-width:0"><b>${s.short}</b><small>${left ? plural(left,'pillola nuova','pillole nuove') : 'Tutte lette'}</small></span></button>`; }).join('')}</div>`;
+}
+function learnItemHTML(it, removable=true){
+  return `<div class="litem" style="--c:${sectorColor(it)}"><span class="sec-ic sm">${icon(it.type === 'pill' ? sectorIcon(it) : 'edit')}</span>
+    <div style="min-width:0"><b title="${esc(it.title)}">${esc(it.title)}</b><small><span class="sec-tag">${esc(sectorShort(it))}</span> · ${it.type === 'pill' ? `Pillola${it.quiz ? ` · quiz ${it.quiz.ok}/${it.quiz.n}` : ''}` : 'Appunto manuale'}</small></div>
+    ${removable ? `<button class="btn btn-icon btn-sm btn-ghost" data-act="learn-del" data-id="${it.id}" aria-label="Rimuovi apprendimento">${icon('trash')}</button>` : '<span></span>'}</div>`;
+}
+function learnCardBody(k){
+  const d = getDay(k), items = learnItems(k);
+  const panel = learnMode === 'gen'
+    ? `<div class="label">Scegli un settore · pillola da 2 minuti e 3 domande</div>${sectorGridHTML()}`
+    : `<textarea class="input" data-field="learnDraft" rows="4" placeholder="Oggi ho imparato che… (un concetto dell'università, un articolo, una lezione da una trattativa)">${esc(d.learnDraft || '')}</textarea>
+       <button class="btn btn-gold" data-act="learn-save" style="width:100%">${icon('check')} Salva apprendimento</button>`;
+  const prev = !items.length ? range(addDays(k,-14), addDays(k,-1)).reverse().map(x => [x, learnItems(x)[learnItems(x).length-1]]).find(x => x[1]) : null;
+  return `<div class="seg seg-full learn-mode" role="tablist" aria-label="Modalità di apprendimento">
+      <button role="tab" aria-selected="${learnMode==='gen'}" class="${learnMode==='gen'?'on':''}" data-act="learn-mode" data-v="gen">${icon('spark')} Generatore<span class="hide-sm">&nbsp;di Sapere</span></button>
+      <button role="tab" aria-selected="${learnMode==='man'}" class="${learnMode==='man'?'on':''}" data-act="learn-mode" data-v="man">${icon('edit')} Manuale</button>
+    </div>
+    ${panel}
+    ${items.length ? `<div class="label">Appreso ${k === todayKey() ? 'oggi' : 'in questa giornata'}</div><div class="litems">${items.map(it => learnItemHTML(it)).join('')}</div>` : ''}
+    ${prev ? `<div class="small muted">Ultimo apprendimento (${relDays(diffDays(k, prev[0]))}): <span style="color:var(--text-2)">${esc(prev[1].title)}</span> · ${esc(sectorShort(prev[1]))}</div>` : ''}`;
+}
+
+/* ---- Binario A: pillola, lettura e quiz ---- */
+function learnHubModal(){
+  openModal({eyebrow:'Generatore di Sapere', title:'Scegli il settore di oggi', body:`
+    <p class="small muted" style="margin:0 0 14px">Una pillola da circa 2 minuti di lettura, poi 3 domande veloci per fissare i concetti chiave. Ogni pillola letta non ti verrà più riproposta.</p>
+    ${sectorGridHTML()}
+    <hr class="hair">
+    <button class="btn btn-ghost" data-act="learn-manual-home" style="width:100%">${icon('edit')} Preferisci scrivere tu cosa hai imparato? Inserimento manuale</button>`});
+}
+function openPill(sid, avoidId){
+  const s = sectorOf(sid); if (!s) return;
+  if (!PILLS.length){ openModal({eyebrow:'Generatore di Sapere', title:'Libreria non disponibile', body:`<p class="muted" style="margin:0">Il file <code>pillole.js</code> non è stato caricato: deve trovarsi nella stessa cartella di <code>index.html</code>. Nel frattempo puoi usare l'inserimento manuale.</p>`}); return; }
+  let pool = pillsLeft(sid);
+  if (!pool.length){
+    const total = PILLS.filter(p => p.sector === sid).length;
+    openModal({eyebrow:s.name, title:'Settore completato', body:`
+      <div class="pill-box" style="--c:${s.color};margin-top:0"><div class="eyebrow" style="color:var(--c)">${icon('crown')} Tutte lette</div><p>Hai letto e verificato tutte le ${total} pillole di ${s.name}. Scegli un altro settore oppure annota a mano un nuovo apprendimento.</p></div>
+      <div class="label" style="margin:18px 0 10px">Altri settori</div>${sectorGridHTML()}`});
+    return;
+  }
+  if (avoidId && pool.length > 1) pool = pool.filter(p => p.id !== avoidId);
+  const p = pool[Math.floor(Math.random() * pool.length)];
+  const words = (p.body.join(' ') + ' ' + p.curiosity + ' ' + p.apply).split(/\s+/).length, mins = Math.max(1, Math.ceil(words / 150));
+  LQ.pill = p; LQ.order = null; LQ.answers = []; LQ.day = learnDay();
+  openModal({eyebrow:'Generatore di Sapere', title:p.title, wide:true, body:`
+    <article class="pill-read" style="--c:${s.color}">
+      <div class="pill-meta"><span class="sec-chip">${icon(s.icon)} ${s.name}</span><span class="small muted row" style="gap:6px">${icon('clock')} ${mins} min di lettura · ${plural(pillsLeft(sid).length,'pillola nuova','pillole nuove')} nel settore</span></div>
+      <p class="pill-kicker">${esc(p.kicker)}</p>
+      <div class="pill-body">${p.body.map(x => `<p>${esc(x)}</p>`).join('')}</div>
+      <div class="pill-box"><div class="eyebrow" style="color:var(--c)">${icon('spark')} Lo sapevi?</div><p>${esc(p.curiosity)}</p></div>
+      <div class="pill-box apply"><div class="eyebrow gold">${icon('target')} Applicalo al tuo business</div><p>${esc(p.apply)}</p></div>
+      <div class="modal-foot wrap"><button class="btn btn-ghost" data-act="pill-next" data-v="${sid}">${icon('spark')} Altra pillola</button><button class="btn btn-gold" data-act="pill-understood">${icon('check')} Ho capito · Aggiungi alla task</button></div>
+    </article>`});
+}
+function showQuiz(){
+  const p = LQ.pill; if (!p) return;
+  const s = sectorOf(p.sector);
+  LQ.order = p.quiz.map(q => shuffle(q.o.map((_, i) => i)));
+  LQ.answers = p.quiz.map(() => null);
+  $('#modalEyebrow').textContent = 'Quiz di verifica · 3 domande veloci';
+  $('#modalBody').innerHTML = `<div class="quiz" style="--c:${s.color}">
+    <p class="small muted" style="margin:0 0 4px">Nessun voto e nessun blocco: è solo un controllo veloce per fissare i concetti chiave. Rispondi d'istinto.</p>
+    ${p.quiz.map((q, qi) => `<div class="quiz-q" data-q="${qi}"><div class="quiz-n">Domanda ${qi+1} di ${p.quiz.length}</div><h5>${esc(q.q)}</h5>
+      <div class="quiz-opts">${LQ.order[qi].map(oi => `<button class="quiz-opt" data-act="quiz-answer" data-q="${qi}" data-v="${oi}">${esc(q.o[oi])}</button>`).join('')}</div>
+      <div class="quiz-why" hidden></div></div>`).join('')}
+    <div id="quizEnd"></div></div>`;
+  $('.modal').scrollTop = 0;
+}
+function answerQuiz(qi, oi){
+  const p = LQ.pill; if (!p || LQ.answers[qi] !== null) return;
+  LQ.answers[qi] = oi;
+  const q = p.quiz[qi], ok = oi === q.a, box = $(`.quiz-q[data-q="${qi}"]`);
+  $$('.quiz-opt', box).forEach(b => { const v = +b.dataset.v; b.disabled = true; if (v === q.a) b.classList.add('ok'); else if (v === oi) b.classList.add('ko'); });
+  box.classList.add(ok ? 'is-ok' : 'is-ko');
+  const why = $('.quiz-why', box); why.hidden = false;
+  why.innerHTML = `${ok ? '<b class="em">Esatto.</b>' : '<b class="ruby">Non proprio.</b>'} ${esc(q.why)}`;
+  if (LQ.answers.every(a => a !== null)) completePill();
+}
+function completePill(){
+  const p = LQ.pill, k = LQ.day || todayKey(), n = p.quiz.length;
+  const okN = LQ.answers.filter((a, i) => a === p.quiz[i].a).length;
+  const d = getDay(k, true), before = score(k);
+  d.learnItems.push({id:uid(), type:'pill', pillId:p.id, sector:p.sector, title:p.title, quiz:{ok:okN, n}, at:Date.now()});
+  (S.pillsDone ||= {})[p.id] = {date:k, sector:p.sector, ok:okN, n};
+  save();
+  const msg = okN === n ? 'Tre su tre: concetti fissati alla perfezione.' : okN >= 2 ? 'Ottimo: i concetti chiave ci sono.' : 'Nessun problema: rileggerla tra qualche giorno fisserà meglio i punti chiave.';
+  $('#quizEnd').innerHTML = `<div class="quiz-sum"><div class="quiz-score"><span class="serif">${okN}<small>/${n}</small></span><span class="eyebrow">corrette</span></div>
+      <div style="min-width:0"><b>${msg}</b><p class="small muted" style="margin:5px 0 0">Pillola salvata nella task «Imparare» di ${k === todayKey() ? 'oggi' : fmtDate(k,{day:'numeric', month:'long'})}, settore ${sectorOf(p.sector).name}. Non ti verrà più riproposta.</p></div></div>
+    <div class="modal-foot wrap"><button class="btn" data-act="pill-next" data-v="${p.sector}">${icon('spark')} Un'altra pillola</button><button class="btn btn-gold" data-close>Chiudi</button></div>`;
+  setTimeout(() => $('#quizEnd')?.scrollIntoView({behavior:'smooth', block:'nearest'}), 60);
+  LQ.pill = null;
+  afterLearnChange(k, before);
+}
+
+/* ---- Binario B: inserimento manuale con settore ---- */
+function saveManualLearn(){
+  const k = learnDay(), d = getDay(k, true), txt = (d.learnDraft || '').trim();
+  if (txt.length < 3){ toast('Scrivi prima cosa hai imparato, anche solo una frase.', {tone:'ruby'}); $('[data-field="learnDraft"]')?.focus(); return; }
+  const labels = S.learnLabels || [];
+  openModal({eyebrow:'Inserimento manuale', title:'In quale settore collochi questo apprendimento?', body:`
+    <blockquote class="learn-quote">“${esc(txt.length > 240 ? txt.slice(0, 238) + '…' : txt)}”</blockquote>
+    <form data-form="learn-sector" data-day="${k}" class="stack" style="gap:14px">
+      <div class="field"><label for="learnSector">Settore</label>
+        <select class="input" id="learnSector" name="sector" data-act="learn-sector-select" required autofocus>
+          <option value="" disabled selected>Scegli un settore…</option>
+          ${LEARN_SECTORS.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+          ${labels.length ? `<optgroup label="Le tue etichette">${labels.map(l => `<option value="altro:${esc(l)}">Altro · ${esc(l)}</option>`).join('')}</optgroup>` : ''}
+          <option value="altro:__new">Altro (nuova etichetta personalizzata)…</option>
+        </select></div>
+      <div class="field" id="learnCustomWrap" hidden><label for="learnCustom">Nome della categoria personalizzata</label><input class="input" id="learnCustom" name="custom" maxlength="40" placeholder="Es. Diritto, Fotografia, Nutrizione"></div>
+      <div class="modal-foot" style="margin-top:4px"><button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-gold">${icon('check')} Salva nel settore</button></div>
+    </form>`});
+}
+function confirmManualLearn(form, fd){
+  const k = form.dataset.day || learnDay(), d = getDay(k, true), txt = (d.learnDraft || '').trim();
+  let sector = fd.sector || '', label = '';
+  if (!sector){ toast('Scegli un settore.', {tone:'ruby'}); return; }
+  if (sector === 'altro:__new'){
+    label = (fd.custom || '').trim().replace(/\s+/g, ' ');
+    if (label.length < 2){ toast('Scrivi il nome della categoria personalizzata.', {tone:'ruby'}); $('#learnCustom')?.focus(); return; }
+    const exist = (S.learnLabels ||= []).find(l => l.toLowerCase() === label.toLowerCase());
+    if (exist) label = exist; else S.learnLabels.push(label);
+    sector = 'altro';
+  } else if (sector.startsWith('altro:')){ label = sector.slice(6); sector = 'altro'; }
+  const before = score(k);
+  d.learnItems.push({id:uid(), type:'manual', sector, ...(label ? {label} : {}), title:learnTitle(txt), text:txt, at:Date.now()});
+  d.learnDraft = '';
+  save(); closeModal();
+  toast(`Apprendimento salvato in ${esc(sector === 'altro' ? label : sectorOf(sector).short)}.`, {tone:'em', icon:'bulb'});
+  afterLearnChange(k, before);
+}
+function deleteLearnItem(id){
+  const k = viewDay, d = getDay(k, true), it = d.learnItems.find(x => x.id === id); if (!it) return;
+  if (!confirm(`Rimuovere «${it.title}» dalla task di questa giornata?${it.type === 'pill' ? ' La pillola tornerà disponibile nel Generatore.' : ''}`)) return;
+  d.learnItems = d.learnItems.filter(x => x.id !== id);
+  if (it.type === 'pill' && it.pillId && S.pillsDone) delete S.pillsDone[it.pillId];
+  prevScore = score(k); afterHabitChange('learn');
+}
+function afterLearnChange(k, before){
+  if (route === 'tracker' && k === viewDay){ prevScore = before; afterHabitChange('learn'); return; }
+  const after = score(k);
+  if (k === todayKey() && after > before){
+    if (after === total(k)) toast(`Giornata perfetta: ${after} obiettivi su ${after}. Standard da campione.`, {tone:'em', icon:'crown'});
+    else if (after === winNeed(k)) toast(`Giornata vincente sbloccata: ${after}/${total(k)}.`, {tone:'em', icon:'fire'});
+  }
+  rerender();
+}
+
+/* ---- Analisi per settore ---- */
+function learnStats(a, b){
+  const items = range(a, b).filter(tracked).flatMap(k => learnItems(k).map(x => ({...x, day:k})));
+  const groups = {};
+  items.forEach(x => {
+    const key = x.sector === 'altro' ? 'altro:' + (x.label || 'Altro').toLowerCase() : x.sector;
+    const g = groups[key] ||= {key, sector:x.sector, label:sectorLabel(x), short:sectorShort(x), color:sectorColor(x), icon:sectorIcon(x), pills:0, manual:0};
+    if (x.type === 'pill') g.pills++; else g.manual++;
+  });
+  const list = Object.values(groups).map(g => ({...g, n:g.pills + g.manual})).sort((x, y) => y.n - x.n);
+  const qz = items.filter(x => x.quiz);
+  return {items, list, pills:items.filter(x => x.type === 'pill').length, manual:items.filter(x => x.type === 'manual').length,
+    quizOk:sum(qz.map(x => x.quiz.ok)), quizN:sum(qz.map(x => x.quiz.n)), untouched:LEARN_SECTORS.filter(s => !groups[s.id])};
+}
+const LEARN_LEAD = {7:"Nell'ultima settimana", 30:"Nell'ultimo mese", 90:'Negli ultimi tre mesi', 365:"Nell'ultimo anno"};
+function learnSummary(L, lead, html=true){
+  if (!L.items.length) return '';
+  const B = t => html ? `<strong>${esc(t)}</strong>` : t;
+  const what = g => g.manual === 0 ? plural(g.pills,'pillola','pillole') : g.pills === 0 ? plural(g.manual,'appunto','appunti') : `${plural(g.pills,'pillola','pillole')} e ${plural(g.manual,'appunto','appunti')}`;
+  const std = L.list.filter(g => g.sector !== 'altro'), cus = L.list.filter(g => g.sector === 'altro'), parts = [];
+  if (std.length){ const top = std.slice(0, 3).map(g => `${B(g.label)} (${what(g)})`); if (std.length > 3) top.push(`altri ${std.length - 3} settori`); parts.push(`hai focalizzato la tua crescita su ${cus.length ? top.join(', ') : listJoin(top)}`); }
+  if (cus.length){ const nC = sum(cus.map(g => g.n)); parts.push(`hai aggiunto ${plural(nC,'argomento personalizzato','argomenti personalizzati')} in ${listJoin(cus.map(g => B('«' + g.label + '»')))}`); }
+  return `${lead} ${parts.join(' e ')}.`;
+}
+function learnStatsCard(L, periodLabel, days){
+  const max = Math.max(1, ...L.list.map(g => g.n)), pct = L.quizN ? Math.round(L.quizOk / L.quizN * 100) : null;
+  return `<section class="card mt-18">
+    <div class="card-head"><div><div class="eyebrow">Crescita personale · ${periodLabel}</div><h3 class="card-title">Apprendimento per settore</h3></div>
+      <div class="row wrap" style="gap:8px"><span class="pill plain">${plural(L.pills,'pillola','pillole')}</span><span class="pill plain">${plural(L.manual,'appunto','appunti')}</span>${pct !== null ? `<span class="pill ${pct >= 67 ? 'done' : 'progress'}">Quiz ${pct}%</span>` : ''}</div></div>
+    ${L.items.length ? `<div class="learn-stats">
+      <div class="sec-rows">${L.list.map(g => `<div class="sec-row" style="--c:${g.color}"><span class="row" style="gap:10px;min-width:0"><span class="sec-ic sm">${icon(g.icon)}</span><span class="sec-name" title="${esc(g.label)}">${esc(g.label)}</span></span><div class="sec-bar"><i style="width:${g.n / max * 100}%"></i></div><b>${g.n}</b></div>`).join('')}</div>
+      <div class="learn-text"><p>${learnSummary(L, LEARN_LEAD[days] || 'Nel periodo')}</p>
+        ${pct !== null ? `<p>Nei quiz di verifica hai risposto correttamente a <strong>${plural(L.quizOk,'domanda','domande')} su ${L.quizN}</strong> (${pct}%). ${pct >= 80 ? 'Comprensione eccellente.' : pct >= 60 ? 'Buona comprensione dei concetti chiave.' : 'Rileggere le pillole tra qualche giorno aiuterà a fissarle.'}</p>` : ''}
+        ${L.untouched.length ? `<p>Settori ancora da esplorare: ${L.untouched.map(s => `<span class="sec-tag chip-tag" style="--c:${s.color}">${s.short}</span>`).join(' ')}</p>` : '<p>Hai toccato tutti e sei i settori: un profilo di crescita davvero completo.</p>'}</div>
+    </div>` : `<div class="empty"><div class="serif">Nessun apprendimento nel periodo</div>Leggi una pillola dal Generatore di Sapere o annota a mano cosa hai imparato: qui vedrai su quali settori stai crescendo.</div>`}
+  </section>`;
 }
 
 /* =========================================================
@@ -2212,7 +2533,8 @@ function periodMetrics(a, b){
     km: sum(runs), runDays: runs.length,
     socialAvg: socialLogged.length ? avg(socialLogged) : null, socialOver: socialLogged.filter(v => v >= SOCIAL_LIMIT).length,
     films: sum(keys.map(k => S.days[k]?.films?.length || 0)),
-    learned: keys.filter(k => (S.days[k]?.learned||'').trim().length >= 3).length,
+    learned: keys.filter(k => status(k).learn).length,
+    learn: learnStats(a, b),
     income: incomeIn(a, b),
     leads: S.clients.filter(c => c.created && c.created >= a && c.created <= b).length,
     dow: byDow.map(x => x.length ? avg(x) : null),
@@ -2224,7 +2546,7 @@ const HABIT_FIX = {
   social:'Sposta TikTok e Instagram fuori dalla schermata principale e imposta un limite app a 45 minuti: l\'attrito batte la forza di volontà.',
   run:'Prepara scarpe e vestiti la sera prima e fissa 3 uscite a settimana in calendario come se fossero incontri con clienti.',
   cinema:'Scegli il film della settimana la domenica: una watchlist pronta elimina la paralisi della scelta.',
-  learn:'Chiudi la giornata con 2 minuti di journaling: "Oggi ho imparato che…". Anche una trattativa insegna qualcosa.',
+  learn:'Apri il Generatore di Sapere ogni mattina con il caffè: una pillola da 2 minuti e tre domande. Alterna i settori per costruire una cultura a 360 gradi.',
   skin:'Lascia i prodotti accanto allo spazzolino: ciò che è visibile viene eseguito.',
   sleep:'Fissa un orario di sonno costante con una sveglia anche per andare a letto, e spegni gli schermi 30 minuti prima: 8 ore sono il carburante di tutte le altre abitudini.',
 };
@@ -2270,6 +2592,8 @@ function renderStats(){
       <div class="habit-rates">${HABITS.map(h => { const v = M.rates[h.id]; return `<div class="hr-row"><span class="row" style="gap:8px">${icon(h.icon)}${h.name}</span><div class="bar ${v>=.7?'done':v<.35&&M.den[h.id]?'over':''}"><i style="width:${v*100}%"></i></div><b>${M.den[h.id] ? Math.round(v*100)+'%' : '—'}</b></div>`; }).join('')}</div>
     </div>
   </section>
+
+  ${learnStatsCard(M.learn, labels[days], days)}
 
   <section class="grid g-main mt-18">
     <div class="card"><div class="card-head"><div><div class="eyebrow">Ultimi 12 mesi</div><h3 class="card-title">Andamento finanziario</h3></div><div class="row small muted" style="gap:14px"><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:var(--em);display:block"></i>Entrate</span><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:var(--ruby);display:block"></i>Abbonamenti</span><span class="row" style="gap:6px"><i style="width:10px;height:2px;background:var(--gold-2);display:block"></i>Netto</span></div></div><div class="chart-box tall"><canvas id="cFinance"></canvas></div></div>
@@ -2343,6 +2667,10 @@ function reportHTML(M, P, days){
   p.push(`<strong>Studio:</strong> ${N1.format(M.studyH)} ore, il ${Math.round(studyPct*100)}% del target teorico di ${M.n*2} ore. ${studyPct>=1?'Sei sopra obiettivo: valuta di alzare la qualità con esercizi pratici.':studyPct>=.7?'Vicino al target: un blocco extra nel weekend chiude il gap.':'Sotto target: sposta lo studio nella fascia oraria in cui hai più energia e proteggila.'} <strong>Corsa:</strong> ${N1.format(M.km)} km in ${plural(M.runDays,'uscita','uscite')}${M.runDays?` (media ${N1.format(M.km/M.runDays)} km)`:''}. ${M.socialAvg!==null?`<strong>Social:</strong> media di ${Math.round(M.socialAvg)} minuti al giorno, ${plural(M.socialOver,'giorno','giorni')} oltre il limite.`:''}`);
   if (M.sleepAvg !== null) p.push(`<strong>Sonno:</strong> media di ${fmtDur(M.sleepAvg*3600)} a notte, ${plural(M.sleepOk,'notte','notti')} da 8 ore o più. ${M.sleepAvg >= SLEEP_GOAL ? 'Base solida: il recupero sostiene studio e corsa.' : M.sleepAvg >= 7 ? 'Quasi a target: anticipa di 30 minuti l\'orario a letto.' : 'Debito di sonno evidente: è la prima leva da sistemare, prima ancora dello studio.'}`);
   if (bestDow && worstDow && bestDow[1] !== worstDow[1]) p.push(`Il tuo giorno migliore è il <strong>${dowNames[bestDow[1]]}</strong> (${Math.round(bestDow[0]*100)}%), il più debole il <strong>${dowNames[worstDow[1]]}</strong> (${Math.round(worstDow[0]*100)}%). Replica la struttura del ${dowNames[bestDow[1]]} — orari, sveglia, ordine delle task — nei giorni più fragili.`);
+  const LS = M.learn;
+  p.push(LS.items.length
+    ? `<strong>Apprendimento:</strong> ${learnSummary(LS, LEARN_LEAD[days] || 'Nel periodo')}${LS.quizN ? ` Nei quiz di verifica hai risposto bene a ${plural(LS.quizOk,'domanda','domande')} su ${LS.quizN} (${Math.round(LS.quizOk / LS.quizN * 100)}%).` : ''}${LS.untouched.length && LS.untouched.length < 6 ? ` Per una crescita più completa esplora anche ${listJoin(LS.untouched.map(x => x.name))}.` : ''}`
+    : `<strong>Apprendimento:</strong> nessuna pillola o appunto registrato nel periodo. Una pillola al giorno dal Generatore di Sapere costruisce, in un mese, trenta concetti nuovi.`);
   p.push(`<strong>Business:</strong> ${EUR.format(M.income)} di entrate registrate nel periodo${M.leads?` e ${plural(M.leads,'nuovo lead','nuovi lead')} in pipeline`:''}. ${M.leads<Math.max(1,Math.round(M.n/7))?'Obiettivo consigliato: almeno 2 nuove attività contattate a settimana.':'Buon ritmo di prospezione: ora concentrati sui follow-up.'}`);
   const plan = (worst.length ? worst : sorted.slice(-3)).slice(0,3).map(h => [h.name, HABIT_FIX[h.id]]);
   while (plan.length < 3) plan.push(['Scaling', 'Alza di un livello un solo parametro: +30 minuti di studio o +1 km per uscita. Crescita composta.']);
@@ -2638,6 +2966,15 @@ document.addEventListener('click', e => {
     case 'q-timer': S.timer ? stopTimer() : startTimer(); renderNav(); rerender(); break;
     case 'q-skin': quickChange(dd => { dd.skin = !dd.skin; }); break;
     case 'q-social': quickChange(dd => { dd.social = Math.max(0, (+dd.social||0) + 5); }); break;
+    case 'learn-mode': learnMode = v === 'man' ? 'man' : 'gen'; replaceCard('learn'); if (learnMode === 'man') setTimeout(() => $('[data-field="learnDraft"]')?.focus(), 30); break;
+    case 'learn-save': saveManualLearn(); break;
+    case 'learn-del': deleteLearnItem(id); break;
+    case 'pill-open': openPill(v); break;
+    case 'pill-next': openPill(v, LQ.pill?.id); break;
+    case 'pill-understood': showQuiz(); break;
+    case 'quiz-answer': answerQuiz(+el.dataset.q, +v); break;
+    case 'q-learn': learnHubModal(); break;
+    case 'learn-manual-home': closeModal(); learnMode = 'man'; viewDay = todayKey(); if (location.hash === '#tracker') renderTracker(); else location.hash = '#tracker'; setTimeout(() => { const t = $('[data-field="learnDraft"]'); if (t){ t.scrollIntoView({block:'center'}); t.focus(); } }, 120); break;
     case 'q-run': quickChange(dd => { dd.km = +((+dd.km||0) + 1).toFixed(2); }); break;
     case 'q-sleep': quickChange(dd => { dd.sleep = (+dd.sleep||0) >= SLEEP_GOAL ? null : SLEEP_GOAL; dd.bed = dd.wake = ''; }); break;
     case 'q-study-add': quickChange(dd => { dd.studySec = Math.max(0, (dd.studySec||0) + +v); }); break;
@@ -2694,6 +3031,7 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => {
   const el = e.target;
   if (el.matches('[data-act="stage"]')){ const c = S.clients.find(x => x.id === el.dataset.id); if (c){ setStage(c, el.value); rerender(); } }
+  else if (el.matches('[data-act="learn-sector-select"]')){ const w = $('#learnCustomWrap'); if (w){ w.hidden = el.value !== 'altro:__new'; if (!w.hidden) $('#learnCustom').focus(); } }
   else if (el.matches('[data-act="crm-sort"]')){ S.ui.crmSort = el.value; save(); rerender(); }
   else if (el.matches('[data-act="home-select"]') && el.value){ prevScore = score(viewDay); const a = getDay(viewDay, true).home.acts; if (!a.includes(el.value)) a.push(el.value); afterHabitChange('home'); }
   else if (el.matches('[data-act="import"]')){
@@ -2710,7 +3048,7 @@ document.addEventListener('input', e => {
   const d = getDay(viewDay, true);
   prevScore = score(viewDay);
   if (f === 'home-note'){ d.home.note = el.value; save(); return; }
-  if (f === 'learned'){ d.learned = el.value; afterHabitChange('learn', false); return; }
+  if (f === 'learnDraft'){ d.learnDraft = el.value; save(); return; }
   if (f === 'social'){ d.social = el.value === '' ? null : Math.max(0, Math.round(+el.value)); afterHabitChange('social', false); return; }
   if (f === 'sleep'){ d.sleep = el.value === '' ? null : clamp(+el.value, 0, 24); afterHabitChange('sleep', false); return; }
   if (f === 'bed' || f === 'wake'){
@@ -2741,6 +3079,7 @@ document.addEventListener('submit', e => {
       else { const c = {id:uid(), created:t, stage:'da_contattare', ...data}; S.clients.push(c); if (fd.stage !== 'da_contattare') setStage(c, fd.stage); toast(`${esc(c.name)} aggiunto alla pipeline.`, {tone:'em', icon:'briefcase'}); }
       save(); closeModal(); rerender(); break;
     }
+    case 'learn-sector': confirmManualLearn(form, fd); break;
     case 'profile': S.profile.name = fd.name.trim(); save(); closeModal(); rerender(); toast('Profilo aggiornato.', {tone:'em'}); break;
   }
 });

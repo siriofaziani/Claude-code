@@ -11,7 +11,26 @@ Dashboard per abitudini giornaliere, timer di studio, finanze, CRM dell'agenzia 
 | `manifest.json` | Nome, icone, colori e modalità `standalone` dell'app installata |
 | `sw.js` | Service Worker: cache offline e apertura istantanea |
 | `icons/` | Icone (192, 512, maskable, Apple touch, favicon) e screenshot del pannello di installazione |
+| `pillole.js` | Libreria delle 36 pillole del Generatore di Sapere (6 per settore, con quiz) |
 | `vendor/chart.umd.js` | Chart.js 4.4.1 in locale, così i grafici funzionano offline (licenza MIT in `vendor/`) |
+
+## Imparare: Generatore di Sapere e inserimento manuale
+
+La task «Imparare» ha due binari:
+
+- **Generatore di Sapere:** scegli uno dei 6 settori (Cinema & Arte · Economia, Finanza & Marketing ·
+  IA & Informatica · Storia & Mondo · Mindset, Psicologia & Negoziazione · Geopolitica & Strategia Globale) e leggi una pillola.
+  Dopo «Ho capito · Aggiungi alla task» compaiono 3 domande a scelta multipla, con le opzioni mescolate e un feedback immediato.
+  A quiz finito la pillola viene salvata con il suo id e il suo settore e non viene più riproposta.
+- **Inserimento manuale:** scrivi cosa hai imparato e scegli il settore da un menu a tendina, oppure «Altro» con un'etichetta
+  personalizzata, che viene ricordata per le volte successive.
+
+Le statistiche mostrano il riepilogo per settore e le percentuali dei quiz; il resoconto testuale e i consigli del giorno
+descrivono su quali settori stai crescendo e quali restano da esplorare. I vecchi appunti, scritti prima di questo
+aggiornamento, sono stati spostati in «Non classificato».
+
+Le pillole stanno in `pillole.js` (36, 6 per settore). Per aggiungerne altre inserisci un nuovo oggetto con un `id` mai usato,
+lo stesso formato e uno dei settori `cinema`, `economia`, `ai`, `storia`, `mindset`, `geo`. Poi aumenta `VERSION` in `sw.js`.
 
 ## Stili, palette e layout
 
