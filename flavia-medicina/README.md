@@ -28,13 +28,30 @@ e funziona anche offline. I dati sono salvati in automatico sul dispositivo (`lo
   - **Assegna pagine:** esame e fonte si scelgono toccando le etichette, non da menu a tendina.
     - La pagina iniziale è già proposta; i tasti 10, 20, 30 o 50 pp. completano l'intervallo.
     - Il giorno si sceglie tra i prossimi 7, oppure con «Altro» per qualsiasi data.
-    - Argomento, orario e «già studiate» sono raccolti in «facoltativo».
+    - In fondo c'è l'**orario facoltativo**: Nessuno, una fascia (Mattina 8–13, Pomeriggio 14–19, Sera dopo le 19)
+      oppure un orario preciso, per esempio dalle 09:00 alle 12:00.
+    - Argomento e «già studiate» sono raccolti in «facoltativo».
     - Il pulsante riassume l'operazione, per esempio «Assegna pp. 41–85 a domani».
 - **Calendario a schermo intero:** il pulsante «Schermo intero» è nel calendario della Home e nella sezione Calendario.
   - Viste: **Mese**, con tutte le attività di ogni giorno; **Settimana**, con 7 colonne alte; **Agenda**, con 4 settimane in
     elenco, che è la vista predefinita su iPhone.
   - Dal calendario espanso puoi spuntare le pagine, modificare le attività e aggiungere con il «+» di ogni giorno.
   - Si chiude con la **X** in alto a destra, che resta sempre visibile, oppure con Esc.
+- **Orari modificabili dal calendario:** su ogni voce l'orario, con l'icona dell'orologio, si tocca per cambiarlo, anche nel
+  calendario a schermo intero.
+  - Sessioni di studio e ripassi: giorno, fascia o orario preciso.
+  - Esami: orario dell'appello.
+  - Palestra e corsa: ora.
+  - Attività personali: si apre la loro scheda.
+
+  Nella Home e nel pianificatore l'orario delle pagine si tocca allo stesso modo.
+- **Ordine cronologico:** in ogni giorno le voci sono ordinate per orario, dalla mattina alla sera. Le fasce vengono
+  ordinate come un orario indicativo:
+  - Mattina come le 8:00;
+  - Pomeriggio come le 14:00;
+  - Sera come le 19:30.
+
+  Le voci senza orario vanno in fondo, mentre un appello senza orario resta in cima.
 - **Calendario:** vista **settimanale ampia** predefinita, con ogni giorno leggibile senza doverlo selezionare (orari, studio,
   ripassi in lilla con l'etichetta del giro, attività, allenamenti), e vista mensile. Il «+» di ogni giorno aggiunge pagine, attività
   o allenamenti; sotto la settimana ci sono i moduli per assegnare pagine e aggiungere attività.

@@ -647,6 +647,32 @@ html.cf-lock,html.cf-lock body{overflow:hidden}
   .cfa-items{grid-template-columns:minmax(0,1fr)}
 }
 
+/* ---------- Orari e fasce ---------- */
+.tbtn{display:inline-flex;align-items:center;gap:4px;padding:2px 7px 2px 5px;margin:-2px 0 -2px -5px;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer;font:inherit;line-height:1.3;transition:background .2s,border-color .2s}
+.tbtn .ic{width:12px;height:12px;opacity:.7}
+.tbtn:hover{background:color-mix(in srgb,var(--c,#3b8a82) 12%,#fff);border-color:color-mix(in srgb,var(--c,#3b8a82) 30%,transparent)}
+.tbtn:active{transform:scale(.95)}
+.tbtn.empty{font-weight:700;opacity:.75}
+.wbi.exam .tbtn:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35)}
+.blk-time{font-size:11.5px;font-weight:800;color:var(--text-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.blk-time.tbtn{margin:0}
+.blk-time.empty{color:var(--muted);font-weight:700}
+.cfi-t.tbtn{align-self:flex-start;margin:-2px 0 0 -5px}
+.tp{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.tp-c{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line-2);background:#fff;font:600 12.5px var(--sans);color:var(--text-2);cursor:pointer;transition:all .2s var(--ease)}
+.tp-c small{font-size:10.5px;font-weight:600;color:var(--muted)}
+.tp-c .ic{width:14px;height:14px}
+.tp-c:hover{border-color:var(--rose-b)}
+.tp-c:active{transform:scale(.96)}
+.tp-c.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tp-c.on small{color:rgba(255,255,255,.7)}
+.tp-custom{display:flex;gap:10px;flex-wrap:wrap}
+.tp-custom label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted)}
+.tp-custom .input{width:128px;font-weight:700;font-variant-numeric:tabular-nums}
+.bf-l em{display:block;font-style:normal;font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:none;color:var(--faint);margin-top:2px}
+@media (max-width:900px){ .bf-l em{display:inline;margin:0 0 0 6px} .tp-custom .input{width:118px} }
+
 /* ---------- Modal & toast ---------- */
 .modal-wrap{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
 .modal-bg{position:absolute;inset:0;background:rgba(27,35,43,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s both}
@@ -974,7 +1000,11 @@ function examStats(e){
   }
   return {total, done, remaining, pct, daysLeft, pace, last7, finish, planned, status};
 }
-const blocksOn = k => S.plan.filter(b => b.date === k).sort((a,b) => (a.time||'99').localeCompare(b.time||'99'));
+// Fasce orarie facoltative: servono anche per ordinare la giornata (prima la mattina, poi pomeriggio e sera)
+const SLOTS = {mattina:{label:'Mattina', k:'08:00', hint:'8–13'}, pomeriggio:{label:'Pomeriggio', k:'14:00', hint:'14–19'}, sera:{label:'Sera', k:'19:30', hint:'dopo le 19'}};
+const timeKey = x => (x && x.time) || (x && SLOTS[x.slot] ? SLOTS[x.slot].k : '99:99');
+const timeLabel = (x, empty='In giornata') => x && x.time ? x.time + (x.end ? '–' + x.end : '') : x && SLOTS[x.slot] ? SLOTS[x.slot].label : empty;
+const blocksOn = k => S.plan.filter(b => b.date === k).sort((a,b) => timeKey(a).localeCompare(timeKey(b)) || (a.from - b.from));
 const overdue = () => S.plan.filter(b => !b.done && b.date < todayKey()).sort((a,b) => a.date.localeCompare(b.date));
 function studyDay(k){ const bl = blocksOn(k).filter(b => examById(b.examId)); const planned = sum(bl.map(pagesOf)), done = sum(bl.filter(b => b.done).map(pagesOf)); return {bl, planned, done, pct: planned ? done/planned : 0}; }
 const pagesDoneOn = k => sum(S.plan.filter(b => b.done && !isReview(b) && b.doneAt === k).map(pagesOf));
@@ -998,13 +1028,14 @@ const activeOn = k => ranOn(k) || gymOn(k);
 /* ---- Elementi del giorno (calendario unificato) ---- */
 function dayItems(k){
   const items = [];
-  S.exams.filter(e => e.date === k).forEach(e => items.push({kind:'exam', time:e.time||'', title:`Esame · ${e.name}`, sub: e.status === 'superato' ? `Superato${e.grade ? ' · ' + e.grade : ''}` : 'Appello', color:'#c0605b', icon:'flag', id:e.id}));
+  S.exams.filter(e => e.date === k).forEach(e => items.push({kind:'exam', time:e.time||'', end:e.end||'', title:`Esame · ${e.name}`, sub: e.status === 'superato' ? `Superato${e.grade ? ' · ' + e.grade : ''}` : 'Appello', color:'#c0605b', icon:'flag', id:e.id}));
   S.events.filter(ev => ev.date === k).forEach(ev => { const c = EVENT_CATS[ev.cat] || EVENT_CATS.altro; items.push({kind:'event', time:ev.time||'', end:ev.end||'', title:ev.title, sub:c.label + (ev.notes ? ' · ' + ev.notes : ''), color:c.color, icon:c.icon, id:ev.id}); });
   const f = fitOf(k);
   if (ranOn(k)) items.push({kind:'run', time:f.run.time||'', title:`Corsa · ${N1.format(+f.run.km)} km`, sub: +f.run.km >= RUN_GOAL ? 'Obiettivo 5 km raggiunto' : `Obiettivo ${RUN_GOAL} km`, color:'#3b8a82', icon:'route'});
   if (gymOn(k)){ const ms = f.gym.muscles || []; items.push({kind:'gym', time:f.gym.time||'', title:`Palestra${ms.length ? ' · ' + musclesLabel(ms) : f.gym.type ? ' · ' + f.gym.type : ''}`, sub: ms.length ? (f.gym.type || 'Sala pesi') + ' · ' + plural(ms.length,'gruppo muscolare','gruppi muscolari') : 'Allenamento', color:'#b5826f', icon:'dumbbell'}); }
-  blocksOn(k).forEach(b => { const L = blockLabel(b); if (!L.e) return; items.push({kind:'study', rev:isReview(b), round:roundOf(b), time:b.time||'', title:`${L.e.name} · ${pagesOf(b)} pp.`, chip:`${b.done ? '✓ ' : ''}${isReview(b) ? '↻ ' : ''}${pagesOf(b)}p · ${L.e.name.split(' ')[0]}`, sub:L.sub, color:L.e.color, icon:isReview(b) ? 'refresh' : 'book', id:b.id, done:b.done}); });
-  return items.sort((a,b) => (a.kind==='exam'?-1:0) - (b.kind==='exam'?-1:0) || (a.time||'99:99').localeCompare(b.time||'99:99'));
+  blocksOn(k).forEach(b => { const L = blockLabel(b); if (!L.e) return; items.push({kind:'study', rev:isReview(b), round:roundOf(b), time:b.time||'', end:b.end||'', slot:b.slot||'', title:`${L.e.name} · ${pagesOf(b)} pp.`, chip:`${b.done ? '✓ ' : ''}${isReview(b) ? '↻ ' : ''}${pagesOf(b)}p · ${L.e.name.split(' ')[0]}`, sub:L.sub, color:L.e.color, icon:isReview(b) ? 'refresh' : 'book', id:b.id, done:b.done}); });
+  // ordine cronologico; un esame senza orario resta in cima, le voci senza orario in fondo
+  return items.sort((a,b) => (a.kind === 'exam' && !a.time ? -1 : 0) - (b.kind === 'exam' && !b.time ? -1 : 0) || timeKey(a).localeCompare(timeKey(b)));
 }
 
 /* =========================================================
@@ -1144,14 +1175,14 @@ function blockRow(b, opts={}){
   const L = blockLabel(b); if (!L.e) return '';
   return `<div class="blk ${b.done?'done':''} ${isReview(b)?'review':''}" style="--c:${L.e.color}">
     <button class="check ${b.done?'on':''}" data-act="blk-toggle" data-id="${b.id}" aria-label="${b.done?'Segna come da fare':'Segna come studiate'}" aria-pressed="${b.done}">${icon('check')}</button>
-    <div class="blk-t"><b>${opts.noExam ? esc(L.s ? srcName(L.s) : 'Fonte') : `<span class="exdot" style="--c:${L.e.color};margin-right:7px"></span>${esc(L.e.name)}`}</b><small><span class="stag ${isReview(b) ? 'rev' : ''}">${sessTag(b)}</span> ${b.topic && opts.noExam ? esc(b.topic) + ' · ' : ''}${opts.noExam ? `pp. ${b.from}–${b.to}` : esc(L.sub)}${b.time ? ` · ${b.time}` : ''}${opts.showDate ? ` · ${fmtDate(b.date,{weekday:'short', day:'numeric', month:'short'})}` : ''}</small></div>
-    <div class="blk-r"><span class="pp">${pagesOf(b)} pp.</span>${opts.actions || ''}</div></div>`;
+    <div class="blk-t"><b>${opts.noExam ? esc(L.s ? srcName(L.s) : 'Fonte') : `<span class="exdot" style="--c:${L.e.color};margin-right:7px"></span>${esc(L.e.name)}`}</b><small><span class="stag ${isReview(b) ? 'rev' : ''}">${sessTag(b)}</span> ${b.topic && opts.noExam ? esc(b.topic) + ' · ' : ''}${opts.noExam ? `pp. ${b.from}–${b.to}` : esc(L.sub)}${opts.showDate ? ` · ${fmtDate(b.date,{weekday:'short', day:'numeric', month:'short'})}` : ''}</small></div>
+    <div class="blk-r">${timeChip({kind:'study', id:b.id, time:b.time, end:b.end, slot:b.slot}, 'blk-time')}<span class="pp">${pagesOf(b)} pp.</span>${opts.actions || ''}</div></div>`;
 }
 function timelineHTML(k, opts={}){
   const items = dayItems(k).filter(i => opts.withStudy !== false || i.kind !== 'study');
   if (!items.length) return `<div class="empty" style="padding:18px"><div class="serif" style="font-size:19px">Giornata libera</div>Nessun impegno in agenda.</div>`;
   return `<div class="tl">${items.map(i => `<div class="tli" style="--c:${i.color}">
-      <span class="tli-time ${i.time?'':'none'}">${i.time ? i.time + (i.end ? `<br><span class="muted" style="font-weight:600;font-size:10.5px">${i.end}</span>` : '') : 'in giornata'}</span>
+      <span class="tli-time ${i.time || i.slot ? '' : 'none'}">${i.time ? i.time + (i.end ? `<br><span class="muted" style="font-weight:600;font-size:10.5px">${i.end}</span>` : '') : i.slot && SLOTS[i.slot] ? SLOTS[i.slot].label.toLowerCase() : 'in giornata'}</span>
       <div class="tli-t"><b style="${i.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(i.title)}</b><small>${esc(i.sub)}</small></div>
       ${i.kind === 'event' && opts.editable ? `<div class="ev-actions"><button class="btn btn-icon btn-sm btn-ghost" data-act="event-edit" data-id="${i.id}" aria-label="Modifica">${icon('edit')}</button><button class="btn btn-icon btn-sm btn-ghost" data-act="event-del" data-id="${i.id}" aria-label="Elimina">${icon('trash')}</button></div>` : `<span class="cat-ic">${icon(i.icon)}</span>`}
     </div>`).join('')}</div>`;
@@ -1314,14 +1345,43 @@ function blockFormInner(opts={}){
     <div class="bf-row"><span class="bf-l">Giorno</span><div>
       <div class="daychips" role="group" aria-label="Scegli il giorno">${chips.map(k => `<button type="button" class="dchip ${k === date ? 'on' : ''}" data-act="b-day" data-v="${k}"><span>${k === t ? 'Oggi' : k === addDays(t,1) ? 'Domani' : fmtDate(k,{weekday:'short'}).replace('.','')}</span><b>${parse(k).getDate()}</b></button>`).join('')}<button type="button" class="dchip other ${otherDate ? 'on' : ''}" data-act="b-other" aria-label="Scegli un'altra data">${icon('cal')}<span>Altro</span></button></div>
       <input class="input mt-8 bf-date" id="${u}d" name="date" type="date" value="${date}" data-act="b-date" aria-label="Data" ${otherDate ? '' : 'hidden'}></div></div>
-    <details class="bf-more"><summary>${icon('plus')} Argomento, orario o pagine già studiate <span class="muted">· facoltativo</span></summary>
+    <div class="bf-row"><span class="bf-l">Orario<em>facoltativo</em></span>${slotPicker({slot: blockDraft.slot || '', time: blockDraft.time || '', end: blockDraft.end || ''})}</div>
+    <details class="bf-more"><summary>${icon('plus')} Argomento o pagine già studiate <span class="muted">· facoltativo</span></summary>
       <div class="form-grid mt-12">
         <div class="field full"><label for="${u}a">Argomento o capitolo</label><input class="input" id="${u}a" name="topic" maxlength="80" placeholder="Es. Cap. 5 · Apparato cardiovascolare"></div>
-        <div class="field"><label for="${u}h">Orario</label><input class="input" id="${u}h" name="time" type="time"></div>
-        <div class="field" style="justify-content:flex-end"><label class="check-row" style="height:42px"><input type="checkbox" name="done"> Già studiate</label></div>
+        <div class="field full"><label class="check-row"><input type="checkbox" name="done"> Già studiate</label></div>
       </div></details>
     <button class="btn btn-rose bf-go">${icon('cal')} <span class="bf-go-t">Assegna al giorno</span></button>
   </form>`;
+}
+function slotPicker(v={}, opts={}){
+  const mode = v.time ? 'custom' : SLOTS[v.slot] ? v.slot : 'none';
+  const opt = [['none','Nessuno'], ...Object.entries(SLOTS).map(([k, x]) => [k, x.label]), ['custom','Orario']];
+  return `<div class="tp" data-tp>
+    <input type="hidden" name="slot" value="${mode}">
+    <div class="tp-chips" role="radiogroup" aria-label="Fascia oraria">${opt.map(([k, l]) => `<button type="button" class="tp-c ${k === mode ? 'on' : ''}" data-act="tp-pick" data-v="${k}" role="radio" aria-checked="${k === mode}">${k === 'custom' ? icon('clock') : ''}${l}${SLOTS[k] ? `<small>${SLOTS[k].hint}</small>` : ''}</button>`).join('')}</div>
+    <div class="tp-custom" ${mode === 'custom' ? '' : 'hidden'}><label>dalle<input class="input" type="time" name="time" value="${esc(v.time || '')}"></label>${opts.single ? '' : `<label>alle<input class="input" type="time" name="end" value="${esc(v.end || '')}"></label>`}</div>
+  </div>`;
+}
+function readSlot(fd){
+  const m = fd.slot || 'none';
+  if (m === 'custom') return {time:fd.time || '', end:fd.time && fd.end && fd.end > fd.time ? fd.end : '', slot:''};
+  return {time:'', end:'', slot: SLOTS[m] ? m : ''};
+}
+function timeModal(kind, id, day){
+  const t = todayKey();
+  let title = 'Orario', v = {}, body = '', sub = '';
+  if (kind === 'study'){ const b = S.plan.find(x => x.id === id); if (!b) return; const L = blockLabel(b); title = L.e ? L.e.name : 'Sessione'; sub = `${isReview(b) ? `↻ Ripasso ${roundOf(b)}° giro` : 'Studio'} · pp. ${b.from}–${b.to}`; v = b;
+    body = `<div class="field"><label for="tmD">Giorno</label><input class="input" id="tmD" name="date" type="date" value="${b.date}" style="max-width:220px"></div>`; }
+  else if (kind === 'exam'){ const e = examById(id); if (!e) return; title = `Esame · ${e.name}`; sub = e.date ? cap(fmtDate(e.date,{weekday:'long', day:'numeric', month:'long'})) : ''; v = e; }
+  else { const f = fitOf(day); title = kind === 'gym' ? 'Palestra' : 'Corsa'; sub = cap(fmtDate(day,{weekday:'long', day:'numeric', month:'long'})); v = kind === 'gym' ? f.gym : f.run; }
+  openModal({eyebrow:'Modifica orario', title, body:`
+    <form data-form="time" data-k="${kind}" data-id="${id || ''}" data-v="${day || ''}" class="stack" style="gap:16px">
+      ${sub ? `<p class="small muted" style="margin:0">${esc(sub)}</p>` : ''}
+      ${body}
+      <div class="field"><label>Quando</label>${slotPicker(v, {single: kind === 'gym' || kind === 'run'})}</div>
+      <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-rose">${icon('check')} Salva orario</button></div>
+    </form>`});
 }
 function bfSummary(form){
   if (!form || !form.from) return;
@@ -1465,13 +1525,21 @@ function updateAutoPreview(){
    ========================================================= */
 /* ---- Calendario settimanale ampio (Home e Calendario) ---- */
 let weekCursor = todayKey();
+// Chip dell'orario: toccandolo si modifica (anche dal calendario a schermo intero)
+function timeChip(i, cls='wbi-time'){
+  const editable = ['study','exam','gym','run','event'].includes(i.kind);
+  const lab = timeLabel(i, i.kind === 'exam' ? 'Appello' : 'In giornata');
+  if (!editable) return `<span class="${cls}">${lab}</span>`;
+  const act = i.kind === 'event' ? `data-act="event-edit" data-id="${i.id}"` : `data-act="time-edit" data-k="${i.kind}" data-id="${i.id || ''}" data-v="${i.day || ''}"`;
+  return `<button type="button" class="${cls} tbtn ${i.time || i.slot ? '' : 'empty'}" ${act} title="Modifica l'orario" aria-label="Orario: ${lab}. Tocca per modificare">${icon('clock')}${i.time || i.slot ? lab : i.kind === 'exam' ? 'Appello · orario' : '+ orario'}</button>`;
+}
 function wbItem(i){
   const right = i.kind === 'study'
     ? `<button class="check sm ${i.done?'on':''}" data-act="blk-toggle" data-id="${i.id}" aria-label="${i.done?'Segna come da fare':'Segna come studiate'}" aria-pressed="${!!i.done}">${icon('check')}</button>`
     : `<span class="cat-ic">${icon(i.icon)}</span>`;
   const clickable = i.kind === 'event' ? `data-act="event-edit" data-id="${i.id}" role="button" tabindex="0" title="Modifica"` : i.kind === 'gym' || i.kind === 'run' ? `data-act="fit-open" data-v="${i.day}" role="button" tabindex="0" title="Apri nel Benessere"` : '';
   return `<div class="wbi ${i.kind} ${i.rev ? 'review' : ''} ${i.done?'done':''}" style="--c:${i.color}" ${clickable}>
-    <div class="wbi-top"><span class="wbi-time">${i.time ? i.time + (i.end ? '–' + i.end : '') : i.kind === 'exam' ? 'Appello' : 'In giornata'}</span>${right}</div>
+    <div class="wbi-top">${timeChip(i)}${right}</div>
     ${i.kind === 'study' ? `<span class="stag ${i.rev ? 'rev' : ''}">${i.rev ? `↻ Ripasso · ${i.round}° giro` : 'Studio · primo giro'}</span>` : ''}
     <b>${esc(i.title)}</b><small>${esc(i.sub)}</small></div>`;
 }
@@ -1569,7 +1637,7 @@ function cfItem(i, compact){
   const act = i.kind === 'study' ? `<button class="check sm ${i.done ? 'on' : ''}" data-act="blk-toggle" data-id="${i.id}" aria-label="${i.done ? 'Segna come da fare' : 'Segna come fatto'}" aria-pressed="${!!i.done}">${icon('check')}</button>` : '';
   const click = i.kind === 'event' ? `data-act="event-edit" data-id="${i.id}" role="button" tabindex="0"` : i.kind === 'gym' || i.kind === 'run' ? `data-act="fit-open" data-v="${i.day}" role="button" tabindex="0"` : '';
   return `<div class="cfi ${i.kind} ${i.rev ? 'review' : ''} ${i.done ? 'done' : ''} ${compact ? 'cmp' : ''}" style="--c:${i.color}" ${click}>
-    <div class="cfi-m">${i.time ? `<span class="cfi-t">${i.time}${i.end ? '–' + i.end : ''}</span>` : ''}${tag}<b>${esc(i.title)}</b>${compact ? '' : `<small>${esc(i.sub || '')}</small>`}</div>${act}</div>`;
+    <div class="cfi-m">${compact ? (i.time || i.slot ? `<span class="cfi-t">${timeLabel(i)}</span>` : '') : timeChip(i, 'cfi-t')}${tag}<b>${esc(i.title)}</b>${compact ? '' : `<small>${esc(i.sub || '')}</small>`}</div>${act}</div>`;
 }
 function cfDayHead(k, t){ return `<div class="cfd-h"><span class="cfd-n ${k === t ? 'today' : ''}">${parse(k).getDate()}</span><span class="cfd-w">${k === t ? 'Oggi' : fmtDate(k,{weekday:'short'}).replace('.','')}</span>${(() => { const sd = studyDay(k); return sd.planned ? `<span class="cfd-p ${sd.done >= sd.planned ? 'ok' : ''}">${sd.done}/${sd.planned} pp.</span>` : ''; })()}<button class="cfd-add" data-act="day-add" data-v="${k}" aria-label="Aggiungi a ${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}">${icon('plus')}</button></div>`; }
 function renderCalFull(){
@@ -1890,6 +1958,8 @@ document.addEventListener('click', e => {
     case 'b-size': { const f = el.closest('form'), e = examById(f.examId.value), sc = srcById(e, f.sourceId.value), from = Math.max(1, Math.round(+f.from.value) || 1); f.from.value = from; f.to.value = Math.min(sc ? sc.pages : from + +v - 1, from + +v - 1); blockDraft.size = +v; bfSummary(f); break; }
     case 'day-add': dayAddModal(v); break;
     case 'calfull-open': openCalFull(v); break;
+    case 'time-edit': timeModal(el.dataset.k, id, v); break;
+    case 'tp-pick': { const tp = el.closest('[data-tp]'); tp.querySelector('[name="slot"]').value = v; $$('.tp-c', tp).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.setAttribute('aria-checked', String(on)); }); const c = $('.tp-custom', tp); c.hidden = v !== 'custom'; if (v === 'custom'){ const i = $('input', c); i.focus(); } const f = el.closest('form'); if (f && f.dataset.form === 'block'){ blockDraft.slot = v === 'custom' || v === 'none' ? '' : v; } break; }
     case 'calfull-close': closeCalFull(); break;
     case 'cf-view': cf.view = v; S.ui.cfView = v; save(); renderCalFull(); $('#calFull').scrollTop = 0; break;
     case 'cf-prev': cfShift(-1); break;
@@ -1983,12 +2053,13 @@ document.addEventListener('submit', e => {
       if (to > s.pages) return toast(`«${esc(srcName(s))}» ha ${s.pages} pagine.`);
       const kind = fd.kind === 'review' ? 'review' : 'study', round = kind === 'review' ? clamp(+fd.round || 1, 1, 9) : null, topic = (fd.topic || '').trim();
       const overlap = S.plan.some(b => b.examId === ex.id && b.sourceId === s.id && (kind === 'review' ? isReview(b) && roundOf(b) === round : !isReview(b)) && b.from <= to && b.to >= from);
-      const done = !!fd.done, blk = {id:uid(), date, examId:ex.id, sourceId:s.id, from, to, time:fd.time || '', done, doneAt: done ? (date <= t ? date : t) : null, ...(kind === 'review' ? {kind, round} : {kind:'study'}), ...(topic ? {topic} : {})};
+      const tm = readSlot(fd); if ((fd.slot === 'custom') && !tm.time) return toast('Inserisci l\'orario di inizio, oppure scegli una fascia.');
+      const done = !!fd.done, blk = {id:uid(), date, examId:ex.id, sourceId:s.id, from, to, time:tm.time, ...(tm.end ? {end:tm.end} : {}), ...(tm.slot ? {slot:tm.slot} : {}), done, doneAt: done ? (date <= t ? date : t) : null, ...(kind === 'review' ? {kind, round} : {kind:'study'}), ...(topic ? {topic} : {})};
       S.plan.push(blk); save();
-      blockDraft = {examId:ex.id, sourceId:s.id, date:addDays(date, 1), size:to - from + 1, lastTo:to, kind, round};
+      blockDraft = {examId:ex.id, sourceId:s.id, date:addDays(date, 1), size:to - from + 1, lastTo:to, kind, round, slot:tm.slot, time:tm.time, end:tm.end};
       weekCursor = date;
       const when = date === t ? 'per oggi' : date === addDays(t,1) ? 'per domani' : 'a ' + fmtDate(date,{weekday:'long', day:'numeric', month:'long'});
-      toast(`${kind === 'review' ? `Ripasso ${round}° giro · ` : ''}pp. ${from}–${to} di ${esc(ex.name)} ${done ? (kind === 'review' ? 'segnate come ripassate' : 'segnate come studiate') : 'assegnate ' + when}.${overlap ? ' Nota: alcune pagine erano già in programma.' : ''}`, {tone:'ok', icon:'cal'});
+      toast(`${kind === 'review' ? `Ripasso ${round}° giro · ` : ''}pp. ${from}–${to} di ${esc(ex.name)} ${done ? (kind === 'review' ? 'segnate come ripassate' : 'segnate come studiate') : 'assegnate ' + when}${tm.time || tm.slot ? ' · ' + timeLabel(tm).toLowerCase() : ''}.${overlap ? ' Nota: alcune pagine erano già in programma.' : ''}`, {tone:'ok', icon:'cal'});
       if (form.dataset.ctx === 'modal'){ justAdded.push(blk.id); rerender(); $('#modalBody').innerHTML = blockFormInner({ctx:'modal'}) + `<div id="justAdded">${justAddedHTML()}</div>`; initBlockForms($('#modalBody')); }
       else rerender();
       break;
@@ -2007,6 +2078,15 @@ document.addEventListener('submit', e => {
       toast(`«${esc(data.title)}» in agenda ${relDays(diffDays(t, date))}${data.time ? ' alle ' + data.time : ''}.`, {tone:'ok', icon:'cal'});
       weekCursor = date; if (route === 'calendario'){ calSel = date; } else if (route === 'home') homeDay = date;
       rerender(); break;
+    }
+    case 'time': {
+      const kind = form.dataset.k, id = form.dataset.id, day = form.dataset.v, tm = readSlot(fd);
+      if (fd.slot === 'custom' && !tm.time) return toast('Inserisci l\'orario, oppure scegli «Nessuno».');
+      const put = o => { o.time = tm.time; if (tm.end) o.end = tm.end; else delete o.end; if (tm.slot) o.slot = tm.slot; else delete o.slot; };
+      if (kind === 'study'){ const b = S.plan.find(x => x.id === id); if (!b) return; put(b); if (fd.date) b.date = fd.date; weekCursor = b.date; }
+      else if (kind === 'exam'){ const e = examById(id); if (!e) return; e.time = tm.time; if (tm.end) e.end = tm.end; else delete e.end; }
+      else if (kind === 'gym' || kind === 'run'){ const f = fitW(day); (kind === 'gym' ? f.gym : f.run).time = tm.time; }
+      save(); closeModal(); toast(tm.time || tm.slot ? `Orario aggiornato: ${timeLabel(tm).toLowerCase()}.` : 'Orario rimosso.', {tone:'ok', icon:'clock'}); rerender(); break;
     }
     case 'profile': S.profile.name = fd.name.trim(); save(); closeModal(); rerender(); break;
   }
