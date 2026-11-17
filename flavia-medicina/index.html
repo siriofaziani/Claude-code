@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flavia · Medical Planner</title>
+<meta name="description" content="Planner di studio per Medicina: esami, pagine, calendario, benessere e statistiche.">
+<meta name="theme-color" content="#f6f5f2">
+<meta name="color-scheme" content="light">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="application-name" content="Flavia Med">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Flavia Med">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="vendor/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#f6f5f2; --bg-2:#efede9; --surface:#ffffff; --surface-2:#fbfaf8; --pearl:#f1efeb; --pearl-2:#e8e5e0;
+  --line:rgba(28,36,44,.07); --line-2:rgba(28,36,44,.11); --line-3:rgba(28,36,44,.18);
+  --text:#1b232b; --text-2:#46505a; --muted:#858d96; --faint:#b2b8be;
+  --rose:#b5826f; --rose-2:#d8b2a3; --rose-3:#946150; --rose-a:rgba(181,130,111,.09); --rose-b:rgba(181,130,111,.28);
+  --teal:#3b8a82; --teal-2:#72b5ab; --teal-3:#2a6a63; --teal-a:rgba(59,138,130,.08); --teal-b:rgba(59,138,130,.25);
+  --sage:#93a89b; --ruby:#c0605b; --ruby-a:rgba(192,96,91,.08); --ruby-b:rgba(192,96,91,.26); --amber:#c3954d; --amber-a:rgba(195,149,77,.1);
+  --ink:#1b232b;
+  --serif:'Cormorant Garamond','Iowan Old Style',Georgia,serif;
+  --sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --sh-1:0 1px 2px rgba(28,36,44,.04),0 10px 30px -18px rgba(28,36,44,.18);
+  --sh-2:0 2px 6px rgba(28,36,44,.05),0 30px 60px -28px rgba(28,36,44,.28);
+  --r:22px; --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:var(--sans);font-size:14px;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:
+  radial-gradient(900px 520px at 92% -10%,rgba(181,130,111,.10),transparent 62%),
+  radial-gradient(800px 560px at -10% 110%,rgba(59,138,130,.07),transparent 60%),
+  linear-gradient(180deg,#f8f7f4,#f4f2ee)}
+::selection{background:var(--rose-b)}
+[hidden]{display:none!important}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.ic{width:18px;height:18px;flex:none;display:inline-block;vertical-align:middle}
+.ic-fill path{fill:currentColor}
+
+/* ---------- Layout ---------- */
+.app{position:relative;z-index:1;display:grid;grid-template-columns:262px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;padding:30px 18px 22px;display:flex;flex-direction:column;gap:30px;background:rgba(255,255,255,.62);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-right:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:13px;padding:0 8px}
+.mark{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:var(--serif);font-size:26px;font-weight:600;color:#fff;background:linear-gradient(140deg,#e2bfb1,var(--rose) 55%,var(--rose-3));box-shadow:0 10px 24px -12px rgba(150,97,80,.7),inset 0 1px 0 rgba(255,255,255,.45);position:relative}
+.mark::after{content:"";position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:50%;background:var(--teal);border:2.5px solid #fff}
+.brand-name{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.05}
+.brand-sub{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:3px;font-weight:600}
+.nav-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);padding:0 12px;margin-bottom:8px;font-weight:700}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav a{position:relative;display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:13px;color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;transition:color .2s,background .2s}
+.nav a:hover{color:var(--text);background:rgba(28,36,44,.03)}
+.nav a.active{color:var(--text);background:#fff;box-shadow:var(--sh-1)}
+.nav a.active .ic{color:var(--rose)}
+.nav .badge{margin-left:auto;font-size:11px;font-weight:700;min-width:22px;height:20px;padding:0 6px;border-radius:10px;display:grid;place-items:center;background:var(--rose-a);color:var(--rose-3)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.side-quote{padding:16px;border-radius:16px;background:linear-gradient(150deg,#fff,var(--pearl));border:1px solid var(--line)}
+.side-quote p{margin:6px 0 0;font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.35;color:var(--text-2)}
+.save-state{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--faint);padding:0 8px}
+.save-state i{width:6px;height:6px;border-radius:50%;background:var(--teal);opacity:.6;transition:opacity .3s}
+.save-state.flash i{opacity:1;box-shadow:0 0 8px var(--teal)}
+.main{min-width:0;width:100%;max-width:1440px;padding:34px 44px 90px}
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:26px}
+.page-title{font-family:var(--serif);font-weight:600;font-size:44px;line-height:1.02;margin:8px 0 0;letter-spacing:-.01em}
+.page-title em{font-style:italic;color:var(--rose);font-weight:500}
+.top-actions{display:flex;align-items:center;gap:10px}
+.mnav{display:none}
+.view{animation:viewIn .45s var(--ease) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- Primitive ---------- */
+.eyebrow{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.muted{color:var(--muted)} .small{font-size:12.5px} .serif{font-family:var(--serif)}
+.rose{color:var(--rose-3)} .teal{color:var(--teal-3)} .ruby{color:var(--ruby)}
+.num{font-variant-numeric:tabular-nums}
+.row{display:flex;align-items:center;gap:10px} .between{justify-content:space-between} .wrap{flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:18px}
+.grid{display:grid;gap:18px}
+.g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g-home{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:start}
+.g-studio{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:start}
+.mt-12{margin-top:12px}.mt-18{margin-top:18px}.mt-24{margin-top:24px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--sh-1)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.card-title{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1.1;margin:3px 0 0}
+.hair{height:1px;border:0;margin:18px 0;background:linear-gradient(90deg,transparent,var(--line-2),transparent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:12px;border:1px solid var(--line-2);background:#fff;color:var(--text);font:600 13.5px var(--sans);cursor:pointer;transition:transform .15s var(--ease),background .2s,border-color .2s,box-shadow .2s,filter .2s;white-space:nowrap;text-decoration:none;user-select:none}
+.btn:hover{border-color:var(--line-3);box-shadow:0 4px 14px -8px rgba(28,36,44,.3)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.input:focus-visible,.chip:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
+.btn-ink{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-ink:hover{background:#2a343e;border-color:#2a343e}
+.btn-rose{background:linear-gradient(140deg,#dcb6a7,var(--rose) 55%,var(--rose-3));color:#fff;border-color:transparent;box-shadow:0 10px 22px -12px rgba(150,97,80,.75),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn-rose:hover{filter:brightness(1.05);border-color:transparent}
+.btn-teal{background:var(--teal-a);color:var(--teal-3);border-color:var(--teal-b)}
+.btn-teal:hover{background:rgba(59,138,130,.14);border-color:var(--teal)}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn-ghost:hover{background:rgba(28,36,44,.04);color:var(--text);box-shadow:none;border-color:transparent}
+.btn-sm{height:32px;padding:0 12px;font-size:12.5px;border-radius:10px;gap:6px}
+.btn-sm .ic{width:15px;height:15px}
+.btn-icon{width:40px;padding:0}
+.btn-icon.btn-sm{width:32px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.input{width:100%;min-width:0;height:42px;padding:0 13px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:12px;color:var(--text);font:500 14px var(--sans);outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
+.input::placeholder{color:var(--faint)}
+.input:hover{border-color:var(--line-3)}
+.input:focus{border-color:var(--rose-2);box-shadow:0 0 0 4px var(--rose-a);background:#fff}
+textarea.input{height:auto;min-height:80px;padding:11px 13px;resize:vertical;line-height:1.55}
+select.input{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23858d96' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.input-num{font-variant-numeric:tabular-nums;text-align:center}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.form-grid .full{grid-column:1/-1}
+.unit{position:relative}
+.unit .input{padding-right:46px}
+.unit span{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none}
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap;border:1px solid var(--line-2);color:var(--muted);background:var(--surface-2)}
+.pill.teal{color:var(--teal-3);background:var(--teal-a);border-color:var(--teal-b)}
+.pill.rose{color:var(--rose-3);background:var(--rose-a);border-color:var(--rose-b)}
+.pill.ruby{color:var(--ruby);background:var(--ruby-a);border-color:var(--ruby-b)}
+.pill.amber{color:#9c7232;background:var(--amber-a);border-color:rgba(195,149,77,.3)}
+.bar{height:6px;border-radius:6px;background:var(--pearl-2);overflow:hidden;position:relative}
+.bar>i{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:linear-gradient(90deg,var(--teal-2),var(--teal));transition:width .6s var(--ease)}
+.bar.rose>i{background:linear-gradient(90deg,var(--rose-2),var(--rose))}
+.bar.thin{height:4px}
+.ring{position:relative;flex:none}
+.ring svg{display:block;width:100%;height:100%}
+.ring-val{transition:stroke-dashoffset 1s var(--ease)}
+.ring-c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring-num{font-family:var(--serif);font-weight:600;line-height:1}
+.ring-sub{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:700}
+.seg{display:inline-flex;padding:4px;border-radius:13px;background:var(--pearl);border:1px solid var(--line);gap:2px}
+.seg button{height:32px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:var(--muted);font:600 12.5px var(--sans);cursor:pointer;transition:all .2s}
+.seg button.on{background:#fff;color:var(--text);box-shadow:0 2px 8px -4px rgba(28,36,44,.25)}
+.empty{padding:26px 18px;text-align:center;color:var(--muted);border:1px dashed var(--line-3);border-radius:16px;background:var(--surface-2)}
+.empty .serif{font-size:22px;color:var(--text-2);margin-bottom:4px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.kpi{padding:18px 20px}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted)}
+.kpi-top .ic{color:var(--rose)}
+.kpi-val{font-family:var(--serif);font-size:38px;font-weight:600;line-height:1;margin-top:12px;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+.kpi-val small{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--muted);margin-left:5px}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.delta{font-weight:700;font-size:11px;padding:2px 7px;border-radius:999px}
+.delta.up{color:var(--teal-3);background:var(--teal-a)} .delta.down{color:var(--ruby);background:var(--ruby-a)} .delta.flat{color:var(--muted);background:var(--pearl)}
+
+/* ---------- Home ---------- */
+.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center;padding:30px 30px 34px;background:linear-gradient(135deg,#ffffff 0%,#fbf8f5 55%,#f5eee9 100%);border-color:rgba(181,130,111,.2)}
+.hero-ecg{position:absolute;left:0;right:0;bottom:6px;height:46px;opacity:.5;pointer-events:none}
+.hero-greet{font-family:var(--serif);font-size:48px;font-weight:600;line-height:1.02;margin:10px 0 10px;letter-spacing:-.01em}
+.hero-greet em{font-style:italic;font-weight:500;color:var(--rose)}
+.hero-line{color:var(--text-2);font-size:15px;max-width:60ch;margin:0}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hchip{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:999px;background:#fff;border:1px solid var(--line-2);font-size:12.5px;font-weight:600;color:var(--text-2)}
+.hchip .ic{width:15px;height:15px;color:var(--rose)}
+.hchip b{color:var(--text)}
+.blk{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface-2);transition:border-color .2s,background .2s}
+.blk+.blk{margin-top:8px}
+.blk.done{background:linear-gradient(180deg,rgba(59,138,130,.06),rgba(59,138,130,.02));border-color:var(--teal-b)}
+.blk.done .blk-t b{text-decoration:line-through;text-decoration-color:rgba(59,138,130,.5);color:var(--text-2)}
+.check{width:26px;height:26px;border-radius:9px;border:1.6px solid var(--line-3);background:#fff;display:grid;place-items:center;cursor:pointer;color:transparent;transition:all .2s;flex:none;padding:0}
+.check:hover{border-color:var(--teal)}
+.check.on{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 6px 14px -6px rgba(59,138,130,.7)}
+.check .ic{width:15px;height:15px}
+.blk-t{min-width:0}
+.blk-t b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk-t small{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk-r{display:flex;align-items:center;gap:6px}
+.pp{font-variant-numeric:tabular-nums;font-weight:700;font-size:12.5px;color:var(--text-2);white-space:nowrap}
+.exdot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none;background:var(--c)}
+.insight{display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;padding:15px 0;border-top:1px solid var(--line)}
+.insight:first-child{border-top:0;padding-top:2px}
+.insight-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--pearl);color:var(--text-2)}
+.insight.method .insight-ic{background:var(--teal-a);color:var(--teal)}
+.insight.memory .insight-ic{background:var(--rose-a);color:var(--rose)}
+.insight.wellbeing .insight-ic{background:rgba(147,168,155,.16);color:#5f7a69}
+.insight.alert .insight-ic{background:var(--ruby-a);color:var(--ruby)}
+.insight h4{margin:0 0 3px;font-size:14.5px;font-weight:700}
+.insight .tag{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-left:8px;vertical-align:2px;color:var(--muted)}
+.insight.method .tag{color:var(--teal)} .insight.memory .tag{color:var(--rose)} .insight.wellbeing .tag{color:#5f7a69} .insight.alert .tag{color:var(--ruby)}
+.insight p{margin:0;color:var(--text-2);font-size:13.5px;line-height:1.6}
+.medfact{margin-top:16px;padding:18px 20px;border-radius:16px;background:linear-gradient(135deg,#fbf6f2,#f4f8f7);border:1px solid rgba(181,130,111,.2);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.medfact p{margin:7px 0 0;font-size:13.5px;line-height:1.6;color:var(--text-2)}
+.medfact .q{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.35;color:var(--text)}
+.rev{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.rev:first-child{border-top:0;padding-top:0}
+.step{font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:8px;background:var(--rose-a);color:var(--rose-3);white-space:nowrap}
+.install{display:flex;align-items:center;gap:16px;padding:15px 18px;margin-bottom:18px;border-radius:18px;background:linear-gradient(120deg,#fff,#f7efe9);border:1px solid var(--rose-b);box-shadow:var(--sh-1)}
+.install-t{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.15}
+.install-m{font-size:13px;color:var(--text-2);margin-top:2px}
+.install-act{margin-left:auto;display:flex;gap:8px;align-items:center;flex:none}
+.k{display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:7px;background:var(--pearl);border:1px solid var(--line-2);font-weight:600;white-space:nowrap}
+.k .ic{width:14px;height:14px}
+
+/* ---------- Mini calendario & agenda ---------- */
+.mcal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mcal-head b{font-family:var(--serif);font-size:21px;font-weight:600;text-transform:capitalize}
+.mcal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
+.mcal .dow{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--faint);padding:4px 0}
+.mday{position:relative;aspect-ratio:1/1;border:0;border-radius:11px;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 13px var(--sans);color:var(--text-2);transition:background .2s}
+.mday:hover{background:var(--pearl)}
+.mday.out{color:var(--faint)}
+.mday.today{color:var(--rose-3);font-weight:800}
+.mday.today::before{content:"";position:absolute;inset:3px;border-radius:9px;border:1.5px solid var(--rose-b)}
+.mday.sel{background:var(--ink);color:#fff}
+.mday.sel::before{display:none}
+.mday.exam::after{content:"";position:absolute;top:4px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--ruby)}
+.dots{display:flex;gap:2px;height:5px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--c)}
+.agenda-day{font-family:var(--serif);font-size:22px;font-weight:600;text-transform:capitalize;margin:0}
+.tl{position:relative;margin-top:12px;padding-left:18px}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line-2)}
+.tli{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0}
+.tli::before{content:"";position:absolute;left:-17px;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:#fff;border:2px solid var(--c)}
+.tli-time{font-variant-numeric:tabular-nums;font-weight:800;font-size:12.5px;color:var(--text-2)}
+.tli-time.none{color:var(--faint);font-weight:600;font-size:11px}
+.tli-t{min-width:0}
+.tli-t b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tli-t small{display:block;font-size:11.5px;color:var(--muted)}
+.cat-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.cat-ic .ic{width:14px;height:14px}
+
+/* ---------- Esami ---------- */
+.exams{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.exam{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.exam-top{height:5px;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 45%,#fff))}
+.exam-in{padding:20px 22px 20px;display:flex;flex-direction:column;gap:14px;flex:1}
+.exam-head{display:flex;align-items:flex-start;gap:14px}
+.exam-name{font-family:var(--serif);font-size:27px;font-weight:600;line-height:1.05;margin:0;word-break:break-word}
+.exam-date{font-size:12.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cd{display:flex;flex-direction:column;align-items:flex-end;margin-left:auto;flex:none}
+.cd b{font-family:var(--serif);font-size:38px;font-weight:600;line-height:.9;color:var(--c)}
+.cd span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-top:4px}
+.srcs{display:flex;flex-direction:column;gap:10px}
+.src-r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;font-size:12.5px}
+.src-r b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src-r span{color:var(--muted);font-variant-numeric:tabular-nums;font-weight:600}
+.src-r .bar{grid-column:1/-1}
+.exam-foot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ef{padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);min-width:0}
+.ef b{display:block;font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.1;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:lining-nums tabular-nums}
+.ef .eyebrow{font-size:9px;letter-spacing:.12em}
+.exam-msg{font-size:12.5px;color:var(--text-2);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.exam-msg .ic{width:15px;height:15px;margin-top:2px;color:var(--c)}
+.exam-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.passed{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.passed:first-child{border-top:0}
+.grade{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--rose-3)}
+.daynav{display:flex;align-items:center;gap:6px}
+.daynav .d{font-family:var(--serif);font-size:23px;font-weight:600;padding:0 6px;text-transform:capitalize;white-space:nowrap}
+.exgroup+.exgroup{margin-top:16px}
+.exgroup-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.04em;margin-bottom:8px;color:var(--text-2)}
+.exgroup-h .pill{margin-left:auto}
+.colors{display:flex;gap:8px;flex-wrap:wrap}
+.colors label{position:relative;cursor:pointer}
+.colors input{position:absolute;opacity:0;pointer-events:none}
+.colors span{display:block;width:30px;height:30px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 0 0 1px var(--line-2);transition:box-shadow .2s}
+.colors input:checked+span{box-shadow:0 0 0 2px var(--c)}
+.src-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 110px 36px;gap:8px;align-items:center}
+.src-row+.src-row{margin-top:8px}
+.days-chips{display:flex;gap:6px;flex-wrap:wrap}
+.days-chips label{cursor:pointer}
+.days-chips input{position:absolute;opacity:0;pointer-events:none}
+.days-chips span{display:grid;place-items:center;width:38px;height:34px;border-radius:10px;border:1px solid var(--line-2);font-weight:700;font-size:12.5px;color:var(--text-2);background:#fff;transition:all .2s}
+.days-chips input:checked+span{background:var(--ink);color:#fff;border-color:var(--ink)}
+.preview{padding:14px 16px;border-radius:14px;background:var(--teal-a);border:1px solid var(--teal-b);font-size:13.5px;color:var(--text-2);line-height:1.6}
+.preview.err{background:var(--ruby-a);border-color:var(--ruby-b);color:var(--ruby)}
+.preview b{color:var(--text)}
+.check-row{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer}
+.check-row input{width:18px;height:18px;accent-color:var(--teal)}
+
+/* ---------- Calendario ---------- */
+.cal-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.cal-title{font-family:var(--serif);font-size:30px;font-weight:600;text-transform:capitalize;margin:0 6px;min-width:0}
+.cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal .dow{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:2px 8px 6px}
+.cday{position:relative;min-height:112px;padding:8px;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,box-shadow .2s;min-width:0;font:inherit;color:inherit}
+.cday:hover{border-color:var(--line-3);box-shadow:var(--sh-1)}
+.cday.out{background:transparent;opacity:.5}
+.cday.sel{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.cday-n{font-weight:800;font-size:13px;color:var(--text-2);display:flex;align-items:center;justify-content:space-between}
+.cday.today .cday-n>span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff}
+.cchip{display:block;gap:5px;font-size:10.5px;font-weight:600;line-height:1.25;padding:3px 6px;border-radius:7px;background:color-mix(in srgb,var(--c) 11%,#fff);color:color-mix(in srgb,var(--c) 75%,#1b232b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cchip.ex{background:var(--ruby);color:#fff;font-weight:800;letter-spacing:.03em}
+.cchip.done{opacity:.6}
+.cmore{font-size:10.5px;font-weight:700;color:var(--muted);padding-left:4px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.wcol{min-height:380px;padding:10px;border-radius:16px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:6px;cursor:pointer;min-width:0;text-align:left;font:inherit;color:inherit}
+.wcol.sel{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.wcol.today .wd b{color:var(--rose-3)}
+.wd{display:flex;align-items:baseline;gap:6px;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.wd b{font-family:var(--serif);font-size:24px;font-weight:600}
+.wd span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.witem{font-size:11.5px;line-height:1.35;padding:6px 7px;border-radius:9px;background:color-mix(in srgb,var(--c) 10%,#fff);border-left:2.5px solid var(--c);color:var(--text-2);min-width:0}
+.witem b{display:block;color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.witem.ex{background:var(--ruby);color:#fff;border-left-color:var(--ruby)}
+.witem.ex b{color:#fff}
+.side-day{position:sticky;top:20px}
+.ev-actions{display:flex;gap:2px}
+
+/* ---------- Benessere ---------- */
+.fit-card{display:flex;flex-direction:column;gap:14px}
+.fit-big{font-family:var(--serif);font-size:56px;font-weight:600;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.fit-big small{font-family:var(--sans);font-size:15px;color:var(--muted);font-weight:600;margin-left:6px}
+.stepper{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:8px}
+.toggle{display:flex;align-items:center;gap:16px;width:100%;padding:16px;border-radius:16px;border:1px dashed var(--line-3);background:var(--surface-2);cursor:pointer;text-align:left;transition:all .25s var(--ease)}
+.toggle .sw{width:50px;height:30px;border-radius:30px;background:var(--pearl-2);position:relative;flex:none;transition:background .3s}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(28,36,44,.25);transition:transform .35s var(--ease)}
+.toggle.on{border-style:solid;border-color:var(--teal-b);background:var(--teal-a)}
+.toggle.on .sw{background:var(--teal)}
+.toggle.on .sw::after{transform:translateX(20px)}
+.toggle b{display:block;font-size:14.5px}
+.toggle small{color:var(--muted);font-size:12px}
+.wk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.wk-d{padding:12px 6px;border-radius:14px;border:1px solid var(--line);background:var(--surface-2);text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;cursor:pointer;font:inherit;color:inherit}
+.wk-d.sel{border-color:var(--ink)}
+.wk-d.on{background:linear-gradient(180deg,var(--teal-a),#fff);border-color:var(--teal-b)}
+.wk-d span{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--muted)}
+.wk-d b{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1}
+.wk-d small{font-size:11px;color:var(--muted);font-weight:600}
+.wk-ics{display:flex;gap:4px;height:18px}
+.wk-ics .ic{width:16px;height:16px}
+.sync-note{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--teal-3);padding:10px 12px;border-radius:12px;background:var(--teal-a)}
+
+/* ---------- Statistiche ---------- */
+.chart-box{position:relative;height:270px}
+.chart-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--faint);font-size:13px;text-align:center}
+.prog{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;padding:14px 0;border-top:1px solid var(--line)}
+.prog:first-child{border-top:0;padding-top:0}
+.prog .bar{grid-column:1/-1;height:8px}
+.prog b{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;min-width:0}
+.prog small{grid-column:1/-1;font-size:12px;color:var(--muted)}
+.report p{color:var(--text-2);line-height:1.75;margin:0 0 14px;font-size:14px}
+.report strong{color:var(--text)}
+.plan3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.plan3 div{padding:16px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line)}
+.plan3 span{font-family:var(--serif);font-size:30px;color:var(--rose);line-height:1;display:block}
+.plan3 b{display:block;font-size:13.5px;margin:6px 0 4px}
+.plan3 p{font-size:12.5px;margin:0;line-height:1.55}
+
+/* ---------- Modal & toast ---------- */
+.modal-wrap{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
+.modal-bg{position:absolute;inset:0;background:rgba(27,35,43,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s both}
+.modal{position:relative;width:min(620px,100%);max-height:calc(100vh - 40px);overflow:auto;background:#fff;border-radius:24px;box-shadow:var(--sh-2);animation:pop .35s var(--ease) both}
+.modal.wide{width:min(780px,100%)}
+.modal-head{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px 14px;background:linear-gradient(180deg,#fff 75%,rgba(255,255,255,0))}
+.modal-head h3{font-family:var(--serif);font-size:29px;font-weight:600;margin:4px 0 0;line-height:1.1}
+.modal-body{padding:4px 24px 24px}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;flex-wrap:wrap}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.toasts{position:fixed;right:22px;bottom:22px;z-index:200;display:flex;flex-direction:column;gap:10px;align-items:flex-end;pointer-events:none}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:12px;max-width:420px;padding:13px 16px;border-radius:14px;background:var(--ink);color:#fff;box-shadow:var(--sh-2);font-size:13.5px;font-weight:500;animation:pop .35s var(--ease) both}
+.toast .ic{color:var(--rose-2)}
+.toast.ok .ic{color:var(--teal-2)}
+.toast.out{opacity:0;transform:translateY(8px);transition:all .3s}
+.toast .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1200px){ .cal-wrap{grid-template-columns:minmax(0,1fr)} .side-day{position:static} }
+@media (max-width:1100px){ .g-home,.g-studio{grid-template-columns:minmax(0,1fr)} .main{padding:28px 28px 90px} .g-home>.stack{display:contents} .o1{order:1} .o2{order:2} .o3{order:3} .o4{order:4} .o5{order:5} }
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .main{padding:16px 16px calc(112px + env(safe-area-inset-bottom))}
+  .is-app .main{padding-top:calc(12px + env(safe-area-inset-top))}
+  .topbar{align-items:flex-start;margin-bottom:18px}
+  .page-title{font-size:34px}
+  .mnav{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;justify-content:space-between;gap:4px;padding:7px;border-radius:22px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line-2);box-shadow:var(--sh-2)}
+  .mnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 6px;font-size:10.5px;font-weight:700;color:var(--muted);text-decoration:none;border-radius:16px;min-width:0}
+  .mnav a.active{color:var(--rose-3);background:var(--rose-a)}
+  .mnav .ic{width:20px;height:20px}
+  .card{padding:18px;border-radius:20px}
+  .hero{grid-template-columns:1fr;padding:22px 20px 34px}
+  .hero .ring{justify-self:center}
+  .hero-greet{font-size:38px}
+  .g-2,.form-grid,.medfact,.plan3{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .kpi{padding:15px}
+  .kpi-val{font-size:30px}
+  .exams{grid-template-columns:minmax(0,1fr)}
+  .cal{gap:3px}
+  .cday{min-height:64px;padding:5px;border-radius:10px}
+  .cchip{font-size:0;padding:0;height:5px;border-radius:3px;background:var(--c)}
+  .cchip.ex{height:6px}
+  .cmore{font-size:9.5px;padding:0}
+  .cal-title{font-size:24px}
+  .week{grid-template-columns:minmax(0,1fr)}
+  .wcol{min-height:auto}
+  .src-row{grid-template-columns:minmax(0,1fr) 92px 36px}
+  .src-row .src-label{grid-column:1/-1;order:-1}
+  .install{flex-wrap:wrap}
+  .install-act{margin-left:0;width:100%}
+  .install-act .btn:not(.btn-icon){flex:1}
+  .toasts{left:16px;right:16px;bottom:calc(96px + env(safe-area-inset-bottom));align-items:stretch}
+  .modal-wrap{padding:0;align-items:end}
+  .modal{border-radius:24px 24px 0 0;max-height:92vh;padding-bottom:env(safe-area-inset-bottom)}
+  .fit-big{font-size:46px}
+  .wk{gap:5px}
+  .wk-d{padding:10px 2px}
+  @media (pointer:coarse){ .input{font-size:16px} }
+}
+@media (max-width:380px){ .kpis{grid-template-columns:minmax(0,1fr)} .exam-foot{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" aria-label="Navigazione">
+    <div class="brand"><div class="mark">F</div><div><div class="brand-name">Flavia Med</div><div class="brand-sub">Medical Planner</div></div></div>
+    <div><div class="nav-label">Menu</div><nav class="nav" id="nav"></nav></div>
+    <div class="side-foot">
+      <div class="side-quote"><div class="eyebrow">Per aspera ad astra</div><p id="sideQuote"></p></div>
+      <button class="btn btn-ghost" data-act="settings" style="justify-content:flex-start"><span data-ic="sliders"></span> Impostazioni & backup</button>
+      <div class="save-state" id="saveState"><i></i><span>Salvataggio automatico attivo</span></div>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><div class="eyebrow" id="topEyebrow"></div><h1 class="page-title" id="pageTitle"></h1></div>
+      <div class="top-actions">
+        <button class="btn btn-icon" data-act="event-new" aria-label="Nuova attività in agenda" title="Nuova attività"><span data-ic="plus"></span></button>
+        <button class="btn btn-icon" data-act="settings" aria-label="Impostazioni"><span data-ic="sliders"></span></button>
+      </div>
+    </header>
+    <div id="view"></div>
+  </main>
+</div>
+<nav class="mnav" id="mnav" aria-label="Navigazione"></nav>
+<div class="modal-wrap" id="modal" hidden>
+  <div class="modal-bg" data-close></div>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head"><div><div class="eyebrow" id="modalEyebrow"></div><h3 id="modalTitle"></h3></div><button class="btn btn-icon btn-ghost" data-close aria-label="Chiudi"><span data-ic="x"></span></button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* =========================================================
+   ICONE
+   ========================================================= */
+const IC = {
+  home:'<path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/>',
+  book:'<path d="M12 6.5C10.5 5 8 4.5 4 4.5v14c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-14c-4 0-6.5.5-8 2z"/><path d="M12 6.5v14"/>',
+  cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  heart:'<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/><path d="M5 12.5h3.3l1.5-2.6 2.2 5 1.5-2.4H19"/>',
+  chart:'<path d="M4 20V11"/><path d="M10 20V5"/><path d="M16 20v-6"/><path d="M21.5 20h-19"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', minus:'<path d="M5 12h14"/>',
+  check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  trash:'<path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l.9 12.5a1.5 1.5 0 0 0 1.5 1.5h6.2a1.5 1.5 0 0 0 1.5-1.5L17.5 7"/>',
+  edit:'<path d="M4 20h4.2L19 9.2a2 2 0 0 0 0-2.8l-1.4-1.4a2 2 0 0 0-2.8 0L4 15.8z"/><path d="m13.5 6.5 4 4"/>',
+  left:'<path d="m14.5 5.5-6.5 6.5 6.5 6.5"/>', right:'<path d="m9.5 5.5 6.5 6.5-6.5 6.5"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  x:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+  sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+  download:'<path d="M12 4v11M7 10.5l5 5 5-5M4.5 20h15"/>', upload:'<path d="M12 16V5M7 9.5l5-5 5 5M4.5 20h15"/>',
+  route:'<circle cx="6" cy="18.5" r="2"/><circle cx="18" cy="5.5" r="2"/><path d="M8 18.5h8.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H16"/>',
+  dumbbell:'<rect x="5" y="7" width="3" height="10" rx="1"/><rect x="16" y="7" width="3" height="10" rx="1"/><path d="M3 10v4M21 10v4M8 12h8"/>',
+  steth:'<path d="M6 3.5v5a4 4 0 0 0 8 0v-5"/><path d="M4.5 3.5H7M13 3.5h2.5"/><path d="M10 12.5v2a4.5 4.5 0 0 0 9 0v-1.5"/><circle cx="19" cy="11" r="2"/>',
+  brain:'<path d="M9.5 4.5A2.8 2.8 0 0 0 6.7 7.3 3 3 0 0 0 4.5 10.2c0 1 .5 1.9 1.2 2.4a3 3 0 0 0 1 4.6 2.8 2.8 0 0 0 2.8 2.8V4.5z"/><path d="M14.5 4.5a2.8 2.8 0 0 1 2.8 2.8 3 3 0 0 1 2.2 2.9c0 1-.5 1.9-1.2 2.4a3 3 0 0 1-1 4.6 2.8 2.8 0 0 1-2.8 2.8V4.5z"/>',
+  spark:'<path d="M12 3.5c.6 4.3 2.2 5.9 6.5 6.5-4.3.6-5.9 2.2-6.5 6.5-.6-4.3-2.2-5.9-6.5-6.5 4.3-.6 5.9-2.2 6.5-6.5z"/>',
+  refresh:'<path d="M20 11a8 8 0 0 0-14.6-4.5L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.6 4.5L20 16"/><path d="M20 20v-4h-4"/>',
+  users:'<circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/>',
+  bag:'<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+  flag:'<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+  layers:'<path d="m12 3.5 8.5 4.5-8.5 4.5L3.5 8z"/><path d="m3.5 12 8.5 4.5 8.5-4.5"/><path d="m3.5 16 8.5 4.5 8.5-4.5"/>',
+  cap:'<path d="M2.5 9 12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v4.5c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3V11"/><path d="M21.5 9v5"/>',
+  moon:'<path d="M19.8 14.6A8.3 8.3 0 0 1 9.4 4.2a8.3 8.3 0 1 0 10.4 10.4z"/>',
+  leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19 13 11"/>',
+  alert:'<path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4.5M12 17.2v.3"/>',
+  target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".9"/>',
+  pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+  share:'<path d="M12 3.5v11"/><path d="m8 7.5 4-4 4 4"/><path d="M9 10.5H7a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5h-2"/>',
+  dots:'<circle cx="12" cy="5.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="18.5" r="1.3"/>',
+  phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.6"/><path d="M11 18.5h2"/>',
+  wand:'<path d="m4 20 11-11"/><path d="m13.5 7.5 3 3"/><path d="M18 3v3M16.5 4.5h3M20 9v2M19 10h2M9 3v2M8 4h2"/>',
+  arrowR:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+};
+const icon = (n, cls='') => `<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const pad = n => String(n).padStart(2,'0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = k => { const [y,m,d] = k.split('-').map(Number); return new Date(y, m-1, d||1); };
+const todayKey = () => ymd(new Date());
+const addDays = (k, n) => { const d = parse(k); d.setDate(d.getDate()+n); return ymd(d); };
+const diffDays = (a, b) => Math.round((parse(b) - parse(a)) / 864e5);
+const range = (a, b) => { const out = []; for (let k = a; k <= b; k = addDays(k,1)) out.push(k); return out; };
+const dow = k => (parse(k).getDay() + 6) % 7;
+const weekStart = k => addDays(k, -dow(k));
+const sum = a => a.reduce((s,x) => s + (+x||0), 0);
+const avg = a => a.length ? sum(a)/a.length : 0;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
+const fmtDate = (k, o) => new Intl.DateTimeFormat('it-IT', o).format(parse(k));
+const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+const relDays = n => n === 0 ? 'oggi' : n === 1 ? 'domani' : n === -1 ? 'ieri' : n > 0 ? `tra ${n} giorni` : `${-n} giorni fa`;
+const N1 = new Intl.NumberFormat('it-IT', {maximumFractionDigits:1});
+const dayOfYear = () => { const n = new Date(); return Math.floor((n - new Date(n.getFullYear(),0,0)) / 864e5); };
+const listJoin = a => a.length <= 1 ? (a[0]||'') : a.slice(0,-1).join(', ') + ' e ' + a[a.length-1];
+const DOWS = ['L','M','M','G','V','S','D'];
+
+/* =========================================================
+   COSTANTI E CONTENUTI
+   ========================================================= */
+const SOURCE_TYPES = ['Libro di testo','Sbobine','Slide del professore','Appunti personali','Atlante','Eserciziario / Quiz','Altro'];
+const EXAM_COLORS = ['#3b8a82','#b5826f','#6f86b5','#c3954d','#9a7cb5','#5e9fb3','#c0605b','#7a9a6a'];
+const EVENT_CATS = {
+  amiche:     {label:'Amiche & svago',     icon:'users',  color:'#c98a99'},
+  palestra:   {label:'Sport',              icon:'dumbbell', color:'#3b8a82'},
+  commissione:{label:'Commissione',        icon:'bag',    color:'#c3954d'},
+  lezione:    {label:'Lezione / Tirocinio',icon:'steth',  color:'#6f86b5'},
+  salute:     {label:'Salute & cura di sé',icon:'leaf',   color:'#7a9a6a'},
+  altro:      {label:'Altro',              icon:'pin',    color:'#858d96'},
+};
+const RUN_GOAL = 5, REVIEW_STEPS = [1,3,7,14,30], REVIEW_BUFFER = 2;
+const METHOD_TIPS = [
+  ['Active recall','Chiudi il libro e scrivi a memoria tutto ciò che ricordi della pagina appena letta. Lo sforzo di recuperare l\'informazione è ciò che la consolida: è l\'«effetto testing», documentato da Roediger e Karpicke.'],
+  ['Ripetizione dilazionata','Ripassa a intervalli crescenti: dopo 1, 3, 7, 14 e 30 giorni. La curva dell\'oblio descritta da Ebbinghaus mostra che ogni ripasso ben distanziato rallenta la dimenticanza.'],
+  ['Tecnica di Feynman','Spiega un argomento, per esempio il ciclo cardiaco, come se parlassi a una studentessa del liceo. Dove ti blocchi, lì c\'è una lacuna da colmare.'],
+  ['Studio per casi clinici','Collega ogni nozione a un paziente immaginario: sintomo, meccanismo, diagnosi. La memoria ricorda le storie molto meglio degli elenchi.'],
+  ['Interleaving','Alterna argomenti affini nella stessa sessione (cuore, rene, polmone) invece di fare blocchi lunghi su uno solo: all\'inizio sembra più difficile, ma migliora la capacità di distinguere i concetti.'],
+  ['Doppia codifica','Disegna mentre studi: schemi, vie nervose, cascate biochimiche. Parola più immagine crea due tracce di memoria.'],
+  ['Pomodoro 50/10','50 minuti di concentrazione piena, 10 di pausa vera lontano dallo schermo. Ogni tre cicli concediti una pausa lunga.'],
+  ['Sbobine in 5 righe','Dopo ogni sbobina scrivi un riassunto di cinque righe con le tue parole: se non ci riesci, l\'argomento non è ancora tuo.'],
+  ['Simula l\'orale','Una volta a settimana registra una risposta d\'esame di due minuti e riascoltala: struttura, lessico tecnico, sicurezza.'],
+  ['Flashcard intelligenti','Una domanda, una sola risposta. Le carte che sbagli tornano prima, quelle che sai si allontanano: è il principio del sistema Leitner.'],
+  ['Domande «perché?»','Per ogni concetto chiediti perché è così (interrogazione elaborativa): «perché l\'ipokaliemia dà aritmie?». Il perché crea collegamenti, non solo nozioni.'],
+  ['Mappe concettuali','Alla fine di un capitolo costruisci una mappa con al centro il concetto chiave: è il modo migliore per vedere le connessioni tra fisiologia e patologia.'],
+];
+const WELLBEING_TIPS = [
+  ['Il sonno consolida','Durante il sonno il cervello consolida ciò che hai studiato. Una notte corta prima dell\'esame costa più di un capitolo in meno.'],
+  ['Idratazione','Tieni una borraccia sulla scrivania: anche una lieve disidratazione può peggiorare attenzione e umore.'],
+  ['Luce del mattino','Dieci minuti di luce naturale al mattino aiutano a regolare il ritmo sonno-veglia e a sentirti più sveglia durante lo studio.'],
+  ['Pausa attiva','Ogni due ore alzati: cinque minuti di camminata o stretching riattivano la circolazione e la concentrazione.'],
+  ['Respiro lento','Prima di un esame prova qualche minuto di respirazione lenta, con l\'espirazione più lunga dell\'inspirazione: aiuta a calmare l\'ansia.'],
+  ['Notifiche off','Telefono in un\'altra stanza durante le sessioni: anche solo vederlo sulla scrivania riduce la concentrazione.'],
+  ['Un giorno leggero','Pianifica almeno mezza giornata leggera a settimana: il riposo fa parte della preparazione, non è tempo perso.'],
+];
+const MED_FACTS = [
+  'Lo scheletro di un adulto è composto da 206 ossa; la staffa, nell\'orecchio medio, è la più piccola.',
+  'A riposo il cuore batte circa 100.000 volte al giorno e pompa migliaia di litri di sangue.',
+  'I globuli rossi vivono in media circa 120 giorni prima di essere rimossi, soprattutto dalla milza.',
+  'I reni filtrano circa 180 litri di plasma al giorno, ma producono solo 1-2 litri di urina.',
+  'Nel 1543 Andrea Vesalio pubblicò il «De humani corporis fabrica», fondamento dell\'anatomia moderna.',
+  'Nel 1628 William Harvey descrisse la circolazione del sangue spinta dal cuore in un circuito chiuso.',
+  'Il fonendoscopio fu inventato nel 1816 dal medico francese René Laennec, all\'inizio un semplice cilindro di carta arrotolata.',
+  'Nel 1928 Alexander Fleming osservò che una muffa, il Penicillium, impediva la crescita dei batteri: nacque la penicillina.',
+  'Camillo Golgi e Santiago Ramón y Cajal condivisero il Nobel per la medicina nel 1906 per gli studi sul sistema nervoso.',
+  'Ogni molecola di emoglobina può legare fino a quattro molecole di ossigeno.',
+  'Il fegato è il più grande organo interno e ha una notevole capacità di rigenerarsi.',
+  'La pelle è l\'organo più esteso del corpo umano.',
+  'Il nervo vago, decimo nervo cranico, innerva cuore, polmoni e gran parte dell\'apparato digerente.',
+  'Il ciclo cardiaco, a 75 battiti al minuto, dura circa 0,8 secondi.',
+  'Wilhelm Röntgen scoprì i raggi X nel 1895: la prima radiografia famosa ritrae la mano di sua moglie.',
+  'Rita Levi-Montalcini ricevette il Nobel nel 1986 per la scoperta del fattore di crescita nervoso (NGF).',
+];
+const QUOTES = [
+  'Ogni pagina di oggi è un paziente curato meglio domani.',
+  'La costanza batte il talento quando il talento non è costante.',
+  'Studia per capire, non per ricordare: il ricordo arriverà da sé.',
+  'Il camice si conquista una pagina alla volta.',
+  'Un giorno sarai la dottoressa che avresti voluto incontrare.',
+  'La calma è una competenza clinica: allenala anche durante lo studio.',
+  'Piccoli progressi ogni giorno costruiscono grandi medici.',
+];
+
+/* =========================================================
+   STATO
+   ========================================================= */
+const KEY = 'flavia.med.v1';
+function defaults(){
+  return {v:1, createdAt:todayKey(), profile:{name:'Flavia'}, exams:[], plan:[], events:[], fitness:{}, reviews:{}, ui:{statsDays:30, calView:'month', installDismissed:false}};
+}
+function load(){
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return defaults();
+    const d = JSON.parse(raw), b = defaults();
+    return {...b, ...d, profile:{...b.profile, ...(d.profile||{})}, ui:{...b.ui, ...(d.ui||{})}};
+  } catch(e){ console.warn('Dati non leggibili', e); return defaults(); }
+}
+let S = load(), saveT = null;
+function save(){
+  clearTimeout(saveT);
+  saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(S)); flashSaved(); } catch(e){ toast('Impossibile salvare: spazio non disponibile'); } }, 120);
+}
+const flushSave = () => { clearTimeout(saveT); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
+function flashSaved(){ const el = $('#saveState'); if (!el) return; el.classList.add('flash'); $('span', el).textContent = 'Salvato alle ' + new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}); clearTimeout(flashSaved.t); flashSaved.t = setTimeout(() => el.classList.remove('flash'), 900); }
+window.addEventListener('beforeunload', flushSave);
+window.addEventListener('pagehide', flushSave);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushSave(); });
+
+/* =========================================================
+   DOMINIO: ESAMI, PAGINE, PIANO
+   ========================================================= */
+const examById = id => S.exams.find(e => e.id === id);
+const srcById = (e, id) => e && e.sources.find(s => s.id === id);
+const activeExams = () => S.exams.filter(e => e.status !== 'superato').sort((a,b) => (a.date||'9999').localeCompare(b.date||'9999'));
+const passedExams = () => S.exams.filter(e => e.status === 'superato');
+const srcName = s => s.type === 'Altro' || s.label ? (s.label || s.type) : s.type;
+const pagesOf = b => b.to - b.from + 1;
+function merge(rs){
+  const out = [];
+  rs.map(r => [Math.min(r[0],r[1]), Math.max(r[0],r[1])]).sort((a,b) => a[0]-b[0]).forEach(r => { const l = out[out.length-1]; if (l && r[0] <= l[1]+1) l[1] = Math.max(l[1], r[1]); else out.push([...r]); });
+  return out;
+}
+function srcStudied(e, s){
+  return sum(merge(S.plan.filter(b => b.done && b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])).map(r => Math.max(0, Math.min(r[1], s.pages) - r[0] + 1)));
+}
+function freeSegments(e, s){
+  const cov = merge(S.plan.filter(b => b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])), out = [];
+  let p = 1;
+  cov.forEach(r => { if (r[0] > p) out.push([p, Math.min(r[0]-1, s.pages)]); p = Math.max(p, r[1]+1); });
+  if (p <= s.pages) out.push([p, s.pages]);
+  return out.filter(g => g[0] <= g[1]);
+}
+const nextFreePage = (e, s) => { const g = freeSegments(e, s)[0]; return g ? g[0] : null; };
+function examStats(e){
+  const t = todayKey(), total = sum(e.sources.map(s => +s.pages||0)), done = Math.min(total, sum(e.sources.map(s => srcStudied(e, s))));
+  const remaining = Math.max(0, total - done), pct = total ? done/total : 0;
+  const daysLeft = e.date ? diffDays(t, e.date) : null;
+  const studyDays = daysLeft === null ? null : Math.max(1, daysLeft - REVIEW_BUFFER);
+  const pace = daysLeft === null ? null : daysLeft <= 0 ? remaining : Math.ceil(remaining / studyDays);
+  const last7 = sum(S.plan.filter(b => b.done && b.examId === e.id && b.doneAt && b.doneAt > addDays(t,-7) && b.doneAt <= t).map(pagesOf)) / 7;
+  const finish = remaining === 0 ? t : last7 > 0 ? addDays(t, Math.ceil(remaining / last7)) : null;
+  const planned = sum(S.plan.filter(b => !b.done && b.examId === e.id && b.date >= t).map(pagesOf));
+  let status = 'neutral';
+  if (remaining === 0) status = 'done';
+  else if (daysLeft !== null && daysLeft >= 0){
+    if (finish && finish <= addDays(e.date, -REVIEW_BUFFER)) status = 'ok';
+    else if (last7 === 0) status = 'idle';
+    else status = 'late';
+  }
+  return {total, done, remaining, pct, daysLeft, pace, last7, finish, planned, status};
+}
+const blocksOn = k => S.plan.filter(b => b.date === k).sort((a,b) => (a.time||'99').localeCompare(b.time||'99'));
+const overdue = () => S.plan.filter(b => !b.done && b.date < todayKey()).sort((a,b) => a.date.localeCompare(b.date));
+function studyDay(k){ const bl = blocksOn(k).filter(b => examById(b.examId)); const planned = sum(bl.map(pagesOf)), done = sum(bl.filter(b => b.done).map(pagesOf)); return {bl, planned, done, pct: planned ? done/planned : 0}; }
+const pagesDoneOn = k => sum(S.plan.filter(b => b.done && b.doneAt === k).map(pagesOf));
+function blockLabel(b){ const e = examById(b.examId), s = srcById(e, b.sourceId); return {e, s, title:`${e ? e.name : 'Esame eliminato'}`, sub:`${s ? srcName(s) : 'Fonte'} · pp. ${b.from}–${b.to}`}; }
+function reviewsFor(k){
+  const out = [];
+  S.plan.filter(b => b.done && b.doneAt && examById(b.examId)).forEach(b => REVIEW_STEPS.forEach(st => { if (addDays(b.doneAt, st) === k) out.push({key:`${b.id}:${st}`, b, step:st}); }));
+  return out;
+}
+const reviewDone = (k, key) => (S.reviews[k] || []).includes(key);
+
+/* ---- Benessere ---- */
+const blankFit = () => ({run:{km:null, time:''}, gym:{done:false, time:'', type:''}});
+const fitOf = k => S.fitness[k] || blankFit();
+const fitW = k => (S.fitness[k] ||= blankFit());
+const ranOn = k => (+fitOf(k).run.km || 0) > 0;
+const gymOn = k => !!fitOf(k).gym.done;
+const activeOn = k => ranOn(k) || gymOn(k);
+
+/* ---- Elementi del giorno (calendario unificato) ---- */
+function dayItems(k){
+  const items = [];
+  S.exams.filter(e => e.date === k).forEach(e => items.push({kind:'exam', time:e.time||'', title:`Esame · ${e.name}`, sub: e.status === 'superato' ? `Superato${e.grade ? ' · ' + e.grade : ''}` : 'Appello', color:'#c0605b', icon:'flag', id:e.id}));
+  S.events.filter(ev => ev.date === k).forEach(ev => { const c = EVENT_CATS[ev.cat] || EVENT_CATS.altro; items.push({kind:'event', time:ev.time||'', end:ev.end||'', title:ev.title, sub:c.label + (ev.notes ? ' · ' + ev.notes : ''), color:c.color, icon:c.icon, id:ev.id}); });
+  const f = fitOf(k);
+  if (ranOn(k)) items.push({kind:'run', time:f.run.time||'', title:`Corsa · ${N1.format(+f.run.km)} km`, sub: +f.run.km >= RUN_GOAL ? 'Obiettivo 5 km raggiunto' : `Obiettivo ${RUN_GOAL} km`, color:'#3b8a82', icon:'route'});
+  if (gymOn(k)) items.push({kind:'gym', time:f.gym.time||'', title:`Palestra${f.gym.type ? ' · ' + f.gym.type : ''}`, sub:'Allenamento', color:'#3b8a82', icon:'dumbbell'});
+  blocksOn(k).forEach(b => { const L = blockLabel(b); if (!L.e) return; items.push({kind:'study', time:b.time||'', title:`${L.e.name} · ${pagesOf(b)} pp.`, chip:`${b.done ? '✓ ' : ''}${pagesOf(b)}p · ${L.e.name.split(' ')[0]}`, sub:L.sub, color:L.e.color, icon:'book', id:b.id, done:b.done}); });
+  return items.sort((a,b) => (a.kind==='exam'?-1:0) - (b.kind==='exam'?-1:0) || (a.time||'99:99').localeCompare(b.time||'99:99'));
+}
+
+/* =========================================================
+   UI: anello, toast, modale
+   ========================================================= */
+let ringN = 0;
+function ring(pct, size=150, stroke=10, center='', tone='teal'){
+  const r = (size-stroke)/2, c = 2*Math.PI*r, off = c*(1-clamp(pct,0,1)), id = 'rg'+(ringN++);
+  const g = tone === 'rose' ? ['#e2bfb1','#946150'] : ['#9fd0c7','#2a6a63'];
+  return `<div class="ring" style="width:${size}px;height:${size}px"><svg viewBox="0 0 ${size} ${size}"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${g[0]}"/><stop offset="1" stop-color="${g[1]}"/></linearGradient></defs>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#ece9e4" stroke-width="${stroke}"/>
+    <circle class="ring-val" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="url(#${id})" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${size/2} ${size/2})"/></svg>
+    <div class="ring-c"><div>${center}</div></div></div>`;
+}
+function toast(msg, o={}){
+  const el = document.createElement('div'); el.className = 'toast ' + (o.tone||'');
+  el.innerHTML = `${icon(o.icon || (o.tone==='ok'?'check':'spark'))}<span>${msg}</span>${o.action?`<button class="btn btn-sm">${esc(o.action.label)}</button>`:''}`;
+  $('#toasts').appendChild(el);
+  const kill = () => { el.classList.add('out'); setTimeout(() => el.remove(), 300); };
+  if (o.action) $('button', el).onclick = () => { o.action.fn(); kill(); };
+  setTimeout(kill, o.ms || (o.action ? 9000 : 3400));
+}
+function openModal({eyebrow='', title='', body='', wide=false, onMount}){
+  $('#modalEyebrow').textContent = eyebrow; $('#modalTitle').textContent = title; $('#modalBody').innerHTML = body;
+  $('.modal').classList.toggle('wide', wide); $('#modal').hidden = false; document.body.style.overflow = 'hidden'; $('.modal').scrollTop = 0;
+  onMount && onMount($('#modalBody'));
+  if (matchMedia('(pointer:fine)').matches) setTimeout(() => $('#modalBody [autofocus]')?.focus(), 60);
+}
+function closeModal(){ $('#modal').hidden = true; document.body.style.overflow = ''; }
+$('#modal').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
+
+/* =========================================================
+   GRAFICI
+   ========================================================= */
+const charts = {};
+function destroyCharts(){ Object.keys(charts).forEach(k => { charts[k].destroy(); delete charts[k]; }); }
+function mkChart(id, cfg){
+  const el = document.getElementById(id); if (!el) return;
+  if (!window.Chart){ el.parentElement.insertAdjacentHTML('beforeend','<div class="chart-empty">Grafici non disponibili</div>'); return; }
+  charts[id] = new Chart(el, cfg);
+}
+function chartDefaults(){
+  if (!window.Chart) return;
+  const C = Chart.defaults;
+  C.font.family = "Manrope, system-ui, sans-serif"; C.font.size = 11.5; C.font.weight = 600; C.color = '#858d96';
+  C.borderColor = 'rgba(28,36,44,.06)'; C.maintainAspectRatio = false; C.animation.duration = 700;
+  C.transitions.resize = {animation:{duration:0}};
+  C.plugins.legend.labels.boxWidth = 10; C.plugins.legend.labels.boxHeight = 10; C.plugins.legend.labels.usePointStyle = true; C.plugins.legend.position = 'bottom';
+  Object.assign(C.plugins.tooltip, {backgroundColor:'#1b232b', titleColor:'#fff', bodyColor:'#e9e6e1', padding:12, cornerRadius:12, boxPadding:4, titleFont:{weight:'700'}});
+}
+const scales = (yOpts={}) => ({x:{grid:{display:false}, border:{display:false}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:10}}, y:{grid:{color:'rgba(28,36,44,.05)'}, border:{display:false}, beginAtZero:true, ticks:{maxTicksLimit:5, padding:8}, ...yOpts}});
+
+/* =========================================================
+   CONSIGLI DEL GIORNO
+   ========================================================= */
+function insights(){
+  const t = todayKey(), h = new Date().getHours(), out = [], add = (p, tone, title, text) => out.push({p, tone, title, text});
+  const ex = activeExams(), sd = studyDay(t), revs = reviewsFor(t), revLeft = revs.filter(r => !reviewDone(t, r.key)).length;
+  if (!S.exams.length) add(10,'method','Inizia dal primo esame','Vai in «Studio», inserisci il prossimo esame con data d\'appello e fonti (libro, sbobine, slide): l\'app calcolerà le pagine al giorno e programmerà i ripassi.');
+  const near = ex.find(e => e.date && diffDays(t, e.date) >= 0);
+  if (near){
+    const st = examStats(near), dl = st.daysLeft;
+    if (dl <= 3 && dl >= 0) add(11,'alert',`${near.name}: fase finale`, `${dl === 0 ? 'L\'esame è oggi' : `Mancano ${plural(dl,'giorno','giorni')}`}. Niente pagine nuove: ripasso attivo, schemi e simulazione dell'orale ad alta voce. Stasera dormi almeno 7-8 ore: il sonno consolida la memoria.`);
+    else if (st.status === 'late' || st.status === 'idle'){
+      add(9,'alert',`${near.name}: ritmo da alzare`, `Restano ${st.remaining} pagine in ${plural(dl,'giorno','giorni')}: servono circa ${st.pace} pagine al giorno${st.last7 ? `, mentre negli ultimi 7 giorni la media è stata ${N1.format(st.last7)}` : ''}. Concentrati sugli argomenti più frequenti all'appello e usa «Distribuisci fino all'esame» per un piano realistico.`);
+    } else if (st.status === 'ok') add(5,'method',`${near.name} è in linea`, `Al ritmo attuale finirai le pagine il ${fmtDate(st.finish,{day:'numeric',month:'long'})}, prima dei giorni di ripasso. Mantieni costanza e proteggi i ripassi dilazionati.`);
+  }
+  if (ex.length && !sd.planned) add(8,'method','Pianifica la giornata','Oggi non hai pagine programmate. Bastano due minuti: in «Studio» scegli esame, fonte e intervallo di pagine. Un piano scritto si esegue, un\'intenzione vaga no.');
+  if (sd.planned > 80) add(8,'wellbeing','Carico molto alto oggi', `${sd.planned} pagine in un giorno sono tante: dividile in blocchi da 50 minuti con 10 di pausa e tieni un margine. Meglio 60 pagine capite che 100 lette di fretta.`);
+  if (sd.planned && sd.done >= sd.planned) add(7,'memory','Giornata di studio completata','Ottimo lavoro. Prima di chiudere fai 10 minuti di active recall: scrivi a memoria i 5 concetti chiave di oggi. Domani te li riproporrò nei ripassi.');
+  else if (sd.planned && h >= 20) add(7,'method','Ultimo sprint', `Hai completato ${sd.done} pagine su ${sd.planned}. Scegli le più importanti per stasera e sposta le altre a domani: chiudere con lucidità vale più di chiudere tutto.`);
+  if (revLeft) add(8,'memory',`${plural(revLeft,'ripasso dilazionato','ripassi dilazionati')} per oggi`, `Sono pagine studiate 1, 3, 7, 14 o 30 giorni fa: bastano 10-15 minuti di recupero attivo per ciascun blocco. È qui che la memoria a breve diventa memoria a lungo termine.`);
+  const active3 = range(addDays(t,-2), t).some(activeOn);
+  if (!active3) add(6,'wellbeing','Muoviti un po\'', 'Da tre giorni non registri corsa o palestra. Anche 20-30 minuti di attività aerobica migliorano umore, sonno e concentrazione per lo studio.');
+  const streak = (() => { let n = 0, k = addDays(t,-1); while (pagesDoneOn(k) > 0 && n < 60){ n++; k = addDays(k,-1); } return n; })();
+  if (streak >= 7) add(7,'wellbeing',`${streak} giorni di studio di fila`, 'Costanza eccellente. Pianifica comunque mezza giornata leggera questa settimana: il riposo previene il burnout e migliora la resa delle sessioni successive.');
+  if (h >= 23) add(9,'wellbeing','È tardi','Il ripasso notturno rende poco: vai a dormire. Durante il sonno il cervello consolida ciò che hai studiato oggi.');
+  const tip = METHOD_TIPS[dayOfYear() % METHOD_TIPS.length], well = WELLBEING_TIPS[dayOfYear() % WELLBEING_TIPS.length];
+  add(3,'method',`Metodo · ${tip[0]}`, tip[1]);
+  add(2,'wellbeing',`Benessere · ${well[0]}`, well[1]);
+  out.sort((a,b) => b.p - a.p);
+  return out.slice(0,4);
+}
+
+/* =========================================================
+   NAVIGAZIONE
+   ========================================================= */
+const ROUTES = [
+  {id:'home',      label:'Home',        title:'Buona giornata', icon:'home'},
+  {id:'studio',    label:'Studio',      title:'Studio & <em>esami</em>', icon:'book'},
+  {id:'calendario',label:'Calendario',  title:'Calendario & <em>agenda</em>', icon:'cal'},
+  {id:'benessere', label:'Benessere',   title:'Fitness & <em>benessere</em>', icon:'heart'},
+  {id:'stats',     label:'Statistiche', title:'Statistiche & <em>analisi</em>', icon:'chart'},
+];
+let route = 'home', homeDay = todayKey(), planDay = todayKey(), fitDay = todayKey(), calCursor = todayKey(), calSel = todayKey();
+function renderNav(){
+  const left = studyDay(todayKey()); const todo = left.bl.filter(b => !b.done).length;
+  $('#nav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}">${icon(r.icon)}<span>${r.id==='studio'?'Studio & esami':r.label}</span>${r.id==='studio'&&todo?`<span class="badge">${todo}</span>`:''}</a>`).join('');
+  $('#mnav').innerHTML = ROUTES.map(r => `<a href="#${r.id}" class="${route===r.id?'active':''}">${icon(r.icon)}<span>${r.label}</span></a>`).join('');
+}
+function go(){
+  const r = (location.hash || '#home').slice(1);
+  route = ROUTES.some(x => x.id === r) ? r : 'home';
+  destroyCharts();
+  const meta = ROUTES.find(x => x.id === route);
+  $('#topEyebrow').textContent = cap(fmtDate(todayKey(),{weekday:'long', day:'numeric', month:'long', year:'numeric'}));
+  $('#pageTitle').innerHTML = route === 'home' ? 'Panoramica' : meta.title;
+  renderNav();
+  const v = $('#view'); v.className = ''; void v.offsetWidth; v.className = 'view';
+  ({home:renderHome, studio:renderStudio, calendario:renderCalendar, benessere:renderFitness, stats:renderStats})[route]();
+  document.title = `${meta.label} · Flavia Med`;
+}
+function rerender(){ const y = window.scrollY; go(); window.scrollTo(0, y); }
+window.addEventListener('hashchange', () => { go(); window.scrollTo(0,0); });
+
+/* =========================================================
+   COMPONENTI CONDIVISI
+   ========================================================= */
+function cdPill(e){
+  if (!e.date) return '<span class="pill">Data da fissare</span>';
+  const n = diffDays(todayKey(), e.date);
+  if (e.status === 'superato') return `<span class="pill teal">Superato${e.grade ? ' · ' + esc(e.grade) : ''}</span>`;
+  if (n < 0) return '<span class="pill">Appello passato</span>';
+  return `<span class="pill ${n <= 7 ? 'ruby' : n <= 21 ? 'amber' : 'teal'}">${n === 0 ? 'Oggi' : n === 1 ? 'Domani' : `Tra ${n} giorni`}</span>`;
+}
+function blockRow(b, opts={}){
+  const L = blockLabel(b); if (!L.e) return '';
+  return `<div class="blk ${b.done?'done':''}" style="--c:${L.e.color}">
+    <button class="check ${b.done?'on':''}" data-act="blk-toggle" data-id="${b.id}" aria-label="${b.done?'Segna come da fare':'Segna come studiate'}" aria-pressed="${b.done}">${icon('check')}</button>
+    <div class="blk-t"><b>${opts.noExam ? esc(L.s ? srcName(L.s) : 'Fonte') : `<span class="exdot" style="--c:${L.e.color};margin-right:7px"></span>${esc(L.e.name)}`}</b><small>${opts.noExam ? `pp. ${b.from}–${b.to}` : esc(L.sub)}${b.time ? ` · ${b.time}` : ''}${opts.showDate ? ` · ${fmtDate(b.date,{weekday:'short', day:'numeric', month:'short'})}` : ''}</small></div>
+    <div class="blk-r"><span class="pp">${pagesOf(b)} pp.</span>${opts.actions || ''}</div></div>`;
+}
+function timelineHTML(k, opts={}){
+  const items = dayItems(k).filter(i => opts.withStudy !== false || i.kind !== 'study');
+  if (!items.length) return `<div class="empty" style="padding:18px"><div class="serif" style="font-size:19px">Giornata libera</div>Nessun impegno in agenda.</div>`;
+  return `<div class="tl">${items.map(i => `<div class="tli" style="--c:${i.color}">
+      <span class="tli-time ${i.time?'':'none'}">${i.time ? i.time + (i.end ? `<br><span class="muted" style="font-weight:600;font-size:10.5px">${i.end}</span>` : '') : 'in giornata'}</span>
+      <div class="tli-t"><b style="${i.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(i.title)}</b><small>${esc(i.sub)}</small></div>
+      ${i.kind === 'event' && opts.editable ? `<div class="ev-actions"><button class="btn btn-icon btn-sm btn-ghost" data-act="event-edit" data-id="${i.id}" aria-label="Modifica">${icon('edit')}</button><button class="btn btn-icon btn-sm btn-ghost" data-act="event-del" data-id="${i.id}" aria-label="Elimina">${icon('trash')}</button></div>` : `<span class="cat-ic">${icon(i.icon)}</span>`}
+    </div>`).join('')}</div>`;
+}
+function miniCal(cursor, sel, act){
+  const first = parse(cursor.slice(0,8) + '01'), y = first.getFullYear(), m = first.getMonth();
+  const start = weekStart(ymd(first)), t = todayKey(), cells = [];
+  for (let i = 0; i < 42; i++){ const k = addDays(start, i); if (i >= 35 && parse(k).getMonth() !== m) break; cells.push(k); }
+  return `<div class="mcal-head"><button class="btn btn-icon btn-sm btn-ghost" data-act="${act}-prev" aria-label="Mese precedente">${icon('left')}</button><b>${fmtDate(ymd(first),{month:'long', year:'numeric'})}</b><button class="btn btn-icon btn-sm btn-ghost" data-act="${act}-next" aria-label="Mese successivo">${icon('right')}</button></div>
+    <div class="mcal">${DOWS.map(d => `<div class="dow">${d}</div>`).join('')}${cells.map(k => {
+      const it = dayItems(k), colors = [...new Set(it.filter(i => i.kind !== 'exam').map(i => i.color))].slice(0,3), isExam = it.some(i => i.kind === 'exam');
+      return `<button class="mday ${parse(k).getMonth()!==m?'out':''} ${k===t?'today':''} ${k===sel?'sel':''} ${isExam?'exam':''}" data-act="${act}-day" data-v="${k}" aria-label="${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}">${parse(k).getDate()}<span class="dots">${colors.map(c => `<i style="--c:${c}"></i>`).join('')}</span></button>`;
+    }).join('')}</div>`;
+}
+let homeCursor = todayKey();
+
+/* =========================================================
+   HOME
+   ========================================================= */
+function greeting(){ const h = new Date().getHours(); return h < 5 ? 'Buonanotte' : h < 13 ? 'Buongiorno' : h < 18 ? 'Buon pomeriggio' : 'Buonasera'; }
+function renderHome(){
+  const t = todayKey(), sd = studyDay(t), ex = activeExams(), next = ex.find(e => e.date && diffDays(t, e.date) >= 0);
+  const f = fitOf(t), revs = reviewsFor(t), ins = insights(), od = overdue();
+  const name = S.profile.name ? `, <em>${esc(S.profile.name)}</em>` : '';
+  const line = !S.exams.length ? 'Benvenuta nel tuo planner di Medicina. Inserisci il primo esame e lascia che sia l\'app a organizzare pagine, ripassi e agenda.'
+    : !sd.planned ? 'Nessuna pagina programmata per oggi: pianifica il carico di studio o goditi una giornata di ripasso leggero.'
+    : sd.done >= sd.planned ? `Studio di oggi completato: <strong>${sd.done} pagine</strong>. Ora ripasso attivo e meritato riposo.`
+    : `Hai studiato <strong>${sd.done} di ${sd.planned} pagine</strong> programmate. ${sd.planned - sd.done} pagine al traguardo di oggi.`;
+  const tone = {method:'steth', memory:'brain', wellbeing:'leaf', alert:'alert'}, tag = {method:'Metodo', memory:'Memoria', wellbeing:'Benessere', alert:'Priorità'};
+  const fact = MED_FACTS[dayOfYear() % MED_FACTS.length];
+  $('#view').innerHTML = `${installBanner()}
+  <section class="card hero">
+    <div>
+      <div class="eyebrow">Riepilogo di oggi</div>
+      <h2 class="hero-greet">${greeting()}${name}.</h2>
+      <p class="hero-line">${line}</p>
+      <div class="hero-chips">
+        ${next ? `<span class="hchip">${icon('flag')} <b>${esc(next.name)}</b> ${diffDays(t,next.date)===0?'oggi':`tra ${diffDays(t,next.date)} gg`}</span>` : ''}
+        <span class="hchip">${icon('book')} <b>${sd.done}/${sd.planned}</b> pagine</span>
+        <span class="hchip">${icon('refresh')} <b>${revs.filter(r => reviewDone(t, r.key)).length}/${revs.length}</b> ripassi</span>
+        <span class="hchip">${icon('heart')} ${ranOn(t) ? `<b>${N1.format(+f.run.km)} km</b>` : gymOn(t) ? '<b>Palestra</b>' : 'Nessuna attività'}</span>
+      </div>
+    </div>
+    ${ring(sd.pct, 172, 11, `<div class="ring-num" style="font-size:50px">${Math.round(sd.pct*100)}<span style="font-size:22px">%</span></div><div class="ring-sub">studio di oggi</div>`)}
+    <svg class="hero-ecg" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ecg" x1="0" x2="1"><stop offset="0" stop-color="#b5826f" stop-opacity="0"/><stop offset=".5" stop-color="#b5826f"/><stop offset="1" stop-color="#3b8a82" stop-opacity="0"/></linearGradient></defs><path d="M0 30 H360 L380 30 L392 8 L404 42 L414 22 L424 30 H620 L640 30 L652 6 L664 44 L674 22 L684 30 H900 L920 30 L932 10 L944 40 L954 24 L964 30 H1200" fill="none" stroke="url(#ecg)" stroke-width="1.6"/></svg>
+  </section>
+
+  <section class="grid g-home mt-18">
+    <div class="stack">
+      <div class="card o1">
+        <div class="card-head"><div><div class="eyebrow">Programma di oggi</div><h3 class="card-title">Pagine da studiare</h3></div><a class="btn btn-sm" href="#studio">${icon('plus')} Pianifica</a></div>
+        ${sd.bl.length ? sd.bl.map(b => blockRow(b)).join('') : `<div class="empty"><div class="serif">Nessuna pagina in programma</div>${ex.length ? 'Pianifica il carico di oggi nella sezione Studio.' : 'Aggiungi il primo esame per iniziare.'}<div class="mt-12"><a class="btn btn-rose btn-sm" href="#studio">${icon(ex.length?'plus':'cap')} ${ex.length?'Pianifica oggi':'Aggiungi un esame'}</a></div></div>`}
+        ${od.length ? `<div class="row between mt-12" style="padding:10px 12px;border-radius:12px;background:var(--amber-a)"><span class="small" style="color:#8a6326;font-weight:600">${icon('alert')} ${plural(od.length,'blocco arretrato','blocchi arretrati')} (${sum(od.map(pagesOf))} pagine)</span><button class="btn btn-sm" data-act="blk-move-all">Sposta a oggi</button></div>` : ''}
+        <hr class="hair">
+        <div class="row between wrap" style="gap:12px">
+          <div class="row" style="gap:12px"><span class="cat-ic" style="--c:#3b8a82;width:34px;height:34px">${icon('route')}</span><div><b style="font-size:13.5px">Corsa</b><div class="small muted">${ranOn(t) ? `${N1.format(+f.run.km)} km${f.run.time ? ' alle ' + f.run.time : ''}` : 'Non registrata'}</div></div></div>
+          <div class="row" style="gap:12px"><span class="cat-ic" style="--c:#3b8a82;width:34px;height:34px">${icon('dumbbell')}</span><div><b style="font-size:13.5px">Palestra</b><div class="small muted">${gymOn(t) ? `Fatta${f.gym.time ? ' alle ' + f.gym.time : ''}` : 'Non ancora'}</div></div></div>
+          <a class="btn btn-sm btn-teal" href="#benessere">${icon('heart')} Registra</a>
+        </div>
+      </div>
+      ${revs.length ? `<div class="card o3">
+        <div class="card-head"><div><div class="eyebrow">Memoria a lungo termine</div><h3 class="card-title">Ripasso dilazionato di oggi</h3></div><span class="pill rose">${revs.filter(r => reviewDone(t, r.key)).length}/${revs.length}</span></div>
+        ${revs.map(r => { const L = blockLabel(r.b), on = reviewDone(t, r.key); return `<div class="rev"><button class="check ${on?'on':''}" data-act="rev-toggle" data-v="${r.key}" aria-label="Ripasso fatto">${icon('check')}</button><div class="blk-t"><b style="${on?'text-decoration:line-through;color:var(--muted)':''}"><span class="exdot" style="--c:${L.e.color};margin-right:7px"></span>${esc(L.e.name)}</b><small>${esc(L.sub)}</small></div><span class="step">+${r.step} ${r.step === 1 ? 'giorno' : 'giorni'}</span></div>`; }).join('')}
+      </div>` : ''}
+      <div class="card o4">
+        <div class="card-head"><div><div class="eyebrow">Consigli del giorno</div><h3 class="card-title">Daily Medical Insights & Study Tips</h3></div>${icon('steth')}</div>
+        ${ins.map(x => `<div class="insight ${x.tone}"><div class="insight-ic">${icon(tone[x.tone])}</div><div><h4>${esc(x.title)}<span class="tag">${tag[x.tone]}</span></h4><p>${esc(x.text)}</p></div></div>`).join('')}
+        <div class="medfact"><div><div class="eyebrow rose">Pillola di medicina</div><p>${esc(fact)}</p></div><div><div class="eyebrow rose">Per te, oggi</div><p class="q">“${esc(QUOTES[dayOfYear() % QUOTES.length])}”</p></div></div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card o2">
+        <div class="card-head" style="margin-bottom:8px"><div><div class="eyebrow">Calendario integrato</div><h3 class="card-title">Agenda rapida</h3></div><button class="btn btn-sm btn-rose" data-act="event-new" data-v="${homeDay}">${icon('plus')} Attività</button></div>
+        ${miniCal(homeCursor, homeDay, 'hcal')}
+        <hr class="hair">
+        <div class="row between"><h4 class="agenda-day">${homeDay === t ? 'Oggi' : fmtDate(homeDay,{weekday:'long', day:'numeric', month:'long'})}</h4><a class="small rose" style="font-weight:700;text-decoration:none" href="#calendario" data-act="open-cal" data-v="${homeDay}">Calendario →</a></div>
+        ${timelineHTML(homeDay)}
+      </div>
+      <div class="card o5">
+        <div class="card-head"><div><div class="eyebrow">Sessione</div><h3 class="card-title">Esami in arrivo</h3></div><a class="btn btn-sm btn-ghost" href="#studio">Tutti ${icon('right')}</a></div>
+        ${ex.length ? ex.slice(0,4).map(e => { const st = examStats(e); return `<div class="prog"><b><span class="exdot" style="--c:${e.color}"></span>${esc(e.name)}</b>${cdPill(e)}<div class="bar"><i style="width:${st.pct*100}%;background:${e.color}"></i></div><small>${st.done}/${st.total} pagine · ${Math.round(st.pct*100)}%${st.pace && st.remaining ? ` · servono ${st.pace} pp./giorno` : ''}</small></div>`; }).join('') : `<div class="empty"><div class="serif">Nessun esame</div>Aggiungi gli esami della sessione.</div>`}
+      </div>
+    </div>
+  </section>`;
+}
+
+/* =========================================================
+   STUDIO & ESAMI
+   ========================================================= */
+function examCard(e){
+  const st = examStats(e), dl = st.daysLeft;
+  const msg = st.remaining === 0 ? 'Tutte le pagine sono state studiate: ora solo ripasso e simulazioni.'
+    : dl === null ? 'Imposta la data dell\'appello per calcolare il ritmo necessario.'
+    : dl < 0 ? 'L\'appello è passato: segna l\'esito modificando l\'esame.'
+    : `Servono <b>${st.pace} pagine al giorno</b> (con ${REVIEW_BUFFER} giorni finali di ripasso).${st.last7 ? ` Ritmo attuale: ${N1.format(st.last7)}/giorno${st.finish ? `, finiresti il ${fmtDate(st.finish,{day:'numeric', month:'short'})}` : ''}.` : ' Nessuna pagina negli ultimi 7 giorni.'}`;
+  return `<article class="card exam" style="--c:${e.color}">
+    <div class="exam-top"></div>
+    <div class="exam-in">
+      <div class="exam-head">
+        <div style="min-width:0"><h3 class="exam-name">${esc(e.name)}</h3><div class="exam-date">${icon('flag')} ${e.date ? cap(fmtDate(e.date,{weekday:'short', day:'numeric', month:'long', year:'numeric'})) : 'Data da definire'} ${cdPill(e)}</div></div>
+        ${dl !== null && dl >= 0 ? `<div class="cd"><b>${dl}</b><span>${dl === 1 ? 'giorno' : 'giorni'}</span></div>` : ''}
+      </div>
+      <div class="row" style="gap:16px">
+        ${ring(st.pct, 74, 7, `<div class="ring-num" style="font-size:20px">${Math.round(st.pct*100)}<span style="font-size:11px">%</span></div>`)}
+        <div class="srcs" style="flex:1;min-width:0">${e.sources.map(s => { const d = srcStudied(e, s); return `<div class="src-r"><b>${esc(srcName(s))}</b><span>${d}/${s.pages} pp.</span><div class="bar thin"><i style="width:${s.pages ? d/s.pages*100 : 0}%;background:${e.color}"></i></div></div>`; }).join('') || '<span class="small muted">Nessuna fonte: modifica l\'esame per aggiungerne.</span>'}</div>
+      </div>
+      <div class="exam-foot"><div class="ef"><span class="eyebrow">Studiate</span><b>${st.done}</b></div><div class="ef"><span class="eyebrow">Rimanenti</span><b>${st.remaining}</b></div><div class="ef"><span class="eyebrow">Pianificate</span><b>${st.planned}</b></div></div>
+      <div class="exam-msg">${icon('target')}<span>${msg}</span></div>
+      <div class="exam-act">
+        <button class="btn btn-sm btn-ink" data-act="block-new" data-v="${e.id}">${icon('plus')} Pagine di oggi</button>
+        <button class="btn btn-sm btn-teal" data-act="exam-auto" data-id="${e.id}" ${st.remaining && e.date ? '' : 'disabled'}>${icon('wand')} Distribuisci fino all'esame</button>
+        <button class="btn btn-sm btn-icon btn-ghost" data-act="exam-edit" data-id="${e.id}" aria-label="Modifica esame">${icon('edit')}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function plannerHTML(){
+  const k = planDay, t = todayKey(), bl = blocksOn(k), groups = {};
+  bl.forEach(b => { if (examById(b.examId)) (groups[b.examId] ||= []).push(b); });
+  const planned = sum(bl.map(pagesOf)), done = sum(bl.filter(b => b.done).map(pagesOf)), od = overdue();
+  return `<div class="card">
+    <div class="card-head"><div><div class="eyebrow">Pianificatore giornaliero</div><h3 class="card-title">Carico di studio</h3></div><span class="pill ${done && done >= planned ? 'teal' : 'rose'}">${done}/${planned} pagine</span></div>
+    <div class="row between wrap" style="margin-bottom:14px;gap:8px">
+      <div class="daynav"><button class="btn btn-icon btn-sm" data-act="plan-prev" aria-label="Giorno precedente">${icon('left')}</button><span class="d">${k === t ? 'Oggi' : fmtDate(k,{weekday:'short', day:'numeric', month:'short'})}</span><button class="btn btn-icon btn-sm" data-act="plan-next" aria-label="Giorno successivo">${icon('right')}</button></div>
+      ${k !== t ? `<button class="btn btn-sm btn-ghost" data-act="plan-today">Torna a oggi</button>` : ''}
+    </div>
+    ${Object.keys(groups).length ? Object.entries(groups).map(([id, list]) => { const e = examById(id); return `<div class="exgroup"><div class="exgroup-h"><span class="exdot" style="--c:${e.color}"></span>${esc(e.name)} ${cdPill(e)}</div>${list.map(b => blockRow(b, {noExam:true, actions:`<button class="btn btn-icon btn-sm btn-ghost" data-act="blk-del" data-id="${b.id}" aria-label="Elimina blocco">${icon('trash')}</button>`})).join('')}</div>`; }).join('')
+      : `<div class="empty"><div class="serif">Nessun blocco per ${k === t ? 'oggi' : 'questo giorno'}</div>Aggiungi qui sotto le pagine da studiare, anche da più fonti o esami diversi.</div>`}
+    ${od.length && k === t ? `<div class="mt-18"><div class="row between" style="margin-bottom:8px"><div class="eyebrow" style="color:#9c7232">Arretrati · ${sum(od.map(pagesOf))} pagine</div><button class="btn btn-sm" data-act="blk-move-all">Sposta tutto a oggi</button></div>${od.slice(0,6).map(b => blockRow(b, {showDate:true, actions:`<button class="btn btn-sm btn-ghost" data-act="blk-move" data-id="${b.id}">Oggi</button>`})).join('')}</div>` : ''}
+  </div>`;
+}
+function blockFormHTML(examId){
+  const ex = activeExams().filter(e => e.sources.length);
+  if (!ex.length) return `<div class="card"><div class="eyebrow">Aggiungi pagine</div><div class="empty mt-12"><div class="serif">Prima un esame</div>Crea un esame con almeno una fonte per programmare le pagine.</div></div>`;
+  const e = examById(examId) && examById(examId).sources.length ? examById(examId) : ex[0];
+  return `<div class="card" id="blockCard">
+    <div class="card-head"><div><div class="eyebrow">Aggiungi al ${planDay === todayKey() ? 'programma di oggi' : fmtDate(planDay,{day:'numeric', month:'long'})}</div><h3 class="card-title">Da pagina a pagina</h3></div>${icon('layers')}</div>
+    <form data-form="block" class="form-grid">
+      <div class="field full"><label for="bExam">Esame</label><select class="input" id="bExam" name="examId" data-act="b-exam">${ex.map(x => `<option value="${x.id}" ${x.id===e.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <div class="field full"><label for="bSrc">Fonte</label><select class="input" id="bSrc" name="sourceId" data-act="b-src">${e.sources.map(s => `<option value="${s.id}">${esc(srcName(s))} · ${s.pages} pp.</option>`).join('')}</select></div>
+      <div class="field"><label for="bFrom">Da pagina</label><input class="input input-num" id="bFrom" name="from" type="number" min="1" inputmode="numeric" required></div>
+      <div class="field"><label for="bTo">A pagina</label><input class="input input-num" id="bTo" name="to" type="number" min="1" inputmode="numeric" required></div>
+      <div class="field"><label for="bTime">Orario (facoltativo)</label><input class="input" id="bTime" name="time" type="time"></div>
+      <div class="field" style="justify-content:flex-end"><label class="check-row" style="height:42px"><input type="checkbox" name="done"> Già studiate</label></div>
+      <div class="full small muted" id="bHint"></div>
+      <div class="full"><button class="btn btn-rose" style="width:100%">${icon('plus')} Aggiungi al piano</button></div>
+    </form>
+  </div>`;
+}
+function fillBlockForm(){
+  const e = examById($('#bExam')?.value); if (!e) return;
+  const s = srcById(e, $('#bSrc').value) || e.sources[0]; if (!s) return;
+  const st = examStats(e), from = nextFreePage(e, s);
+  const per = clamp(st.pace || 20, 1, 200);
+  if (from === null){ $('#bFrom').value = ''; $('#bTo').value = ''; $('#bHint').innerHTML = `Tutte le pagine di «${esc(srcName(s))}» sono già studiate o pianificate.`; return; }
+  $('#bFrom').value = from; $('#bTo').value = Math.min(s.pages, from + per - 1);
+  $('#bFrom').max = $('#bTo').max = s.pages;
+  $('#bHint').innerHTML = `Prima pagina libera: ${from}. ${st.pace ? `Ritmo consigliato per ${esc(e.name)}: <b>${st.pace} pagine/giorno</b>.` : ''}`;
+}
+function renderStudio(examFocus){
+  const ex = activeExams(), passed = passedExams(), t = todayKey(), sd = studyDay(t);
+  const remaining = sum(ex.map(e => examStats(e).remaining)), next = ex.find(e => e.date && diffDays(t, e.date) >= 0);
+  const grades = passed.map(e => e.grade === '30L' ? 30 : +e.grade).filter(x => x >= 18);
+  $('#view').innerHTML = `
+  <section class="kpis">
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Esami in sessione</span>${icon('cap')}</div><div class="kpi-val">${ex.length}</div><div class="kpi-sub">${passed.length ? `${plural(passed.length,'superato','superati')}${grades.length ? ` · media ${N1.format(avg(grades))}` : ''}` : 'Il libretto ti aspetta'}</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Prossimo appello</span>${icon('flag')}</div><div class="kpi-val">${next ? diffDays(t, next.date) : '—'}<small>${next ? 'giorni' : ''}</small></div><div class="kpi-sub">${next ? esc(next.name) : 'Nessuna data fissata'}</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pagine rimanenti</span>${icon('layers')}</div><div class="kpi-val">${remaining}</div><div class="kpi-sub">su tutti gli esami attivi</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Oggi</span>${icon('book')}</div><div class="kpi-val">${sd.done}<small>/ ${sd.planned} pp.</small></div><div class="kpi-sub">${sd.planned ? `${Math.round(sd.pct*100)}% del programma` : 'Nessun blocco programmato'}</div></div>
+  </section>
+  <div class="row between wrap mt-24" style="gap:12px"><div><div class="eyebrow">Il cuore della preparazione</div><h2 class="card-title" style="font-size:30px">I tuoi esami</h2></div><button class="btn btn-ink" data-act="exam-new">${icon('plus')} Nuovo esame</button></div>
+  <section class="exams mt-18">${ex.length ? ex.map(examCard).join('') : `<div class="card empty" style="grid-column:1/-1;padding:42px 20px"><div class="serif">Nessun esame in sessione</div>Inserisci nome del corso, data dell'appello e fonti di studio con il numero di pagine.<div class="mt-18"><button class="btn btn-rose" data-act="exam-new">${icon('plus')} Aggiungi il primo esame</button></div></div>`}</section>
+  <section class="grid g-studio mt-24">
+    <div>${plannerHTML()}</div>
+    <div class="stack">${blockFormHTML(examFocus)}
+      ${passed.length ? `<div class="card"><div class="card-head"><div><div class="eyebrow">Libretto</div><h3 class="card-title">Esami superati</h3></div>${grades.length ? `<span class="pill rose">Media ${N1.format(avg(grades))}</span>` : ''}</div>${passed.map(e => `<div class="passed"><span class="exdot" style="--c:${e.color}"></span><div class="blk-t"><b>${esc(e.name)}</b><small>${e.date ? fmtDate(e.date,{day:'numeric', month:'long', year:'numeric'}) : ''}</small></div><span class="grade">${esc(e.grade || '✓')}</span></div>`).join('')}</div>` : ''}
+    </div>
+  </section>`;
+  fillBlockForm();
+}
+function examModal(e){
+  const isNew = !e;
+  e = e || {name:'', date:'', color:EXAM_COLORS[S.exams.length % EXAM_COLORS.length], sources:[{id:uid(), type:'Libro di testo', label:'', pages:''}], status:'attivo', grade:'', notes:''};
+  const srcRow = s => `<div class="src-row" data-sid="${s.id}">
+      <select class="input" name="type" aria-label="Tipo di fonte">${SOURCE_TYPES.map(x => `<option ${x===s.type?'selected':''}>${x}</option>`).join('')}</select>
+      <input class="input src-label" name="label" placeholder="Titolo (es. Martini, Fisiologia)" value="${esc(s.label||'')}" maxlength="60">
+      <div class="unit"><input class="input input-num" name="pages" type="number" min="1" placeholder="Pagine" value="${s.pages||''}" required inputmode="numeric"><span>pp.</span></div>
+      <button type="button" class="btn btn-icon btn-ghost" data-act="src-del-row" aria-label="Rimuovi fonte">${icon('x')}</button></div>`;
+  openModal({eyebrow: isNew ? 'Nuovo esame' : 'Modifica esame', title: isNew ? 'Aggiungi un esame' : e.name, wide:true, body:`
+    <form data-form="exam" data-id="${e.id||''}" class="stack" style="gap:16px">
+      <div class="form-grid">
+        <div class="field full"><label for="eName">Nome del corso</label><input class="input" id="eName" name="name" required maxlength="70" placeholder="Es. Anatomia Umana, Fisiologia, Patologia generale" value="${esc(e.name)}" autofocus></div>
+        <div class="field"><label for="eDate">Data dell'appello</label><input class="input" id="eDate" name="date" type="date" value="${e.date||''}"></div>
+        <div class="field"><label>Colore</label><div class="colors">${EXAM_COLORS.map(c => `<label><input type="radio" name="color" value="${c}" ${c===e.color?'checked':''}><span style="--c:${c}"></span></label>`).join('')}</div></div>
+      </div>
+      <div><div class="row between" style="margin-bottom:10px"><span class="label">Materiale di studio</span><button type="button" class="btn btn-sm btn-teal" data-act="src-add-row">${icon('plus')} Aggiungi fonte</button></div>
+        <div id="srcRows">${e.sources.map(srcRow).join('')}</div>
+        <p class="small muted" style="margin:8px 0 0">Libro, sbobine, slide del professore…: per ciascuna fonte indica il numero totale di pagine. Le pagine studiate verranno scalate in automatico.</p></div>
+      ${!isNew ? `<div class="form-grid"><div class="field"><label for="eStatus">Esito</label><select class="input" id="eStatus" name="status"><option value="attivo" ${e.status!=='superato'?'selected':''}>In preparazione</option><option value="superato" ${e.status==='superato'?'selected':''}>Superato</option></select></div>
+        <div class="field"><label for="eGrade">Voto</label><select class="input" id="eGrade" name="grade"><option value="">—</option>${[...Array(13)].map((_,i) => 18+i).map(v => `<option ${String(v)===String(e.grade)?'selected':''}>${v}</option>`).join('')}<option ${e.grade==='30L'?'selected':''}>30L</option></select></div></div>` : ''}
+      <div class="modal-foot">${!isNew ? `<button type="button" class="btn btn-ghost" data-act="exam-del" data-id="${e.id}" style="margin-right:auto;color:var(--ruby)">${icon('trash')} Elimina</button>` : ''}<button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-rose">${isNew ? 'Crea esame' : 'Salva modifiche'}</button></div>
+    </form>`, onMount: b => { b._srcRow = srcRow; }});
+}
+function autoPlanModal(e){
+  const t = todayKey();
+  openModal({eyebrow:'Pianificazione automatica', title:`Distribuisci ${e.name}`, body:`
+    <form data-form="autoplan" data-id="${e.id}" class="stack" style="gap:16px">
+      <p class="small muted" style="margin:0">L'app distribuisce le pagine non ancora studiate né pianificate sui giorni disponibili fino all'appello, lasciando gli ultimi giorni per il ripasso. I blocchi creati restano modificabili.</p>
+      <div class="form-grid">
+        <div class="field"><label for="apStart">Inizia da</label><input class="input" id="apStart" name="start" type="date" value="${t}" min="${t}"></div>
+        <div class="field"><label for="apRev">Giorni di ripasso finali</label><input class="input input-num" id="apRev" name="review" type="number" min="0" max="14" value="${REVIEW_BUFFER}"></div>
+      </div>
+      <div class="field"><label>Giorni di riposo (esclusi dal piano)</label><div class="days-chips">${['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map((d,i) => `<label><input type="checkbox" name="skip" value="${i}" ${i===6?'checked':''}><span>${d.slice(0,2)}</span></label>`).join('')}</div></div>
+      <div class="preview" id="apPreview"></div>
+      <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-rose" id="apGo">${icon('wand')} Crea il piano</button></div>
+    </form>`, onMount: () => updateAutoPreview()});
+}
+function autoPlanCompute(e, start, review, skip){
+  if (!e.date) return {error:'Imposta prima la data dell\'appello.'};
+  const last = addDays(e.date, -(review+1));
+  if (last < start) return {error:'Non ci sono giorni disponibili prima dei giorni di ripasso: riduci il ripasso o anticipa l\'inizio.'};
+  const days = range(start, last).filter(k => !skip.includes(dow(k)));
+  if (!days.length) return {error:'Tutti i giorni sono esclusi come riposo.'};
+  const queue = e.sources.flatMap(s => freeSegments(e, s).map(g => ({s, from:g[0], to:g[1]})));
+  const total = sum(queue.map(g => g.to - g.from + 1));
+  if (!total) return {error:'Tutte le pagine sono già studiate o pianificate.'};
+  const per = Math.ceil(total / days.length), blocks = [];
+  for (const day of days){
+    let q = per;
+    while (q > 0 && queue.length){ const g = queue[0], take = Math.min(q, g.to - g.from + 1); blocks.push({date:day, sourceId:g.s.id, from:g.from, to:g.from + take - 1}); g.from += take; q -= take; if (g.from > g.to) queue.shift(); }
+    if (!queue.length) break;
+  }
+  return {days:days.length, per, total, blocks, last:blocks[blocks.length-1].date};
+}
+function readAutoForm(){
+  const f = $('form[data-form="autoplan"]'); if (!f) return null;
+  const e = examById(f.dataset.id), start = f.start.value || todayKey(), review = clamp(+f.review.value || 0, 0, 14), skip = $$('input[name="skip"]:checked', f).map(x => +x.value);
+  return {e, r:autoPlanCompute(e, start, review, skip)};
+}
+function updateAutoPreview(){
+  const x = readAutoForm(); if (!x) return; const p = $('#apPreview'), r = x.r;
+  p.classList.toggle('err', !!r.error); $('#apGo').disabled = !!r.error;
+  p.innerHTML = r.error ? r.error : `<b>${r.total} pagine</b> su <b>${plural(r.days,'giorno','giorni')} di studio</b>: circa <b>${r.per} pagine al giorno</b>, ultimo blocco il ${fmtDate(r.last,{weekday:'long', day:'numeric', month:'long'})}. Poi ripasso fino all'appello del ${fmtDate(x.e.date,{day:'numeric', month:'long'})}.${r.per > 70 ? '<br><span class="ruby">Carico molto alto: valuta di iniziare prima o ridurre i giorni di riposo.</span>' : ''}`;
+}
+
+/* =========================================================
+   CALENDARIO
+   ========================================================= */
+function renderCalendar(){
+  const view = S.ui.calView || 'month', t = todayKey(), first = calCursor.slice(0,8) + '01', m = parse(first).getMonth();
+  let grid;
+  if (view === 'month'){
+    const start = weekStart(first), cells = [];
+    for (let i = 0; i < 42; i++){ const k = addDays(start, i); if (i >= 35 && parse(k).getMonth() !== m) break; cells.push(k); }
+    grid = `<div class="cal">${['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map(d => `<div class="dow">${d}</div>`).join('')}${cells.map(k => {
+      const it = dayItems(k), show = it.slice(0,3);
+      return `<button class="cday ${parse(k).getMonth()!==m?'out':''} ${k===t?'today':''} ${k===calSel?'sel':''}" data-act="cal-day" data-v="${k}" aria-label="${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}: ${plural(it.length,'elemento','elementi')}">
+        <span class="cday-n"><span>${parse(k).getDate()}</span></span>
+        ${show.map(i => `<span class="cchip ${i.kind==='exam'?'ex':''} ${i.done?'done':''}" style="--c:${i.color}">${i.kind==='exam' ? 'ESAME' : i.kind==='study' ? esc(i.chip) : (i.time ? i.time + ' ' : '') + esc(i.title)}</span>`).join('')}
+        ${it.length > 3 ? `<span class="cmore">+${it.length-3}</span>` : ''}</button>`;
+    }).join('')}</div>`;
+  } else {
+    const ws = weekStart(calCursor), days = range(ws, addDays(ws, 6));
+    grid = `<div class="week">${days.map(k => { const it = dayItems(k); return `<button class="wcol ${k===t?'today':''} ${k===calSel?'sel':''}" data-act="cal-day" data-v="${k}">
+      <div class="wd"><b>${parse(k).getDate()}</b><span>${fmtDate(k,{weekday:'short'}).replace('.','')}</span></div>
+      ${it.map(i => `<div class="witem ${i.kind==='exam'?'ex':''}" style="--c:${i.color};${i.done?'opacity:.55':''}"><b>${esc(i.title)}</b>${i.time ? i.time + ' · ' : ''}${esc(i.sub)}</div>`).join('') || '<span class="small muted">Libero</span>'}</button>`; }).join('')}</div>`;
+  }
+  const title = view === 'month' ? fmtDate(first,{month:'long', year:'numeric'}) : (() => { const ws = weekStart(calCursor); return `${fmtDate(ws,{day:'numeric', month:'short'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'short', year:'numeric'})}`; })();
+  const sd = studyDay(calSel);
+  $('#view').innerHTML = `
+  <div class="cal-bar">
+    <div class="daynav"><button class="btn btn-icon" data-act="cal-prev" aria-label="Precedente">${icon('left')}</button><h2 class="cal-title">${title}</h2><button class="btn btn-icon" data-act="cal-next" aria-label="Successivo">${icon('right')}</button></div>
+    <button class="btn btn-sm" data-act="cal-today">Oggi</button>
+    <div class="seg" style="margin-left:auto" role="tablist"><button class="${view==='month'?'on':''}" data-act="cal-view" data-v="month">Mese</button><button class="${view==='week'?'on':''}" data-act="cal-view" data-v="week">Settimana</button></div>
+    <button class="btn btn-rose" data-act="event-new" data-v="${calSel}">${icon('plus')} Attività</button>
+  </div>
+  <div class="cal-wrap">
+    <div class="card" style="padding:14px" id="calGrid">${grid}</div>
+    <aside class="card side-day">
+      <div class="eyebrow">${calSel === t ? 'Oggi' : relDays(diffDays(t, calSel)) === 'domani' ? 'Domani' : 'Giorno selezionato'}</div>
+      <h3 class="card-title" style="text-transform:capitalize">${fmtDate(calSel,{weekday:'long', day:'numeric', month:'long'})}</h3>
+      ${sd.bl.length ? `<div class="label mt-18" style="margin-bottom:8px">Studio programmato · ${sd.done}/${sd.planned} pp.</div>${sd.bl.map(b => blockRow(b)).join('')}` : ''}
+      <div class="label mt-18">Agenda</div>
+      ${timelineHTML(calSel, {withStudy:false, editable:true})}
+      <hr class="hair">
+      <form data-form="event" data-date="${calSel}" class="stack" style="gap:10px">
+        <div class="label">Aggiungi un'attività a questo giorno</div>
+        <input class="input" name="title" placeholder="Es. Uscita con le amiche, Commissione…" maxlength="80" required>
+        <div class="form-grid" style="gap:10px"><div class="field"><label>Dalle</label><input class="input" name="time" type="time"></div><div class="field"><label>Alle</label><input class="input" name="end" type="time"></div></div>
+        <select class="input" name="cat" aria-label="Categoria">${Object.entries(EVENT_CATS).map(([k,c]) => `<option value="${k}">${c.label}</option>`).join('')}</select>
+        <button class="btn btn-ink">${icon('plus')} Aggiungi in agenda</button>
+      </form>
+      <div class="row wrap mt-12" style="gap:8px"><button class="btn btn-sm btn-teal" data-act="cal-fit" data-v="${calSel}">${icon('heart')} Registra attività fisica</button><button class="btn btn-sm" data-act="cal-plan" data-v="${calSel}">${icon('book')} Pianifica studio</button></div>
+    </aside>
+  </div>`;
+}
+let swipeX = null;
+document.addEventListener('touchstart', e => { if (route === 'calendario' && e.target.closest('#calGrid')) swipeX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => { if (swipeX === null) return; const dx = e.changedTouches[0].clientX - swipeX; swipeX = null; if (Math.abs(dx) > 60) shiftCal(dx < 0 ? 1 : -1); }, {passive:true});
+function shiftCal(dir){
+  if ((S.ui.calView || 'month') === 'month'){ const d = parse(calCursor.slice(0,8) + '01'); d.setMonth(d.getMonth() + dir); calCursor = ymd(d); }
+  else calCursor = addDays(calCursor, 7*dir);
+  renderCalendar();
+}
+function eventModal(ev, date){
+  const isNew = !ev; ev = ev || {title:'', date: date || todayKey(), time:'', end:'', cat:'amiche', notes:''};
+  openModal({eyebrow: isNew ? 'Nuova attività' : 'Modifica attività', title: isNew ? 'Aggiungi in agenda' : ev.title, body:`
+    <form data-form="event" data-id="${ev.id||''}" class="form-grid">
+      <div class="field full"><label for="evT">Titolo</label><input class="input" id="evT" name="title" value="${esc(ev.title)}" required maxlength="80" placeholder="Es. Uscita con le amiche" autofocus></div>
+      <div class="field full"><label for="evD">Giorno</label><input class="input" id="evD" name="date" type="date" value="${ev.date}" required></div>
+      <div class="field"><label for="evS">Dalle</label><input class="input" id="evS" name="time" type="time" value="${ev.time||''}"></div>
+      <div class="field"><label for="evE">Alle</label><input class="input" id="evE" name="end" type="time" value="${ev.end||''}"></div>
+      <div class="field full"><label for="evC">Categoria</label><select class="input" id="evC" name="cat">${Object.entries(EVENT_CATS).map(([k,c]) => `<option value="${k}" ${k===ev.cat?'selected':''}>${c.label}</option>`).join('')}</select></div>
+      <div class="field full"><label for="evN">Note</label><input class="input" id="evN" name="notes" value="${esc(ev.notes||'')}" maxlength="120" placeholder="Facoltative"></div>
+      <div class="full modal-foot"><button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-rose">${isNew ? 'Aggiungi' : 'Salva'}</button></div>
+    </form>`});
+}
+
+/* =========================================================
+   BENESSERE
+   ========================================================= */
+function renderFitness(){
+  const k = fitDay, t = todayKey(), f = fitOf(k), km = +f.run.km || 0, ws = weekStart(k), week = range(ws, addDays(ws,6));
+  const m30 = range(addDays(t,-29), t), kmM = sum(m30.map(x => +fitOf(x).run.km || 0)), gymM = m30.filter(gymOn).length, runs5 = m30.filter(x => (+fitOf(x).run.km||0) >= RUN_GOAL).length;
+  let streak = 0; for (let x = activeOn(t) ? t : addDays(t,-1); activeOn(x) && streak < 365; x = addDays(x,-1)) streak++;
+  $('#view').innerHTML = `
+  <div class="row between wrap" style="margin-bottom:16px;gap:10px">
+    <div class="daynav"><button class="btn btn-icon" data-act="fit-prev" aria-label="Giorno precedente">${icon('left')}</button><span class="d">${k === t ? 'Oggi' : fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}</span><button class="btn btn-icon" data-act="fit-next" aria-label="Giorno successivo" ${k >= t ? 'disabled' : ''}>${icon('right')}</button></div>
+    ${k !== t ? '<button class="btn btn-sm" data-act="fit-today">Torna a oggi</button>' : ''}
+  </div>
+  <section class="grid g-2">
+    <div class="card fit-card">
+      <div class="card-head" style="margin-bottom:0"><div><div class="eyebrow">Cardio</div><h3 class="card-title">Corsa</h3></div><span class="pill ${km >= RUN_GOAL ? 'teal' : km ? 'amber' : ''}">${km >= RUN_GOAL ? 'Obiettivo raggiunto' : km ? 'In corso' : 'Obiettivo 5 km'}</span></div>
+      <div class="fit-big" data-live="km">${N1.format(km)}<small>km</small></div>
+      <div class="bar"><i data-live="kmbar" style="width:${Math.min(100, km/RUN_GOAL*100)}%"></i></div>
+      <div class="stepper"><button class="btn btn-icon" data-act="run-step" data-v="-0.5" aria-label="Meno mezzo km">${icon('minus')}</button><div class="unit"><input class="input input-num" type="number" min="0" step="0.1" inputmode="decimal" data-field="run-km" value="${f.run.km ?? ''}" placeholder="0,0" aria-label="Chilometri"><span>km</span></div><button class="btn btn-icon" data-act="run-step" data-v="0.5" aria-label="Più mezzo km">${icon('plus')}</button></div>
+      <div class="row wrap" style="gap:6px">${[3,5,7,10].map(n => `<button class="btn btn-sm" data-act="run-set" data-v="${n}">${n} km</button>`).join('')}</div>
+      <div class="field"><label for="runT">Orario della corsa</label><input class="input" id="runT" type="time" data-field="run-time" value="${f.run.time||''}"></div>
+    </div>
+    <div class="card fit-card">
+      <div class="card-head" style="margin-bottom:0"><div><div class="eyebrow">Forza</div><h3 class="card-title">Palestra</h3></div><span class="pill ${f.gym.done ? 'teal' : ''}">${f.gym.done ? 'Fatta' : 'Da fare'}</span></div>
+      <button class="toggle ${f.gym.done?'on':''}" data-act="gym-toggle" aria-pressed="${!!f.gym.done}"><span class="sw"></span><span><b>${f.gym.done ? 'Allenamento completato' : 'Sono andata in palestra'}</b><small>${f.gym.done ? 'Ottimo: corpo allenato, mente più lucida.' : 'Tocca per registrare l\'allenamento'}</small></span></button>
+      <div class="form-grid"><div class="field"><label for="gymT">Orario</label><input class="input" id="gymT" type="time" data-field="gym-time" value="${f.gym.time||''}"></div>
+        <div class="field"><label for="gymY">Tipo</label><select class="input" id="gymY" data-field="gym-type">${['','Pesi','Pilates','Yoga','Funzionale','Corsi','Cardio'].map(x => `<option value="${x}" ${x===f.gym.type?'selected':''}>${x || 'Non specificato'}</option>`).join('')}</select></div></div>
+      <div class="sync-note">${icon('cal')} Corsa e palestra compaiono in automatico nel calendario, all'orario indicato.</div>
+    </div>
+  </section>
+  <section class="card mt-18">
+    <div class="card-head"><div><div class="eyebrow">Settimana</div><h3 class="card-title">${fmtDate(ws,{day:'numeric', month:'short'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'short'})}</h3></div><div class="row" style="gap:6px"><button class="btn btn-icon btn-sm" data-act="fit-week" data-v="-7" aria-label="Settimana precedente">${icon('left')}</button><button class="btn btn-icon btn-sm" data-act="fit-week" data-v="7" aria-label="Settimana successiva" ${addDays(ws,7) > t ? 'disabled' : ''}>${icon('right')}</button></div></div>
+    <div class="wk">${week.map(x => { const ff = fitOf(x); return `<button class="wk-d ${activeOn(x)?'on':''} ${x===k?'sel':''}" data-act="fit-day" data-v="${x}" ${x > t ? 'disabled style="opacity:.4"' : ''}><span>${DOWS[dow(x)]}</span><b>${parse(x).getDate()}</b><span class="wk-ics">${ranOn(x) ? `<span class="teal">${icon('route')}</span>` : ''}${gymOn(x) ? `<span class="rose">${icon('dumbbell')}</span>` : ''}</span><small>${ranOn(x) ? N1.format(+ff.run.km) + ' km' : gymOn(x) ? 'Palestra' : '—'}</small></button>`; }).join('')}</div>
+  </section>
+  <section class="kpis mt-18">
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Km · 30 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(kmM)}<small>km</small></div><div class="kpi-sub">${plural(runs5,'corsa','corse')} da 5 km o più</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Palestra · 30 giorni</span>${icon('dumbbell')}</div><div class="kpi-val">${gymM}<small>${gymM===1?'sessione':'sessioni'}</small></div><div class="kpi-sub">${N1.format(gymM/4.3)} a settimana</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Giorni attivi di fila</span>${icon('heart')}</div><div class="kpi-val">${streak}</div><div class="kpi-sub">Movimento = memoria più lucida</div></div>
+  </section>`;
+}
+function refreshRunUI(){
+  const km = +fitOf(fitDay).run.km || 0, b = $('[data-live="km"]'), bar = $('[data-live="kmbar"]');
+  if (b) b.innerHTML = `${N1.format(km)}<small>km</small>`; if (bar) bar.style.width = Math.min(100, km/RUN_GOAL*100) + '%';
+}
+
+/* =========================================================
+   STATISTICHE
+   ========================================================= */
+function buckets(days){
+  const t = todayKey(), keys = range(addDays(t, -(days-1)), t);
+  if (days <= 31) return keys.map(k => ({label: fmtDate(k, days <= 7 ? {weekday:'short'} : {day:'numeric', month:'short'}).replace('.',''), keys:[k]}));
+  const out = []; let cur = null;
+  keys.forEach(k => { if (!cur || dow(k) === 0){ cur = {label: fmtDate(k,{day:'numeric', month:'short'}), keys:[]}; out.push(cur); } cur.keys.push(k); });
+  return out;
+}
+function periodData(a, b){
+  const keys = range(a, b), pages = keys.map(pagesDoneOn), studyDays = pages.filter(x => x > 0).length;
+  let maxRun = 0, run = 0; pages.forEach(p => { if (p > 0){ run++; maxRun = Math.max(maxRun, run); } else run = 0; });
+  const revDue = sum(keys.map(k => reviewsFor(k).length)), revDone = sum(keys.map(k => reviewsFor(k).filter(r => reviewDone(k, r.key)).length));
+  return {keys, pages:sum(pages), studyDays, avgDay: studyDays ? sum(pages)/studyDays : 0, heavy: pages.filter(p => p > 70).length, maxRun, revDue, revDone,
+    km: sum(keys.map(k => +fitOf(k).run.km || 0)), runs: keys.filter(ranOn).length, gym: keys.filter(gymOn).length, active: keys.filter(activeOn).length};
+}
+function renderStats(){
+  const days = S.ui.statsDays || 30, t = todayKey(), a = addDays(t, -(days-1)), M = periodData(a, t), P = periodData(addDays(a, -days), addDays(a, -1));
+  const ex = activeExams(), dl = (c, p) => { if (!P.keys.length) return ''; const d = c - p; return `<span class="delta ${d>0?'up':d<0?'down':'flat'}">${d>0?'+':''}${Math.round(d)}</span>`; };
+  const lbl = {7:'7 giorni', 30:'30 giorni', 90:'3 mesi'}[days];
+  $('#view').innerHTML = `
+  <div class="row between wrap" style="gap:12px"><div><div class="eyebrow">Periodo di analisi</div><div class="small muted" style="margin-top:4px">Dal ${fmtDate(a,{day:'numeric', month:'long'})} a oggi</div></div>
+    <div class="seg">${[[7,'Settimana'],[30,'Mese'],[90,'3 mesi']].map(([v,l]) => `<button class="${days===v?'on':''}" data-act="stats-days" data-v="${v}">${l}</button>`).join('')}</div></div>
+  <section class="kpis mt-18">
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pagine studiate</span>${icon('book')}</div><div class="kpi-val">${M.pages}</div><div class="kpi-sub">${dl(M.pages, P.pages)} vs periodo precedente</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Media per giorno di studio</span>${icon('layers')}</div><div class="kpi-val">${Math.round(M.avgDay)}<small>pp.</small></div><div class="kpi-sub">${M.studyDays} giorni di studio su ${days}</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Ripassi dilazionati</span>${icon('refresh')}</div><div class="kpi-val">${M.revDone}<small>/ ${M.revDue}</small></div><div class="kpi-sub">${M.revDue ? Math.round(M.revDone/M.revDue*100) + '% completati' : 'Nessun ripasso dovuto'}</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Attività fisica</span>${icon('heart')}</div><div class="kpi-val">${N1.format(M.km)}<small>km</small></div><div class="kpi-sub">${plural(M.gym,'sessione','sessioni')} di palestra · ${M.active} giorni attivi</div></div>
+  </section>
+  <section class="card mt-18"><div class="card-head"><div><div class="eyebrow">Trend · ${lbl}</div><h3 class="card-title">Pagine studiate per esame</h3></div><span class="pill">${days <= 31 ? 'giornaliero' : 'settimanale'}</span></div><div class="chart-box"><canvas id="cPages"></canvas></div></section>
+  <section class="grid g-2 mt-18">
+    <div class="card"><div class="card-head"><div><div class="eyebrow">Avanzamento</div><h3 class="card-title">Stato degli esami</h3></div></div>
+      ${ex.length ? ex.map(e => { const st = examStats(e); const chip = st.status === 'done' ? '<span class="pill teal">Completato</span>' : st.status === 'ok' ? '<span class="pill teal">In linea</span>' : st.status === 'late' ? '<span class="pill ruby">In ritardo</span>' : st.status === 'idle' ? '<span class="pill amber">Da avviare</span>' : cdPill(e); return `<div class="prog"><b><span class="exdot" style="--c:${e.color}"></span>${esc(e.name)}</b>${chip}<div class="bar"><i style="width:${st.pct*100}%;background:${e.color}"></i></div><small>${st.done}/${st.total} pagine (${Math.round(st.pct*100)}%)${st.daysLeft !== null && st.daysLeft >= 0 ? ` · ${plural(st.daysLeft,'giorno','giorni')} all'appello · servono ${st.pace} pp./giorno, ritmo attuale ${N1.format(st.last7)}` : ''}</small></div>`; }).join('') : '<div class="empty"><div class="serif">Nessun esame attivo</div>Aggiungili nella sezione Studio.</div>'}
+    </div>
+    <div class="card"><div class="card-head"><div><div class="eyebrow">Benessere · ${lbl}</div><h3 class="card-title">Attività fisica</h3></div></div><div class="chart-box"><canvas id="cFit"></canvas></div></div>
+  </section>
+  <section class="card mt-18 report"><div class="card-head"><div><div class="eyebrow">Resoconto intelligente</div><h3 class="card-title">Analisi della preparazione</h3></div>${icon('steth')}</div>${reportHTML(M, P, days, ex)}</section>`;
+
+  chartDefaults();
+  const B = buckets(days), L = B.map(b => b.label);
+  const involved = S.exams.filter(e => S.plan.some(b => b.done && b.examId === e.id && b.doneAt >= a));
+  const ds = involved.map(e => ({label:e.name, data:B.map(bk => sum(S.plan.filter(b => b.done && b.examId === e.id && bk.keys.includes(b.doneAt)).map(pagesOf))), backgroundColor:e.color, borderRadius:5, maxBarThickness:26, stack:'p'}));
+  if (!ds.length) $('#cPages').parentElement.insertAdjacentHTML('beforeend','<div class="chart-empty">Spunta le pagine studiate nel pianificatore: qui vedrai il tuo trend.</div>');
+  mkChart('cPages', {type:'bar', data:{labels:L, datasets:ds.length ? ds : [{data:L.map(() => 0)}]}, options:{plugins:{legend:{display:ds.length > 0}, tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${c.raw} pagine`}}}, scales:{x:{...scales().x, stacked:true}, y:{...scales({ticks:{maxTicksLimit:5, padding:8, callback:v => v + ' pp.'}}).y, stacked:true}}, interaction:{mode:'index', intersect:false}}});
+  const kmD = B.map(bk => +sum(bk.keys.map(k => +fitOf(k).run.km || 0)).toFixed(1)), gymD = B.map(bk => bk.keys.filter(gymOn).length);
+  mkChart('cFit', {type:'bar', data:{labels:L, datasets:[
+    {label:'Km di corsa', data:kmD, backgroundColor:'rgba(59,138,130,.78)', borderRadius:5, maxBarThickness:22, yAxisID:'y'},
+    {type:'line', label:'Palestra', data:gymD, borderColor:'#b5826f', backgroundColor:'#b5826f', pointRadius:gymD.map(v => v ? 5 : 0), pointStyle:'rectRounded', showLine:false, yAxisID:'y1'}]},
+    options:{scales:{x:scales().x, y:{...scales({ticks:{maxTicksLimit:5, padding:8, callback:v => v + ' km'}}).y}, y1:{display:false, beginAtZero:true, suggestedMax: days <= 31 ? 1.4 : 8}}, plugins:{tooltip:{callbacks:{label:c => c.dataset.yAxisID === 'y1' ? ` Palestra: ${plural(c.raw,'sessione','sessioni')}` : ` ${c.raw} km`}}}, interaction:{mode:'index', intersect:false}}});
+}
+function reportHTML(M, P, days, ex){
+  if (!S.exams.length && !M.pages && !M.active) return `<p>Non ci sono ancora dati da analizzare. Inserisci gli esami e spunta le pagine studiate: qui troverai un'analisi della preparazione con consigli personalizzati.</p>`;
+  const per = {7:'questa settimana', 30:'nell\'ultimo mese', 90:'negli ultimi tre mesi'}[days], p = [], plan = [];
+  const dP = P.pages ? Math.round((M.pages - P.pages) / P.pages * 100) : null;
+  p.push(`${cap(per)} hai studiato <strong>${M.pages} pagine</strong> in ${plural(M.studyDays,'giorno','giorni')} di studio, con una media di <strong>${Math.round(M.avgDay)} pagine</strong> per giornata di lavoro.${dP !== null ? ` Rispetto al periodo precedente sei ${dP >= 0 ? `cresciuta del <strong>${dP}%</strong>` : `scesa del <strong>${-dP}%</strong>`}.` : ''}`);
+  const late = [], ok = [];
+  ex.forEach(e => { const st = examStats(e); if (st.daysLeft === null || st.daysLeft < 0 || !st.remaining) return; (st.status === 'ok' ? ok : late).push({e, st}); });
+  ok.forEach(({e, st}) => p.push(`<strong>${esc(e.name)}</strong>: sei in linea. Al ritmo di ${N1.format(st.last7)} pagine al giorno finirai il ${fmtDate(st.finish,{day:'numeric', month:'long'})}, lasciando spazio al ripasso prima dell'appello del ${fmtDate(e.date,{day:'numeric', month:'long'})}.`));
+  late.forEach(({e, st}) => p.push(`<strong>${esc(e.name)}</strong>: restano ${st.remaining} pagine in ${plural(st.daysLeft,'giorno','giorni')}. Servono circa <strong>${st.pace} pagine al giorno</strong>${st.last7 ? `, contro le ${N1.format(st.last7)} attuali` : ' e negli ultimi 7 giorni non hai registrato pagine'}. ${st.pace > 70 ? 'Il carico è alto: dai priorità agli argomenti più chiesti all\'appello e valuta la data successiva se serve.' : 'È recuperabile: usa «Distribuisci fino all\'esame» e proteggi i blocchi in agenda.'}`));
+  if (late.length) plan.push(['Riallinea il piano', `Ridistribuisci ${listJoin(late.map(x => x.e.name))} con la pianificazione automatica: un numero di pagine al giorno chiaro toglie ansia e indecisione.`]);
+  if (M.revDue) p.push(`Hai completato <strong>${M.revDone} ripassi dilazionati su ${M.revDue}</strong>. ${M.revDone / M.revDue >= .7 ? 'Ottimo: è così che le nozioni passano nella memoria a lungo termine.' : 'Sono il punto più importante per non dimenticare ciò che studi: dedica loro i primi 20 minuti di ogni sessione.'}`);
+  if (M.revDue && M.revDone / M.revDue < .7) plan.push(['Ripassi per primi', 'Apri ogni sessione con i ripassi del giorno (1-3-7-14-30 giorni): 15 minuti di recupero attivo valgono più di un capitolo riletto.']);
+  const burn = M.maxRun >= 10 || M.heavy >= Math.max(2, days/10);
+  p.push(`${M.maxRun >= 10 ? `Hai studiato ${M.maxRun} giorni di fila senza pause: ` : ''}${M.heavy ? `${plural(M.heavy,'giornata ha superato','giornate hanno superato')} le 70 pagine. ` : ''}${burn ? 'Attenzione al rischio burnout: inserisci mezza giornata di stacco ogni settimana e sessioni da 50 minuti con pause reali.' : 'Il carico è sostenibile: continua ad alternare studio intenso e recupero.'}`);
+  if (burn) plan.push(['Recupero programmato', 'Segna in calendario mezza giornata libera a settimana (amiche, passeggiata, palestra): il cervello consolida anche quando ti fermi.']);
+  p.push(`<strong>Benessere:</strong> ${N1.format(M.km)} km di corsa in ${plural(M.runs,'uscita','uscite')} e ${plural(M.gym,'sessione','sessioni')} di palestra, ${M.active} giorni attivi su ${days}. ${M.active / days >= .35 ? 'Ottimo equilibrio tra corpo e studio.' : 'Aggiungere 2-3 sessioni di movimento a settimana aiuta sonno, umore e concentrazione.'}`);
+  if (M.active / days < .35) plan.push(['Muoviti 3 volte', 'Pianifica tre attività fisiche a settimana negli orari di calo (primo pomeriggio): l\'app le metterà in agenda con l\'orario.']);
+  const defaults = [['Active recall', 'Chiudi ogni blocco di pagine con 5 minuti di recupero a memoria: è il metodo più efficace per gli orali.'], ['Simula l\'esame', 'Una volta a settimana ripeti ad alta voce un argomento come all\'orale, cronometrandoti.'], ['Sonno da 7-8 ore', 'Il sonno è parte della preparazione: consolida ciò che hai studiato e mantiene lucida la memoria.']];
+  while (plan.length < 3) plan.push(defaults[plan.length]);
+  return p.map(x => `<p>${x}</p>`).join('') + `<div class="eyebrow rose" style="margin:20px 0 10px">Piano d'azione</div><div class="plan3">${plan.slice(0,3).map((x,i) => `<div><span>0${i+1}</span><b>${esc(x[0])}</b><p>${esc(x[1])}</p></div>`).join('')}</div>`;
+}
+
+/* =========================================================
+   IMPOSTAZIONI & PWA
+   ========================================================= */
+const PWA = {deferred:null, refreshing:false,
+  ios: /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1),
+  android: /android/i.test(navigator.userAgent), file: location.protocol === 'file:',
+  canSW: 'serviceWorker' in navigator && window.isSecureContext && location.protocol !== 'file:',
+  get isApp(){ return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }};
+function installBanner(){
+  if (PWA.isApp || S.ui.installDismissed) return '';
+  const msg = PWA.file ? 'Per installarla sul telefono va aperta da un indirizzo <b>https</b>: trovi i passaggi nella guida.'
+    : PWA.deferred ? 'Installala con un tocco: icona sulla Home, schermo intero, apertura istantanea anche offline.'
+    : PWA.ios ? `In Safari tocca <span class="k">${icon('share')} Condividi</span> (su iOS 26 nel menu <span class="k">•••</span>) e poi «Aggiungi alla schermata Home».`
+    : PWA.android ? `In Chrome apri il menu <span class="k">${icon('dots')}</span> e scegli «Installa app».`
+    : 'Aprila dal telefono con Safari o Chrome e aggiungila alla schermata Home: funziona anche offline.';
+  return `<section class="install" id="installBanner"><div class="mark" style="width:42px;height:42px;font-size:22px;flex:none">F</div><div style="min-width:0"><div class="install-t">Porta Flavia Med sul telefono</div><div class="install-m">${msg}</div></div>
+    <div class="install-act">${PWA.deferred ? `<button class="btn btn-sm btn-rose" data-act="install">${icon('download')} Installa</button>` : `<button class="btn btn-sm btn-rose" data-act="install-guide">Mostrami come</button>`}<button class="btn btn-icon btn-sm btn-ghost" data-act="install-dismiss" aria-label="Nascondi">${icon('x')}</button></div></section>`;
+}
+function installGuide(){
+  openModal({eyebrow:'App sul telefono', title:'Aggiungi alla schermata Home', body:`
+    ${PWA.file ? `<div class="preview err" style="margin-bottom:14px">Stai aprendo il file dal computer: per installarla serve un indirizzo https (per esempio GitHub Pages o Netlify). Istruzioni nel file README.md.</div>` : ''}
+    <div class="label" style="margin-bottom:8px">iPhone · Safari</div>
+    <p class="small" style="margin:0 0 16px;line-height:1.7">1. Apri il link in Safari · 2. Tocca <span class="k">${icon('share')} Condividi</span> (su iOS 26 dentro <span class="k">•••</span>) · 3. Scegli «Aggiungi alla schermata Home» · 4. Lascia attivo «Apri come app web» e tocca Aggiungi.</p>
+    <div class="label" style="margin-bottom:8px">Android · Chrome</div>
+    <p class="small" style="margin:0 0 16px;line-height:1.7">1. Apri il link in Chrome · 2. Tocca il menu <span class="k">${icon('dots')}</span> · 3. Scegli «Installa app» o «Aggiungi a schermata Home» · 4. Conferma.</p>
+    <div class="sync-note">${icon('heart')} Una volta installata si apre a schermo intero e funziona anche offline. I dati restano salvati sul telefono.</div>`});
+}
+function settingsModal(){
+  openModal({eyebrow:'Impostazioni', title:'Profilo & backup', body:`
+    <form data-form="profile" class="stack" style="gap:12px"><div class="field"><label for="pName">Il tuo nome</label><input class="input" id="pName" name="name" value="${esc(S.profile.name)}" maxlength="40"></div><button class="btn btn-ink" style="align-self:flex-end">Salva</button></form>
+    <hr class="hair">
+    <div class="label" style="margin-bottom:6px">Backup</div>
+    <p class="small muted" style="margin:0 0 12px">I dati sono salvati su questo dispositivo. Esporta un backup ogni tanto: puoi reimportarlo anche su un altro telefono o computer.</p>
+    <div class="row wrap"><button class="btn" data-act="export">${icon('download')} Esporta backup</button><label class="btn">${icon('upload')} Importa backup<input type="file" accept="application/json,.json" data-act="import" hidden></label></div>
+    <hr class="hair">
+    <div class="row wrap"><button class="btn btn-teal" data-act="install-guide">${icon('phone')} Installa sul telefono</button><button class="btn btn-ghost" data-act="reset" style="color:var(--ruby)">${icon('trash')} Azzera tutti i dati</button></div>`});
+}
+function registerSW(){
+  if (!PWA.canSW) return;
+  const ask = w => toast('Nuova versione disponibile.', {ms:20000, action:{label:'Aggiorna', fn:() => { PWA.refreshing = true; w.postMessage({type:'SKIP_WAITING'}); }}});
+  navigator.serviceWorker.register('./sw.js').then(reg => {
+    if (reg.waiting && navigator.serviceWorker.controller) ask(reg.waiting);
+    reg.addEventListener('updatefound', () => { const w = reg.installing; w && w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) ask(w); }); });
+  }).catch(err => console.warn('Service worker:', err));
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (PWA.refreshing) location.reload(); });
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); PWA.deferred = e; if (route === 'home') rerender(); });
+window.addEventListener('appinstalled', () => { PWA.deferred = null; toast('App installata: la trovi sulla Home.', {tone:'ok'}); if (route === 'home') rerender(); });
+
+/* =========================================================
+   AZIONI
+   ========================================================= */
+function toggleBlock(id){
+  const b = S.plan.find(x => x.id === id); if (!b) return;
+  b.done = !b.done; b.doneAt = b.done ? (b.date <= todayKey() ? b.date : todayKey()) : null;
+  save();
+  if (b.done){ const e = examById(b.examId), st = examStats(e); toast(`${pagesOf(b)} pagine scalate da ${esc(e.name)} · ne restano ${st.remaining}.`, {tone:'ok', icon:'check'}); }
+  const sd = studyDay(todayKey()); if (b.done && b.date === todayKey() && sd.planned && sd.done >= sd.planned) setTimeout(() => toast('Programma di oggi completato. Brava, dottoressa!', {tone:'ok', icon:'cap'}), 600);
+  rerender();
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el || el.tagName === 'SELECT' || el.tagName === 'INPUT') return;
+  const act = el.dataset.act, v = el.dataset.v, id = el.dataset.id, t = todayKey();
+  switch(act){
+    case 'settings': settingsModal(); break;
+    case 'install': (async () => { const p = PWA.deferred; if (!p) return installGuide(); PWA.deferred = null; await p.prompt(); rerender(); })(); break;
+    case 'install-guide': installGuide(); break;
+    case 'install-dismiss': S.ui.installDismissed = true; save(); rerender(); break;
+    // Home
+    case 'hcal-prev': case 'hcal-next': { const d = parse(homeCursor.slice(0,8) + '01'); d.setMonth(d.getMonth() + (act === 'hcal-next' ? 1 : -1)); homeCursor = ymd(d); rerender(); break; }
+    case 'hcal-day': homeDay = v; rerender(); break;
+    case 'open-cal': calSel = v; calCursor = v; break;
+    case 'rev-toggle': { const arr = (S.reviews[t] ||= []), i = arr.indexOf(v); i >= 0 ? arr.splice(i,1) : arr.push(v); save(); if (i < 0) toast('Ripasso completato: memoria consolidata.', {tone:'ok', icon:'refresh'}); rerender(); break; }
+    // Esami
+    case 'exam-new': examModal(); break;
+    case 'exam-edit': examModal(examById(id)); break;
+    case 'exam-del': { const ex = examById(id); if (ex && confirm(`Eliminare l'esame «${ex.name}» e tutti i suoi blocchi di studio?`)){ S.exams = S.exams.filter(x => x.id !== id); S.plan = S.plan.filter(b => b.examId !== id); save(); closeModal(); rerender(); toast('Esame eliminato.'); } break; }
+    case 'exam-auto': autoPlanModal(examById(id)); break;
+    case 'src-add-row': { const box = $('#srcRows'); box.insertAdjacentHTML('beforeend', $('#modalBody')._srcRow({id:uid(), type:'Sbobine', label:'', pages:''})); box.lastElementChild.querySelector('[name="pages"]').focus(); break; }
+    case 'src-del-row': { const rows = $$('#srcRows .src-row'); if (rows.length > 1) el.closest('.src-row').remove(); else toast('Serve almeno una fonte.'); break; }
+    case 'block-new': planDay = t; location.hash === '#studio' ? renderStudio(v) : (location.hash = '#studio'); setTimeout(() => { if ($('#bExam')){ $('#bExam').value = v; $('#bSrc').innerHTML = examById(v).sources.map(s => `<option value="${s.id}">${esc(srcName(s))} · ${s.pages} pp.</option>`).join(''); fillBlockForm(); $('#blockCard').scrollIntoView({behavior:'smooth', block:'center'}); } }, 80); break;
+    // Pianificatore
+    case 'plan-prev': planDay = addDays(planDay, -1); rerender(); break;
+    case 'plan-next': planDay = addDays(planDay, 1); rerender(); break;
+    case 'plan-today': planDay = t; rerender(); break;
+    case 'blk-toggle': toggleBlock(id); break;
+    case 'blk-del': S.plan = S.plan.filter(b => b.id !== id); save(); rerender(); break;
+    case 'blk-move': { const b = S.plan.find(x => x.id === id); if (b){ b.date = t; save(); rerender(); } break; }
+    case 'blk-move-all': { const od = overdue(); od.forEach(b => b.date = t); save(); toast(`${plural(od.length,'blocco spostato','blocchi spostati')} a oggi.`, {tone:'ok'}); rerender(); break; }
+    // Calendario
+    case 'cal-prev': shiftCal(-1); break;
+    case 'cal-next': shiftCal(1); break;
+    case 'cal-today': calCursor = calSel = t; renderCalendar(); break;
+    case 'cal-view': S.ui.calView = v; save(); renderCalendar(); break;
+    case 'cal-day': calSel = v; renderCalendar(); break;
+    case 'cal-fit': fitDay = v > t ? t : v; location.hash = '#benessere'; break;
+    case 'cal-plan': planDay = v; location.hash = '#studio'; break;
+    case 'event-new': eventModal(null, v || (route === 'calendario' ? calSel : route === 'home' ? homeDay : t)); break;
+    case 'event-edit': eventModal(S.events.find(x => x.id === id)); break;
+    case 'event-del': { const ev = S.events.find(x => x.id === id); if (ev && confirm(`Eliminare «${ev.title}»?`)){ S.events = S.events.filter(x => x.id !== id); save(); rerender(); } break; }
+    // Benessere
+    case 'fit-prev': fitDay = addDays(fitDay, -1); rerender(); break;
+    case 'fit-next': if (fitDay < t){ fitDay = addDays(fitDay, 1); rerender(); } break;
+    case 'fit-today': fitDay = t; rerender(); break;
+    case 'fit-day': fitDay = v; rerender(); break;
+    case 'fit-week': { const n = addDays(fitDay, +v); fitDay = n > t ? t : n; rerender(); break; }
+    case 'run-step': { const f = fitW(fitDay); f.run.km = clamp(+((+f.run.km || 0) + +v).toFixed(1), 0, 100); if (!f.run.time && fitDay === t) f.run.time = new Date().toTimeString().slice(0,5); save(); rerender(); break; }
+    case 'run-set': { const f = fitW(fitDay); f.run.km = +v; if (!f.run.time && fitDay === t) f.run.time = new Date().toTimeString().slice(0,5); save(); if (+v >= RUN_GOAL) toast(`${v} km: obiettivo corsa raggiunto e aggiunto al calendario.`, {tone:'ok', icon:'route'}); rerender(); break; }
+    case 'gym-toggle': { const f = fitW(fitDay); f.gym.done = !f.gym.done; if (f.gym.done && !f.gym.time && fitDay === t) f.gym.time = new Date().toTimeString().slice(0,5); save(); if (f.gym.done) toast('Palestra registrata e sincronizzata nel calendario.', {tone:'ok', icon:'dumbbell'}); rerender(); break; }
+    // Statistiche
+    case 'stats-days': S.ui.statsDays = +v; save(); rerender(); break;
+    // Backup
+    case 'export': { const blob = new Blob([JSON.stringify(S, null, 2)], {type:'application/json'}), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `flavia-med-backup-${t}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); toast('Backup esportato.', {tone:'ok'}); break; }
+    case 'reset': if (prompt('Per cancellare tutti i dati scrivi AZZERA') === 'AZZERA'){ S = defaults(); save(); closeModal(); rerender(); toast('Dati azzerati.'); } break;
+  }
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.matches('[data-act="b-exam"]')){ const ex = examById(el.value); $('#bSrc').innerHTML = ex.sources.map(s => `<option value="${s.id}">${esc(srcName(s))} · ${s.pages} pp.</option>`).join(''); fillBlockForm(); }
+  else if (el.matches('[data-act="b-src"]')) fillBlockForm();
+  else if (el.closest('form[data-form="autoplan"]')) updateAutoPreview();
+  else if (el.matches('[data-field="gym-type"]')){ fitW(fitDay).gym.type = el.value; save(); }
+  else if (el.matches('[data-act="import"]')){
+    const f = el.files[0]; if (!f) return; const r = new FileReader();
+    r.onload = () => { try { const d = JSON.parse(r.result); if (!d || !Array.isArray(d.exams) || !Array.isArray(d.plan)) throw 0; if (!confirm('Importare il backup? I dati attuali verranno sostituiti.')) return; localStorage.setItem(KEY, JSON.stringify(d)); S = load(); closeModal(); rerender(); toast('Backup importato.', {tone:'ok'}); } catch(err){ toast('File non valido.'); } };
+    r.readAsText(f);
+  }
+});
+document.addEventListener('input', e => {
+  const el = e.target, f = el.dataset.field;
+  if (el.closest('form[data-form="autoplan"]')) { updateAutoPreview(); return; }
+  if (!f) return;
+  const w = fitW(fitDay);
+  if (f === 'run-km'){ w.run.km = el.value === '' ? null : clamp(+el.value, 0, 100); save(); refreshRunUI(); }
+  else if (f === 'run-time'){ w.run.time = el.value; save(); }
+  else if (f === 'gym-time'){ w.gym.time = el.value; save(); }
+});
+document.addEventListener('submit', e => {
+  const form = e.target, type = form.dataset.form; if (!type) return; e.preventDefault();
+  const fd = Object.fromEntries(new FormData(form).entries()), t = todayKey();
+  switch(type){
+    case 'exam': {
+      const sources = $$('#srcRows .src-row').map(r => ({id:r.dataset.sid || uid(), type:$('[name="type"]', r).value, label:$('[name="label"]', r).value.trim(), pages:Math.max(1, Math.round(+$('[name="pages"]', r).value || 0))})).filter(s => s.pages > 0);
+      if (!fd.name.trim()) return toast('Inserisci il nome del corso.');
+      if (!sources.length) return toast('Aggiungi almeno una fonte con il numero di pagine.');
+      const data = {name:fd.name.trim(), date:fd.date || '', color:fd.color || EXAM_COLORS[0], sources};
+      if (form.dataset.id){ const ex = examById(form.dataset.id); Object.assign(ex, data, {status:fd.status || 'attivo', grade:fd.grade || ''}); S.plan = S.plan.filter(b => b.examId !== ex.id || sources.some(s => s.id === b.sourceId)); toast('Esame aggiornato.', {tone:'ok'}); }
+      else { S.exams.push({id:uid(), created:t, status:'attivo', grade:'', ...data}); toast(`${esc(data.name)} aggiunto${data.date ? `: ${diffDays(t, data.date)} giorni all'appello` : ''}.`, {tone:'ok', icon:'cap'}); }
+      save(); closeModal(); rerender(); break;
+    }
+    case 'block': {
+      const ex = examById(fd.examId), s = srcById(ex, fd.sourceId), from = Math.round(+fd.from), to = Math.round(+fd.to);
+      if (!ex || !s) return; if (!(from >= 1) || !(to >= from)) return toast('Controlla l\'intervallo di pagine.');
+      if (to > s.pages) return toast(`«${srcName(s)}» ha ${s.pages} pagine.`);
+      const done = !!fd.done;
+      S.plan.push({id:uid(), date:planDay, examId:ex.id, sourceId:s.id, from, to, time:fd.time || '', done, doneAt: done ? (planDay <= t ? planDay : t) : null});
+      save(); toast(done ? `${to-from+1} pagine segnate come studiate.` : `${to-from+1} pagine aggiunte al piano.`, {tone:'ok', icon:'book'}); renderStudio(ex.id); break;
+    }
+    case 'autoplan': {
+      const x = readAutoForm(); if (!x || x.r.error) return;
+      x.r.blocks.forEach(b => S.plan.push({id:uid(), examId:x.e.id, time:'', done:false, doneAt:null, ...b}));
+      save(); closeModal(); toast(`Piano creato: ${plural(x.r.blocks.length,'blocco','blocchi')}, circa ${x.r.per} pagine al giorno.`, {tone:'ok', icon:'wand'}); rerender(); break;
+    }
+    case 'event': {
+      if (!fd.title.trim()) return;
+      const date = fd.date || form.dataset.date || t, data = {title:fd.title.trim(), date, time:fd.time || '', end:fd.end || '', cat:fd.cat || 'altro', notes:(fd.notes || '').trim()};
+      if (form.dataset.id){ Object.assign(S.events.find(x => x.id === form.dataset.id), data); }
+      else S.events.push({id:uid(), ...data});
+      save(); if (!$('#modal').hidden) closeModal();
+      toast(`«${esc(data.title)}» in agenda ${relDays(diffDays(t, date))}${data.time ? ' alle ' + data.time : ''}.`, {tone:'ok', icon:'cal'});
+      if (route === 'calendario'){ calSel = date; } else if (route === 'home') homeDay = date;
+      rerender(); break;
+    }
+    case 'profile': S.profile.name = fd.name.trim(); save(); closeModal(); rerender(); break;
+  }
+});
+
+/* =========================================================
+   AVVIO
+   ========================================================= */
+const hydrate = () => $$('[data-ic]').forEach(el => { el.outerHTML = icon(el.dataset.ic); });
+document.documentElement.classList.toggle('is-app', PWA.isApp);
+$('#sideQuote').textContent = QUOTES[(dayOfYear() + 3) % QUOTES.length];
+let lastDay = todayKey();
+setInterval(() => { if (todayKey() !== lastDay){ lastDay = todayKey(); homeDay = planDay = fitDay = calSel = lastDay; rerender(); } }, 60000);
+go(); hydrate();
+if (document.readyState === 'complete') registerSW(); else window.addEventListener('load', registerSW);
+window.FM = {get state(){ return S; }, set state(v){ S = v; save(); rerender(); }};
+})();
+</script>
+</body>
+</html>
