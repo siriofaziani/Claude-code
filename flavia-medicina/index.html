@@ -30,6 +30,7 @@
   --teal:#3b8a82; --teal-2:#72b5ab; --teal-3:#2a6a63; --teal-a:rgba(59,138,130,.08); --teal-b:rgba(59,138,130,.25);
   --sage:#93a89b; --ruby:#c0605b; --ruby-a:rgba(192,96,91,.08); --ruby-b:rgba(192,96,91,.26); --amber:#c3954d; --amber-a:rgba(195,149,77,.1);
   --ink:#1b232b;
+  --rev:#8a6aae; --rev-2:#b9a3d3; --rev-a:rgba(138,106,174,.09); --rev-b:rgba(138,106,174,.3);
   --serif:'Cormorant Garamond','Iowan Old Style',Georgia,serif;
   --sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --sh-1:0 1px 2px rgba(28,36,44,.04),0 10px 30px -18px rgba(28,36,44,.18);
@@ -352,6 +353,137 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:p
 .plan3 b{display:block;font-size:13.5px;margin:6px 0 4px}
 .plan3 p{font-size:12.5px;margin:0;line-height:1.55}
 
+/* ---------- Calendario settimanale ampio ---------- */
+.wb-card{padding:20px 20px 16px}
+.wb-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.wb-title{font-family:var(--serif);font-size:27px;font-weight:600;margin:0 6px;line-height:1.1}
+.wb{position:relative;display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:2px 2px 8px;scrollbar-width:thin;scrollbar-color:var(--pearl-2) transparent}
+.wb-col{scroll-snap-align:start;display:flex;flex-direction:column;gap:8px;min-height:340px;min-width:0;padding:12px 10px 12px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line)}
+.wb-col.today{background:linear-gradient(180deg,#fff,#fcf6f3);border-color:var(--rose-b);box-shadow:0 0 0 1px var(--rose-b),var(--sh-1)}
+.wb-col.past{background:rgba(251,250,248,.6)}
+.wb-col.past .wbi{opacity:.82}
+.wb-day{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;padding:0 2px 10px;border-bottom:1px solid var(--line)}
+.wb-dow{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.wb-day b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:.95}
+.wb-mon{font-size:12px;color:var(--muted);font-weight:700;text-transform:capitalize}
+.wb-col.today .wb-dow,.wb-col.today .wb-day b{color:var(--rose-3)}
+.wb-add{opacity:.55;flex:none}
+.wb-col:hover .wb-add,.wb-add:focus-visible{opacity:1}
+.wb-sum{display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:800;color:var(--teal-3);padding:0 2px}
+.wb-sum .ic{width:13px;height:13px}
+.wb-items{display:flex;flex-direction:column;gap:8px}
+.wbi{padding:9px 10px 10px;border-radius:13px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--c);box-shadow:0 1px 2px rgba(28,36,44,.03);min-width:0;transition:border-color .2s,box-shadow .2s}
+.wbi[data-act]{cursor:pointer}
+.wbi[data-act]:hover{box-shadow:var(--sh-1);border-color:var(--line-2);border-left-color:var(--c)}
+.wbi-top{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px}
+.wbi-time{font-size:11.5px;font-weight:800;color:color-mix(in srgb,var(--c) 80%,#1b232b);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.wbi .cat-ic{width:22px;height:22px;border-radius:7px}
+.wbi .cat-ic .ic{width:12px;height:12px}
+.wbi b{display:block;font-size:13px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.wbi small{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:2px;overflow-wrap:anywhere}
+.wbi.exam{background:var(--ruby);border-color:var(--ruby);color:#fff}
+.wbi.exam .wbi-time,.wbi.exam small{color:rgba(255,255,255,.85)}
+.wbi.exam .cat-ic{background:rgba(255,255,255,.18);color:#fff}
+.wbi.done{background:linear-gradient(180deg,rgba(59,138,130,.05),#fff)}
+.wbi.done b{text-decoration:line-through;text-decoration-color:rgba(59,138,130,.5);color:var(--muted)}
+.wb-free{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;font:600 12px var(--sans);color:var(--faint);padding:18px 0;border:1px dashed var(--line-2);border-radius:12px;background:transparent;cursor:pointer;transition:color .2s,border-color .2s}
+.wb-free:hover{color:var(--rose-3);border-color:var(--rose-b)}
+.wb-free .ic{width:14px;height:14px}
+.check.sm{width:22px;height:22px;border-radius:7px}
+.check.sm .ic{width:13px;height:13px}
+/* ---------- Assegnazione pagine ---------- */
+.daychips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.daychips::-webkit-scrollbar{display:none}
+.dchip{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:54px;padding:7px 8px;border-radius:12px;border:1px solid var(--line-2);background:#fff;cursor:pointer;font:inherit;color:var(--text-2);transition:all .2s}
+.dchip:hover{border-color:var(--rose-b)}
+.dchip span{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dchip b{font-family:var(--serif);font-size:21px;font-weight:600;line-height:1}
+.dchip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.dchip.on span{color:rgba(255,255,255,.75)}
+.mt-8{margin-top:8px}
+.upnext{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.upnext .eyebrow{font-size:9.5px;margin-right:2px}
+.upc{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:8px;background:color-mix(in srgb,var(--c) 10%,#fff);color:color-mix(in srgb,var(--c) 70%,#1b232b);white-space:nowrap}
+.just{margin-top:18px;padding:14px 16px;border-radius:14px;background:var(--teal-a);border:1px solid var(--teal-b)}
+.just-r{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px;align-items:center;font-size:12.5px;padding:4px 0}
+.just-r b{font-weight:700;white-space:nowrap}
+.just-r span:last-child{color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.choice{display:grid;gap:10px}
+.choice-b{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:14px;row-gap:2px;align-items:center;text-align:left;padding:16px;border-radius:16px;border:1px solid var(--line-2);background:var(--surface-2);cursor:pointer;font:inherit;color:inherit;transition:border-color .2s,background .2s,box-shadow .2s}
+.choice-b .cat-ic{grid-row:1/3;width:44px;height:44px;border-radius:13px}
+.choice-b .cat-ic .ic{width:20px;height:20px}
+.choice-b b{font-size:15px}
+.choice-b small{color:var(--muted);font-size:12.5px}
+.choice-b:hover{border-color:var(--rose-b);background:#fff;box-shadow:var(--sh-1)}
+/* ---------- Palestra: gruppi muscolari ---------- */
+.g-fit{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:start}
+.weights{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line)}
+.weights-t{font-family:var(--serif);font-size:21px;font-weight:600;display:block;margin-top:2px}
+.presets{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.presets .small{margin-right:4px;font-weight:600}
+.mzone{display:grid;grid-template-columns:118px minmax(0,1fr);gap:10px;align-items:start;padding-top:12px;border-top:1px solid var(--line)}
+.mzone-l{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:9px}
+.mchips{display:flex;flex-wrap:wrap;gap:6px}
+.mchip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line-2);background:#fff;font:600 12.5px var(--sans);color:var(--text-2);cursor:pointer;transition:all .2s var(--ease)}
+.mchip:hover{border-color:var(--rose-b);color:var(--text)}
+.mchip.on{background:linear-gradient(140deg,#c9978a,var(--rose) 60%,var(--rose-3));border-color:transparent;color:#fff;box-shadow:0 6px 14px -8px rgba(150,97,80,.8)}
+.mchip .ic{width:13px;height:13px}
+.musmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.mm{padding:11px 12px;border-radius:13px;border:1px solid var(--line);background:var(--surface-2);position:relative;padding-left:24px}
+.mm::before{content:"";position:absolute;left:11px;top:16px;width:7px;height:7px;border-radius:50%;background:var(--faint)}
+.mm b{display:block;font-size:13px;font-weight:700}
+.mm small{font-size:11.5px;color:var(--muted);font-weight:600}
+.mm.rec{border-color:var(--rose-b);background:var(--rose-a)} .mm.rec::before{background:var(--rose)}
+.mm.ready{border-color:var(--teal-b);background:var(--teal-a)} .mm.ready::before{background:var(--teal)}
+.mm.due::before{background:var(--amber)}
+.lg{width:9px;height:9px;border-radius:50%;display:inline-block}
+.lg.rec{background:var(--rose)} .lg.ready{background:var(--teal)} .lg.due{background:var(--amber)}
+.mfreq{display:flex;flex-direction:column;gap:9px}
+.mf{display:grid;grid-template-columns:110px minmax(0,1fr) 26px;gap:10px;align-items:center;font-size:12.5px;font-weight:600}
+.mf b{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:1100px){ .g-fit{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:900px){
+  .wb-card{padding:16px 14px 12px}
+  .wb{grid-template-columns:repeat(7,84%);gap:10px;scroll-padding-left:2px}
+  .wb-col{min-height:280px}
+  .wb-title{font-size:22px}
+  .wb-head{align-items:flex-start}
+  .mzone{grid-template-columns:minmax(0,1fr);gap:8px}
+  .mzone-l{padding-top:0}
+  .mf{grid-template-columns:96px minmax(0,1fr) 22px}
+}
+
+/* ---------- Ripassi ---------- */
+.rev-c{color:var(--rev)!important}
+.btn-rev{background:var(--rev-a);color:#5f4585;border-color:var(--rev-b)}
+.btn-rev:hover{background:rgba(138,106,174,.15);border-color:var(--rev)}
+.stag{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:var(--teal-a);color:var(--teal-3);white-space:nowrap;vertical-align:1px}
+.stag.rev{background:var(--rev-a);color:#5f4585;border:1px solid var(--rev-b)}
+.wbi .stag{display:block;width:fit-content;max-width:100%;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px;letter-spacing:.03em}
+.wbi.review{background:linear-gradient(140deg,rgba(138,106,174,.08),#fff 70%);border-left-style:dashed;border-color:var(--rev-b);border-left-color:var(--c)}
+.wbi.review .check.on{background:var(--rev);border-color:var(--rev)}
+.blk.review{background:linear-gradient(140deg,rgba(138,106,174,.06),var(--surface-2) 70%);border-style:dashed;border-color:var(--rev-b)}
+.blk.review.done{background:linear-gradient(180deg,rgba(138,106,174,.08),rgba(138,106,174,.02))}
+.blk.review .check.on{background:var(--rev);border-color:var(--rev);box-shadow:0 6px 14px -6px rgba(138,106,174,.7)}
+.cchip.rev{background:rgba(138,106,174,.13);color:#5f4585}
+.upc.rev{background:var(--rev-a);color:#5f4585}
+.sess{display:flex;width:100%}
+.sess button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;height:auto;min-height:36px;padding:6px 10px;line-height:1.2;text-align:center}
+.sess button .ic{width:15px;height:15px}
+.sess button.on.rev{color:#5f4585}
+.sess button.on.rev .ic{color:var(--rev)}
+.rounds{display:flex;gap:6px;flex-wrap:wrap}
+.rchip{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:#fff;font:700 12.5px var(--sans);color:var(--text-2);cursor:pointer;transition:all .2s}
+.rchip:hover{border-color:var(--rev-b)}
+.rchip.on{background:var(--rev);border-color:var(--rev);color:#fff;box-shadow:0 6px 14px -8px rgba(138,106,174,.8)}
+.rounds-box{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:14px;background:var(--rev-a);border:1px dashed var(--rev-b)}
+.rounds-box .eyebrow{display:flex;align-items:center;gap:6px}
+.rounds-box .eyebrow .ic{width:14px;height:14px}
+.rounds-box small{font-size:11px}
+.rr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.bar.rev2>i{background:linear-gradient(90deg,var(--rev-2),var(--rev))}
+.bar.rev2>i.pl{background:rgba(138,106,174,.22)}
+
 /* ---------- Modal & toast ---------- */
 .modal-wrap{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
 .modal-bg{position:absolute;inset:0;background:rgba(27,35,43,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s both}
@@ -372,7 +504,7 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:p
 
 /* ---------- Responsive ---------- */
 @media (max-width:1200px){ .cal-wrap{grid-template-columns:minmax(0,1fr)} .side-day{position:static} }
-@media (max-width:1100px){ .g-home,.g-studio{grid-template-columns:minmax(0,1fr)} .main{padding:28px 28px 90px} .g-home>.stack{display:contents} .o1{order:1} .o2{order:2} .o3{order:3} .o4{order:4} .o5{order:5} }
+@media (max-width:1100px){ .g-home,.g-studio{grid-template-columns:minmax(0,1fr)} .main{padding:28px 28px 90px} .g-home>.stack{display:contents} .o1{order:1} .o2{order:2} .o3{order:3} .o4{order:4} .o5{order:5} .o6{order:6} }
 @media (max-width:900px){
   .app{grid-template-columns:1fr}
   .sidebar{display:none}
@@ -594,13 +726,15 @@ const QUOTES = [
    ========================================================= */
 const KEY = 'flavia.med.v1';
 function defaults(){
-  return {v:1, createdAt:todayKey(), profile:{name:'Flavia'}, exams:[], plan:[], events:[], fitness:{}, reviews:{}, ui:{statsDays:30, calView:'month', installDismissed:false}};
+  return {v:1, createdAt:todayKey(), profile:{name:'Flavia'}, exams:[], plan:[], events:[], fitness:{}, reviews:{}, ui:{statsDays:30, calView:'week', calV2:true, installDismissed:false}};
 }
 function load(){
   try {
     const raw = localStorage.getItem(KEY); if (!raw) return defaults();
     const d = JSON.parse(raw), b = defaults();
-    return {...b, ...d, profile:{...b.profile, ...(d.profile||{})}, ui:{...b.ui, ...(d.ui||{})}};
+    const st = {...b, ...d, profile:{...b.profile, ...(d.profile||{})}, ui:{...b.ui, ...(d.ui||{})}};
+    if (!st.ui.calV2){ st.ui.calView = 'week'; st.ui.calV2 = true; }
+    return st;
   } catch(e){ console.warn('Dati non leggibili', e); return defaults(); }
 }
 let S = load(), saveT = null;
@@ -628,11 +762,28 @@ function merge(rs){
   rs.map(r => [Math.min(r[0],r[1]), Math.max(r[0],r[1])]).sort((a,b) => a[0]-b[0]).forEach(r => { const l = out[out.length-1]; if (l && r[0] <= l[1]+1) l[1] = Math.max(l[1], r[1]); else out.push([...r]); });
   return out;
 }
+const isReview = b => b.kind === 'review';
+const roundOf = b => +b.round || 1;
+const sessTag = b => isReview(b) ? `↻ Ripasso · ${roundOf(b)}° giro` : 'Studio · primo giro';
+function roundCoverage(e, r, doneOnly){
+  return sum(e.sources.map(s => sum(merge(S.plan.filter(b => isReview(b) && roundOf(b) === r && b.examId === e.id && b.sourceId === s.id && (!doneOnly || b.done)).map(b => [b.from, b.to])).map(x => Math.max(0, Math.min(x[1], s.pages) - x[0] + 1)))));
+}
+function roundSegments(e, s, r){
+  const cov = merge(S.plan.filter(b => isReview(b) && roundOf(b) === r && b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])), out = [];
+  let p = 1; cov.forEach(x => { if (x[0] > p) out.push([p, Math.min(x[0]-1, s.pages)]); p = Math.max(p, x[1]+1); }); if (p <= s.pages) out.push([p, s.pages]);
+  return out.filter(g => g[0] <= g[1]);
+}
+const segmentsFor = (e, s, kind, r) => kind === 'review' ? roundSegments(e, s, r) : freeSegments(e, s);
+function suggestRound(e){ const tot = sum(e.sources.map(s => +s.pages || 0)); for (let r = 1; r <= 5; r++) if (roundCoverage(e, r, false) < tot) return r; return 5; }
+function reviewRounds(e){
+  const tot = sum(e.sources.map(s => +s.pages || 0));
+  return [...new Set(S.plan.filter(b => isReview(b) && b.examId === e.id).map(roundOf))].sort((a,b) => a - b).map(r => ({r, done:roundCoverage(e, r, true), planned:roundCoverage(e, r, false), tot}));
+}
 function srcStudied(e, s){
-  return sum(merge(S.plan.filter(b => b.done && b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])).map(r => Math.max(0, Math.min(r[1], s.pages) - r[0] + 1)));
+  return sum(merge(S.plan.filter(b => b.done && !isReview(b) && b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])).map(r => Math.max(0, Math.min(r[1], s.pages) - r[0] + 1)));
 }
 function freeSegments(e, s){
-  const cov = merge(S.plan.filter(b => b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])), out = [];
+  const cov = merge(S.plan.filter(b => !isReview(b) && b.examId === e.id && b.sourceId === s.id).map(b => [b.from, b.to])), out = [];
   let p = 1;
   cov.forEach(r => { if (r[0] > p) out.push([p, Math.min(r[0]-1, s.pages)]); p = Math.max(p, r[1]+1); });
   if (p <= s.pages) out.push([p, s.pages]);
@@ -645,9 +796,9 @@ function examStats(e){
   const daysLeft = e.date ? diffDays(t, e.date) : null;
   const studyDays = daysLeft === null ? null : Math.max(1, daysLeft - REVIEW_BUFFER);
   const pace = daysLeft === null ? null : daysLeft <= 0 ? remaining : Math.ceil(remaining / studyDays);
-  const last7 = sum(S.plan.filter(b => b.done && b.examId === e.id && b.doneAt && b.doneAt > addDays(t,-7) && b.doneAt <= t).map(pagesOf)) / 7;
+  const last7 = sum(S.plan.filter(b => b.done && !isReview(b) && b.examId === e.id && b.doneAt && b.doneAt > addDays(t,-7) && b.doneAt <= t).map(pagesOf)) / 7;
   const finish = remaining === 0 ? t : last7 > 0 ? addDays(t, Math.ceil(remaining / last7)) : null;
-  const planned = sum(S.plan.filter(b => !b.done && b.examId === e.id && b.date >= t).map(pagesOf));
+  const planned = sum(S.plan.filter(b => !b.done && !isReview(b) && b.examId === e.id && b.date >= t).map(pagesOf));
   let status = 'neutral';
   if (remaining === 0) status = 'done';
   else if (daysLeft !== null && daysLeft >= 0){
@@ -660,17 +811,18 @@ function examStats(e){
 const blocksOn = k => S.plan.filter(b => b.date === k).sort((a,b) => (a.time||'99').localeCompare(b.time||'99'));
 const overdue = () => S.plan.filter(b => !b.done && b.date < todayKey()).sort((a,b) => a.date.localeCompare(b.date));
 function studyDay(k){ const bl = blocksOn(k).filter(b => examById(b.examId)); const planned = sum(bl.map(pagesOf)), done = sum(bl.filter(b => b.done).map(pagesOf)); return {bl, planned, done, pct: planned ? done/planned : 0}; }
-const pagesDoneOn = k => sum(S.plan.filter(b => b.done && b.doneAt === k).map(pagesOf));
-function blockLabel(b){ const e = examById(b.examId), s = srcById(e, b.sourceId); return {e, s, title:`${e ? e.name : 'Esame eliminato'}`, sub:`${s ? srcName(s) : 'Fonte'} · pp. ${b.from}–${b.to}`}; }
+const pagesDoneOn = k => sum(S.plan.filter(b => b.done && !isReview(b) && b.doneAt === k).map(pagesOf));
+const reviewPagesOn = k => sum(S.plan.filter(b => b.done && isReview(b) && b.doneAt === k).map(pagesOf));
+function blockLabel(b){ const e = examById(b.examId), s = srcById(e, b.sourceId); return {e, s, title:`${e ? e.name : 'Esame eliminato'}`, sub:`${b.topic ? b.topic + ' · ' : ''}${s ? srcName(s) : 'Fonte'} · pp. ${b.from}–${b.to}`}; }
 function reviewsFor(k){
   const out = [];
-  S.plan.filter(b => b.done && b.doneAt && examById(b.examId)).forEach(b => REVIEW_STEPS.forEach(st => { if (addDays(b.doneAt, st) === k) out.push({key:`${b.id}:${st}`, b, step:st}); }));
+  S.plan.filter(b => b.done && !isReview(b) && b.doneAt && examById(b.examId)).forEach(b => REVIEW_STEPS.forEach(st => { if (addDays(b.doneAt, st) === k) out.push({key:`${b.id}:${st}`, b, step:st}); }));
   return out;
 }
 const reviewDone = (k, key) => (S.reviews[k] || []).includes(key);
 
 /* ---- Benessere ---- */
-const blankFit = () => ({run:{km:null, time:''}, gym:{done:false, time:'', type:''}});
+const blankFit = () => ({run:{km:null, time:''}, gym:{done:false, time:'', type:'', muscles:[]}});
 const fitOf = k => S.fitness[k] || blankFit();
 const fitW = k => (S.fitness[k] ||= blankFit());
 const ranOn = k => (+fitOf(k).run.km || 0) > 0;
@@ -684,8 +836,8 @@ function dayItems(k){
   S.events.filter(ev => ev.date === k).forEach(ev => { const c = EVENT_CATS[ev.cat] || EVENT_CATS.altro; items.push({kind:'event', time:ev.time||'', end:ev.end||'', title:ev.title, sub:c.label + (ev.notes ? ' · ' + ev.notes : ''), color:c.color, icon:c.icon, id:ev.id}); });
   const f = fitOf(k);
   if (ranOn(k)) items.push({kind:'run', time:f.run.time||'', title:`Corsa · ${N1.format(+f.run.km)} km`, sub: +f.run.km >= RUN_GOAL ? 'Obiettivo 5 km raggiunto' : `Obiettivo ${RUN_GOAL} km`, color:'#3b8a82', icon:'route'});
-  if (gymOn(k)) items.push({kind:'gym', time:f.gym.time||'', title:`Palestra${f.gym.type ? ' · ' + f.gym.type : ''}`, sub:'Allenamento', color:'#3b8a82', icon:'dumbbell'});
-  blocksOn(k).forEach(b => { const L = blockLabel(b); if (!L.e) return; items.push({kind:'study', time:b.time||'', title:`${L.e.name} · ${pagesOf(b)} pp.`, chip:`${b.done ? '✓ ' : ''}${pagesOf(b)}p · ${L.e.name.split(' ')[0]}`, sub:L.sub, color:L.e.color, icon:'book', id:b.id, done:b.done}); });
+  if (gymOn(k)){ const ms = f.gym.muscles || []; items.push({kind:'gym', time:f.gym.time||'', title:`Palestra${ms.length ? ' · ' + musclesLabel(ms) : f.gym.type ? ' · ' + f.gym.type : ''}`, sub: ms.length ? (f.gym.type || 'Sala pesi') + ' · ' + plural(ms.length,'gruppo muscolare','gruppi muscolari') : 'Allenamento', color:'#b5826f', icon:'dumbbell'}); }
+  blocksOn(k).forEach(b => { const L = blockLabel(b); if (!L.e) return; items.push({kind:'study', rev:isReview(b), round:roundOf(b), time:b.time||'', title:`${L.e.name} · ${pagesOf(b)} pp.`, chip:`${b.done ? '✓ ' : ''}${isReview(b) ? '↻ ' : ''}${pagesOf(b)}p · ${L.e.name.split(' ')[0]}`, sub:L.sub, color:L.e.color, icon:isReview(b) ? 'refresh' : 'book', id:b.id, done:b.done}); });
   return items.sort((a,b) => (a.kind==='exam'?-1:0) - (b.kind==='exam'?-1:0) || (a.time||'99:99').localeCompare(b.time||'99:99'));
 }
 
@@ -717,7 +869,7 @@ function openModal({eyebrow='', title='', body='', wide=false, onMount}){
 }
 function closeModal(){ $('#modal').hidden = true; document.body.style.overflow = ''; }
 $('#modal').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="button"][data-act]')){ e.preventDefault(); e.target.click(); } });
 
 /* =========================================================
    GRAFICI
@@ -755,6 +907,9 @@ function insights(){
       add(9,'alert',`${near.name}: ritmo da alzare`, `Restano ${st.remaining} pagine in ${plural(dl,'giorno','giorni')}: servono circa ${st.pace} pagine al giorno${st.last7 ? `, mentre negli ultimi 7 giorni la media è stata ${N1.format(st.last7)}` : ''}. Concentrati sugli argomenti più frequenti all'appello e usa «Distribuisci fino all'esame» per un piano realistico.`);
     } else if (st.status === 'ok') add(5,'method',`${near.name} è in linea`, `Al ritmo attuale finirai le pagine il ${fmtDate(st.finish,{day:'numeric',month:'long'})}, prima dei giorni di ripasso. Mantieni costanza e proteggi i ripassi dilazionati.`);
   }
+  ex.forEach(e => { const st = examStats(e); if (st.total && st.remaining === 0 && st.daysLeft !== null && st.daysLeft > 0 && !S.plan.some(b => isReview(b) && b.examId === e.id && !b.done && b.date >= t)) add(8,'memory',`${e.name}: primo giro completato`, `Hai letto tutte le ${st.total} pagine. Ora pianifica il ${suggestRound(e)}° giro di ripasso: nella scheda dell'esame tocca «Pianifica ripasso» e assegna i blocchi ai ${st.daysLeft} giorni che mancano all'appello.`); });
+  const revToday = sd.bl.filter(isReview);
+  if (revToday.length) add(6,'memory','Oggi si consolida', `In programma ${sum(revToday.map(pagesOf))} pagine di ripasso (${[...new Set(revToday.map(b => roundOf(b) + '° giro'))].join(', ')}). Ripassa a libro chiuso: prima ricordi e ripeti ad alta voce, poi controlli sul testo.`);
   if (ex.length && !sd.planned) add(8,'method','Pianifica la giornata','Oggi non hai pagine programmate. Bastano due minuti: in «Studio» scegli esame, fonte e intervallo di pagine. Un piano scritto si esegue, un\'intenzione vaga no.');
   if (sd.planned > 80) add(8,'wellbeing','Carico molto alto oggi', `${sd.planned} pagine in un giorno sono tante: dividile in blocchi da 50 minuti con 10 di pausa e tieni un margine. Meglio 60 pagine capite che 100 lette di fretta.`);
   if (sd.planned && sd.done >= sd.planned) add(7,'memory','Giornata di studio completata','Ottimo lavoro. Prima di chiudere fai 10 minuti di active recall: scrivi a memoria i 5 concetti chiave di oggi. Domani te li riproporrò nei ripassi.');
@@ -765,6 +920,11 @@ function insights(){
   const streak = (() => { let n = 0, k = addDays(t,-1); while (pagesDoneOn(k) > 0 && n < 60){ n++; k = addDays(k,-1); } return n; })();
   if (streak >= 7) add(7,'wellbeing',`${streak} giorni di studio di fila`, 'Costanza eccellente. Pianifica comunque mezza giornata leggera questa settimana: il riposo previene il burnout e migliora la resa delle sessioni successive.');
   if (h >= 23) add(9,'wellbeing','È tardi','Il ripasso notturno rende poco: vai a dormire. Durante il sonno il cervello consolida ciò che hai studiato oggi.');
+  const gym14 = range(addDays(t,-13), t).filter(gymOn);
+  if (gym14.length >= 2){
+    const majors = ['dorsali','petto','spalle','quadricipiti','glutei','addome'], old = majors.filter(m => { const l = lastTrained(m); return !l || diffDays(l, t) >= 10; });
+    if (old.length && old.length < majors.length) add(5,'wellbeing','Bilancia la scheda in palestra', `${listJoin(old.map(muscleName))} non ${old.length === 1 ? 'viene allenato' : 'vengono allenati'} da almeno 10 giorni: inseriscili nel prossimo allenamento per una forma equilibrata e una postura migliore durante le ore di studio.`);
+  }
   const tip = METHOD_TIPS[dayOfYear() % METHOD_TIPS.length], well = WELLBEING_TIPS[dayOfYear() % WELLBEING_TIPS.length];
   add(3,'method',`Metodo · ${tip[0]}`, tip[1]);
   add(2,'wellbeing',`Benessere · ${well[0]}`, well[1]);
@@ -815,9 +975,9 @@ function cdPill(e){
 }
 function blockRow(b, opts={}){
   const L = blockLabel(b); if (!L.e) return '';
-  return `<div class="blk ${b.done?'done':''}" style="--c:${L.e.color}">
+  return `<div class="blk ${b.done?'done':''} ${isReview(b)?'review':''}" style="--c:${L.e.color}">
     <button class="check ${b.done?'on':''}" data-act="blk-toggle" data-id="${b.id}" aria-label="${b.done?'Segna come da fare':'Segna come studiate'}" aria-pressed="${b.done}">${icon('check')}</button>
-    <div class="blk-t"><b>${opts.noExam ? esc(L.s ? srcName(L.s) : 'Fonte') : `<span class="exdot" style="--c:${L.e.color};margin-right:7px"></span>${esc(L.e.name)}`}</b><small>${opts.noExam ? `pp. ${b.from}–${b.to}` : esc(L.sub)}${b.time ? ` · ${b.time}` : ''}${opts.showDate ? ` · ${fmtDate(b.date,{weekday:'short', day:'numeric', month:'short'})}` : ''}</small></div>
+    <div class="blk-t"><b>${opts.noExam ? esc(L.s ? srcName(L.s) : 'Fonte') : `<span class="exdot" style="--c:${L.e.color};margin-right:7px"></span>${esc(L.e.name)}`}</b><small><span class="stag ${isReview(b) ? 'rev' : ''}">${sessTag(b)}</span> ${b.topic && opts.noExam ? esc(b.topic) + ' · ' : ''}${opts.noExam ? `pp. ${b.from}–${b.to}` : esc(L.sub)}${b.time ? ` · ${b.time}` : ''}${opts.showDate ? ` · ${fmtDate(b.date,{weekday:'short', day:'numeric', month:'short'})}` : ''}</small></div>
     <div class="blk-r"><span class="pp">${pagesOf(b)} pp.</span>${opts.actions || ''}</div></div>`;
 }
 function timelineHTML(k, opts={}){
@@ -872,10 +1032,12 @@ function renderHome(){
     <svg class="hero-ecg" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ecg" x1="0" x2="1"><stop offset="0" stop-color="#b5826f" stop-opacity="0"/><stop offset=".5" stop-color="#b5826f"/><stop offset="1" stop-color="#3b8a82" stop-opacity="0"/></linearGradient></defs><path d="M0 30 H360 L380 30 L392 8 L404 42 L414 22 L424 30 H620 L640 30 L652 6 L664 44 L674 22 L684 30 H900 L920 30 L932 10 L944 40 L954 24 L964 30 H1200" fill="none" stroke="url(#ecg)" stroke-width="1.6"/></svg>
   </section>
 
+  <section class="card mt-18 wb-card">${weekBoard({eyebrow:'Calendario integrato · la tua settimana', extra:`<a class="btn btn-sm btn-ghost" href="#calendario">Calendario ${icon('right')}</a><button class="btn btn-sm btn-rose" data-act="day-add" data-v="${t}">${icon('plus')} Aggiungi</button>`})}</section>
+
   <section class="grid g-home mt-18">
     <div class="stack">
       <div class="card o1">
-        <div class="card-head"><div><div class="eyebrow">Programma di oggi</div><h3 class="card-title">Pagine da studiare</h3></div><a class="btn btn-sm" href="#studio">${icon('plus')} Pianifica</a></div>
+        <div class="card-head"><div><div class="eyebrow">Programma di oggi</div><h3 class="card-title">Pagine da studiare</h3></div><button class="btn btn-sm" data-act="add-block" data-v="${t}">${icon('plus')} Assegna pagine</button></div>
         ${sd.bl.length ? sd.bl.map(b => blockRow(b)).join('') : `<div class="empty"><div class="serif">Nessuna pagina in programma</div>${ex.length ? 'Pianifica il carico di oggi nella sezione Studio.' : 'Aggiungi il primo esame per iniziare.'}<div class="mt-12"><a class="btn btn-rose btn-sm" href="#studio">${icon(ex.length?'plus':'cap')} ${ex.length?'Pianifica oggi':'Aggiungi un esame'}</a></div></div>`}
         ${od.length ? `<div class="row between mt-12" style="padding:10px 12px;border-radius:12px;background:var(--amber-a)"><span class="small" style="color:#8a6326;font-weight:600">${icon('alert')} ${plural(od.length,'blocco arretrato','blocchi arretrati')} (${sum(od.map(pagesOf))} pagine)</span><button class="btn btn-sm" data-act="blk-move-all">Sposta a oggi</button></div>` : ''}
         <hr class="hair">
@@ -896,12 +1058,10 @@ function renderHome(){
       </div>
     </div>
     <div class="stack">
-      <div class="card o2">
-        <div class="card-head" style="margin-bottom:8px"><div><div class="eyebrow">Calendario integrato</div><h3 class="card-title">Agenda rapida</h3></div><button class="btn btn-sm btn-rose" data-act="event-new" data-v="${homeDay}">${icon('plus')} Attività</button></div>
+      <div class="card o6">
+        <div class="card-head" style="margin-bottom:8px"><div><div class="eyebrow">Vista mensile</div><h3 class="card-title">Vai a una settimana</h3></div></div>
         ${miniCal(homeCursor, homeDay, 'hcal')}
-        <hr class="hair">
-        <div class="row between"><h4 class="agenda-day">${homeDay === t ? 'Oggi' : fmtDate(homeDay,{weekday:'long', day:'numeric', month:'long'})}</h4><a class="small rose" style="font-weight:700;text-decoration:none" href="#calendario" data-act="open-cal" data-v="${homeDay}">Calendario →</a></div>
-        ${timelineHTML(homeDay)}
+        <p class="small muted" style="margin:10px 0 0">Tocca un giorno per mostrarne la settimana nel calendario qui sopra.</p>
       </div>
       <div class="card o5">
         <div class="card-head"><div><div class="eyebrow">Sessione</div><h3 class="card-title">Esami in arrivo</h3></div><a class="btn btn-sm btn-ghost" href="#studio">Tutti ${icon('right')}</a></div>
@@ -909,6 +1069,7 @@ function renderHome(){
       </div>
     </div>
   </section>`;
+  scrollWeekToToday(homeDay);
 }
 
 /* =========================================================
@@ -932,10 +1093,13 @@ function examCard(e){
         <div class="srcs" style="flex:1;min-width:0">${e.sources.map(s => { const d = srcStudied(e, s); return `<div class="src-r"><b>${esc(srcName(s))}</b><span>${d}/${s.pages} pp.</span><div class="bar thin"><i style="width:${s.pages ? d/s.pages*100 : 0}%;background:${e.color}"></i></div></div>`; }).join('') || '<span class="small muted">Nessuna fonte: modifica l\'esame per aggiungerne.</span>'}</div>
       </div>
       <div class="exam-foot"><div class="ef"><span class="eyebrow">Studiate</span><b>${st.done}</b></div><div class="ef"><span class="eyebrow">Rimanenti</span><b>${st.remaining}</b></div><div class="ef"><span class="eyebrow">Pianificate</span><b>${st.planned}</b></div></div>
+      ${(() => { const rr = reviewRounds(e); return rr.length ? `<div class="rounds-box"><div class="eyebrow rev-c">${icon('refresh')} Giri di ripasso</div>${rr.map(x => `<div class="rr"><span class="stag rev">${x.r}° giro</span><div class="bar rev2"><i class="pl" style="width:${x.tot ? x.planned/x.tot*100 : 0}%"></i><i style="width:${x.tot ? x.done/x.tot*100 : 0}%"></i></div><span class="pp">${x.done}/${x.tot}</span></div>`).join('')}<small class="muted">Pieno: pagine ripassate · chiaro: pagine già assegnate in calendario</small></div>` : ''; })()}
       <div class="exam-msg">${icon('target')}<span>${msg}</span></div>
+      ${(() => { const up = S.plan.filter(b => b.examId === e.id && !b.done && b.date >= todayKey()).sort((a,b) => a.date.localeCompare(b.date) || a.from - b.from); return up.length ? `<div class="upnext"><span class="eyebrow">In calendario</span>${up.slice(0,4).map(b => `<span class="upc ${isReview(b) ? 'rev' : ''}">${isReview(b) ? `↻ R${roundOf(b)} · ` : ''}${cap(fmtDate(b.date,{weekday:'short', day:'numeric'}).replace('.',''))} · pp. ${b.from}–${b.to}</span>`).join('')}${up.length > 4 ? `<span class="small muted">+${up.length - 4}</span>` : ''}</div>` : ''; })()}
       <div class="exam-act">
-        <button class="btn btn-sm btn-ink" data-act="block-new" data-v="${e.id}">${icon('plus')} Pagine di oggi</button>
-        <button class="btn btn-sm btn-teal" data-act="exam-auto" data-id="${e.id}" ${st.remaining && e.date ? '' : 'disabled'}>${icon('wand')} Distribuisci fino all'esame</button>
+        <button class="btn btn-sm btn-ink" data-act="block-new" data-v="${e.id}">${icon('cal')} Assegna pagine</button>
+        <button class="btn btn-sm btn-rev" data-act="review-new" data-v="${e.id}">${icon('refresh')} Pianifica ripasso</button>
+        <button class="btn btn-sm btn-teal" data-act="exam-auto" data-id="${e.id}" ${e.date ? '' : 'disabled'}>${icon('wand')} Distribuisci fino all'esame</button>
         <button class="btn btn-sm btn-icon btn-ghost" data-act="exam-edit" data-id="${e.id}" aria-label="Modifica esame">${icon('edit')}</button>
       </div>
     </div>
@@ -952,37 +1116,68 @@ function plannerHTML(){
       ${k !== t ? `<button class="btn btn-sm btn-ghost" data-act="plan-today">Torna a oggi</button>` : ''}
     </div>
     ${Object.keys(groups).length ? Object.entries(groups).map(([id, list]) => { const e = examById(id); return `<div class="exgroup"><div class="exgroup-h"><span class="exdot" style="--c:${e.color}"></span>${esc(e.name)} ${cdPill(e)}</div>${list.map(b => blockRow(b, {noExam:true, actions:`<button class="btn btn-icon btn-sm btn-ghost" data-act="blk-del" data-id="${b.id}" aria-label="Elimina blocco">${icon('trash')}</button>`})).join('')}</div>`; }).join('')
-      : `<div class="empty"><div class="serif">Nessun blocco per ${k === t ? 'oggi' : 'questo giorno'}</div>Aggiungi qui sotto le pagine da studiare, anche da più fonti o esami diversi.</div>`}
+      : `<div class="empty"><div class="serif">Nessun blocco per ${k === t ? 'oggi' : 'questo giorno'}</div>Assegna le pagine con il modulo accanto: scegli esame, intervallo di pagine e giorno.</div>`}
     ${od.length && k === t ? `<div class="mt-18"><div class="row between" style="margin-bottom:8px"><div class="eyebrow" style="color:#9c7232">Arretrati · ${sum(od.map(pagesOf))} pagine</div><button class="btn btn-sm" data-act="blk-move-all">Sposta tutto a oggi</button></div>${od.slice(0,6).map(b => blockRow(b, {showDate:true, actions:`<button class="btn btn-sm btn-ghost" data-act="blk-move" data-id="${b.id}">Oggi</button>`})).join('')}</div>` : ''}
   </div>`;
 }
-function blockFormHTML(examId){
+/* ---- Assegnazione pagine → giorno (modulo riutilizzabile) ---- */
+let blockDraft = {examId:null, sourceId:null, date:null, size:null, lastTo:null, kind:'study', round:null};
+let justAdded = [];
+const srcOptions = (e, sel) => e.sources.map(s => `<option value="${s.id}" ${s.id === sel ? 'selected' : ''}>${esc(srcName(s))} · ${s.pages} pp.</option>`).join('');
+function blockFormInner(opts={}){
   const ex = activeExams().filter(e => e.sources.length);
-  if (!ex.length) return `<div class="card"><div class="eyebrow">Aggiungi pagine</div><div class="empty mt-12"><div class="serif">Prima un esame</div>Crea un esame con almeno una fonte per programmare le pagine.</div></div>`;
-  const e = examById(examId) && examById(examId).sources.length ? examById(examId) : ex[0];
-  return `<div class="card" id="blockCard">
-    <div class="card-head"><div><div class="eyebrow">Aggiungi al ${planDay === todayKey() ? 'programma di oggi' : fmtDate(planDay,{day:'numeric', month:'long'})}</div><h3 class="card-title">Da pagina a pagina</h3></div>${icon('layers')}</div>
-    <form data-form="block" class="form-grid">
-      <div class="field full"><label for="bExam">Esame</label><select class="input" id="bExam" name="examId" data-act="b-exam">${ex.map(x => `<option value="${x.id}" ${x.id===e.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
-      <div class="field full"><label for="bSrc">Fonte</label><select class="input" id="bSrc" name="sourceId" data-act="b-src">${e.sources.map(s => `<option value="${s.id}">${esc(srcName(s))} · ${s.pages} pp.</option>`).join('')}</select></div>
-      <div class="field"><label for="bFrom">Da pagina</label><input class="input input-num" id="bFrom" name="from" type="number" min="1" inputmode="numeric" required></div>
-      <div class="field"><label for="bTo">A pagina</label><input class="input input-num" id="bTo" name="to" type="number" min="1" inputmode="numeric" required></div>
-      <div class="field"><label for="bTime">Orario (facoltativo)</label><input class="input" id="bTime" name="time" type="time"></div>
-      <div class="field" style="justify-content:flex-end"><label class="check-row" style="height:42px"><input type="checkbox" name="done"> Già studiate</label></div>
-      <div class="full small muted" id="bHint"></div>
-      <div class="full"><button class="btn btn-rose" style="width:100%">${icon('plus')} Aggiungi al piano</button></div>
-    </form>
-  </div>`;
+  if (!ex.length) return `<div class="empty"><div class="serif">Prima un esame</div>Crea un esame con almeno una fonte per assegnare le pagine ai giorni.<div class="mt-12"><button class="btn btn-rose btn-sm" data-act="exam-new">${icon('plus')} Nuovo esame</button></div></div>`;
+  const e = ex.find(x => x.id === (opts.examId || blockDraft.examId)) || ex[0];
+  const t = todayKey(), date = opts.date || blockDraft.date || t, u = 'b' + uid(), chips = range(t, addDays(t, 6));
+  const kind = blockDraft.kind === 'review' ? 'review' : 'study', round = blockDraft.round || suggestRound(e);
+  return `<form data-form="block" class="form-grid bform" data-ctx="${opts.ctx || 'page'}">
+    <div class="field full"><label for="${u}e">Esame</label><select class="input" id="${u}e" name="examId" data-act="b-exam">${ex.map(x => `<option value="${x.id}" ${x.id === e.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>
+    <div class="field full"><label for="${u}s">Fonte</label><select class="input" id="${u}s" name="sourceId" data-act="b-src">${srcOptions(e, e.id === blockDraft.examId ? blockDraft.sourceId : null)}</select></div>
+    <div class="field full"><label>Tipo di sessione</label>
+      <div class="seg sess" role="radiogroup" aria-label="Tipo di sessione"><button type="button" role="radio" aria-checked="${kind === 'study'}" class="${kind === 'study' ? 'on' : ''}" data-act="b-kind" data-v="study">${icon('book')} Studio · primo giro</button><button type="button" role="radio" aria-checked="${kind === 'review'}" class="${kind === 'review' ? 'on rev' : ''}" data-act="b-kind" data-v="review">${icon('refresh')} Ripasso</button></div>
+      <input type="hidden" name="kind" value="${kind}"></div>
+    <div class="field full rounds-f" ${kind === 'review' ? '' : 'hidden'}><label>Ciclo di ripasso</label>
+      <div class="rounds" role="radiogroup" aria-label="Giro di ripasso">${[1,2,3,4,5].map(r => `<button type="button" role="radio" aria-checked="${r === round}" class="rchip ${r === round ? 'on' : ''}" data-act="b-round" data-v="${r}">${r}° giro</button>`).join('')}</div>
+      <input type="hidden" name="round" value="${round}"></div>
+    <div class="field"><label for="${u}f">Da pagina</label><input class="input input-num" id="${u}f" name="from" type="number" min="1" inputmode="numeric" required></div>
+    <div class="field"><label for="${u}t">A pagina</label><input class="input input-num" id="${u}t" name="to" type="number" min="1" inputmode="numeric" required></div>
+    <div class="field full"><label for="${u}a">Argomento o capitolo (facoltativo)</label><input class="input" id="${u}a" name="topic" maxlength="80" placeholder="Es. Cap. 5 · Apparato cardiovascolare"></div>
+    <div class="field full"><label for="${u}d">Giorno del calendario</label>
+      <div class="daychips" role="group" aria-label="Scegli il giorno">${chips.map(k => `<button type="button" class="dchip ${k === date ? 'on' : ''}" data-act="b-day" data-v="${k}"><span>${k === t ? 'Oggi' : k === addDays(t,1) ? 'Domani' : fmtDate(k,{weekday:'short'}).replace('.','')}</span><b>${parse(k).getDate()}</b></button>`).join('')}</div>
+      <input class="input mt-8" id="${u}d" name="date" type="date" value="${date}" required data-act="b-date" aria-label="Oppure scegli una data"></div>
+    <div class="field"><label for="${u}h">Orario (facoltativo)</label><input class="input" id="${u}h" name="time" type="time"></div>
+    <div class="field" style="justify-content:flex-end"><label class="check-row" style="height:42px"><input type="checkbox" name="done"> Già studiate</label></div>
+    <div class="full small muted bhint"></div>
+    <div class="full"><button class="btn btn-rose" style="width:100%">${icon('cal')} Assegna al giorno</button></div>
+  </form>`;
 }
-function fillBlockForm(){
-  const e = examById($('#bExam')?.value); if (!e) return;
-  const s = srcById(e, $('#bSrc').value) || e.sources[0]; if (!s) return;
-  const st = examStats(e), from = nextFreePage(e, s);
-  const per = clamp(st.pace || 20, 1, 200);
-  if (from === null){ $('#bFrom').value = ''; $('#bTo').value = ''; $('#bHint').innerHTML = `Tutte le pagine di «${esc(srcName(s))}» sono già studiate o pianificate.`; return; }
-  $('#bFrom').value = from; $('#bTo').value = Math.min(s.pages, from + per - 1);
-  $('#bFrom').max = $('#bTo').max = s.pages;
-  $('#bHint').innerHTML = `Prima pagina libera: ${from}. ${st.pace ? `Ritmo consigliato per ${esc(e.name)}: <b>${st.pace} pagine/giorno</b>.` : ''}`;
+function fillBlockForm(form){
+  const e = examById(form.examId.value); if (!e) return;
+  const s = srcById(e, form.sourceId.value) || e.sources[0]; if (!s) return;
+  const t = todayKey(), st = examStats(e), size = clamp(blockDraft.size || st.pace || 20, 1, 300);
+  // Continua la sequenza (es. oggi 10–40 → domani 41–…) se si prosegue con la stessa fonte
+  const kind = form.kind.value === 'review' ? 'review' : 'study', round = +form.round.value || 1, segs = segmentsFor(e, s, kind, round);
+  const rsize = kind === 'review' && !(blockDraft.kind === 'review' && blockDraft.size) ? clamp(Math.ceil(st.total / Math.max(1, st.daysLeft > 0 ? st.daysLeft : 14)), 5, 150) : null;
+  const same = blockDraft.examId === e.id && blockDraft.sourceId === s.id && blockDraft.kind === kind && (kind === 'study' || +blockDraft.round === round);
+  const cont = same && blockDraft.lastTo ? segs.find(g => g[1] > blockDraft.lastTo) : null;
+  const from = cont ? Math.max(cont[0], blockDraft.lastTo + 1) : (segs[0] ? segs[0][0] : null);
+  const up = S.plan.filter(b => b.examId === e.id && !b.done && b.date >= t).sort((a,b) => a.date.localeCompare(b.date) || a.from - b.from).slice(0, 4);
+  const hint = $('.bhint', form);
+  if (from === null){ form.from.value = form.to.value = ''; hint.innerHTML = kind === 'review' ? `Tutte le pagine di «${esc(srcName(s))}» sono già nel ${round}° giro di ripasso: scegli il giro successivo.` : `Tutte le pagine di «${esc(srcName(s))}» sono già studiate o assegnate a un giorno: per tornarci sopra scegli «Ripasso».`; return; }
+  form.from.value = from; form.to.value = Math.min(s.pages, from + (rsize || size) - 1); form.from.max = form.to.max = s.pages;
+  hint.innerHTML = `${kind === 'review' ? `<span class="stag rev">↻ Ripasso · ${round}° giro</span> Prima pagina non ancora inserita in questo giro: <b>${from}</b> di ${s.pages}. Ripassate finora: ${roundCoverage(e, round, true)}/${st.total} pp.` : `Prima pagina libera: <b>${from}</b> di ${s.pages}.${st.pace ? ` Ritmo consigliato per ${esc(e.name)}: <b>${st.pace} pp./giorno</b>.` : ''}`}${up.length ? `<div class="upnext mt-8" style="--c:${e.color}"><span class="eyebrow">Già in calendario</span>${up.map(b => `<span class="upc ${isReview(b) ? 'rev' : ''}">${isReview(b) ? `↻ R${roundOf(b)} · ` : ''}${cap(fmtDate(b.date,{weekday:'short', day:'numeric'}).replace('.',''))} · pp. ${b.from}–${b.to}</span>`).join('')}</div>` : ''}`;
+}
+const initBlockForms = (root=document) => $$('form[data-form="block"]', root).forEach(fillBlockForm);
+function setBlockDay(form, k){ form.date.value = k; $$('.dchip', form).forEach(c => c.classList.toggle('on', c.dataset.v === k)); }
+function justAddedHTML(){
+  if (!justAdded.length) return '';
+  return `<div class="just"><div class="label" style="margin-bottom:8px">Assegnati ora</div>${justAdded.map(id => S.plan.find(b => b.id === id)).filter(Boolean).map(b => { const L = blockLabel(b); return `<div class="just-r" style="--c:${L.e.color}"><span class="exdot"></span><b>${cap(fmtDate(b.date,{weekday:'long', day:'numeric', month:'short'}))}</b><span>${isReview(b) ? `↻ Ripasso ${roundOf(b)}° giro · ` : ''}${esc(L.e.name)} · ${esc(L.s ? srcName(L.s) : '')} · pp. ${b.from}–${b.to}</span></div>`; }).join('')}
+    <p class="small muted" style="margin:10px 0 0">Il modulo è già pronto per il giorno successivo con le pagine che seguono: continua oppure chiudi.</p></div>`;
+}
+function blockModal(date, examId){
+  justAdded = [];
+  if (examId) blockDraft = {...blockDraft, examId, sourceId:null};
+  openModal({eyebrow:'Pianificatore esami', title:'Assegna pagine a un giorno', body:`${blockFormInner({date, examId, ctx:'modal'})}<div id="justAdded"></div>`, onMount: b => initBlockForms(b)});
 }
 function renderStudio(examFocus){
   const ex = activeExams(), passed = passedExams(), t = todayKey(), sd = studyDay(t);
@@ -999,11 +1194,11 @@ function renderStudio(examFocus){
   <section class="exams mt-18">${ex.length ? ex.map(examCard).join('') : `<div class="card empty" style="grid-column:1/-1;padding:42px 20px"><div class="serif">Nessun esame in sessione</div>Inserisci nome del corso, data dell'appello e fonti di studio con il numero di pagine.<div class="mt-18"><button class="btn btn-rose" data-act="exam-new">${icon('plus')} Aggiungi il primo esame</button></div></div>`}</section>
   <section class="grid g-studio mt-24">
     <div>${plannerHTML()}</div>
-    <div class="stack">${blockFormHTML(examFocus)}
+    <div class="stack"><div class="card" id="blockCard"><div class="card-head"><div><div class="eyebrow">Pianificatore esami</div><h3 class="card-title">Assegna pagine a un giorno</h3></div>${icon('layers')}</div>${blockFormInner({examId:examFocus, date: blockDraft.date && blockDraft.date >= todayKey() ? blockDraft.date : planDay})}</div>
       ${passed.length ? `<div class="card"><div class="card-head"><div><div class="eyebrow">Libretto</div><h3 class="card-title">Esami superati</h3></div>${grades.length ? `<span class="pill rose">Media ${N1.format(avg(grades))}</span>` : ''}</div>${passed.map(e => `<div class="passed"><span class="exdot" style="--c:${e.color}"></span><div class="blk-t"><b>${esc(e.name)}</b><small>${e.date ? fmtDate(e.date,{day:'numeric', month:'long', year:'numeric'}) : ''}</small></div><span class="grade">${esc(e.grade || '✓')}</span></div>`).join('')}</div>` : ''}
     </div>
   </section>`;
-  fillBlockForm();
+  initBlockForms();
 }
 function examModal(e){
   const isNew = !e;
@@ -1033,6 +1228,7 @@ function autoPlanModal(e){
   openModal({eyebrow:'Pianificazione automatica', title:`Distribuisci ${e.name}`, body:`
     <form data-form="autoplan" data-id="${e.id}" class="stack" style="gap:16px">
       <p class="small muted" style="margin:0">L'app distribuisce le pagine non ancora studiate né pianificate sui giorni disponibili fino all'appello, lasciando gli ultimi giorni per il ripasso. I blocchi creati restano modificabili.</p>
+      <div class="field"><label for="apKind">Cosa pianificare</label><select class="input" id="apKind" name="plan"><option value="study">Studio · primo giro (pagine non ancora studiate)</option>${[1,2,3].map(r => `<option value="review:${r}" ${suggestRound(e) === r && examStats(e).remaining === 0 ? 'selected' : ''}>Ripasso · ${r}° giro</option>`).join('')}</select></div>
       <div class="form-grid">
         <div class="field"><label for="apStart">Inizia da</label><input class="input" id="apStart" name="start" type="date" value="${t}" min="${t}"></div>
         <div class="field"><label for="apRev">Giorni di ripasso finali</label><input class="input input-num" id="apRev" name="review" type="number" min="0" max="14" value="${REVIEW_BUFFER}"></div>
@@ -1042,93 +1238,139 @@ function autoPlanModal(e){
       <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>Annulla</button><button class="btn btn-rose" id="apGo">${icon('wand')} Crea il piano</button></div>
     </form>`, onMount: () => updateAutoPreview()});
 }
-function autoPlanCompute(e, start, review, skip){
+function autoPlanCompute(e, start, review, skip, kind='study', round=1){
   if (!e.date) return {error:'Imposta prima la data dell\'appello.'};
   const last = addDays(e.date, -(review+1));
   if (last < start) return {error:'Non ci sono giorni disponibili prima dei giorni di ripasso: riduci il ripasso o anticipa l\'inizio.'};
   const days = range(start, last).filter(k => !skip.includes(dow(k)));
   if (!days.length) return {error:'Tutti i giorni sono esclusi come riposo.'};
-  const queue = e.sources.flatMap(s => freeSegments(e, s).map(g => ({s, from:g[0], to:g[1]})));
+  const queue = e.sources.flatMap(s => segmentsFor(e, s, kind, round).map(g => ({s, from:g[0], to:g[1]})));
   const total = sum(queue.map(g => g.to - g.from + 1));
-  if (!total) return {error:'Tutte le pagine sono già studiate o pianificate.'};
+  if (!total) return {error: kind === 'review' ? `Tutte le pagine sono già nel ${round}° giro di ripasso.` : 'Tutte le pagine sono già studiate o pianificate: scegli un giro di ripasso.'};
   const per = Math.ceil(total / days.length), blocks = [];
   for (const day of days){
     let q = per;
-    while (q > 0 && queue.length){ const g = queue[0], take = Math.min(q, g.to - g.from + 1); blocks.push({date:day, sourceId:g.s.id, from:g.from, to:g.from + take - 1}); g.from += take; q -= take; if (g.from > g.to) queue.shift(); }
+    while (q > 0 && queue.length){ const g = queue[0], take = Math.min(q, g.to - g.from + 1); blocks.push({date:day, sourceId:g.s.id, from:g.from, to:g.from + take - 1, ...(kind === 'review' ? {kind:'review', round} : {kind:'study'})}); g.from += take; q -= take; if (g.from > g.to) queue.shift(); }
     if (!queue.length) break;
   }
-  return {days:days.length, per, total, blocks, last:blocks[blocks.length-1].date};
+  return {days:days.length, per, total, blocks, last:blocks[blocks.length-1].date, kind, round};
 }
 function readAutoForm(){
   const f = $('form[data-form="autoplan"]'); if (!f) return null;
   const e = examById(f.dataset.id), start = f.start.value || todayKey(), review = clamp(+f.review.value || 0, 0, 14), skip = $$('input[name="skip"]:checked', f).map(x => +x.value);
-  return {e, r:autoPlanCompute(e, start, review, skip)};
+  const pl = (f.plan && f.plan.value) || 'study', kind = pl.startsWith('review') ? 'review' : 'study', round = kind === 'review' ? +pl.split(':')[1] : 1;
+  return {e, r:autoPlanCompute(e, start, review, skip, kind, round)};
 }
 function updateAutoPreview(){
   const x = readAutoForm(); if (!x) return; const p = $('#apPreview'), r = x.r;
   p.classList.toggle('err', !!r.error); $('#apGo').disabled = !!r.error;
-  p.innerHTML = r.error ? r.error : `<b>${r.total} pagine</b> su <b>${plural(r.days,'giorno','giorni')} di studio</b>: circa <b>${r.per} pagine al giorno</b>, ultimo blocco il ${fmtDate(r.last,{weekday:'long', day:'numeric', month:'long'})}. Poi ripasso fino all'appello del ${fmtDate(x.e.date,{day:'numeric', month:'long'})}.${r.per > 70 ? '<br><span class="ruby">Carico molto alto: valuta di iniziare prima o ridurre i giorni di riposo.</span>' : ''}`;
+  p.innerHTML = r.error ? r.error : `${r.kind === 'review' ? `<span class="stag rev">↻ Ripasso · ${r.round}° giro</span> ` : ''}<b>${r.total} pagine</b> su <b>${plural(r.days,'giorno','giorni')} di ${r.kind === 'review' ? 'ripasso' : 'studio'}</b>: circa <b>${r.per} pagine al giorno</b>, ultimo blocco il ${fmtDate(r.last,{weekday:'long', day:'numeric', month:'long'})}. Poi ripasso fino all'appello del ${fmtDate(x.e.date,{day:'numeric', month:'long'})}.${r.per > 70 ? '<br><span class="ruby">Carico molto alto: valuta di iniziare prima o ridurre i giorni di riposo.</span>' : ''}`;
 }
 
 /* =========================================================
    CALENDARIO
    ========================================================= */
-function renderCalendar(){
-  const view = S.ui.calView || 'month', t = todayKey(), first = calCursor.slice(0,8) + '01', m = parse(first).getMonth();
-  let grid;
-  if (view === 'month'){
-    const start = weekStart(first), cells = [];
-    for (let i = 0; i < 42; i++){ const k = addDays(start, i); if (i >= 35 && parse(k).getMonth() !== m) break; cells.push(k); }
-    grid = `<div class="cal">${['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map(d => `<div class="dow">${d}</div>`).join('')}${cells.map(k => {
-      const it = dayItems(k), show = it.slice(0,3);
-      return `<button class="cday ${parse(k).getMonth()!==m?'out':''} ${k===t?'today':''} ${k===calSel?'sel':''}" data-act="cal-day" data-v="${k}" aria-label="${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}: ${plural(it.length,'elemento','elementi')}">
-        <span class="cday-n"><span>${parse(k).getDate()}</span></span>
-        ${show.map(i => `<span class="cchip ${i.kind==='exam'?'ex':''} ${i.done?'done':''}" style="--c:${i.color}">${i.kind==='exam' ? 'ESAME' : i.kind==='study' ? esc(i.chip) : (i.time ? i.time + ' ' : '') + esc(i.title)}</span>`).join('')}
-        ${it.length > 3 ? `<span class="cmore">+${it.length-3}</span>` : ''}</button>`;
+/* ---- Calendario settimanale ampio (Home e Calendario) ---- */
+let weekCursor = todayKey();
+function wbItem(i){
+  const right = i.kind === 'study'
+    ? `<button class="check sm ${i.done?'on':''}" data-act="blk-toggle" data-id="${i.id}" aria-label="${i.done?'Segna come da fare':'Segna come studiate'}" aria-pressed="${!!i.done}">${icon('check')}</button>`
+    : `<span class="cat-ic">${icon(i.icon)}</span>`;
+  const clickable = i.kind === 'event' ? `data-act="event-edit" data-id="${i.id}" role="button" tabindex="0" title="Modifica"` : i.kind === 'gym' || i.kind === 'run' ? `data-act="fit-open" data-v="${i.day}" role="button" tabindex="0" title="Apri nel Benessere"` : '';
+  return `<div class="wbi ${i.kind} ${i.rev ? 'review' : ''} ${i.done?'done':''}" style="--c:${i.color}" ${clickable}>
+    <div class="wbi-top"><span class="wbi-time">${i.time ? i.time + (i.end ? '–' + i.end : '') : i.kind === 'exam' ? 'Appello' : 'In giornata'}</span>${right}</div>
+    ${i.kind === 'study' ? `<span class="stag ${i.rev ? 'rev' : ''}">${i.rev ? `↻ Ripasso · ${i.round}° giro` : 'Studio · primo giro'}</span>` : ''}
+    <b>${esc(i.title)}</b><small>${esc(i.sub)}</small></div>`;
+}
+function weekBoard(opts={}){
+  const ws = weekStart(weekCursor), days = range(ws, addDays(ws, 6)), t = todayKey();
+  const tot = sum(days.map(k => studyDay(k).planned)), done = sum(days.map(k => studyDay(k).done));
+  return `<div class="wb-head">
+      <div><div class="eyebrow">${opts.eyebrow || 'Settimana'}</div>
+        <div class="daynav"><button class="btn btn-icon btn-sm" data-act="wk-prev" aria-label="Settimana precedente">${icon('left')}</button><h3 class="wb-title">${fmtDate(ws,{day:'numeric', month:'long'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'long'})}</h3><button class="btn btn-icon btn-sm" data-act="wk-next" aria-label="Settimana successiva">${icon('right')}</button></div></div>
+      <div class="row wrap" style="gap:8px">${tot ? `<span class="pill ${done >= tot ? 'teal' : 'rose'}">${done}/${tot} pagine nella settimana</span>` : ''}${ws !== weekStart(t) ? `<button class="btn btn-sm" data-act="wk-today">Questa settimana</button>` : ''}${opts.extra || ''}</div>
+    </div>
+    <div class="wb" id="weekBoard">${days.map(k => {
+      const it = dayItems(k).map(i => ({...i, day:k})), sd = studyDay(k);
+      return `<section class="wb-col ${k === t ? 'today' : ''} ${k < t ? 'past' : ''}" data-day="${k}" aria-label="${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}">
+        <header class="wb-day"><div><span class="wb-dow">${k === t ? 'Oggi' : fmtDate(k,{weekday:'long'})}</span><span class="row" style="gap:6px;align-items:baseline"><b>${parse(k).getDate()}</b><span class="wb-mon">${fmtDate(k,{month:'short'}).replace('.','')}</span></span></div>
+          <button class="btn btn-icon btn-sm wb-add" data-act="day-add" data-v="${k}" aria-label="Aggiungi a ${fmtDate(k,{weekday:'long', day:'numeric'})}">${icon('plus')}</button></header>
+        ${sd.planned ? (() => { const st = sd.bl.filter(b => !isReview(b)), rv = sd.bl.filter(isReview), pg = a => sum(a.map(pagesOf)), dn = a => sum(a.filter(b => b.done).map(pagesOf));
+          return `<div class="wb-sum">${st.length ? `<span>${icon('book')} Studio ${dn(st)}/${pg(st)} pp.</span>` : ''}${rv.length ? `<span class="rev-c">${icon('refresh')} Ripasso ${dn(rv)}/${pg(rv)} pp.</span>` : ''}<div class="bar thin"><i style="width:${sd.pct*100}%"></i></div></div>`; })() : ''}
+        <div class="wb-items">${it.length ? it.map(wbItem).join('') : `<button class="wb-free" data-act="day-add" data-v="${k}">${icon('plus')} Libero</button>`}</div>
+      </section>`;
     }).join('')}</div>`;
-  } else {
-    const ws = weekStart(calCursor), days = range(ws, addDays(ws, 6));
-    grid = `<div class="week">${days.map(k => { const it = dayItems(k); return `<button class="wcol ${k===t?'today':''} ${k===calSel?'sel':''}" data-act="cal-day" data-v="${k}">
-      <div class="wd"><b>${parse(k).getDate()}</b><span>${fmtDate(k,{weekday:'short'}).replace('.','')}</span></div>
-      ${it.map(i => `<div class="witem ${i.kind==='exam'?'ex':''}" style="--c:${i.color};${i.done?'opacity:.55':''}"><b>${esc(i.title)}</b>${i.time ? i.time + ' · ' : ''}${esc(i.sub)}</div>`).join('') || '<span class="small muted">Libero</span>'}</button>`; }).join('')}</div>`;
+}
+function scrollWeekToToday(day){
+  const wb = $('#weekBoard'); if (!wb || wb.scrollWidth <= wb.clientWidth + 4) return;
+  const col = (day && $(`.wb-col[data-day="${day}"]`, wb)) || $('.wb-col.today', wb); if (col) wb.scrollLeft = Math.max(0, col.offsetLeft - 6);
+}
+function dayAddModal(k){
+  const t = todayKey();
+  openModal({eyebrow:'Aggiungi al calendario', title:cap(fmtDate(k,{weekday:'long', day:'numeric', month:'long'})), body:`<div class="choice">
+    <button class="choice-b" data-act="add-block" data-v="${k}"><span class="cat-ic" style="--c:#3b8a82">${icon('book')}</span><b>Pagine di studio</b><small>Assegna a questo giorno un blocco «da pagina a pagina» di un esame</small></button>
+    <button class="choice-b" data-act="add-event" data-v="${k}"><span class="cat-ic" style="--c:#c98a99">${icon('users')}</span><b>Attività personale</b><small>Uscita con le amiche, commissione, tirocinio… con l'orario</small></button>
+    ${k <= t ? `<button class="choice-b" data-act="add-fit" data-v="${k}"><span class="cat-ic" style="--c:#b5826f">${icon('dumbbell')}</span><b>Allenamento</b><small>Corsa o palestra con i gruppi muscolari allenati</small></button>` : ''}
+  </div>`});
+}
+function eventFormInline(date){
+  return `<form data-form="event" class="form-grid">
+    <div class="field full"><label for="ieT">Titolo</label><input class="input" id="ieT" name="title" required maxlength="80" placeholder="Es. Uscita con le amiche, Commissione…"></div>
+    <div class="field full"><label for="ieD">Giorno</label><input class="input" id="ieD" name="date" type="date" value="${date}" required></div>
+    <div class="field"><label for="ieS">Dalle</label><input class="input" id="ieS" name="time" type="time"></div>
+    <div class="field"><label for="ieE">Alle</label><input class="input" id="ieE" name="end" type="time"></div>
+    <div class="field full"><label for="ieC">Categoria</label><select class="input" id="ieC" name="cat">${Object.entries(EVENT_CATS).map(([k,c]) => `<option value="${k}">${c.label}</option>`).join('')}</select></div>
+    <div class="full"><button class="btn btn-ink" style="width:100%">${icon('plus')} Aggiungi in agenda</button></div>
+  </form>`;
+}
+function renderCalendar(){
+  const view = S.ui.calView || 'week', t = todayKey();
+  const seg = `<div class="seg" role="tablist" aria-label="Vista"><button role="tab" class="${view==='week'?'on':''}" data-act="cal-view" data-v="week">Settimana</button><button role="tab" class="${view==='month'?'on':''}" data-act="cal-view" data-v="month">Mese</button></div>`;
+  if (view === 'week'){
+    const defDay = weekStart(weekCursor) === weekStart(t) ? t : weekStart(weekCursor);
+    $('#view').innerHTML = `
+    <div class="cal-bar">${seg}<span class="small muted">Tutti gli impegni della settimana, giorno per giorno, senza dover selezionare nulla.</span><button class="btn btn-rose" data-act="day-add" data-v="${defDay}" style="margin-left:auto">${icon('plus')} Aggiungi</button></div>
+    <section class="card wb-card">${weekBoard({eyebrow:'Vista settimanale'})}</section>
+    <section class="grid g-2 mt-18" style="align-items:start">
+      <div class="card"><div class="card-head"><div><div class="eyebrow">Pianificatore esami</div><h3 class="card-title">Assegna pagine a un giorno</h3></div>${icon('layers')}</div>${blockFormInner({date: blockDraft.date && blockDraft.date >= t ? blockDraft.date : defDay})}</div>
+      <div class="card"><div class="card-head"><div><div class="eyebrow">Agenda personale</div><h3 class="card-title">Aggiungi un'attività</h3></div>${icon('users')}</div>${eventFormInline(defDay)}</div>
+    </section>`;
+    initBlockForms(); scrollWeekToToday();
+    return;
   }
-  const title = view === 'month' ? fmtDate(first,{month:'long', year:'numeric'}) : (() => { const ws = weekStart(calCursor); return `${fmtDate(ws,{day:'numeric', month:'short'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'short', year:'numeric'})}`; })();
+  const first = calCursor.slice(0,8) + '01', m = parse(first).getMonth(), start = weekStart(first), cells = [];
+  for (let i = 0; i < 42; i++){ const k = addDays(start, i); if (i >= 35 && parse(k).getMonth() !== m) break; cells.push(k); }
+  const grid = `<div class="cal">${['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map(d => `<div class="dow">${d}</div>`).join('')}${cells.map(k => {
+    const it = dayItems(k), show = it.slice(0,3);
+    return `<button class="cday ${parse(k).getMonth()!==m?'out':''} ${k===t?'today':''} ${k===calSel?'sel':''}" data-act="cal-day" data-v="${k}" aria-label="${fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}: ${plural(it.length,'elemento','elementi')}">
+      <span class="cday-n"><span>${parse(k).getDate()}</span></span>
+      ${show.map(i => `<span class="cchip ${i.kind==='exam'?'ex':''} ${i.rev?'rev':''} ${i.done?'done':''}" style="--c:${i.color}">${i.kind==='exam' ? 'ESAME' : i.kind==='study' ? esc(i.chip) : (i.time ? i.time + ' ' : '') + esc(i.title)}</span>`).join('')}
+      ${it.length > 3 ? `<span class="cmore">+${it.length-3}</span>` : ''}</button>`;
+  }).join('')}</div>`;
   const sd = studyDay(calSel);
   $('#view').innerHTML = `
   <div class="cal-bar">
-    <div class="daynav"><button class="btn btn-icon" data-act="cal-prev" aria-label="Precedente">${icon('left')}</button><h2 class="cal-title">${title}</h2><button class="btn btn-icon" data-act="cal-next" aria-label="Successivo">${icon('right')}</button></div>
+    <div class="daynav"><button class="btn btn-icon" data-act="cal-prev" aria-label="Mese precedente">${icon('left')}</button><h2 class="cal-title">${fmtDate(first,{month:'long', year:'numeric'})}</h2><button class="btn btn-icon" data-act="cal-next" aria-label="Mese successivo">${icon('right')}</button></div>
     <button class="btn btn-sm" data-act="cal-today">Oggi</button>
-    <div class="seg" style="margin-left:auto" role="tablist"><button class="${view==='month'?'on':''}" data-act="cal-view" data-v="month">Mese</button><button class="${view==='week'?'on':''}" data-act="cal-view" data-v="week">Settimana</button></div>
-    <button class="btn btn-rose" data-act="event-new" data-v="${calSel}">${icon('plus')} Attività</button>
+    <div style="margin-left:auto">${seg}</div>
+    <button class="btn btn-rose" data-act="day-add" data-v="${calSel}">${icon('plus')} Aggiungi</button>
   </div>
   <div class="cal-wrap">
     <div class="card" style="padding:14px" id="calGrid">${grid}</div>
     <aside class="card side-day">
-      <div class="eyebrow">${calSel === t ? 'Oggi' : relDays(diffDays(t, calSel)) === 'domani' ? 'Domani' : 'Giorno selezionato'}</div>
+      <div class="eyebrow">${calSel === t ? 'Oggi' : 'Giorno selezionato'}</div>
       <h3 class="card-title" style="text-transform:capitalize">${fmtDate(calSel,{weekday:'long', day:'numeric', month:'long'})}</h3>
       ${sd.bl.length ? `<div class="label mt-18" style="margin-bottom:8px">Studio programmato · ${sd.done}/${sd.planned} pp.</div>${sd.bl.map(b => blockRow(b)).join('')}` : ''}
       <div class="label mt-18">Agenda</div>
       ${timelineHTML(calSel, {withStudy:false, editable:true})}
-      <hr class="hair">
-      <form data-form="event" data-date="${calSel}" class="stack" style="gap:10px">
-        <div class="label">Aggiungi un'attività a questo giorno</div>
-        <input class="input" name="title" placeholder="Es. Uscita con le amiche, Commissione…" maxlength="80" required>
-        <div class="form-grid" style="gap:10px"><div class="field"><label>Dalle</label><input class="input" name="time" type="time"></div><div class="field"><label>Alle</label><input class="input" name="end" type="time"></div></div>
-        <select class="input" name="cat" aria-label="Categoria">${Object.entries(EVENT_CATS).map(([k,c]) => `<option value="${k}">${c.label}</option>`).join('')}</select>
-        <button class="btn btn-ink">${icon('plus')} Aggiungi in agenda</button>
-      </form>
-      <div class="row wrap mt-12" style="gap:8px"><button class="btn btn-sm btn-teal" data-act="cal-fit" data-v="${calSel}">${icon('heart')} Registra attività fisica</button><button class="btn btn-sm" data-act="cal-plan" data-v="${calSel}">${icon('book')} Pianifica studio</button></div>
+      <div class="row wrap mt-18" style="gap:8px"><button class="btn btn-sm btn-ink" data-act="day-add" data-v="${calSel}">${icon('plus')} Aggiungi a questo giorno</button><button class="btn btn-sm" data-act="cal-open-week" data-v="${calSel}">${icon('cal')} Vedi la settimana</button></div>
     </aside>
   </div>`;
 }
 let swipeX = null;
 document.addEventListener('touchstart', e => { if (route === 'calendario' && e.target.closest('#calGrid')) swipeX = e.touches[0].clientX; }, {passive:true});
 document.addEventListener('touchend', e => { if (swipeX === null) return; const dx = e.changedTouches[0].clientX - swipeX; swipeX = null; if (Math.abs(dx) > 60) shiftCal(dx < 0 ? 1 : -1); }, {passive:true});
-function shiftCal(dir){
-  if ((S.ui.calView || 'month') === 'month'){ const d = parse(calCursor.slice(0,8) + '01'); d.setMonth(d.getMonth() + dir); calCursor = ymd(d); }
-  else calCursor = addDays(calCursor, 7*dir);
-  renderCalendar();
-}
+function shiftCal(dir){ const d = parse(calCursor.slice(0,8) + '01'); d.setMonth(d.getMonth() + dir); calCursor = ymd(d); renderCalendar(); }
 function eventModal(ev, date){
   const isNew = !ev; ev = ev || {title:'', date: date || todayKey(), time:'', end:'', cat:'amiche', notes:''};
   openModal({eyebrow: isNew ? 'Nuova attività' : 'Modifica attività', title: isNew ? 'Aggiungi in agenda' : ev.title, body:`
@@ -1146,8 +1388,25 @@ function eventModal(ev, date){
 /* =========================================================
    BENESSERE
    ========================================================= */
+/* ---- Sala pesi: gruppi muscolari ---- */
+const MUSCLES = [
+  {id:'petto', name:'Petto', zone:'alta'}, {id:'dorsali', name:'Dorsali', zone:'alta'}, {id:'spalle', name:'Spalle', zone:'alta'}, {id:'trapezi', name:'Trapezi', zone:'alta'},
+  {id:'bicipiti', name:'Bicipiti', zone:'alta'}, {id:'tricipiti', name:'Tricipiti', zone:'alta'}, {id:'avambracci', name:'Avambracci', zone:'alta'},
+  {id:'quadricipiti', name:'Quadricipiti', zone:'bassa'}, {id:'femorali', name:'Femorali', zone:'bassa'}, {id:'glutei', name:'Glutei', zone:'bassa'},
+  {id:'polpacci', name:'Polpacci', zone:'bassa'}, {id:'adduttori', name:'Adduttori', zone:'bassa'},
+  {id:'addome', name:'Addome', zone:'core'}, {id:'obliqui', name:'Obliqui', zone:'core'}, {id:'lombari', name:'Lombari', zone:'core'},
+];
+const MUSCLE_ZONES = [['alta','Parte superiore'], ['bassa','Gambe & glutei'], ['core','Core']];
+const MUSCLE_PRESETS = [['Push', ['petto','spalle','tricipiti']], ['Pull', ['dorsali','bicipiti','trapezi']], ['Gambe', ['quadricipiti','femorali','glutei','polpacci']],
+  ['Braccia', ['bicipiti','tricipiti','avambracci']], ['Core', ['addome','obliqui','lombari']], ['Full body', ['petto','dorsali','spalle','quadricipiti','glutei','addome']]];
+const muscleName = id => (MUSCLES.find(m => m.id === id) || {name:id}).name;
+const musclesOf = k => (fitOf(k).gym.muscles || []);
+const musclesLabel = ids => ids.length <= 3 ? ids.map(muscleName).join(', ') : ids.slice(0,3).map(muscleName).join(', ') + ` +${ids.length - 3}`;
+function lastTrained(mid, from=todayKey()){ for (let i = 0; i < 180; i++){ const k = addDays(from, -i); if (gymOn(k) && musclesOf(k).includes(mid)) return k; } return null; }
+function touchGym(f){ if (!f.gym.done){ f.gym.done = true; if (!f.gym.type) f.gym.type = 'Pesi'; if (!f.gym.time && fitDay === todayKey()) f.gym.time = new Date().toTimeString().slice(0,5); } }
+
 function renderFitness(){
-  const k = fitDay, t = todayKey(), f = fitOf(k), km = +f.run.km || 0, ws = weekStart(k), week = range(ws, addDays(ws,6));
+  const k = fitDay, t = todayKey(), f = fitOf(k), km = +f.run.km || 0, ws = weekStart(k), week = range(ws, addDays(ws,6)), sel = f.gym.muscles || [];
   const m30 = range(addDays(t,-29), t), kmM = sum(m30.map(x => +fitOf(x).run.km || 0)), gymM = m30.filter(gymOn).length, runs5 = m30.filter(x => (+fitOf(x).run.km||0) >= RUN_GOAL).length;
   let streak = 0; for (let x = activeOn(t) ? t : addDays(t,-1); activeOn(x) && streak < 365; x = addDays(x,-1)) streak++;
   $('#view').innerHTML = `
@@ -1155,7 +1414,7 @@ function renderFitness(){
     <div class="daynav"><button class="btn btn-icon" data-act="fit-prev" aria-label="Giorno precedente">${icon('left')}</button><span class="d">${k === t ? 'Oggi' : fmtDate(k,{weekday:'long', day:'numeric', month:'long'})}</span><button class="btn btn-icon" data-act="fit-next" aria-label="Giorno successivo" ${k >= t ? 'disabled' : ''}>${icon('right')}</button></div>
     ${k !== t ? '<button class="btn btn-sm" data-act="fit-today">Torna a oggi</button>' : ''}
   </div>
-  <section class="grid g-2">
+  <section class="grid g-fit">
     <div class="card fit-card">
       <div class="card-head" style="margin-bottom:0"><div><div class="eyebrow">Cardio</div><h3 class="card-title">Corsa</h3></div><span class="pill ${km >= RUN_GOAL ? 'teal' : km ? 'amber' : ''}">${km >= RUN_GOAL ? 'Obiettivo raggiunto' : km ? 'In corso' : 'Obiettivo 5 km'}</span></div>
       <div class="fit-big" data-live="km">${N1.format(km)}<small>km</small></div>
@@ -1163,18 +1422,28 @@ function renderFitness(){
       <div class="stepper"><button class="btn btn-icon" data-act="run-step" data-v="-0.5" aria-label="Meno mezzo km">${icon('minus')}</button><div class="unit"><input class="input input-num" type="number" min="0" step="0.1" inputmode="decimal" data-field="run-km" value="${f.run.km ?? ''}" placeholder="0,0" aria-label="Chilometri"><span>km</span></div><button class="btn btn-icon" data-act="run-step" data-v="0.5" aria-label="Più mezzo km">${icon('plus')}</button></div>
       <div class="row wrap" style="gap:6px">${[3,5,7,10].map(n => `<button class="btn btn-sm" data-act="run-set" data-v="${n}">${n} km</button>`).join('')}</div>
       <div class="field"><label for="runT">Orario della corsa</label><input class="input" id="runT" type="time" data-field="run-time" value="${f.run.time||''}"></div>
+      <div class="sync-note">${icon('cal')} Corsa e palestra compaiono in automatico nel calendario, all'orario indicato.</div>
     </div>
     <div class="card fit-card">
-      <div class="card-head" style="margin-bottom:0"><div><div class="eyebrow">Forza</div><h3 class="card-title">Palestra</h3></div><span class="pill ${f.gym.done ? 'teal' : ''}">${f.gym.done ? 'Fatta' : 'Da fare'}</span></div>
-      <button class="toggle ${f.gym.done?'on':''}" data-act="gym-toggle" aria-pressed="${!!f.gym.done}"><span class="sw"></span><span><b>${f.gym.done ? 'Allenamento completato' : 'Sono andata in palestra'}</b><small>${f.gym.done ? 'Ottimo: corpo allenato, mente più lucida.' : 'Tocca per registrare l\'allenamento'}</small></span></button>
+      <div class="card-head" style="margin-bottom:0"><div><div class="eyebrow">Forza</div><h3 class="card-title">Palestra</h3></div><span class="pill ${f.gym.done ? 'teal' : ''}">${f.gym.done ? (sel.length ? plural(sel.length,'gruppo','gruppi') + ' allenati' : 'Fatta') : 'Da fare'}</span></div>
+      <button class="toggle ${f.gym.done?'on':''}" data-act="gym-toggle" aria-pressed="${!!f.gym.done}"><span class="sw"></span><span><b>${f.gym.done ? 'Allenamento completato' : 'Sono andata in palestra'}</b><small>${f.gym.done ? (sel.length ? musclesLabel(sel) : 'Seleziona qui sotto i gruppi muscolari allenati') : 'Tocca per registrare, oppure scegli subito i muscoli'}</small></span></button>
       <div class="form-grid"><div class="field"><label for="gymT">Orario</label><input class="input" id="gymT" type="time" data-field="gym-time" value="${f.gym.time||''}"></div>
         <div class="field"><label for="gymY">Tipo</label><select class="input" id="gymY" data-field="gym-type">${['','Pesi','Pilates','Yoga','Funzionale','Corsi','Cardio'].map(x => `<option value="${x}" ${x===f.gym.type?'selected':''}>${x || 'Non specificato'}</option>`).join('')}</select></div></div>
-      <div class="sync-note">${icon('cal')} Corsa e palestra compaiono in automatico nel calendario, all'orario indicato.</div>
+      <div class="weights">
+        <div class="row between wrap" style="gap:8px"><div><div class="eyebrow">Sala pesi</div><b class="weights-t">Gruppi muscolari allenati</b></div>${sel.length ? `<button class="btn btn-sm btn-ghost" data-act="mus-clear">${icon('x')} Azzera</button>` : ''}</div>
+        <div class="presets"><span class="small muted">Schede rapide</span>${MUSCLE_PRESETS.map((p, i) => `<button class="btn btn-sm ${p[1].every(m => sel.includes(m)) ? 'btn-teal' : ''}" data-act="mus-preset" data-v="${i}">${p[0]}</button>`).join('')}</div>
+        ${MUSCLE_ZONES.map(([z, label]) => `<div class="mzone"><span class="mzone-l">${label}</span><div class="mchips">${MUSCLES.filter(m => m.zone === z).map(m => { const on = sel.includes(m.id); return `<button class="mchip ${on?'on':''}" data-act="mus-toggle" data-v="${m.id}" aria-pressed="${on}">${on ? icon('check') : ''}${m.name}</button>`; }).join('')}</div></div>`).join('')}
+      </div>
     </div>
   </section>
   <section class="card mt-18">
+    <div class="card-head"><div><div class="eyebrow">Recupero muscolare</div><h3 class="card-title">Mappa della tua scheda</h3></div><div class="row wrap small muted" style="gap:12px"><span class="row" style="gap:6px"><i class="lg rec"></i>In recupero</span><span class="row" style="gap:6px"><i class="lg ready"></i>Pronto</span><span class="row" style="gap:6px"><i class="lg due"></i>Da allenare</span></div></div>
+    <div class="musmap">${MUSCLES.map(m => { const last = lastTrained(m.id, k > t ? t : k), n = last ? diffDays(last, k > t ? t : k) : null, cls = n === null ? 'due' : n <= 1 ? 'rec' : n <= 5 ? 'ready' : 'due';
+      return `<div class="mm ${cls}"><b>${m.name}</b><small>${n === null ? 'Mai registrato' : n === 0 ? 'Allenato oggi' : n === 1 ? 'Ieri' : `${n} giorni fa`}</small></div>`; }).join('')}</div>
+  </section>
+  <section class="card mt-18">
     <div class="card-head"><div><div class="eyebrow">Settimana</div><h3 class="card-title">${fmtDate(ws,{day:'numeric', month:'short'})} – ${fmtDate(addDays(ws,6),{day:'numeric', month:'short'})}</h3></div><div class="row" style="gap:6px"><button class="btn btn-icon btn-sm" data-act="fit-week" data-v="-7" aria-label="Settimana precedente">${icon('left')}</button><button class="btn btn-icon btn-sm" data-act="fit-week" data-v="7" aria-label="Settimana successiva" ${addDays(ws,7) > t ? 'disabled' : ''}>${icon('right')}</button></div></div>
-    <div class="wk">${week.map(x => { const ff = fitOf(x); return `<button class="wk-d ${activeOn(x)?'on':''} ${x===k?'sel':''}" data-act="fit-day" data-v="${x}" ${x > t ? 'disabled style="opacity:.4"' : ''}><span>${DOWS[dow(x)]}</span><b>${parse(x).getDate()}</b><span class="wk-ics">${ranOn(x) ? `<span class="teal">${icon('route')}</span>` : ''}${gymOn(x) ? `<span class="rose">${icon('dumbbell')}</span>` : ''}</span><small>${ranOn(x) ? N1.format(+ff.run.km) + ' km' : gymOn(x) ? 'Palestra' : '—'}</small></button>`; }).join('')}</div>
+    <div class="wk">${week.map(x => { const ff = fitOf(x), ms = musclesOf(x); return `<button class="wk-d ${activeOn(x)?'on':''} ${x===k?'sel':''}" data-act="fit-day" data-v="${x}" ${x > t ? 'disabled style="opacity:.4"' : ''}><span>${DOWS[dow(x)]}</span><b>${parse(x).getDate()}</b><span class="wk-ics">${ranOn(x) ? `<span class="teal">${icon('route')}</span>` : ''}${gymOn(x) ? `<span class="rose">${icon('dumbbell')}</span>` : ''}</span><small>${ranOn(x) ? N1.format(+ff.run.km) + ' km' : ''}${ranOn(x) && gymOn(x) ? ' · ' : ''}${gymOn(x) ? (ms.length ? esc(ms.slice(0,2).map(muscleName).join(', ')) + (ms.length > 2 ? '…' : '') : 'Palestra') : ''}${!activeOn(x) ? '—' : ''}</small></button>`; }).join('')}</div>
   </section>
   <section class="kpis mt-18">
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Km · 30 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(kmM)}<small>km</small></div><div class="kpi-sub">${plural(runs5,'corsa','corse')} da 5 km o più</div></div>
@@ -1202,7 +1471,9 @@ function periodData(a, b){
   let maxRun = 0, run = 0; pages.forEach(p => { if (p > 0){ run++; maxRun = Math.max(maxRun, run); } else run = 0; });
   const revDue = sum(keys.map(k => reviewsFor(k).length)), revDone = sum(keys.map(k => reviewsFor(k).filter(r => reviewDone(k, r.key)).length));
   return {keys, pages:sum(pages), studyDays, avgDay: studyDays ? sum(pages)/studyDays : 0, heavy: pages.filter(p => p > 70).length, maxRun, revDue, revDone,
-    km: sum(keys.map(k => +fitOf(k).run.km || 0)), runs: keys.filter(ranOn).length, gym: keys.filter(gymOn).length, active: keys.filter(activeOn).length};
+    revPages: sum(keys.map(reviewPagesOn)),
+    km: sum(keys.map(k => +fitOf(k).run.km || 0)), runs: keys.filter(ranOn).length, gym: keys.filter(gymOn).length, active: keys.filter(activeOn).length,
+    muscles: Object.entries(keys.filter(gymOn).flatMap(musclesOf).reduce((o, m) => (o[m] = (o[m] || 0) + 1, o), {})).sort((a,b) => b[1] - a[1])};
 }
 function renderStats(){
   const days = S.ui.statsDays || 30, t = todayKey(), a = addDays(t, -(days-1)), M = periodData(a, t), P = periodData(addDays(a, -days), addDays(a, -1));
@@ -1212,24 +1483,26 @@ function renderStats(){
   <div class="row between wrap" style="gap:12px"><div><div class="eyebrow">Periodo di analisi</div><div class="small muted" style="margin-top:4px">Dal ${fmtDate(a,{day:'numeric', month:'long'})} a oggi</div></div>
     <div class="seg">${[[7,'Settimana'],[30,'Mese'],[90,'3 mesi']].map(([v,l]) => `<button class="${days===v?'on':''}" data-act="stats-days" data-v="${v}">${l}</button>`).join('')}</div></div>
   <section class="kpis mt-18">
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pagine studiate</span>${icon('book')}</div><div class="kpi-val">${M.pages}</div><div class="kpi-sub">${dl(M.pages, P.pages)} vs periodo precedente</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pagine studiate</span>${icon('book')}</div><div class="kpi-val">${M.pages}</div><div class="kpi-sub">${dl(M.pages, P.pages)} vs periodo prec. · <span style="color:var(--rev);font-weight:700">${M.revPages} ripassate</span></div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Media per giorno di studio</span>${icon('layers')}</div><div class="kpi-val">${Math.round(M.avgDay)}<small>pp.</small></div><div class="kpi-sub">${M.studyDays} giorni di studio su ${days}</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Ripassi dilazionati</span>${icon('refresh')}</div><div class="kpi-val">${M.revDone}<small>/ ${M.revDue}</small></div><div class="kpi-sub">${M.revDue ? Math.round(M.revDone/M.revDue*100) + '% completati' : 'Nessun ripasso dovuto'}</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Attività fisica</span>${icon('heart')}</div><div class="kpi-val">${N1.format(M.km)}<small>km</small></div><div class="kpi-sub">${plural(M.gym,'sessione','sessioni')} di palestra · ${M.active} giorni attivi</div></div>
   </section>
-  <section class="card mt-18"><div class="card-head"><div><div class="eyebrow">Trend · ${lbl}</div><h3 class="card-title">Pagine studiate per esame</h3></div><span class="pill">${days <= 31 ? 'giornaliero' : 'settimanale'}</span></div><div class="chart-box"><canvas id="cPages"></canvas></div></section>
+  <section class="card mt-18"><div class="card-head"><div><div class="eyebrow">Trend · ${lbl}</div><h3 class="card-title">Pagine studiate e ripassate</h3></div><span class="pill">${days <= 31 ? 'giornaliero' : 'settimanale'}</span></div><div class="chart-box"><canvas id="cPages"></canvas></div></section>
   <section class="grid g-2 mt-18">
     <div class="card"><div class="card-head"><div><div class="eyebrow">Avanzamento</div><h3 class="card-title">Stato degli esami</h3></div></div>
-      ${ex.length ? ex.map(e => { const st = examStats(e); const chip = st.status === 'done' ? '<span class="pill teal">Completato</span>' : st.status === 'ok' ? '<span class="pill teal">In linea</span>' : st.status === 'late' ? '<span class="pill ruby">In ritardo</span>' : st.status === 'idle' ? '<span class="pill amber">Da avviare</span>' : cdPill(e); return `<div class="prog"><b><span class="exdot" style="--c:${e.color}"></span>${esc(e.name)}</b>${chip}<div class="bar"><i style="width:${st.pct*100}%;background:${e.color}"></i></div><small>${st.done}/${st.total} pagine (${Math.round(st.pct*100)}%)${st.daysLeft !== null && st.daysLeft >= 0 ? ` · ${plural(st.daysLeft,'giorno','giorni')} all'appello · servono ${st.pace} pp./giorno, ritmo attuale ${N1.format(st.last7)}` : ''}</small></div>`; }).join('') : '<div class="empty"><div class="serif">Nessun esame attivo</div>Aggiungili nella sezione Studio.</div>'}
+      ${ex.length ? ex.map(e => { const st = examStats(e); const chip = st.status === 'done' ? '<span class="pill teal">Completato</span>' : st.status === 'ok' ? '<span class="pill teal">In linea</span>' : st.status === 'late' ? '<span class="pill ruby">In ritardo</span>' : st.status === 'idle' ? '<span class="pill amber">Da avviare</span>' : cdPill(e); return `<div class="prog"><b><span class="exdot" style="--c:${e.color}"></span>${esc(e.name)}</b>${chip}<div class="bar"><i style="width:${st.pct*100}%;background:${e.color}"></i></div><small>${st.done}/${st.total} pagine (${Math.round(st.pct*100)}%)${st.daysLeft !== null && st.daysLeft >= 0 ? ` · ${plural(st.daysLeft,'giorno','giorni')} all'appello · servono ${st.pace} pp./giorno, ritmo attuale ${N1.format(st.last7)}` : ''}${reviewRounds(e).map(x => ` · <span style="color:var(--rev);font-weight:700">↻ ${x.r}° giro ${x.tot ? Math.round(x.done/x.tot*100) : 0}%</span>`).join('')}</small></div>`; }).join('') : '<div class="empty"><div class="serif">Nessun esame attivo</div>Aggiungili nella sezione Studio.</div>'}
     </div>
-    <div class="card"><div class="card-head"><div><div class="eyebrow">Benessere · ${lbl}</div><h3 class="card-title">Attività fisica</h3></div></div><div class="chart-box"><canvas id="cFit"></canvas></div></div>
+    <div class="card"><div class="card-head"><div><div class="eyebrow">Benessere · ${lbl}</div><h3 class="card-title">Attività fisica</h3></div></div><div class="chart-box"><canvas id="cFit"></canvas></div>
+      ${M.muscles.length ? `<hr class="hair"><div class="label" style="margin-bottom:10px">Gruppi muscolari allenati</div><div class="mfreq">${M.muscles.map(([m, n]) => `<div class="mf"><span>${muscleName(m)}</span><div class="bar rose"><i style="width:${n / M.muscles[0][1] * 100}%"></i></div><b>${n}</b></div>`).join('')}</div>` : ''}</div>
   </section>
   <section class="card mt-18 report"><div class="card-head"><div><div class="eyebrow">Resoconto intelligente</div><h3 class="card-title">Analisi della preparazione</h3></div>${icon('steth')}</div>${reportHTML(M, P, days, ex)}</section>`;
 
   chartDefaults();
   const B = buckets(days), L = B.map(b => b.label);
-  const involved = S.exams.filter(e => S.plan.some(b => b.done && b.examId === e.id && b.doneAt >= a));
-  const ds = involved.map(e => ({label:e.name, data:B.map(bk => sum(S.plan.filter(b => b.done && b.examId === e.id && bk.keys.includes(b.doneAt)).map(pagesOf))), backgroundColor:e.color, borderRadius:5, maxBarThickness:26, stack:'p'}));
+  const involved = S.exams.filter(e => S.plan.some(b => b.done && !isReview(b) && b.examId === e.id && b.doneAt >= a));
+  const ds = involved.map(e => ({label:e.name, data:B.map(bk => sum(S.plan.filter(b => b.done && !isReview(b) && b.examId === e.id && bk.keys.includes(b.doneAt)).map(pagesOf))), backgroundColor:e.color, borderRadius:5, maxBarThickness:26, stack:'p'}));
+  if (M.revPages) ds.push({label:'Ripasso (tutti gli esami)', data:B.map(bk => sum(bk.keys.map(reviewPagesOn))), backgroundColor:'rgba(138,106,174,.55)', borderColor:'#8a6aae', borderWidth:1, borderRadius:5, maxBarThickness:26, stack:'p'});
   if (!ds.length) $('#cPages').parentElement.insertAdjacentHTML('beforeend','<div class="chart-empty">Spunta le pagine studiate nel pianificatore: qui vedrai il tuo trend.</div>');
   mkChart('cPages', {type:'bar', data:{labels:L, datasets:ds.length ? ds : [{data:L.map(() => 0)}]}, options:{plugins:{legend:{display:ds.length > 0}, tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${c.raw} pagine`}}}, scales:{x:{...scales().x, stacked:true}, y:{...scales({ticks:{maxTicksLimit:5, padding:8, callback:v => v + ' pp.'}}).y, stacked:true}}, interaction:{mode:'index', intersect:false}}});
   const kmD = B.map(bk => +sum(bk.keys.map(k => +fitOf(k).run.km || 0)).toFixed(1)), gymD = B.map(bk => bk.keys.filter(gymOn).length);
@@ -1237,6 +1510,11 @@ function renderStats(){
     {label:'Km di corsa', data:kmD, backgroundColor:'rgba(59,138,130,.78)', borderRadius:5, maxBarThickness:22, yAxisID:'y'},
     {type:'line', label:'Palestra', data:gymD, borderColor:'#b5826f', backgroundColor:'#b5826f', pointRadius:gymD.map(v => v ? 5 : 0), pointStyle:'rectRounded', showLine:false, yAxisID:'y1'}]},
     options:{scales:{x:scales().x, y:{...scales({ticks:{maxTicksLimit:5, padding:8, callback:v => v + ' km'}}).y}, y1:{display:false, beginAtZero:true, suggestedMax: days <= 31 ? 1.4 : 8}}, plugins:{tooltip:{callbacks:{label:c => c.dataset.yAxisID === 'y1' ? ` Palestra: ${plural(c.raw,'sessione','sessioni')}` : ` ${c.raw} km`}}}, interaction:{mode:'index', intersect:false}}});
+}
+function muscleSentence(M){
+  if (!M.muscles.length) return '';
+  const majors = ['petto','dorsali','spalle','quadricipiti','glutei','addome'], seen = M.muscles.map(x => x[0]), miss = M.gym >= 3 ? majors.filter(m => !seen.includes(m)) : [];
+  return ` In sala pesi hai allenato soprattutto ${listJoin(M.muscles.slice(0,3).map(([m, n]) => `${muscleName(m)} (${n})`))}${miss.length ? `; per una scheda equilibrata non trascurare ${listJoin(miss.map(muscleName))}` : ''}.`;
 }
 function reportHTML(M, P, days, ex){
   if (!S.exams.length && !M.pages && !M.active) return `<p>Non ci sono ancora dati da analizzare. Inserisci gli esami e spunta le pagine studiate: qui troverai un'analisi della preparazione con consigli personalizzati.</p>`;
@@ -1248,12 +1526,15 @@ function reportHTML(M, P, days, ex){
   ok.forEach(({e, st}) => p.push(`<strong>${esc(e.name)}</strong>: sei in linea. Al ritmo di ${N1.format(st.last7)} pagine al giorno finirai il ${fmtDate(st.finish,{day:'numeric', month:'long'})}, lasciando spazio al ripasso prima dell'appello del ${fmtDate(e.date,{day:'numeric', month:'long'})}.`));
   late.forEach(({e, st}) => p.push(`<strong>${esc(e.name)}</strong>: restano ${st.remaining} pagine in ${plural(st.daysLeft,'giorno','giorni')}. Servono circa <strong>${st.pace} pagine al giorno</strong>${st.last7 ? `, contro le ${N1.format(st.last7)} attuali` : ' e negli ultimi 7 giorni non hai registrato pagine'}. ${st.pace > 70 ? 'Il carico è alto: dai priorità agli argomenti più chiesti all\'appello e valuta la data successiva se serve.' : 'È recuperabile: usa «Distribuisci fino all\'esame» e proteggi i blocchi in agenda.'}`));
   if (late.length) plan.push(['Riallinea il piano', `Ridistribuisci ${listJoin(late.map(x => x.e.name))} con la pianificazione automatica: un numero di pagine al giorno chiaro toglie ansia e indecisione.`]);
+  const revLines = ex.map(e => ({e, rr:reviewRounds(e), st:examStats(e)})).filter(x => x.rr.length || (x.st.remaining === 0 && x.st.total));
+  if (M.revPages || revLines.length) p.push(`<strong>Ripassi:</strong> ${M.revPages ? `nel periodo hai consolidato <strong>${M.revPages} pagine</strong> in sessioni di ripasso. ` : ''}${revLines.map(x => x.rr.length ? `${esc(x.e.name)}: ${x.rr.map(r => `${r.r}° giro ${r.tot ? Math.round(r.done/r.tot*100) : 0}%`).join(', ')}` : `${esc(x.e.name)}: primo giro completato, nessun ripasso ancora pianificato`).join('; ')}.`);
+  if (revLines.some(x => !x.rr.length)) plan.push(['Pianifica il 1° giro di ripasso', 'Nel pianificatore scegli «Ripasso · 1° giro» e assegna i blocchi ai giorni che mancano all\'appello: rileggere attivamente vale più di una seconda lettura passiva.']);
   if (M.revDue) p.push(`Hai completato <strong>${M.revDone} ripassi dilazionati su ${M.revDue}</strong>. ${M.revDone / M.revDue >= .7 ? 'Ottimo: è così che le nozioni passano nella memoria a lungo termine.' : 'Sono il punto più importante per non dimenticare ciò che studi: dedica loro i primi 20 minuti di ogni sessione.'}`);
   if (M.revDue && M.revDone / M.revDue < .7) plan.push(['Ripassi per primi', 'Apri ogni sessione con i ripassi del giorno (1-3-7-14-30 giorni): 15 minuti di recupero attivo valgono più di un capitolo riletto.']);
   const burn = M.maxRun >= 10 || M.heavy >= Math.max(2, days/10);
   p.push(`${M.maxRun >= 10 ? `Hai studiato ${M.maxRun} giorni di fila senza pause: ` : ''}${M.heavy ? `${plural(M.heavy,'giornata ha superato','giornate hanno superato')} le 70 pagine. ` : ''}${burn ? 'Attenzione al rischio burnout: inserisci mezza giornata di stacco ogni settimana e sessioni da 50 minuti con pause reali.' : 'Il carico è sostenibile: continua ad alternare studio intenso e recupero.'}`);
   if (burn) plan.push(['Recupero programmato', 'Segna in calendario mezza giornata libera a settimana (amiche, passeggiata, palestra): il cervello consolida anche quando ti fermi.']);
-  p.push(`<strong>Benessere:</strong> ${N1.format(M.km)} km di corsa in ${plural(M.runs,'uscita','uscite')} e ${plural(M.gym,'sessione','sessioni')} di palestra, ${M.active} giorni attivi su ${days}. ${M.active / days >= .35 ? 'Ottimo equilibrio tra corpo e studio.' : 'Aggiungere 2-3 sessioni di movimento a settimana aiuta sonno, umore e concentrazione.'}`);
+  p.push(`<strong>Benessere:</strong> ${N1.format(M.km)} km di corsa in ${plural(M.runs,'uscita','uscite')} e ${plural(M.gym,'sessione','sessioni')} di palestra, ${M.active} giorni attivi su ${days}. ${M.active / days >= .35 ? 'Ottimo equilibrio tra corpo e studio.' : 'Aggiungere 2-3 sessioni di movimento a settimana aiuta sonno, umore e concentrazione.'}${muscleSentence(M)}`);
   if (M.active / days < .35) plan.push(['Muoviti 3 volte', 'Pianifica tre attività fisiche a settimana negli orari di calo (primo pomeriggio): l\'app le metterà in agenda con l\'orario.']);
   const defaults = [['Active recall', 'Chiudi ogni blocco di pagine con 5 minuti di recupero a memoria: è il metodo più efficace per gli orali.'], ['Simula l\'esame', 'Una volta a settimana ripeti ad alta voce un argomento come all\'orale, cronometrandoti.'], ['Sonno da 7-8 ore', 'Il sonno è parte della preparazione: consolida ciò che hai studiato e mantiene lucida la memoria.']];
   while (plan.length < 3) plan.push(defaults[plan.length]);
@@ -1316,7 +1597,7 @@ function toggleBlock(id){
   const b = S.plan.find(x => x.id === id); if (!b) return;
   b.done = !b.done; b.doneAt = b.done ? (b.date <= todayKey() ? b.date : todayKey()) : null;
   save();
-  if (b.done){ const e = examById(b.examId), st = examStats(e); toast(`${pagesOf(b)} pagine scalate da ${esc(e.name)} · ne restano ${st.remaining}.`, {tone:'ok', icon:'check'}); }
+  if (b.done){ const e = examById(b.examId), st = examStats(e); if (isReview(b)) toast(`Ripasso ${roundOf(b)}° giro di ${esc(e.name)}: ${pagesOf(b)} pagine consolidate (${roundCoverage(e, roundOf(b), true)}/${st.total}).`, {tone:'ok', icon:'refresh'}); else toast(`${pagesOf(b)} pagine scalate da ${esc(e.name)} · ne restano ${st.remaining}.`, {tone:'ok', icon:'check'}); }
   const sd = studyDay(todayKey()); if (b.done && b.date === todayKey() && sd.planned && sd.done >= sd.planned) setTimeout(() => toast('Programma di oggi completato. Brava, dottoressa!', {tone:'ok', icon:'cap'}), 600);
   rerender();
 }
@@ -1330,7 +1611,7 @@ document.addEventListener('click', e => {
     case 'install-dismiss': S.ui.installDismissed = true; save(); rerender(); break;
     // Home
     case 'hcal-prev': case 'hcal-next': { const d = parse(homeCursor.slice(0,8) + '01'); d.setMonth(d.getMonth() + (act === 'hcal-next' ? 1 : -1)); homeCursor = ymd(d); rerender(); break; }
-    case 'hcal-day': homeDay = v; rerender(); break;
+    case 'hcal-day': homeDay = v; weekCursor = v; rerender(); setTimeout(() => $('.wb-card')?.scrollIntoView({behavior:'smooth', block:'start'}), 40); break;
     case 'open-cal': calSel = v; calCursor = v; break;
     case 'rev-toggle': { const arr = (S.reviews[t] ||= []), i = arr.indexOf(v); i >= 0 ? arr.splice(i,1) : arr.push(v); save(); if (i < 0) toast('Ripasso completato: memoria consolidata.', {tone:'ok', icon:'refresh'}); rerender(); break; }
     // Esami
@@ -1340,11 +1621,26 @@ document.addEventListener('click', e => {
     case 'exam-auto': autoPlanModal(examById(id)); break;
     case 'src-add-row': { const box = $('#srcRows'); box.insertAdjacentHTML('beforeend', $('#modalBody')._srcRow({id:uid(), type:'Sbobine', label:'', pages:''})); box.lastElementChild.querySelector('[name="pages"]').focus(); break; }
     case 'src-del-row': { const rows = $$('#srcRows .src-row'); if (rows.length > 1) el.closest('.src-row').remove(); else toast('Serve almeno una fonte.'); break; }
-    case 'block-new': planDay = t; location.hash === '#studio' ? renderStudio(v) : (location.hash = '#studio'); setTimeout(() => { if ($('#bExam')){ $('#bExam').value = v; $('#bSrc').innerHTML = examById(v).sources.map(s => `<option value="${s.id}">${esc(srcName(s))} · ${s.pages} pp.</option>`).join(''); fillBlockForm(); $('#blockCard').scrollIntoView({behavior:'smooth', block:'center'}); } }, 80); break;
+    case 'review-new': { const ex = examById(v); blockDraft = {...blockDraft, examId:v, sourceId:null, kind:'review', round:suggestRound(ex), lastTo:null, size:null}; blockModal(planDay >= t ? planDay : t, v); break; }
+    case 'b-kind': { const f = el.closest('form'); f.kind.value = v; $$('[data-act="b-kind"]', f).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.classList.toggle('rev', on && v === 'review'); x.setAttribute('aria-checked', String(on)); }); $('.rounds-f', f).hidden = v !== 'review'; if (v === 'review'){ const r = suggestRound(examById(f.examId.value)); f.round.value = r; $$('.rchip', f).forEach(x => x.classList.toggle('on', +x.dataset.v === r)); } blockDraft.kind = v; blockDraft.lastTo = null; fillBlockForm(f); break; }
+    case 'b-round': { const f = el.closest('form'); f.round.value = v; $$('.rchip', f).forEach(x => { const on = x.dataset.v === v; x.classList.toggle('on', on); x.setAttribute('aria-checked', String(on)); }); blockDraft.round = +v; blockDraft.lastTo = null; fillBlockForm(f); break; }
+    case 'block-new': blockDraft = {...blockDraft, kind:'study', lastTo: blockDraft.examId === v ? blockDraft.lastTo : null}; blockModal(blockDraft.examId === v && blockDraft.date && blockDraft.date >= t ? blockDraft.date : (planDay >= t ? planDay : t), v); break;
+    case 'b-day': setBlockDay(el.closest('form'), v); break;
+    case 'day-add': dayAddModal(v); break;
+    case 'add-block': blockModal(v); break;
+    case 'add-event': eventModal(null, v); break;
+    case 'add-fit': case 'fit-open': closeModal(); fitDay = v > t ? t : v; if (route === 'benessere') rerender(); else location.hash = '#benessere'; break;
+    case 'wk-prev': weekCursor = addDays(weekCursor, -7); rerender(); break;
+    case 'wk-next': weekCursor = addDays(weekCursor, 7); rerender(); break;
+    case 'wk-today': weekCursor = t; rerender(); break;
+    case 'cal-open-week': weekCursor = v; S.ui.calView = 'week'; save(); renderCalendar(); break;
+    case 'mus-toggle': { const f = fitW(fitDay), ms = (f.gym.muscles ||= []), i = ms.indexOf(v); i >= 0 ? ms.splice(i,1) : ms.push(v); if (ms.length) touchGym(f); save(); rerender(); break; }
+    case 'mus-preset': { const f = fitW(fitDay), ms = (f.gym.muscles ||= []), pr = MUSCLE_PRESETS[+v]; pr[1].forEach(m => { if (!ms.includes(m)) ms.push(m); }); touchGym(f); save(); toast(`Scheda ${pr[0]}: ${pr[1].map(muscleName).join(', ')}.`, {tone:'ok', icon:'dumbbell'}); rerender(); break; }
+    case 'mus-clear': { fitW(fitDay).gym.muscles = []; save(); rerender(); break; }
     // Pianificatore
-    case 'plan-prev': planDay = addDays(planDay, -1); rerender(); break;
-    case 'plan-next': planDay = addDays(planDay, 1); rerender(); break;
-    case 'plan-today': planDay = t; rerender(); break;
+    case 'plan-prev': planDay = addDays(planDay, -1); blockDraft.date = planDay; rerender(); break;
+    case 'plan-next': planDay = addDays(planDay, 1); blockDraft.date = planDay; rerender(); break;
+    case 'plan-today': planDay = t; blockDraft.date = t; rerender(); break;
     case 'blk-toggle': toggleBlock(id); break;
     case 'blk-del': S.plan = S.plan.filter(b => b.id !== id); save(); rerender(); break;
     case 'blk-move': { const b = S.plan.find(x => x.id === id); if (b){ b.date = t; save(); rerender(); } break; }
@@ -1378,8 +1674,9 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('change', e => {
   const el = e.target;
-  if (el.matches('[data-act="b-exam"]')){ const ex = examById(el.value); $('#bSrc').innerHTML = ex.sources.map(s => `<option value="${s.id}">${esc(srcName(s))} · ${s.pages} pp.</option>`).join(''); fillBlockForm(); }
-  else if (el.matches('[data-act="b-src"]')) fillBlockForm();
+  if (el.matches('[data-act="b-exam"]')){ const ex = examById(el.value), f = el.form; f.sourceId.innerHTML = srcOptions(ex); blockDraft.size = null; blockDraft.lastTo = null; if (f.kind.value === 'review'){ const r = suggestRound(ex); f.round.value = r; $$('.rchip', f).forEach(x => x.classList.toggle('on', +x.dataset.v === r)); } fillBlockForm(f); }
+  else if (el.matches('[data-act="b-src"]')) fillBlockForm(el.form);
+  else if (el.matches('[data-act="b-date"]')) setBlockDay(el.form, el.value);
   else if (el.closest('form[data-form="autoplan"]')) updateAutoPreview();
   else if (el.matches('[data-field="gym-type"]')){ fitW(fitDay).gym.type = el.value; save(); }
   else if (el.matches('[data-act="import"]')){
@@ -1411,17 +1708,25 @@ document.addEventListener('submit', e => {
       save(); closeModal(); rerender(); break;
     }
     case 'block': {
-      const ex = examById(fd.examId), s = srcById(ex, fd.sourceId), from = Math.round(+fd.from), to = Math.round(+fd.to);
+      const ex = examById(fd.examId), s = srcById(ex, fd.sourceId), from = Math.round(+fd.from), to = Math.round(+fd.to), date = fd.date || t;
       if (!ex || !s) return; if (!(from >= 1) || !(to >= from)) return toast('Controlla l\'intervallo di pagine.');
-      if (to > s.pages) return toast(`«${srcName(s)}» ha ${s.pages} pagine.`);
-      const done = !!fd.done;
-      S.plan.push({id:uid(), date:planDay, examId:ex.id, sourceId:s.id, from, to, time:fd.time || '', done, doneAt: done ? (planDay <= t ? planDay : t) : null});
-      save(); toast(done ? `${to-from+1} pagine segnate come studiate.` : `${to-from+1} pagine aggiunte al piano.`, {tone:'ok', icon:'book'}); renderStudio(ex.id); break;
+      if (to > s.pages) return toast(`«${esc(srcName(s))}» ha ${s.pages} pagine.`);
+      const kind = fd.kind === 'review' ? 'review' : 'study', round = kind === 'review' ? clamp(+fd.round || 1, 1, 9) : null, topic = (fd.topic || '').trim();
+      const overlap = S.plan.some(b => b.examId === ex.id && b.sourceId === s.id && (kind === 'review' ? isReview(b) && roundOf(b) === round : !isReview(b)) && b.from <= to && b.to >= from);
+      const done = !!fd.done, blk = {id:uid(), date, examId:ex.id, sourceId:s.id, from, to, time:fd.time || '', done, doneAt: done ? (date <= t ? date : t) : null, ...(kind === 'review' ? {kind, round} : {kind:'study'}), ...(topic ? {topic} : {})};
+      S.plan.push(blk); save();
+      blockDraft = {examId:ex.id, sourceId:s.id, date:addDays(date, 1), size:to - from + 1, lastTo:to, kind, round};
+      weekCursor = date;
+      const when = date === t ? 'per oggi' : date === addDays(t,1) ? 'per domani' : 'a ' + fmtDate(date,{weekday:'long', day:'numeric', month:'long'});
+      toast(`${kind === 'review' ? `Ripasso ${round}° giro · ` : ''}pp. ${from}–${to} di ${esc(ex.name)} ${done ? (kind === 'review' ? 'segnate come ripassate' : 'segnate come studiate') : 'assegnate ' + when}.${overlap ? ' Nota: alcune pagine erano già in programma.' : ''}`, {tone:'ok', icon:'cal'});
+      if (form.dataset.ctx === 'modal'){ justAdded.push(blk.id); rerender(); $('#modalBody').innerHTML = blockFormInner({ctx:'modal'}) + `<div id="justAdded">${justAddedHTML()}</div>`; initBlockForms($('#modalBody')); }
+      else rerender();
+      break;
     }
     case 'autoplan': {
       const x = readAutoForm(); if (!x || x.r.error) return;
       x.r.blocks.forEach(b => S.plan.push({id:uid(), examId:x.e.id, time:'', done:false, doneAt:null, ...b}));
-      save(); closeModal(); toast(`Piano creato: ${plural(x.r.blocks.length,'blocco','blocchi')}, circa ${x.r.per} pagine al giorno.`, {tone:'ok', icon:'wand'}); rerender(); break;
+      save(); closeModal(); toast(`${x.r.kind === 'review' ? `Ripasso ${x.r.round}° giro pianificato` : 'Piano creato'}: ${plural(x.r.blocks.length,'blocco','blocchi')}, circa ${x.r.per} pagine al giorno.`, {tone:'ok', icon:'wand'}); rerender(); break;
     }
     case 'event': {
       if (!fd.title.trim()) return;
@@ -1430,7 +1735,7 @@ document.addEventListener('submit', e => {
       else S.events.push({id:uid(), ...data});
       save(); if (!$('#modal').hidden) closeModal();
       toast(`«${esc(data.title)}» in agenda ${relDays(diffDays(t, date))}${data.time ? ' alle ' + data.time : ''}.`, {tone:'ok', icon:'cal'});
-      if (route === 'calendario'){ calSel = date; } else if (route === 'home') homeDay = date;
+      weekCursor = date; if (route === 'calendario'){ calSel = date; } else if (route === 'home') homeDay = date;
       rerender(); break;
     }
     case 'profile': S.profile.name = fd.name.trim(); save(); closeModal(); rerender(); break;
