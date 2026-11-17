@@ -14,6 +14,42 @@ Dashboard per abitudini giornaliere, timer di studio, finanze, CRM dell'agenzia 
 | `pillole.js` | Libreria delle 36 pillole del Generatore di Sapere (6 per settore, con quiz) |
 | `vendor/chart.umd.js` | Chart.js 4.4.1 in locale, così i grafici funzionano offline (licenza MIT in `vendor/`) |
 
+## Grafici della Home
+
+In tutti e quattro i layout la Home ha due grafici, che condividono il periodo (7 giorni, 14 giorni, 30 giorni, 3 mesi):
+
+- **Command Center · Progressi generali** (grafico principale). Le barre mostrano il completamento delle task di ogni
+  giorno, con la percentuale sopra le barre. La linea spessa è l'indice a 7 giorni. In secondo piano, con linee sottili,
+  ci sono i tre aspetti chiave in percentuale del loro obiettivo:
+  - studio: 2 ore;
+  - acqua: 3 litri;
+  - microlearning: le pillole e gli apprendimenti del giorno, come bolle più grandi se sono più di uno.
+
+  Le tre tessere sopra il grafico mostrano le medie del periodo e, se le tocchi, nascondono o mostrano la serie
+  corrispondente.
+- **Focus studio** (grafico secondario, subito sotto), dedicato solo allo studio:
+  - ore di studio al giorno, media mobile a 7 giorni, media del periodo e soglia delle 2 ore;
+  - media giornaliera, costanza, serie e proiezione del mese;
+  - mappa della costanza delle ultime 18 settimane e profilo per giorno della settimana.
+
+Passando il dito o il mouse su un giorno, quel giorno si evidenzia in entrambi i grafici e compare il dettaglio:
+- task completate;
+- studio, acqua e pillole;
+- media mobile;
+- icone delle task fatte.
+
+Con il timer acceso i grafici si aggiornano in tempo reale.
+
+## Acqua
+
+La task «Acqua» (obiettivo **3 litri**) conta dal giorno dell'aggiornamento, quindi i giorni passati non vengono penalizzati.
+Nel tracker puoi registrare l'acqua in tre modi:
+- toccare i 12 bicchieri da 250 ml;
+- usare i pulsanti +250 ml, +500 ml e +1 L;
+- **scrivere direttamente i litri**, anche con la virgola (es. 1,5).
+
+Dalla Home il pannello rapido aggiunge mezzo litro con un tocco.
+
 ## Imparare: Generatore di Sapere e inserimento manuale
 
 La task «Imparare» ha due binari:
@@ -52,6 +88,20 @@ La scelta è salvata nel `localStorage` del dispositivo (chiavi `qg.theme` e `qg
 quindi resta memorizzata sia nel browser del PC sia nell'app installata sul telefono.
 Ogni dispositivo ha però il suo archivio: per copiare dati e stile da un dispositivo all'altro usa
 *Esporta backup* e *Importa backup*, perché il file include anche palette e layout.
+
+Ogni stile ha la sua personalità:
+
+- **Midnight Gold:** lusso classico con titoli e cifre serif.
+- **Emerald Executive:** fintech, con cifre sans tese e pulsanti a pillola.
+- **Royal Navy:** tech-finance, con vetro, bordi luminosi e griglia di sfondo.
+- **Minimal Titanium:** in stile Apple, con superfici opache, titoli bold e senza maiuscoletto.
+
+Le micro-interazioni sono comuni a tutti gli stili:
+- feedback al tocco con effetto molla;
+- luce che segue il puntatore sulle card;
+- entrate scaglionate al cambio di sezione;
+- barra superiore che si compatta scorrendo su mobile;
+- tab bar e fogli modali in stile iOS.
 
 Nel codice le palette sono variabili CSS nei blocchi `[data-theme="…"]`, i layout sono regole `[data-layout="…"]`
 più le composizioni della Home in `renderHome()`.

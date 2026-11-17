@@ -930,6 +930,350 @@ html.theming,html.theming *{transition:background-color .5s ease,border-color .5
   .is-app .main{padding-top:calc(12px + env(safe-area-inset-top))}
   .modal{padding-bottom:env(safe-area-inset-bottom)}
 }
+/* =========================================================
+   DESIGN SYSTEM v3 · effetto «app nativa» per tutti gli stili
+   ========================================================= */
+:root,[data-theme]{
+  --spring:cubic-bezier(.34,1.56,.64,1); --out:cubic-bezier(.16,1,.3,1);
+  --editorial:'Cormorant Garamond','Iowan Old Style',Georgia,serif;
+  --fig:var(--serif); --fsa-d:none; --fsa-f:none; --title-ls:-.005em; --fig-ls:-.01em; --title-w:600; --em-style:italic;
+  --r-btn:12px;
+  --card-bg:linear-gradient(180deg,rgba(var(--card-rgb),var(--card-o1)),rgba(var(--card-rgb),var(--card-o2)));
+  --card-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 1px 0 rgba(0,0,0,.35),0 26px 50px -32px rgba(0,0,0,.95);
+  --card-blur:none; --spot:rgba(var(--a-rgb),.075);
+  --eb-tt:uppercase; --eb-ls:.18em; --eb-fs:10.5px;
+  --field:rgba(0,0,0,.35); --tile:rgba(0,0,0,.22);
+}
+/* Emerald Executive · fintech: cifre in sans tese, pulsanti a pillola */
+[data-theme="emerald"]{--fig:'Inter',system-ui,-apple-system,sans-serif; --fsa-f:.43; --fig-ls:-.03em; --r:18px; --r-btn:999px; --spot:rgba(62,224,196,.07)}
+/* Royal Navy & Platinum · tech-finance: tutto sans, vetro e griglia */
+[data-theme="navy"]{--serif:'Inter',system-ui,-apple-system,sans-serif; --fig:'Inter',system-ui,-apple-system,sans-serif; --fsa-d:.41; --fsa-f:.43; --title-ls:-.028em; --fig-ls:-.03em; --em-style:normal;
+  --r:16px; --r-btn:10px; --card-blur:blur(16px) saturate(1.25); --spot:rgba(122,160,255,.09);
+  --card-bg:linear-gradient(180deg,rgba(150,180,255,.075),rgba(150,180,255,.022));
+  --card-shadow:inset 0 1px 0 rgba(200,215,255,.08),0 1px 0 rgba(0,0,0,.4),0 26px 50px -30px rgba(0,6,24,.95)}
+/* Minimal Titanium · stile Apple: superfici opache, titoli bold, niente maiuscoletto */
+[data-theme="titanium"]{--serif:'Inter',system-ui,-apple-system,sans-serif; --fig:'Inter',system-ui,-apple-system,sans-serif; --fsa-d:.41; --fsa-f:.43; --title-ls:-.025em; --fig-ls:-.03em; --title-w:700; --em-style:normal;
+  --r:22px; --r-btn:12px; --card-bg:#212226; --spot:rgba(255,255,255,.045);
+  --card-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 12px 32px -20px rgba(0,0,0,.75);
+  --eb-tt:none; --eb-ls:0; --eb-fs:12px; --field:#2a2b2f; --tile:rgba(255,255,255,.035)}
+
+/* Tipografia per stile */
+:is(.kpi-val,.ring-num,.timer,.daybar .score,.sub-price,.inc-amt,.client-price,.tier b,.report .plan span,.tc-num,.mstats b,.kli b,.ck b,.quiz-score .serif){font-family:var(--fig);font-size-adjust:var(--fsa-f);letter-spacing:var(--fig-ls)}
+:is(.brand-name,.page-title,.card-title,.hero-greet,.daynav .date,.habit-name,.client-name,.modal-head h3,.install-t,.os-head b,.tc-meta b,.focus-title,.tp-greet,.ch-greet,.set-t,.pc-meta b,.empty .serif){font-size-adjust:var(--fsa-d);letter-spacing:var(--title-ls)}
+.page-title,.hero-greet,.focus-title{font-weight:var(--title-w)}
+:is(.page-title,.hero-greet,.ch-greet,.tp-greet,.focus-title) em{font-style:var(--em-style)}
+.quote .q,.script,.pill-kicker,.learn-quote,.pill-body p:first-child::first-letter{font-family:var(--editorial)}
+.eyebrow,.label,.field>label,.kli-l,.tk-l,.ck span,.mstats .eyebrow,.nav-label{text-transform:var(--eb-tt);letter-spacing:var(--eb-ls)}
+.eyebrow{font-size:var(--eb-fs)}
+[data-theme="titanium"] :is(.eyebrow,.label,.field>label,.kli-l,.tk-l,.ck span,.nav-label){font-weight:600;color:var(--muted)}
+[data-theme="titanium"] .mstats .eyebrow,[data-theme="titanium"] .ck span{font-size:11.5px}
+
+/* Superfici */
+.card{background:var(--card-bg);box-shadow:var(--card-shadow);-webkit-backdrop-filter:var(--card-blur);backdrop-filter:var(--card-blur);transition:border-color .3s,box-shadow .3s}
+.card-gold{background:radial-gradient(130% 150% at 100% 0%,rgba(var(--a-rgb),.11),transparent 52%),var(--card-bg);border-color:rgba(var(--a-rgb),.24)}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(460px circle at var(--mx,50%) var(--my,-200px),var(--spot),transparent 45%)}
+@media (hover:hover) and (pointer:fine){ .card:hover::after{opacity:1} .card:hover{border-color:var(--line-2)} .card-gold:hover{border-color:rgba(var(--a-rgb),.34)} }
+:is([data-theme="gold"],[data-theme="emerald"],[data-theme="bordeaux"]) .card-gold::before{content:"";position:absolute;left:12%;right:12%;top:-1px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(var(--a-rgb),.9),transparent)}
+[data-theme="navy"] .card-gold::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(140deg,rgba(150,180,255,.55),rgba(150,180,255,.05) 40%,rgba(92,200,240,.3));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+[data-theme="navy"] body::after{opacity:1;background-image:linear-gradient(rgba(140,170,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(140,170,255,.035) 1px,transparent 1px);background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse 90% 70% at 60% 0%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse 90% 70% at 60% 0%,#000 25%,transparent 75%)}
+[data-theme="titanium"] body::after{display:none}
+[data-theme="titanium"] .card-gold{background:var(--card-bg);border-color:var(--line)}
+[data-theme="titanium"] .card{border-color:rgba(255,255,255,.06)}
+.input{background:var(--field)}
+.mstats>div,.ck,.qrow,.mini,.tp-sum,.film-row,.situ>div,.tier,.os,.salary,.pwa-status>div,.style-now,.sector-btn,.litem,.quiz-q,.pill-box{background-color:var(--tile)}
+[data-theme="titanium"] .seg,[data-theme="titanium"] .ctabs{background:rgba(118,118,128,.2);border-color:transparent;border-radius:11px}
+[data-theme="titanium"] .seg button.on,[data-theme="titanium"] .ctabs button.on{background:#5b5c61;box-shadow:0 3px 8px rgba(0,0,0,.28)}
+
+/* Pulsanti e feedback al tocco */
+.btn{border-radius:var(--r-btn);transition:transform .32s var(--spring),background-color .2s,border-color .2s,filter .2s,box-shadow .25s,color .2s}
+.btn-sm{border-radius:calc(var(--r-btn) - 2px)}
+.btn:active{transform:scale(.94);transition-duration:.08s}
+.btn-gold,.btn-em{position:relative;overflow:hidden;isolation:isolate}
+.btn-gold::after,.btn-em::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.42) 50%,transparent 70%);transform:translateX(-130%);transition:transform .8s var(--out)}
+@media (hover:hover){ .btn-gold:hover::after,.btn-em:hover::after{transform:translateX(130%)} .btn-gold:hover,.btn-em:hover{box-shadow:0 16px 30px -14px rgba(var(--a-rgb),.9),inset 0 1px 0 rgba(255,255,255,.4)} }
+:is(.chip,.mini,.qrow,.mli,.nav a,.mnav a,.seg button,.ctabs button,.theme-opt,.legend button,.sector-btn,.toggle-big,.quiz-opt,.layout-card,.preset-card,.theme-card,.sc-lg,.rem-check,.star,.sw-btn){transition:transform .34s var(--spring),background-color .2s,border-color .2s,color .2s,box-shadow .25s,opacity .2s}
+:is(.chip,.mini,.qrow,.mli,.nav a,.mnav a,.seg button,.ctabs button,.theme-opt,.legend button,.sector-btn,.toggle-big,.quiz-opt:not(:disabled),.layout-card,.preset-card,.theme-card,button.sc-lg,.sw-btn):active{transform:scale(.955);transition-duration:.08s}
+.mli{border-radius:10px;margin:0 -8px;padding-left:8px;padding-right:8px}
+@media (hover:hover){ .mli:hover{background:rgba(255,255,255,.03)} .qrow:hover{transform:translateY(-1px)} }
+
+/* Badge di stato */
+.pill{height:24px;padding:0 10px 0 9px;font-size:11px;letter-spacing:.02em;gap:7px}
+.pill::before{box-shadow:0 0 0 3px color-mix(in srgb,currentColor 16%,transparent)}
+.pill.done::before{box-shadow:0 0 0 3px color-mix(in srgb,currentColor 18%,transparent),0 0 8px currentColor}
+.pill.over::before{animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.35}}
+.nav .badge{background:linear-gradient(140deg,var(--gold-2),var(--gold));color:var(--on-a);border:0;font-weight:700;box-shadow:0 4px 10px -4px rgba(var(--a-rgb),.8)}
+.nav a.active{box-shadow:inset 0 0 0 1px rgba(var(--a-rgb),.12)}
+.nav a.active::before{box-shadow:0 0 12px rgba(var(--a-rgb),.8)}
+
+/* Hero: tile con avanzamento */
+.mini-bar{display:block;height:3px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:-2px}
+.mini-bar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--gold-3),var(--gold-2));transition:width .6s var(--out)}
+.mini-bar.done>i{background:linear-gradient(90deg,var(--em-3),var(--em-2))}
+.mini-bar.over>i{background:linear-gradient(90deg,var(--ruby-3),var(--ruby))}
+/* KPI con sparkline */
+.spark{display:block;width:100%;height:30px;margin-top:12px;overflow:visible}
+.spark .sp-line{fill:none;stroke:var(--gold-2);stroke-width:1.7;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.spark .sp-area{fill:rgba(var(--a-rgb),.1)}
+.spark .sp-goal{stroke:rgba(var(--s-rgb),.55);stroke-dasharray:3 3;stroke-width:1;vector-effect:non-scaling-stroke}
+.kpi{transition:border-color .3s,transform .4s var(--out)}
+@media (hover:hover){ .kpi:hover{transform:translateY(-2px)} }
+
+/* Entrata: solo quando cambi sezione (non a ogni salvataggio) */
+.view.still{animation:none}
+@keyframes rise{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+.view.enter :is(.home>*,.kpis>*,.habits>*,.clients>*,.stack>*,.grid>*){animation:rise .65s var(--out) both}
+.view.enter>section{animation:rise .65s var(--out) both}
+.view.enter>section+section{animation-delay:.06s}
+.view.enter :is(.home,.kpis,.habits,.clients,.stack,.grid)>:nth-child(2){animation-delay:.05s}
+.view.enter :is(.home,.kpis,.habits,.clients,.stack,.grid)>:nth-child(3){animation-delay:.1s}
+.view.enter :is(.home,.kpis,.habits,.clients,.stack,.grid)>:nth-child(4){animation-delay:.15s}
+.view.enter :is(.home,.kpis,.habits,.clients,.stack,.grid)>:nth-child(5){animation-delay:.2s}
+.view.enter :is(.home,.kpis,.habits,.clients,.stack,.grid)>:nth-child(6){animation-delay:.25s}
+.view.enter :is(.home,.kpis,.habits,.clients,.stack,.grid)>:nth-child(n+7){animation-delay:.3s}
+@keyframes barIn{from{transform:scaleX(0)}}
+.view.enter :is(.bar,.mini-bar,.sc-meter)>i{transform-origin:left;animation:barIn 1s var(--out) both .2s}
+@keyframes ringIn{from{stroke-dashoffset:var(--c)}}
+.view.enter .ring-val{animation:ringIn 1.3s var(--out) both .15s}
+
+/* Barra superiore (mobile) e tab bar stile iOS */
+@media (max-width:900px){
+  .main{--pt:18px}
+  .is-app .main{--pt:calc(12px + env(safe-area-inset-top))}
+  .topbar{position:sticky;top:0;z-index:55;margin:calc(-1 * var(--pt)) -16px 18px;padding:var(--pt) 16px 12px;border-bottom:1px solid transparent;transition:background-color .3s,border-color .3s}
+  .topbar>div:first-child{min-width:0}
+  .topbar .eyebrow{max-height:20px;overflow:hidden;transition:max-height .3s var(--out),opacity .2s}
+  .page-title{transition:font-size .3s var(--out),margin .3s var(--out)}
+  .topbar.stuck{background:var(--nav-bg);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);border-bottom-color:var(--line);padding-bottom:10px}
+  .topbar.stuck .eyebrow{max-height:0;opacity:0}
+  .topbar.stuck .page-title{font-size:21px;margin-top:2px}
+  .topbar.stuck .top-actions .btn-icon{width:36px;height:36px}
+  .mnav{left:10px;right:10px;padding:6px;border-radius:26px;-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);box-shadow:0 18px 40px -12px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06)}
+  .mnav a{gap:4px;padding:7px 0 6px;font-size:10px;font-weight:600;border-radius:20px;letter-spacing:.01em}
+  .mnav .ic{width:22px;height:22px;transition:transform .4s var(--spring)}
+  .mnav a.active{background:linear-gradient(180deg,rgba(var(--a-rgb),.18),rgba(var(--a-rgb),.07));box-shadow:inset 0 0 0 1px rgba(var(--a-rgb),.18)}
+  .mnav a.active .ic{transform:translateY(-1px) scale(1.08)}
+  .modal{animation:sheetUp .5s var(--out) both}
+  .modal::before{content:"";position:absolute;top:7px;left:50%;width:38px;height:5px;margin-left:-19px;border-radius:5px;background:var(--line-3);z-index:3}
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+
+/* Toast */
+.toast{border-radius:16px;padding:10px 12px 10px 10px;animation:toastIn .5s var(--spring) both;box-shadow:0 24px 48px -14px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.05)}
+.toast>.ic{width:32px;height:32px;padding:7px;border-radius:10px;background:var(--gold-a);flex:none}
+.toast.em>.ic{background:var(--em-a)}
+@keyframes toastIn{from{opacity:0;transform:translateY(18px) scale(.95)}to{opacity:1;transform:none}}
+
+/* Barre di scorrimento (desktop) */
+@media (pointer:fine){
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+  ::-webkit-scrollbar-thumb:hover{background-color:rgba(255,255,255,.16)}
+}
+
+/* ---------- Studio · Command Center ---------- */
+.sc-card{padding:24px 24px 20px}
+.sc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.sc-title{min-width:0;flex:1 1 320px}
+.sc-eb{display:flex;align-items:center;gap:9px}
+.sc-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(var(--a-rgb),.16)}
+.sc-dot.on{background:var(--em);animation:pulse 1.8s infinite}
+.sc-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px}
+.sc-num{font-family:var(--fig);font-size-adjust:var(--fsa-f);font-size:66px;font-weight:600;line-height:.95;letter-spacing:var(--fig-ls);color:var(--text);font-variant-numeric:tabular-nums lining-nums}
+.sc-unit{font-size:15px;font-weight:600;color:var(--muted)}
+.sc-delta{font:600 12px var(--sans);padding:4px 10px;border-radius:999px;align-self:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sc-delta.up{color:var(--em-2);background:var(--em-a);box-shadow:inset 0 0 0 1px var(--em-b)}
+.sc-delta.down{color:var(--ruby-2);background:var(--ruby-a);box-shadow:inset 0 0 0 1px var(--ruby-b)}
+.sc-delta.flat{color:var(--muted);background:rgba(255,255,255,.05)}
+.sc-sub{font-size:12.5px;color:var(--muted);margin-top:9px}
+.sc-sub b{color:var(--text-2);font-weight:600;font-variant-numeric:tabular-nums}
+.sc-range button{min-width:48px;font-weight:600;font-variant-numeric:tabular-nums}
+.sc-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:20px 0 4px;border:1px solid var(--line);border-radius:16px;background:var(--tile);overflow:hidden}
+.sc-st{padding:14px 16px 13px;border-left:1px solid var(--line);min-width:0}
+.sc-st:first-child{border-left:0}
+.sc-st-l{display:block;font-size:var(--eb-fs);letter-spacing:var(--eb-ls);text-transform:var(--eb-tt);font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+[data-theme] .sc-st-l{font-size:min(var(--eb-fs),11.5px)}
+.sc-st b{display:block;font-family:var(--fig);font-size-adjust:var(--fsa-f);letter-spacing:var(--fig-ls);font-size:29px;font-weight:600;line-height:1.1;margin-top:6px;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+.sc-st b em{font-style:normal;font-family:var(--sans);font-size-adjust:none;font-size:12.5px;font-weight:600;color:var(--muted);margin-left:4px;letter-spacing:0}
+.sc-st small{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-chg{font-weight:700}
+.sc-chg.up{color:var(--em-2)} .sc-chg.down{color:var(--ruby-2)}
+.sc-meter{display:block;height:3px;border-radius:3px;background:rgba(255,255,255,.07);margin-top:9px;overflow:hidden}
+.sc-meter>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--em-3),var(--em-2))}
+.sc-plot{position:relative;margin-top:16px;touch-action:pan-y;-webkit-user-select:none;user-select:none;cursor:crosshair}
+.sc-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-bottom:10px;padding-left:38px}
+.sc-lg{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);font-weight:500;white-space:nowrap}
+button.sc-lg{background:none;border:0;padding:4px 8px;margin:-4px -8px;border-radius:8px;cursor:pointer;font:500 11.5px var(--sans);color:var(--text-2)}
+@media (hover:hover){ button.sc-lg:hover{background:rgba(255,255,255,.05)} }
+button.sc-lg.off{color:var(--faint);text-decoration:line-through}
+button.sc-lg.off i{opacity:.3}
+.sc-lg i{display:block;flex:none}
+.sw-bar{width:10px;height:10px;border-radius:3px;background:linear-gradient(180deg,var(--gold-2),rgba(var(--a-rgb),.5))}
+.sw-bar.lo{background:rgba(var(--a-rgb),.26)}
+.sw-line{width:15px;height:2.5px;border-radius:2px;background:var(--em);box-shadow:0 0 6px rgba(var(--s-rgb),.7)}
+.sw-dot{width:15px;border-top:2px dotted var(--text-2)}
+.sw-goal{width:15px;border-top:2px dashed var(--em-2)}
+.sw-area{width:12px;height:10px;border-radius:2px;border-top:2px solid rgba(var(--sky-rgb),.95);background:rgba(var(--sky-rgb),.2)}
+.sw-km{width:4px;height:10px;border-radius:2px;background:rgba(var(--s-rgb),.5)}
+.sw-win{width:7px;height:7px;border-radius:50%;background:var(--em)}
+.sc-main{position:relative;height:290px}
+.sc-ov-h{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin:12px 0 2px;padding:12px 0 0 38px;border-top:1px dashed var(--line-2)}
+.sc-ov-t{font-size:var(--eb-fs);letter-spacing:var(--eb-ls);text-transform:var(--eb-tt);font-weight:700;color:var(--text-2);margin-right:2px}
+.sc-ov{position:relative;height:96px}
+.sc-tip{position:absolute;top:30px;left:0;z-index:5;width:236px;padding:12px 13px 11px;border-radius:15px;background:var(--toast-bg);border:1px solid var(--line-2);box-shadow:0 24px 48px -16px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);pointer-events:none;transition:left .14s var(--out);animation:tipIn .2s var(--out)}
+@keyframes tipIn{from{opacity:0;transform:translateY(5px) scale(.97)}}
+.sc-tip-h{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px}
+.sc-tip-h b{font-weight:600}
+.sc-b{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.02em;white-space:nowrap}
+.sc-b.ok{color:var(--em-2);background:var(--em-a)} .sc-b.live{color:var(--gold-2);background:var(--gold-a)} .sc-b.mid{color:var(--amber);background:rgba(227,179,91,.12)} .sc-b.no{color:var(--muted);background:rgba(255,255,255,.05)}
+.sc-tip-v{font-family:var(--fig);font-size-adjust:var(--fsa-f);letter-spacing:var(--fig-ls);font-size:32px;font-weight:600;line-height:1.1;margin:6px 0 8px}
+.sc-tip-r{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-top:7px}
+.sc-tip-r b{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sc-tip-r b.up{color:var(--em-2)} .sc-tip-r b.down{color:var(--ruby-2)}
+.sc-tip-r.sep{padding-top:9px;margin-top:9px;border-top:1px solid var(--line)}
+.sc-win{font-style:normal;font-size:10px;font-weight:700;color:var(--em-2);margin-left:4px}
+.sc-tip-hb{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.sc-tip-hb span{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.045);color:var(--faint)}
+.sc-tip-hb span.ok{background:var(--em-a);color:var(--em)}
+.sc-tip-hb .ic{width:13px;height:13px}
+.sc-tip-x{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.45}
+.sc-foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.sc-fcol{min-width:0}
+.sc-fh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.sc-hl{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--faint)}
+.sc-hl i{width:10px;height:10px;border-radius:3px;display:block}
+.sc-heat-m,.sc-heat{max-width:440px}
+.sc-heat-m{display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:3px;font-size:9.5px;color:var(--faint);margin-bottom:5px;height:13px;line-height:13px}
+.sc-heat-m span{white-space:nowrap;overflow:visible}
+.sc-heat{display:grid;grid-template-rows:repeat(7,auto);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:3px}
+.sc-heat i{display:block;aspect-ratio:1;border-radius:3px;background:rgba(255,255,255,.045);transition:transform .25s var(--spring)}
+@media (hover:hover){ .sc-heat i:not(.fut):not(.na):hover{transform:scale(1.4);position:relative;z-index:1;box-shadow:0 4px 12px rgba(0,0,0,.6)} }
+:is(.sc-heat,.sc-hl) i.l1{background:rgba(var(--a-rgb),.2)}
+:is(.sc-heat,.sc-hl) i.l2{background:rgba(var(--a-rgb),.4)}
+:is(.sc-heat,.sc-hl) i.l3{background:rgba(var(--a-rgb),.68)}
+:is(.sc-heat,.sc-hl) i.l4{background:var(--gold-2);box-shadow:0 0 8px rgba(var(--a-rgb),.45)}
+.sc-heat i.na{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.035)}
+.sc-heat i.fut{visibility:hidden}
+.sc-heat i.td{outline:1.5px solid var(--em);outline-offset:1px}
+.sc-wd{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;height:148px}
+.sc-wd-c{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.sc-wd-c b{font-size:11px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums}
+.sc-wd-b{position:relative;flex:1;width:100%;max-width:30px;border-radius:9px;background:rgba(255,255,255,.04);overflow:hidden}
+.sc-wd-b i{position:absolute;left:0;right:0;bottom:0;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,rgba(var(--a-rgb),.7),rgba(var(--a-rgb),.25))}
+.sc-wd-c.best .sc-wd-b i{background:linear-gradient(180deg,var(--gold-2),var(--gold-3));box-shadow:0 0 18px rgba(var(--a-rgb),.4)}
+.sc-wd-b u{position:absolute;left:0;right:0;height:0;border-top:1px dashed rgba(var(--s-rgb),.65)}
+.sc-wd-c small{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:capitalize}
+.sc-wd-c.now small{color:var(--gold-2)}
+.sc-wd-c.best b{color:var(--gold-2)}
+@keyframes growUp{from{transform:scaleY(0)}}
+.view.enter .sc-wd-b i{transform-origin:bottom;animation:growUp .9s var(--out) both .25s}
+.sc-wd-note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.5}
+.sc-wd-note b{color:var(--text);font-weight:600}
+.home-compact .sc-card{padding:18px 20px 16px}
+.home-compact .sc-num{font-size:50px}
+.home-compact .sc-main{height:230px}
+.home-compact .sc-ov{height:80px}
+.home-compact .sc-foot{display:none}
+.home-compact .sc-stats{margin-top:14px}
+.home-focus .sc-main{height:260px}
+@media (max-width:1280px) and (min-width:901px){
+  .home-focus .sc-stats,.home-analytics .sc-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home-focus .sc-st:nth-child(3),.home-analytics .sc-st:nth-child(3){border-left:0}
+  .home-focus .sc-st:nth-child(n+3),.home-analytics .sc-st:nth-child(n+3){border-top:1px solid var(--line)}
+  .home-focus .sc-foot,.home-analytics .sc-foot{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:900px){
+  .sc-card,.home-compact .sc-card{padding:18px 16px 16px}
+  .sc-head{gap:14px}
+  .sc-range{width:100%}
+  .sc-range button{flex:1}
+  .sc-num,.home-compact .sc-num{font-size:52px}
+  .sc-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sc-st{padding:12px 13px}
+  .sc-st:nth-child(3){border-left:0}
+  .sc-st:nth-child(n+3){border-top:1px solid var(--line)}
+  .sc-st b{font-size:24px}
+  .sc-legend{padding-left:0;gap:4px 12px}
+  .sc-ov-h{padding-left:0}
+  .sc-main,.home-compact .sc-main,.home-focus .sc-main{height:228px}
+  .sc-ov{height:80px}
+  .sc-foot{grid-template-columns:minmax(0,1fr);gap:22px}
+  .sc-tip{width:212px;top:24px}
+  .sc-tip-v{font-size:28px}
+  .sc-heat-m,.sc-heat{max-width:none}
+}
+/* ---------- Command Center · progressi generali ---------- */
+.gp-card{padding:24px 24px 20px}
+.gp-card .sc-unit{font-size:13px}
+.gp-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 4px}
+.gp-k{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0;padding:14px 16px 13px;border-radius:15px;border:1px solid var(--line);background:var(--tile);color:var(--text);text-align:left;font:inherit;cursor:pointer;overflow:hidden;transition:transform .34s var(--spring),border-color .25s,background-color .25s,opacity .25s}
+.gp-k::before{content:"";position:absolute;left:0;top:0;right:0;height:2px;background:linear-gradient(90deg,var(--k),transparent 85%)}
+.gp-k::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(260px 120px at 0% 0%,rgba(var(--k-rgb),.10),transparent 70%)}
+@media (hover:hover){ .gp-k:hover{border-color:rgba(var(--k-rgb),.45)} }
+.gp-k:active{transform:scale(.97);transition-duration:.08s}
+.gp-k.off{opacity:.45}
+.gp-k.off .gp-k-l i{background:transparent;box-shadow:inset 0 0 0 1.5px var(--k)}
+.gp-k-l{display:flex;align-items:center;gap:8px;font-size:var(--eb-fs);letter-spacing:var(--eb-ls);text-transform:var(--eb-tt);font-weight:700;color:var(--text-2);white-space:nowrap}
+[data-theme] .gp-k-l{font-size:min(var(--eb-fs),11.5px)}
+.gp-k-l i{width:8px;height:8px;border-radius:50%;background:var(--k);box-shadow:0 0 10px rgba(var(--k-rgb),.8)}
+.gp-k b{display:block;font-family:var(--fig);font-size-adjust:var(--fsa-f);letter-spacing:var(--fig-ls);font-size:30px;font-weight:600;line-height:1.1;margin-top:8px;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+.gp-k b em{font-style:normal;font-family:var(--sans);font-size-adjust:none;font-size:12px;font-weight:600;color:var(--muted);margin-left:5px;letter-spacing:0}
+.gp-k small{display:block;max-width:100%;font-size:11.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gp-k-m{display:block;width:100%;height:3px;border-radius:3px;background:rgba(255,255,255,.07);margin-top:10px;overflow:hidden}
+.gp-k-m>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,rgba(var(--k-rgb),.55),var(--k))}
+.gp-main{position:relative;height:320px}
+.sw-idx{width:15px;height:2.5px;border-radius:2px;background:#fff;box-shadow:0 0 6px rgba(255,255,255,.5)}
+.sw-m{width:15px;height:2.5px;border-radius:2px;background:var(--k);box-shadow:0 0 6px var(--k)}
+.sw-b{width:9px;height:9px;border-radius:50%;background:var(--k);box-shadow:0 0 0 1.5px rgba(255,255,255,.35)}
+.gp-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--k);margin-right:7px;vertical-align:1px;box-shadow:0 0 6px var(--k)}
+.sc-tip-v small{font-family:var(--sans);font-size-adjust:none;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0}
+.sc-tip-r b small{font-size:10.5px;color:var(--muted);font-weight:600;margin-left:3px}
+.home-compact .gp-card{padding:18px 20px 16px}
+.home-compact .gp-main{height:260px}
+.home-compact .gp-keys{margin-top:14px}
+@media (max-width:1280px) and (min-width:901px){
+  .home-focus .gp-k b,.home-analytics .gp-k b{font-size:24px}
+  .home-focus .gp-main,.home-analytics .gp-main{height:280px}
+}
+@media (max-width:900px){
+  .gp-card,.home-compact .gp-card{padding:18px 16px 16px}
+  .gp-keys{grid-template-columns:minmax(0,1fr);gap:6px;margin-top:16px}
+  .gp-k{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l b" "s b" "m m";column-gap:12px;padding:11px 13px 10px;border-radius:13px}
+  .gp-k-l{grid-area:l} .gp-k small{grid-area:s} .gp-k-m{grid-area:m;margin-top:8px}
+  .gp-k b{grid-area:b;align-self:center;margin:0;font-size:23px;text-align:right}
+  .gp-k b em{display:block;margin:2px 0 0;font-size:10.5px}
+  .gp-main,.home-compact .gp-main{height:250px}
+}
+
+/* ---------- Acqua ---------- */
+.water-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.water-big{display:flex;align-items:baseline;gap:8px}
+.water-big b{font-family:var(--fig);font-size-adjust:var(--fsa-f);letter-spacing:var(--fig-ls);font-size:54px;font-weight:600;line-height:1;color:#8fd0ff;text-shadow:0 0 28px rgba(79,182,255,.25)}
+.water-big span{font-size:13px;color:var(--muted);font-weight:500}
+.glasses{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}
+.glass{position:relative;height:36px;padding:0;border-radius:4px 4px 9px 9px;border:1px solid var(--line-2);background:rgba(255,255,255,.02);overflow:hidden;cursor:pointer;transition:transform .34s var(--spring),border-color .25s}
+.glass::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--f,0%);background:linear-gradient(180deg,#8fd0ff,#2f8fe0);transition:height .55s var(--out)}
+.glass::before{content:"";position:absolute;left:3px;top:4px;bottom:4px;width:2px;border-radius:2px;background:rgba(255,255,255,.18);z-index:1}
+.glass.on{border-color:rgba(79,182,255,.45);box-shadow:0 6px 14px -8px rgba(79,182,255,.8)}
+@media (hover:hover){ .glass:hover{border-color:rgba(79,182,255,.6);transform:translateY(-2px)} }
+.glass:active{transform:scale(.88);transition-duration:.08s}
+.habit[data-h="water"] .habit-ic{color:#8fd0ff;background:rgba(79,182,255,.1);border-color:rgba(79,182,255,.3)}
+.minis{grid-template-columns:repeat(9,minmax(0,1fr))}
+@media (max-width:1280px){ .minis{grid-template-columns:repeat(5,minmax(0,1fr))} }
+@media (max-width:900px){ .minis{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px} .mini{padding:12px 10px} .glasses{gap:4px} .glass{height:32px} }
+.gp-card .sc-num{font-size:78px}
+.gp-k{padding:11px 14px 10px;background:rgba(0,0,0,.14)}
+.gp-k b{font-size:22px;margin-top:6px;color:var(--text-2)}
+.gp-k-l{font-size:min(var(--eb-fs),10.5px)!important;color:var(--muted)}
+.gp-k::after{opacity:.5}
+.gp-legend-main{color:var(--text)!important;font-weight:700!important}
+.gp-today{display:flex;align-items:center;gap:14px;margin-top:14px}
+.gp-today .bar{flex:1;height:8px;border-radius:8px}
+.gp-today b{font:700 13px var(--sans);color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums}
+.gp-today span{font-size:12px;color:var(--muted);white-space:nowrap}
+@media (max-width:900px){ .gp-card .sc-num{font-size:60px} .gp-k b{font-size:19px} }
+:is([data-theme="navy"],[data-theme="titanium"]) .sw-idx{background:var(--em);box-shadow:0 0 6px var(--em)}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -1035,6 +1379,7 @@ const IC = {
   arrowUp:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   share:'<path d="M12 3.5v11"/><path d="m8 7.5 4-4 4 4"/><path d="M9 10.5H7a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5h-2"/>',
   grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/>',
+  glass:'<path d="M6 3h12l-1.7 16.3A2 2 0 0 1 14.3 21H9.7a2 2 0 0 1-2-1.7L6 3z"/><path d="M6.7 9.5c1.8-.9 3.5-.9 5.3 0s3.5.9 5.3 0"/>',
   moon:'<path d="M19.8 14.6A8.3 8.3 0 0 1 9.4 4.2a8.3 8.3 0 1 0 10.4 10.4z"/><path d="M16.5 3.5v3M15 5h3"/>',
   cpu:'<rect x="6" y="6" width="12" height="12" rx="2.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9.5 3v3M14.5 3v3M9.5 18v3M14.5 18v3M3 9.5h3M3 14.5h3M18 9.5h3M18 14.5h3"/>',
   landmark:'<path d="M3.5 9 12 4.5 20.5 9"/><path d="M5 9.5h14"/><path d="M6.5 10.5v6M10 10.5v6M14 10.5v6M17.5 10.5v6"/><path d="M4.5 17.5h15M3.5 20h17"/>',
@@ -1089,7 +1434,7 @@ const plural = (n, one, many) => `${n} ${n===1?one:many}`;
 /* =========================================================
    CONSTANTS
    ========================================================= */
-const STUDY_GOAL = 7200, SOCIAL_LIMIT = 60, RUN_GOAL = 5, SLEEP_GOAL = 8, WIN_MISS = 2;
+const STUDY_GOAL = 7200, SOCIAL_LIMIT = 60, RUN_GOAL = 5, SLEEP_GOAL = 8, WATER_GOAL = 3, WIN_MISS = 2;
 const HABITS = [
   {id:'study',  name:'Studio',              target:'Almeno 2 ore di studio',        icon:'book'},
   {id:'home',   name:'Attività domestica',  target:'Almeno una cosa produttiva',    icon:'house'},
@@ -1098,7 +1443,8 @@ const HABITS = [
   {id:'cinema', name:'Cinema',              target:'Almeno 1 film ogni 3 giorni',   icon:'film'},
   {id:'learn',  name:'Imparare',            target:'Una cosa nuova ogni giorno',    icon:'bulb'},
   {id:'skin',   name:'Skincare',            target:'Routine quotidiana',            icon:'drop'},
-  {id:'sleep',  name:'Sonno',               target:'Almeno 8 ore a notte',          icon:'moon', since:true},
+  {id:'sleep',  name:'Sonno',               target:'Almeno 8 ore a notte',          icon:'moon', since:'sleepSince'},
+  {id:'water',  name:'Acqua',               target:'Almeno 3 litri al giorno',      icon:'glass', since:'waterSince'},
 ];
 const HOME_ACTS = ['Rifatto il letto','Apparecchiato','Lavato i piatti','Passato l\'aspirapolvere','Uscito con Morgana','Fatto il bucato','Riordinato','Fatto la spesa','Cucinato'];
 const STAGES = {
@@ -1124,7 +1470,7 @@ const KEY = 'qg.dashboard.v1';
 function defaults(){
   const t = todayKey();
   return {
-    v:1, createdAt:t, sleepSince:t, profile:{name:''},
+    v:1, createdAt:t, sleepSince:t, waterSince:t, profile:{name:''},
     days:{}, timer:null,
     subs:[
       {id:uid(), name:'Claude Code',     price:22,    period:'mese', renewal:nextOccurrence(12,6), auto:true,  anchor:6, since:t, color:'#d97757'},
@@ -1182,7 +1528,7 @@ window.addEventListener('beforeunload', () => { try { localStorage.setItem(KEY, 
 /* =========================================================
    DAYS & HABIT LOGIC
    ========================================================= */
-const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', learnItems:[], learnDraft:'', skin:false, sleep:null, bed:'', wake:''});
+const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', learnItems:[], learnDraft:'', skin:false, sleep:null, bed:'', wake:'', water:null});
 function getDay(k, create=false){
   let d = S.days[k];
   if (!d){ d = blankDay(); if (create) S.days[k] = d; }
@@ -1219,10 +1565,11 @@ function status(k){
     learn: (d.learnItems||[]).length > 0 || (d.learned||'').trim().length >= 3,
     skin: !!d.skin,
     ...(k >= (S.sleepSince || S.createdAt) ? {sleep: (+d.sleep||0) >= SLEEP_GOAL} : {}),
+    ...(k >= (S.waterSince || S.createdAt) ? {water: (+d.water||0) >= WATER_GOAL} : {}),
   };
 }
 // Le task introdotte dopo (es. il sonno) contano solo dal giorno in cui sono state aggiunte
-const habitsFor = k => HABITS.filter(h => !h.since || k >= (S.sleepSince || S.createdAt));
+const habitsFor = k => HABITS.filter(h => !h.since || k >= (S[h.since] || S.createdAt));
 const total = k => habitsFor(k).length;
 const score = k => Object.values(status(k)).filter(Boolean).length;
 const ratio = k => score(k) / total(k);
@@ -1285,7 +1632,15 @@ function chromeOf(id, k){
         meta: done ? (h > SLEEP_GOAL ? `Recupero completo: +${fmtDur((h-SLEEP_GOAL)*3600)} oltre le 8 ore` : 'Obiettivo centrato: 8 ore') : `Sotto obiettivo di ${fmtDur((SLEEP_GOAL-h)*3600)}`,
         mini: `${fmtDur(h*3600)} / 8h`};
     }
+    case 'water': return waterChrome(d);
   }
+}
+function waterChrome(d){
+  const v = d.water;
+  if (v === null || v === undefined || v === '') return {done:false, pct:0, state:'todo', meta:'Registra i bicchieri d\'acqua di oggi', mini:'Da registrare'};
+  const l = +v, done = l >= WATER_GOAL;
+  return {done, pct:Math.min(1, l/WATER_GOAL), state: done ? 'done' : l > 0 ? 'progress' : 'todo',
+    meta: done ? (l > WATER_GOAL ? `Obiettivo superato: ${N1.format(l)} litri` : 'Obiettivo centrato: 3 litri') : `Mancano ${N1.format(WATER_GOAL - l)} L ai 3 litri`, mini:`${N1.format(l)} / 3 L`};
 }
 const PILL = {done:'Completato', progress:'In corso', todo:'Da fare', over:'Sforato'};
 const pill = st => `<span class="pill ${st==='todo'?'':st}">${PILL[st]}</span>`;
@@ -1457,7 +1812,7 @@ function ring(pct, size=160, stroke=10, center=''){
     <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:${full?'var(--em-2)':'var(--gold-2)'}"/><stop offset="1" style="stop-color:${full?'var(--em-3)':'var(--gold-3)'}"/></linearGradient></defs>
     <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="${stroke}"/>
     <circle cx="${size/2}" cy="${size/2}" r="${r - stroke/2 - 5}" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="1.5 5"/>
-    <circle class="ring-val" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="url(#${id})" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${size/2} ${size/2})"/>
+    <circle class="ring-val" style="--c:${c}" cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="url(#${id})" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${size/2} ${size/2})"/>
   </svg><div class="ring-center"><div>${center}</div></div></div>`;
 }
 function toast(msg, o={}){
@@ -1529,7 +1884,7 @@ function insights(){
   const past7 = range(addDays(t,-7), addDays(t,-1)).filter(tracked);
   const avg7 = past7.length ? avg(past7.map(ratio)) : null, NT = total(t);
   const studyNow = studySecs(t);
-  const missing = HABITS.filter(x => !st[x.id]).map(x => x.name.toLowerCase());
+  const missing = habitsFor(t).filter(x => !st[x.id]).map(x => x.name.toLowerCase());
 
   // Studio
   if (!st.study){
@@ -1577,6 +1932,7 @@ function insights(){
     const sl = +d.sleep;
     if (sl < 6.5) add(9,'warn','Notte corta: gestisci l\'energia', `Hai dormito ${fmtDur(sl*3600)}. Oggi lavora a blocchi brevi da 25 minuti, niente caffeina dopo le 15 e letto entro le 23: il sonno perso si paga in concentrazione e decisioni.`);
     else if (sl < SLEEP_GOAL) add(6,'push','Sonno quasi a target', `${fmtDur(sl*3600)} stanotte: mancano ${fmtDur((SLEEP_GOAL-sl)*3600)} alle 8 ore. Stasera anticipa di mezz'ora: schermi via 30 minuti prima di dormire.`);
+  if ('water' in st && !st.water && h >= 13){ const wl = +d.water || 0; add(5,'push','Idratazione', wl ? `${N1.format(wl)} L finora: mancano ${N1.format(WATER_GOAL - wl)} L ai 3 litri. Tieni la borraccia sulla scrivania e bevi un bicchiere a ogni pausa di studio.` : `Ancora nessun bicchiere registrato oggi. Parti subito con 500 ml: anche una lieve disidratazione riduce concentrazione e memoria di lavoro.`); }
     else if (sl >= 8) add(4,'scale','Recupero completo','8 ore di sonno: è il moltiplicatore nascosto di studio, corsa e trattative. Sfrutta il picco di lucidità per la task più difficile.');
   } else if (h >= 6 && h < 13) add(5,'tip','Registra il sonno di stanotte','Inserisci orario a letto e sveglia nel tracker: le ore si calcolano da sole. Il sonno è la base di tutte le altre abitudini.');
   if (past7.length >= 3){
@@ -1645,7 +2001,8 @@ function renderNav(){
 function renderLiveChip(){
   $('#liveChip').innerHTML = S.timer ? `<a class="live-chip" href="#tracker"><span class="dot"></span><span class="small">Studio in corso</span><b data-live="chip">${fmtClock(studySecs(S.timer.day))}</b></a>` : '';
 }
-function go(){
+function go(anim=true){
+  scAnimate = anim;
   const r = (location.hash || '#home').slice(1);
   route = ROUTES.some(x => x.id === r) ? r : 'home';
   destroyCharts();
@@ -1655,12 +2012,13 @@ function go(){
   renderNav();
   $('#ticker').innerHTML = currentLayout() === 'analytics' ? tickerHTML() : '';
   const v = $('#view');
-  v.className = 'view'; void v.offsetWidth;
+  v.className = anim ? 'view' : 'view still'; void v.offsetWidth;
   ({home:renderHome, tracker:renderTracker, finanza:renderFinance, crm:renderCRM, stats:renderStats})[route]();
-  v.classList.add('view');
+  if (anim){ v.classList.add('view', 'enter'); clearTimeout(go.t); go.t = setTimeout(() => v.classList.remove('enter'), 1600); }
+  scAnimate = true;
   document.title = `${meta.label} · Quartier Generale`;
 }
-function rerender(keepScroll=true){ const y = window.scrollY; go(); if (keepScroll) window.scrollTo(0, y); }
+function rerender(keepScroll=true){ const y = window.scrollY; go(false); if (keepScroll) window.scrollTo(0, y); }
 window.addEventListener('hashchange', () => { go(); window.scrollTo(0,0); });
 
 /* =========================================================
@@ -1704,15 +2062,23 @@ function heroHTML(D){
     </div>
     ${ring(D.sc/D.n, 176, 11, `<div class="ring-num" style="font-size:52px">${Math.round(D.sc/D.n*100)}<span style="font-size:24px">%</span></div><div class="ring-sub">${D.sc} / ${D.n} completati</div>`)}
     <div class="minis">
-      ${habitsFor(D.t).map(h => { const c = chromeOf(h.id, D.t); return `<a class="mini ${c.state}" href="#tracker" title="${esc(h.target)}"><span class="mini-ic">${icon(h.icon)}</span><span class="mini-name">${h.name}</span><span class="mini-val" ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span></a>`; }).join('')}
+      ${habitsFor(D.t).map(h => { const c = chromeOf(h.id, D.t); return `<a class="mini ${c.state}" href="#tracker" title="${esc(h.target)}"><span class="mini-ic">${icon(h.icon)}</span><span class="mini-name">${h.name}</span><span class="mini-val" ${h.id==='study'?'data-live="study-mini"':''}>${esc(c.mini)}</span><span class="mini-bar ${c.bar||(c.done?'done':'')}"><i style="width:${c.pct*100}%"></i></span></a>`; }).join('')}
     </div>
   </section>`;
 }
+function sparkSVG(vals, goal=null){
+  const W = 100, H = 30, mx = Math.max(goal || 0, ...vals, 0.0001), n = vals.length;
+  const pts = vals.map((v, i) => [n === 1 ? W : i / (n - 1) * W, H - 3 - v / mx * (H - 6)]);
+  const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const g = goal ? `<line x1="0" x2="${W}" y1="${(H - 3 - goal / mx * (H - 6)).toFixed(1)}" y2="${(H - 3 - goal / mx * (H - 6)).toFixed(1)}" class="sp-goal"/>` : '';
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${g}<path class="sp-area" d="${d} L${W},${H} L0,${H} Z"/><path class="sp-line" d="${d}"/></svg>`;
+}
 function kpisHTML(D){
+  const w7 = range(addDays(D.t,-6), D.t), stSp = sparkSVG(w7.map(k => tracked(k) ? studySecs(k)/3600 : 0), STUDY_GOAL/3600), kmSp = sparkSVG(w7.map(k => +(S.days[k]?.km)||0), RUN_GOAL);
   return `<section class="kpis">
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Serie vincente</span>${icon('fire')}</div><div class="kpi-val">${D.cur}<small>${D.cur===1?'giorno':'giorni'}</small></div><div class="kpi-sub">Record: ${D.best} · giornate ≥ ${D.n-WIN_MISS}/${D.n}</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Studio · 7 giorni</span>${icon('book')}</div><div class="kpi-val">${N1.format(D.study7)}<small>ore</small></div><div class="kpi-sub">Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))} al giorno</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Corsa · 7 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(D.km7)}<small>km</small></div><div class="kpi-sub">${D.runs5} uscite da 5 km+</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Studio · 7 giorni</span>${icon('book')}</div><div class="kpi-val">${N1.format(D.study7)}<small>ore</small></div>${stSp}<div class="kpi-sub">Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))} al giorno</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Corsa · 7 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(D.km7)}<small>km</small></div>${kmSp}<div class="kpi-sub">${D.runs5} uscite da 5 km+</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Entrate · ${fmtDate(D.t,{month:'long'})}</span>${icon('euro')}</div><div class="kpi-val em">${EUR0.format(D.incM)}</div><div class="kpi-sub">Abbonamenti: ${EUR.format(subsMonthly())}/mese</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pipeline CRM</span>${icon('briefcase')}</div><div class="kpi-val gold">${EUR0.format(D.pipe)}</div><div class="kpi-sub">${plural(D.active.length,'trattativa aperta','trattative aperte')}</div></div>
   </section>`;
@@ -1770,6 +2136,7 @@ function quickList({cols=false} = {}){
     else if (h.id === 'social') act = `<button class="btn btn-sm" data-act="q-social" title="Aggiungi 5 minuti">+5′</button>`;
     else if (h.id === 'run') act = `<button class="btn btn-sm" data-act="q-run" title="Aggiungi 1 km">+1 km</button>`;
     else if (h.id === 'learn') act = `<button class="btn btn-sm ${c.done?'btn-outline-gold':''}" data-act="q-learn" title="Generatore di Sapere">${icon('spark')} ${c.done?'Altra':'Pillola'}</button>`;
+    else if (h.id === 'water') act = `<button class="btn btn-sm ${+d.water>=WATER_GOAL?'btn-outline-gold':''}" data-act="q-water" title="Aggiungi mezzo litro">+0,5 L</button>`;
     else if (h.id === 'sleep') act = `<button class="btn btn-sm ${+d.sleep>=SLEEP_GOAL?'btn-outline-gold':''}" data-act="q-sleep" title="Registra 8 ore di sonno">${+d.sleep>=SLEEP_GOAL?icon('check')+' 8h':'8h'}</button>`;
     else act = `<a class="btn btn-sm btn-ghost btn-icon" href="#tracker" aria-label="Apri ${esc(h.name)} nel tracker">${icon('right')}</a>`;
     return `<div class="qrow ${c.state}"><span class="qrow-ic">${icon(h.icon)}</span>
@@ -1845,6 +2212,7 @@ function tickerHTML(){
   const items = [
     ['Oggi', `${score(t)}/${total(t)}`, `<span class="tk-d ${isWin(t)?'up':'flat'}">${isWin(t)?'giornata vincente':'in corso'}</span>`],
     ['Sonno', (S.days[t]?.sleep ?? '') === '' || S.days[t]?.sleep === null ? '—' : fmtDur(+S.days[t].sleep*3600), (+S.days[t]?.sleep||0) ? `<span class="tk-d ${+S.days[t].sleep>=SLEEP_GOAL?'up':'down'}">obiettivo 8h</span>` : '<span class="tk-d flat">da registrare</span>'],
+    ['Acqua', `${N1.format(+(S.days[t]?.water)||0)} L`, `<span class="tk-d ${(+(S.days[t]?.water)||0) >= WATER_GOAL ? 'up' : 'flat'}">obiettivo 3 L</span>`],
     ['Studio 7G', `${N1.format(sw)} h`, pw.length ? dl(sw, sp, v => N1.format(v)+' h') : ''],
     ['Corsa 7G', `${N1.format(kw)} km`, pw.length ? dl(kw, kp, v => N1.format(v)+' km') : ''],
     ['Social / giorno', so === null ? '—' : `${Math.round(so)} min`, pw.length ? dl(so, sop, v => Math.round(v)+' min', true) : ''],
@@ -1854,16 +2222,6 @@ function tickerHTML(){
     ['Serie', `${currentStreak()} gg`, `<span class="tk-d flat">record ${bestStreak()}</span>`],
   ];
   return `<div class="ticker" role="list" aria-label="Indicatori principali">${items.map(([l,v,d]) => `<div class="tk" role="listitem"><span class="tk-l">${l}</span><span class="tk-v">${v}</span>${d}</div>`).join('')}</div>`;
-}
-function trendCard(){
-  const t = todayKey(), cur = range(addDays(t,-13), t).filter(tracked), prev = range(addDays(t,-27), addDays(t,-14)).filter(tracked);
-  const c1 = cur.length ? avg(cur.map(ratio)) : 0, c0 = prev.length ? avg(prev.map(ratio)) : null, d = c0 === null ? null : Math.round((c1-c0)*100);
-  return `<section class="card">
-    <div class="card-head"><div><div class="eyebrow">Performance · ultimi 14 giorni</div><h3 class="card-title">Completamento & ore di studio</h3></div>
-      <div class="row small muted" style="gap:14px"><span class="row" style="gap:6px"><i class="lg-sq" style="background:var(--gold-2)"></i>Studio</span><span class="row" style="gap:6px"><i class="lg-ln" style="background:var(--em)"></i>Completamento</span></div></div>
-    <div class="mstats"><div><span class="eyebrow">Media completamento</span><b>${Math.round(c1*100)}%</b></div><div><span class="eyebrow">Studio 14 giorni</span><b>${N1.format(sum(cur.map(studySecs))/3600)} h</b></div><div><span class="eyebrow">Vs 14 giorni prima</span><b class="${d===null?'':d>=0?'em':'ruby'}">${d===null?'—':(d>0?'+':'')+d+' pt'}</b></div></div>
-    <div class="chart-box tall mt-18"><canvas id="cHomeTrend"></canvas></div>
-  </section>`;
 }
 function finChartCard(){
   const t = todayKey(), [ms, me] = monthBounds(0), inc = incomeIn(ms, me), y = t.slice(0,4);
@@ -1876,14 +2234,7 @@ function finChartCard(){
 }
 function drawHomeCharts(){
   chartDefaults();
-  const PL = pal(), t = todayKey(), keys = range(addDays(t,-13), t);
-  const labels = keys.map(k => fmtDate(k,{day:'numeric', month:'short'}).replace('.',''));
-  const bs = baseScales({ticks:{callback:v => v+'h', maxTicksLimit:5, padding:8}});
-  mkChart('cHomeTrend', {type:'bar', data:{labels, datasets:[
-    {type:'line', label:'Completamento', data:keys.map(k => tracked(k) ? Math.round(ratio(k)*100) : null), yAxisID:'y1', borderColor:PL.s, borderWidth:2, tension:.35, fill:true, backgroundColor:gradFill(rg(PL.sRgb,.18), rg(PL.sRgb,0)), pointRadius:2.5, pointBackgroundColor:PL.s2, pointBorderWidth:0, spanGaps:true, order:1},
-    {label:'Ore di studio', data:keys.map(k => +(studySecs(k)/3600).toFixed(2)), yAxisID:'y', backgroundColor:gradFill(PL.a2, rg(PL.aRgb,.25)), borderRadius:5, maxBarThickness:22, order:2}]},
-    options:{interaction:{mode:'index', intersect:false}, scales:{x:bs.x, y:bs.y, y1:{position:'right', min:0, max:100, grid:{display:false}, border:{display:false}, ticks:{callback:v => v+'%', maxTicksLimit:5}}},
-      plugins:{tooltip:{callbacks:{label:c => c.dataset.yAxisID === 'y1' ? ` Completamento: ${c.raw ?? '—'}%` : ` Studio: ${N1.format(c.raw)} h`}}}}});
+  const PL = pal();
   const months = []; for (let i=5; i>=0; i--){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); months.push(ymd(d).slice(0,7)); }
   const inc = months.map(mk => incomeIn(mk+'-01', mk+'-31')), cst = months.map(mk => mk >= S.createdAt.slice(0,7) ? +subsCostForMonth(mk).toFixed(2) : 0);
   mkChart('cHomeFin', {type:'bar', data:{labels:months.map(mk => cap(fmtDate(mk+'-01',{month:'short'}).replace('.',''))), datasets:[
@@ -1891,6 +2242,376 @@ function drawHomeCharts(){
     {label:'Abbonamenti', data:cst, backgroundColor:rg(PL.rRgb,.7), borderRadius:6, maxBarThickness:30, order:3},
     {type:'line', label:'Netto', data:inc.map((v,i) => +(v-cst[i]).toFixed(2)), borderColor:PL.a2, borderWidth:2, cubicInterpolationMode:'monotone', pointRadius:3, pointBackgroundColor:PL.a2, order:1}]},
     options:{scales:baseScales({ticks:{callback:v => EUR0.format(v), maxTicksLimit:5, padding:8}}), interaction:{mode:'index', intersect:false}, plugins:{tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${EUR.format(c.raw)}`}}}}});
+}
+
+/* ---- Studio · Command Center: il grafico principale della Home ---- */
+const SC_RANGES = [7, 14, 30, 90];
+const scRange = () => SC_RANGES.includes(+S.ui.scRange) ? +S.ui.scRange : 30;
+const scHide = {ma:false, avg:false};
+const scSync = {idx:null, D:null, pinned:false};
+let scAnimate = true;
+const hOf = k => studySecs(k) / 3600;
+const weekdayIx = k => (parse(k).getDay() + 6) % 7;
+function studyStreak(){
+  const t = todayKey(); let k = studySecs(t) >= STUDY_GOAL ? t : addDays(t,-1), n = 0;
+  while (k >= S.createdAt && studySecs(k) >= STUDY_GOAL){ n++; k = addDays(k,-1); }
+  return n;
+}
+function studyBestStreak(){ let best = 0, cur = 0; for (const k of range(S.createdAt, todayKey())){ if (studySecs(k) >= STUDY_GOAL){ cur++; best = Math.max(best, cur); } else cur = 0; } return best; }
+function scData(n){
+  const t = todayKey(), keys = range(addDays(t, -(n-1)), t), prev = range(addDays(t, -(2*n-1)), addDays(t, -n)).filter(tracked), tk = keys.filter(tracked);
+  const hrs = keys.map(k => tracked(k) ? +hOf(k).toFixed(3) : null);
+  const ma = keys.map(k => { const w = range(addDays(k,-6), k).filter(tracked); return tracked(k) && w.length ? +(avg(w.map(hOf))).toFixed(3) : null; });
+  const comp = keys.map(k => tracked(k) ? Math.round(ratio(k)*100) : null);
+  const km = keys.map(k => tracked(k) && (+(S.days[k]?.km)||0) > 0 ? +S.days[k].km : null);
+  const tot = sum(tk.map(hOf)), ptot = prev.length ? sum(prev.map(hOf)) : null;
+  // media del periodo: oggi conta solo se l'obiettivo è già raggiunto (la giornata è ancora aperta)
+  const closed = tk.filter(k => k !== t || studySecs(k) >= STUDY_GOAL);
+  const avgH = closed.length ? avg(closed.map(hOf)) : 0, pclosed = prev.length ? avg(prev.map(hOf)) : null;
+  const goalDays = tk.filter(k => studySecs(k) >= STUDY_GOAL).length;
+  const best = tk.reduce((b, k) => b === null || hOf(k) > hOf(b) ? k : b, null);
+  const [ms, me] = monthBounds(0), monthSoFar = sum(range(ms, t).filter(tracked).map(hOf));
+  const pace14 = range(addDays(t,-14), addDays(t,-1)).filter(tracked), pace = pace14.length ? avg(pace14.map(hOf)) : avgH;
+  const proj = monthSoFar + Math.max(0, pace) * diffDays(t, me) + (studySecs(t) < STUDY_GOAL ? Math.max(0, pace - hOf(t)) : 0);
+  return {n, t, keys, hrs, ma, comp, km, tk, tot, ptot, avgH, pavg:pclosed, goalDays, best, monthSoFar, proj,
+    cons: closed.length ? Math.round(tk.filter(k => studySecs(k) >= STUDY_GOAL).length / Math.max(1, closed.length) * 100) : 0,
+    closedN: closed.length, streak: studyStreak(), bestStreak: studyBestStreak()};
+}
+function scHeat(){
+  const t = todayKey(), W = 18, end = addDays(t, 6 - weekdayIx(t)), start = addDays(end, -(W*7 - 1));
+  const lv = k => { const h = hOf(k); return h <= 0 ? 0 : h < 1 ? 1 : h < 2 ? 2 : h < 3 ? 3 : 4; };
+  const cells = range(start, end).map(k => {
+    if (k > t) return '<i class="fut"></i>';
+    if (!tracked(k)) return '<i class="na"></i>';
+    return `<i class="l${lv(k)} ${k===t?'td':''}" title="${cap(fmtDate(k,{weekday:'short', day:'numeric', month:'short'}))}: ${fmtDur(studySecs(k))}"></i>`;
+  });
+  let lastW = -9;
+  const months = Array.from({length:W}, (_, w) => { const a = addDays(start, w*7), b = addDays(a, 6), first = range(a, b).find(k => k.endsWith('-01'));
+    if (!first || w - lastW < 3) return '<span></span>'; lastW = w; return `<span>${cap(fmtDate(first,{month:'short'}).replace('.',''))}</span>`; });
+  return `<div class="sc-heat-m">${months.join('')}</div><div class="sc-heat">${cells.join('')}</div>`;
+}
+function scWeekday(){
+  const t = todayKey(), ks = range(addDays(t,-56), addDays(t,-1)).filter(tracked), buckets = Array.from({length:7}, () => []);
+  ks.forEach(k => buckets[weekdayIx(k)].push(hOf(k)));
+  const av = buckets.map(b => b.length ? avg(b) : null), mx = Math.max(STUDY_GOAL/3600, ...av.map(v => v || 0)), bi = av.reduce((b, v, i) => v !== null && (b < 0 || v > av[b]) ? i : b, -1);
+  const names = ['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
+  return `<div class="sc-wd">${av.map((v, i) => `<div class="sc-wd-c ${i===bi?'best':''} ${i===weekdayIx(t)?'now':''}" title="${names[i]}: ${v===null?'nessun dato':fmtDur(v*3600)+' di media'}"><b>${v===null?'—':N1.format(v)}</b><span class="sc-wd-b"><i style="height:${v ? Math.max(4, v/mx*100) : 0}%"></i><u style="bottom:${STUDY_GOAL/3600/mx*100}%"></u></span><small>${names[i].slice(0,3)}</small></div>`).join('')}</div>
+    <p class="sc-wd-note">${bi < 0 ? 'Il profilo si completa dopo qualche giorno di dati.' : `Il tuo giorno più forte è il <b>${names[bi].toLowerCase()}</b> (${fmtDur(av[bi]*3600)} di media).`}</p>`;
+}
+const rangeSeg = n => `<div class="seg sc-range" role="tablist" aria-label="Periodo dei grafici">${SC_RANGES.map(r => `<button role="tab" class="${r===n?'on':''}" aria-selected="${r===n}" data-act="sc-range" data-v="${r}">${r===90 ? '3M' : r + 'G'}</button>`).join('')}</div>`;
+const ccLabels = (keys, n) => keys.map(k => n <= 7 ? cap(fmtDate(k,{weekday:'short'}).replace('.','')) + ' ' + parse(k).getDate() : fmtDate(k,{day:'numeric', month:'short'}).replace('.',''));
+
+/* ---- Grafico principale: progressi generali + studio, acqua e microlearning ---- */
+const MET = {study:'#ff9f5a', water:'#4fb6ff', micro:'#b48cff'};
+const MET_RGB = {study:'255,159,90', water:'79,182,255', micro:'180,140,255'};
+const gpHide = {study:false, water:false, micro:false};
+const GP_DS = {study:2, water:3, micro:4};
+const waterOf = k => { const d = S.days[k]; return d && d.water !== null && d.water !== undefined && d.water !== '' ? +d.water : null; };
+const microOf = k => (S.days[k]?.learnItems || []).length;
+const waterTracked = k => tracked(k) && k >= (S.waterSince || S.createdAt);
+function gpData(n){
+  const t = todayKey(), keys = range(addDays(t, -(n-1)), t), tk = keys.filter(tracked), prev = range(addDays(t, -(2*n-1)), addDays(t, -n)).filter(tracked);
+  const top = v => Math.min(150, v);
+  const base = tk.length > 1 ? tk.filter(k => k !== t) : tk; // la giornata di oggi è ancora aperta
+  const wDays = tk.filter(waterTracked), wLog = wDays.map(waterOf).filter(v => v !== null);
+  return {n, t, keys, tk,
+    comp: keys.map(k => tracked(k) ? Math.round(ratio(k)*100) : null),
+    idx: keys.map(k => { const w = range(addDays(k,-6), k).filter(tracked); return tracked(k) && w.length ? Math.round(avg(w.map(ratio))*100) : null; }),
+    study: keys.map(k => tracked(k) ? +top(studySecs(k)/STUDY_GOAL*100).toFixed(1) : null),
+    water: keys.map(k => waterTracked(k) ? +top((waterOf(k)||0)/WATER_GOAL*100).toFixed(1) : null),
+    micro: keys.map(k => tracked(k) && microOf(k) ? top(75 + microOf(k)*25) : null),
+    avgC: base.length ? avg(base.map(ratio))*100 : 0, pavg: prev.length ? avg(prev.map(ratio))*100 : null,
+    wins: tk.filter(isWin).length, perfect: tk.filter(isPerfect).length,
+    studyAvg: base.length ? avg(base.map(hOf)) : 0, studyOk: tk.filter(k => studySecs(k) >= STUDY_GOAL).length,
+    waterAvg: wLog.length ? avg(wLog) : null, waterOk: wDays.filter(k => (waterOf(k)||0) >= WATER_GOAL).length, waterN: wDays.length,
+    microTot: sum(tk.map(microOf)), microDays: tk.filter(k => microOf(k) > 0).length};
+}
+function gpCard(){
+  const n = scRange(), G = gpData(n), t = G.t;
+  const dd = G.pavg === null ? null : Math.round(G.avgC - G.pavg);
+  const delta = dd === null ? '<span class="sc-delta flat">primo periodo</span>' : `<span class="sc-delta ${dd >= 0 ? 'up' : 'down'}">${dd >= 0 ? '▲' : '▼'} ${Math.abs(dd)} pt</span>`;
+  const tile = (key, lab, val, sub, pct) => `<button class="gp-k ${gpHide[key] ? 'off' : ''}" style="--k:${MET[key]};--k-rgb:${MET_RGB[key]}" data-act="gp-toggle" data-v="${key}" aria-pressed="${!gpHide[key]}" title="Mostra o nascondi nel grafico"><span class="gp-k-l"><i></i>${lab}</span><b>${val}</b><small>${sub}</small><span class="gp-k-m"><i style="width:${clamp(pct, 0, 100)}%"></i></span></button>`;
+  return `<section class="card card-gold gp-card" id="gpCC" aria-label="Progressi generali">
+    <div class="sc-head">
+      <div class="sc-title">
+        <div class="eyebrow sc-eb"><span class="sc-dot"></span>Command Center · Progressi generali</div>
+        <div class="sc-big"><span class="sc-num num" data-count="${Math.round(G.avgC)}" data-int>${Math.round(G.avgC)}</span><span class="sc-unit">% completamento medio</span>${delta}</div>
+        <div class="sc-sub">${plural(G.wins,'giornata vincente','giornate vincenti')} e ${G.perfect} perfett${G.perfect === 1 ? 'a' : 'e'} negli ultimi ${n} giorni</div>
+        <div class="gp-today"><span>Oggi</span><div class="bar ${isWin(t) ? 'done' : ''}"><i style="width:${Math.round(ratio(t)*100)}%"></i></div><b>${score(t)}/${total(t)} · ${Math.round(ratio(t)*100)}%</b></div>
+      </div>
+      ${rangeSeg(n)}
+    </div>
+    <div class="gp-keys" role="group" aria-label="Metriche chiave">
+      ${tile('study', 'Ore di studio', `${fmtDur(G.studyAvg*3600)}<em>al giorno</em>`, `${G.studyOk} giorni con 2h+ · obiettivo 2h`, G.studyAvg/2*100)}
+      ${tile('water', 'Acqua', G.waterAvg === null ? '—' : `${N1.format(G.waterAvg)}<em>L al giorno</em>`, G.waterAvg === null ? 'registra i litri nel tracker · obiettivo 3 L' : `${G.waterOk}/${G.waterN} giorni da 3 L`, (G.waterAvg||0)/WATER_GOAL*100)}
+      ${tile('micro', 'Microlearning', `${G.microTot}<em>${G.microTot === 1 ? 'pillola' : 'pillole'}</em>`, `${G.microDays}/${G.tk.length} giorni con un apprendimento`, G.microDays/Math.max(1, G.tk.length)*100)}
+    </div>
+    <div class="sc-plot gp-plot" id="gpPlot">
+      <div class="sc-legend">
+        <span class="sc-lg gp-legend-main"><i class="sw-bar"></i>Progresso generale del giorno</span>
+        <span class="sc-lg gp-legend-main"><i class="sw-idx"></i>Indice 7 giorni</span>
+        <span class="sc-lg"><i class="sw-m" style="--k:${MET.study}"></i>Studio</span>
+        <span class="sc-lg"><i class="sw-m" style="--k:${MET.water}"></i>Acqua</span>
+        <span class="sc-lg"><i class="sw-b" style="--k:${MET.micro}"></i>Microlearning</span>
+        <span class="sc-lg"><i class="sw-goal"></i>100% obiettivo</span>
+      </div>
+      <div class="gp-main"><canvas id="cGeneral" role="img" aria-label="Progresso giornaliero delle task con ore di studio, acqua e microlearning in percentuale dell'obiettivo, ultimi ${n} giorni"></canvas></div>
+      <div class="sc-tip" id="gpTip" hidden></div>
+    </div>
+  </section>`;
+}
+function gpTipHTML(i){
+  const G = scSync.G, k = G.keys[i]; if (!k) return '';
+  const date = cap(fmtDate(k,{weekday:'short', day:'numeric', month:'short'}).replace('.',''));
+  if (!tracked(k)) return `<div class="sc-tip-h"><b>${date}</b></div><div class="small muted">Prima dell'inizio del monitoraggio.</div>`;
+  const sc = score(k), n = total(k), pct = Math.round(sc/n*100), st = status(k), w = waterOf(k), items = S.days[k]?.learnItems || [];
+  const badge = isPerfect(k) ? '<span class="sc-b ok">perfetta</span>' : isWin(k) ? '<span class="sc-b ok">vincente</span>' : k === G.t ? '<span class="sc-b live">in corso</span>' : '<span class="sc-b mid">sotto soglia</span>';
+  const row = (key, lab, val, p) => `<div class="sc-tip-r"><span><i class="gp-dot" style="--k:${MET[key]}"></i>${lab}</span><b>${val}${p !== null ? ` <small>${Math.round(p)}%</small>` : ''}</b></div>`;
+  return `<div class="sc-tip-h"><b>${date}</b>${badge}</div>
+    <div class="sc-tip-v num">${pct}%<small> · ${sc}/${n} task</small></div>
+    <div class="bar thin ${isWin(k) ? 'done' : ''}"><i style="width:${pct}%"></i></div>
+    ${row('study', 'Studio', fmtDur(studySecs(k)), studySecs(k)/STUDY_GOAL*100)}
+    ${waterTracked(k) ? row('water', 'Acqua', w === null ? 'non registrata' : `${N1.format(w)} L`, w === null ? null : w/WATER_GOAL*100) : row('water', 'Acqua', 'non tracciata', null)}
+    ${row('micro', 'Microlearning', items.length ? plural(items.length, 'pillola', 'pillole') : 'nessuna', items.length ? items.length*100 : 0)}
+    ${items.length ? `<div class="sc-tip-x">«${esc(items[items.length-1].title || items[items.length-1].label || '')}»</div>` : ''}
+    <div class="sc-tip-r sep"><span>Indice 7 giorni</span><b>${G.idx[i] === null ? '—' : G.idx[i] + '%'}</b></div>
+    <div class="sc-tip-hb">${habitsFor(k).map(h => `<span class="${st[h.id] ? 'ok' : ''}" title="${h.name}: ${st[h.id] ? 'fatto' : 'non fatto'}">${icon(h.icon)}</span>`).join('')}</div>`;
+}
+function drawGeneral(){
+  const plot = $('#gpPlot'); if (!plot || !window.Chart) return;
+  chartDefaults();
+  const PL = pal(), n = scRange(), G = gpData(n), last = G.keys.length - 1;
+  scSync.G = G;
+  // con accento chiaro (Navy, Titanium) l'indice usa il colore secondario per staccarsi dalle barre
+  const IX = ['navy','titanium'].includes(currentTheme()) ? {c:PL.s, rgb:PL.sRgb} : {c:'#ffffff', rgb:'255,255,255'};
+  const reduce = !scAnimate || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dim = (i, a) => scSync.idx !== null && scSync.idx !== i ? a * .35 : a;
+  const band = ccBand(PL, G.keys.length), refs = ccRefs(PL, [{v:100, c:PL.s2, l:'Obiettivo 100%', dash:[5,4]}]);
+  const glow = {id:'gpGlow', beforeDatasetDraw(ch, a){ const g = ch.data.datasets[a.index].glow; if (g){ ch.ctx.save(); ch.ctx.shadowColor = g; ch.ctx.shadowBlur = 12; ch.ctx.shadowOffsetY = 3; } }, afterDatasetDraw(ch, a){ if (ch.data.datasets[a.index].glow) ch.ctx.restore(); }};
+  const barFill = ctx => {
+    const v = ctx.raw, i = ctx.dataIndex, a = ctx.chart.chartArea, k = G.keys[i]; if (v === null || v === undefined) return 'transparent';
+    const s = isPerfect(k) ? 1 : isWin(k) ? .98 : .74;
+    if (!a) return rg(PL.aRgb, s);
+    const g = ctx.chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, rg(PL.aRgb, dim(i, s))); g.addColorStop(1, rg(PL.aRgb, dim(i, s * .42))); return g;
+  };
+  const lone = data => ctx => { const i = ctx.dataIndex; return data[i] !== null && (i === 0 || data[i-1] === null) && (i === last || data[i+1] === null) ? 3 : 0; };
+  const line = (key, data) => ({type:'line', label:key, data, borderColor:`rgba(${MET_RGB[key]},.7)`, borderWidth:1.5, cubicInterpolationMode:'monotone', spanGaps:false, fill:false, hidden:gpHide[key],
+    pointRadius:lone(data), pointBackgroundColor:MET[key], pointBorderWidth:0, glow:`rgba(${MET_RGB[key]},.22)`, order:3,
+    segment:{borderColor: () => `rgba(${MET_RGB[key]},${scSync.idx !== null ? .45 : .7})`}});
+  const anim = reduce ? false : {duration:1000, easing:'easeOutQuart'};
+  const anims = reduce ? {} : {y:{from: ctx => ctx.type === 'data' && ctx.chart.scales.y ? ctx.chart.scales.y.getPixelForValue(0) : undefined, delay: ctx => ctx.type === 'data' && ctx.mode === 'default' ? (ctx.datasetIndex === 0 ? ctx.dataIndex * Math.min(26, 620/n) : 260 + ctx.datasetIndex * 90) : 0}};
+  mkChart('cGeneral', {type:'bar', data:{labels:ccLabels(G.keys, n), datasets:[
+      {label:'Progresso', data:G.comp, backgroundColor:barFill, borderRadius:{topLeft:5, topRight:5, bottomLeft:1, bottomRight:1}, borderSkipped:false, categoryPercentage: n > 30 ? .86 : .74, barPercentage:.92, maxBarThickness:36, order:5},
+      {type:'line', label:'Indice 7g', data:G.idx, borderColor:IX.c, borderWidth:3.4, cubicInterpolationMode:'monotone', spanGaps:true, pointRadius:0, fill:'origin', backgroundColor:gradFill(rg(IX.rgb, .16), rg(IX.rgb, 0)), glow:rg(IX.rgb, .55), order:1},
+      line('study', G.study), line('water', G.water),
+      {type:'line', label:'micro', data:G.micro, showLine:false, hidden:gpHide.micro, order:3,
+        pointRadius: ctx => { const k = G.keys[ctx.dataIndex], a = ctx.chart.chartArea, slot = a ? (a.right - a.left) / G.keys.length : 20; return k && microOf(k) ? Math.max(2.2, Math.min(slot * .4, 8, 3.4 + microOf(k) * 1.3)) : 0; },
+        pointBackgroundColor: ctx => `rgba(${MET_RGB.micro},${dim(ctx.dataIndex, .72)})`, pointBorderColor: 'rgba(255,255,255,.3)', pointBorderWidth:1, pointStyle:'circle'},
+    ]},
+    plugins:[band, glow, refs, {id:'gpVals', afterDatasetsDraw(ch){
+      const meta = ch.getDatasetMeta(0), cx = ch.ctx, a = ch.chartArea; if (!a) return;
+      const best = G.comp.reduce((b, v, i) => v !== null && (b < 0 || v > G.comp[b]) ? i : b, -1);
+      meta.data.forEach((el, i) => {
+        const v = G.comp[i]; if (v === null || v === undefined) return;
+        const show = n <= 14 || i === last || i === best; if (!show) return;
+        const today = i === last, txt = v + '%';
+        cx.save(); cx.font = `${today ? 800 : 700} ${n <= 7 ? 12 : 10.5}px Inter, system-ui, sans-serif`; cx.textAlign = 'center'; cx.textBaseline = 'bottom';
+        const y = Math.max(a.top + 12, el.y - 5);
+        if (today){ const w = cx.measureText(txt).width + 12, h = 17; cx.fillStyle = PL.a2; cx.beginPath(); cx.roundRect ? cx.roundRect(el.x - w/2, y - h, w, h, 6) : cx.rect(el.x - w/2, y - h, w, h); cx.fill(); cx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--on-a').trim() || '#000'; cx.fillText(txt, el.x, y - 2.5); }
+        else { cx.fillStyle = rg(PL.aRgb, scSync.idx !== null && scSync.idx !== i ? .35 : .95); cx.fillText(txt, el.x, y); }
+        cx.restore();
+      });
+    }}],
+    options:{events:[], animation:anim, animations:anims, layout:{padding:{top:8, right:2}}, plugins:{legend:{display:false}, tooltip:{enabled:false}},
+      scales:{x:ccX(PL, n, last), y:{min:0, max:165, afterFit:sc => { sc.width = 38; }, grid:{color:rg(PL.aRgb, .07), drawTicks:false}, border:{display:false}, ticks:{stepSize:50, padding:8, callback:v => v > 150 ? '' : v + '%'}}}}});
+  bindCC('gp');
+}
+function ccX(PL, n, last){ return {offset:true, grid:{display:false}, border:{display:false}, ticks:{maxRotation:0, autoSkip:true, autoSkipPadding:14, maxTicksLimit: n <= 14 ? n : 8, padding:6, color: ctx => ctx.index === last ? PL.a2 : PL.muted, font: ctx => ({weight: ctx.index === last ? '700' : '500'})}}; }
+function ccBand(PL, len){ return {id:'ccBand', beforeDatasetsDraw(ch){
+  const i = scSync.idx, a = ch.chartArea; if (i === null || !a) return;
+  const x = ch.scales.x.getPixelForValue(i), w = Math.max(6, (a.right - a.left) / len), cx = ch.ctx;
+  cx.save(); cx.fillStyle = rg(PL.aRgb, .07); cx.fillRect(x - w/2, a.top, w, a.bottom - a.top);
+  cx.strokeStyle = rg(PL.aRgb, .45); cx.setLineDash([3, 3]); cx.lineWidth = 1; cx.beginPath(); cx.moveTo(Math.round(x) + .5, a.top); cx.lineTo(Math.round(x) + .5, a.bottom); cx.stroke(); cx.restore();
+}}; }
+function ccRefs(PL, items){ return {id:'ccRefs', afterDatasetsDraw(ch){
+  const a = ch.chartArea, y = ch.scales.y, cx = ch.ctx; if (!a) return;
+  let prevY = null;
+  (typeof items === 'function' ? items() : items).forEach(it => {
+    const py = Math.round(y.getPixelForValue(it.v)) + .5;
+    cx.save(); cx.strokeStyle = it.c; cx.globalAlpha = .75; cx.setLineDash(it.dash); cx.lineWidth = 1.2;
+    cx.beginPath(); cx.moveTo(a.left, py); cx.lineTo(a.right, py); cx.stroke(); cx.globalAlpha = 1; cx.setLineDash([]);
+    cx.font = '600 10px Inter, system-ui, sans-serif'; const tw = cx.measureText(it.l).width + 12, h = 17;
+    let ly = py - h - 3; if (prevY !== null && Math.abs(ly - prevY) < h + 2) ly = py + 3; if (ly < a.top) ly = py + 3;
+    const lx = a.right - tw;
+    cx.fillStyle = PL.tip; cx.strokeStyle = it.c; cx.lineWidth = 1; cx.globalAlpha = .96;
+    cx.beginPath(); cx.roundRect ? cx.roundRect(lx, ly, tw, h, 6) : cx.rect(lx, ly, tw, h); cx.fill(); cx.globalAlpha = .55; cx.stroke(); cx.globalAlpha = 1;
+    cx.fillStyle = it.c; cx.textBaseline = 'middle'; cx.fillText(it.l, lx + 6, ly + h/2 + .5); cx.restore(); prevY = ly;
+  });
+}}; }
+const CC = {
+  gp:{chart:'cGeneral', plot:'#gpPlot', tip:'#gpTip', html: i => gpTipHTML(i)},
+  sc:{chart:'cStudy', plot:'#scPlot', tip:'#scTip', html: i => scTipHTML(i)},
+};
+function bindCC(src){
+  const plot = $(CC[src].plot); if (!plot) return;
+  const move = e => { const c = charts[CC[src].chart]; if (!c || !c.chartArea) return;
+    const r = c.canvas.getBoundingClientRect(), x = e.clientX - r.left, a = c.chartArea;
+    if (x < a.left - 4 || x > a.right + 4){ if (e.pointerType !== 'touch') scSetIndex(null); return; }
+    scSetIndex(clamp(Math.round(c.scales.x.getValueForPixel(x)), 0, c.data.labels.length - 1), src); };
+  plot.addEventListener('pointermove', move);
+  plot.addEventListener('pointerdown', move);
+  plot.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') scSetIndex(null); });
+}
+
+/* ---- Grafico secondario: solo studio ---- */
+function studyCard(){
+  const n = scRange(), D = scData(n), t = D.t;
+  const dd = D.ptot === null ? null : D.tot - D.ptot, dp = D.ptot ? Math.round(dd / D.ptot * 100) : null;
+  const delta = dd === null ? '<span class="sc-delta flat">primo periodo</span>' : `<span class="sc-delta ${dd >= 0 ? 'up' : 'down'}">${dd >= 0 ? '▲' : '▼'} ${N1.format(Math.abs(dd))} h${dp !== null ? ` · ${dd >= 0 ? '+' : '−'}${Math.abs(dp)}%` : ''}</span>`;
+  const avgD = D.pavg === null ? '' : (() => { const x = (D.avgH - D.pavg) * 3600; return `<span class="sc-chg ${x >= 0 ? 'up' : 'down'}">${x >= 0 ? '+' : '−'}${fmtDur(Math.abs(x))}</span>`; })();
+  const st = (lab, val, sub, extra='') => `<div class="sc-st"><span class="sc-st-l">${lab}</span><b>${val}</b><small>${sub}</small>${extra}</div>`;
+  const today = studySecs(t);
+  return `<section class="card sc-card" id="studyCC" aria-label="Analisi dello studio">
+    <div class="sc-head">
+      <div class="sc-title">
+        <div class="eyebrow sc-eb"><span class="sc-dot ${S.timer ? 'on' : ''}"></span>Focus studio · analisi dedicata</div>
+        <div class="sc-big"><span class="sc-num num" data-count="${D.tot.toFixed(2)}" data-live="sc-total">${N1.format(D.tot)}</span><span class="sc-unit">ore</span>${delta}</div>
+        <div class="sc-sub">Ultimi ${n} giorni${D.ptot === null ? '' : ` · vs ${N1.format(D.ptot)} h dei ${n} precedenti`} · oggi <b data-live="sc-today">${fmtDur(today)}</b></div>
+      </div>
+      ${rangeSeg(n)}
+    </div>
+    <div class="sc-stats">
+      ${st('Media al giorno', fmtDur(D.avgH*3600), `vs periodo prec. ${avgD || '—'}`)}
+      ${st('Costanza', `${D.cons}<em>%</em>`, `${D.goalDays}/${D.closedN || D.tk.length} giorni con 2h+`, `<span class="sc-meter"><i style="width:${D.cons}%"></i></span>`)}
+      ${st('Serie studio', `${D.streak}<em>${D.streak === 1 ? 'giorno' : 'giorni'}</em>`, `record ${D.bestStreak} ${D.bestStreak === 1 ? 'giorno' : 'giorni'}`)}
+      ${st('Proiezione mese', `${Math.round(D.proj)}<em>h</em>`, `${N1.format(D.monthSoFar)} h finora`)}
+    </div>
+    <div class="sc-plot" id="scPlot">
+      <div class="sc-legend" role="group" aria-label="Serie del grafico">
+        <span class="sc-lg"><i class="sw-bar"></i>Ore di studio</span>
+        <span class="sc-lg"><i class="sw-bar lo"></i>Sotto le 2h</span>
+        <button class="sc-lg tg ${scHide.ma ? 'off' : ''}" data-act="sc-toggle" data-v="ma" aria-pressed="${!scHide.ma}"><i class="sw-line"></i>Media mobile 7g</button>
+        <button class="sc-lg tg ${scHide.avg ? 'off' : ''}" data-act="sc-toggle" data-v="avg" aria-pressed="${!scHide.avg}"><i class="sw-dot"></i>Media periodo</button>
+        <span class="sc-lg"><i class="sw-goal"></i>Obiettivo 2h</span>
+      </div>
+      <div class="sc-main"><canvas id="cStudy" role="img" aria-label="Ore di studio al giorno negli ultimi ${n} giorni"></canvas></div>
+      <div class="sc-tip" id="scTip" hidden></div>
+    </div>
+    <div class="sc-foot">
+      <div class="sc-fcol"><div class="sc-fh"><span class="eyebrow">Costanza · 18 settimane</span><span class="sc-hl">meno<i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i>più</span></div>${scHeat()}</div>
+      <div class="sc-fcol"><div class="sc-fh"><span class="eyebrow">Profilo settimanale</span><span class="small muted">ore medie · 8 settimane</span></div>${scWeekday()}</div>
+    </div>
+  </section>`;
+}
+function scTipHTML(i){
+  const D = scSync.D, k = D.keys[i]; if (!k) return '';
+  if (!tracked(k)) return `<div class="sc-tip-h"><b>${cap(fmtDate(k,{weekday:'short', day:'numeric', month:'short'}).replace('.',''))}</b></div><div class="small muted">Prima dell'inizio del monitoraggio.</div>`;
+  const s = studySecs(k), ok = s >= STUDY_GOAL, isT = k === D.t, stt = status(k), day = S.days[k] || blankDay();
+  const badge = ok ? '<span class="sc-b ok">2h ✓</span>' : isT ? '<span class="sc-b live">in corso</span>' : s > 0 ? '<span class="sc-b mid">sotto 2h</span>' : '<span class="sc-b no">nessuno</span>';
+  const vs = (s/3600 - D.avgH) * 3600;
+  const hs = habitsFor(k).filter(h => h.id !== 'study');
+  const vals = [(+day.km || 0) ? `${N1.format(+day.km)} km` : '', (+day.sleep || 0) ? `${N1.format(+day.sleep)} h sonno` : '', day.social !== null && day.social !== '' && day.social !== undefined ? `${day.social} min social` : ''].filter(Boolean).join(' · ');
+  return `<div class="sc-tip-h"><b>${cap(fmtDate(k,{weekday:'short', day:'numeric', month:'short'}).replace('.',''))}</b>${badge}</div>
+    <div class="sc-tip-v num">${fmtDur(s)}</div>
+    <div class="bar thin ${ok ? 'done' : ''}"><i style="width:${Math.min(100, s/STUDY_GOAL*100)}%"></i></div>
+    <div class="sc-tip-r"><span>Media mobile 7g</span><b>${D.ma[i] === null ? '—' : fmtDur(D.ma[i]*3600)}</b></div>
+    <div class="sc-tip-r"><span>Vs media periodo</span><b class="${vs >= 0 ? 'up' : 'down'}">${vs >= 0 ? '+' : '−'}${fmtDur(Math.abs(vs))}</b></div>
+    <div class="sc-tip-r sep"><span>Task completate</span><b>${score(k)}/${total(k)}${isWin(k) ? ' <i class="sc-win">vincente</i>' : ''}</b></div>
+    <div class="sc-tip-hb">${hs.map(h => `<span class="${stt[h.id] ? 'ok' : ''}" title="${h.name}: ${stt[h.id] ? 'fatto' : 'non fatto'}">${icon(h.icon)}</span>`).join('')}</div>
+    ${vals ? `<div class="sc-tip-x">${vals}</div>` : ''}`;
+}
+function scSetIndex(i, src='sc'){
+  if (i === scSync.idx && src === scSync.src) return;
+  scSync.idx = i; scSync.src = src;
+  Object.entries(CC).forEach(([id, c]) => {
+    const ch = charts[c.chart], plot = $(c.plot), tip = $(c.tip); if (!ch || !plot || !tip) return;
+    ch.update('none');
+    plot.classList.toggle('hover', i !== null);
+    if (i === null || id !== src){ tip.hidden = true; return; }
+    tip.innerHTML = c.html(i); tip.hidden = false;
+    const x = ch.scales.x.getPixelForValue(i) + ch.canvas.offsetLeft, w = tip.offsetWidth, W = plot.clientWidth;
+    tip.style.left = `${x + 16 + w > W ? Math.max(0, x - 16 - w) : x + 16}px`;
+  });
+}
+function drawStudyCC(){
+  const plot = $('#scPlot'); if (!plot || !window.Chart) return;
+  chartDefaults();
+  const PL = pal(), n = scRange(), D = scData(n), goal = STUDY_GOAL/3600, last = D.keys.length - 1;
+  scSync.D = D;
+  const reduce = !scAnimate || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const AXW = 38, fitY = sc => { sc.width = AXW; };
+  const top = Math.max(goal + 1, Math.ceil(Math.max(0, ...D.hrs.map(v => v || 0), ...D.ma.map(v => v || 0)) + .4));
+  const dim = (i, a) => scSync.idx !== null && scSync.idx !== i ? a * .38 : a;
+  const labels = ccLabels(D.keys, n);
+  const band = {id:'scBand', beforeDatasetsDraw(ch){
+    const i = scSync.idx, a = ch.chartArea; if (i === null || !a) return;
+    const x = ch.scales.x.getPixelForValue(i), w = Math.max(6, (a.right - a.left) / D.keys.length), cx = ch.ctx;
+    cx.save(); cx.fillStyle = rg(PL.aRgb, .07); cx.fillRect(x - w/2, a.top, w, a.bottom - a.top);
+    cx.strokeStyle = rg(PL.aRgb, .45); cx.setLineDash([3, 3]); cx.lineWidth = 1; cx.beginPath(); cx.moveTo(Math.round(x) + .5, a.top); cx.lineTo(Math.round(x) + .5, a.bottom); cx.stroke(); cx.restore();
+  }};
+  const refs = {id:'scRefs', afterDatasetsDraw(ch){
+    const a = ch.chartArea, y = ch.scales.y, cx = ch.ctx; if (!a) return;
+    const items = [{v:goal, c:PL.s2, l:'Obiettivo 2h', dash:[5,4]}];
+    if (!scHide.avg && D.avgH > 0) items.push({v:D.avgH, c:PL.text2, l:`Media ${fmtDur(D.avgH*3600)}`, dash:[1.5,3.5]});
+    let prevY = null;
+    items.forEach(it => {
+      const py = Math.round(y.getPixelForValue(it.v)) + .5;
+      cx.save(); cx.strokeStyle = it.c; cx.globalAlpha = .75; cx.setLineDash(it.dash); cx.lineWidth = 1.2;
+      cx.beginPath(); cx.moveTo(a.left, py); cx.lineTo(a.right, py); cx.stroke(); cx.globalAlpha = 1; cx.setLineDash([]);
+      cx.font = '600 10px Inter, system-ui, sans-serif'; const tw = cx.measureText(it.l).width + 12, h = 17;
+      let ly = py - h - 3; if (prevY !== null && Math.abs(ly - prevY) < h + 2) ly = py + 3; if (ly < a.top) ly = py + 3;
+      const lx = a.right - tw;
+      cx.fillStyle = PL.tip; cx.strokeStyle = it.c; cx.lineWidth = 1; cx.globalAlpha = .96;
+      cx.beginPath(); cx.roundRect ? cx.roundRect(lx, ly, tw, h, 6) : cx.rect(lx, ly, tw, h); cx.fill(); cx.globalAlpha = .55; cx.stroke(); cx.globalAlpha = 1;
+      cx.fillStyle = it.c; cx.textBaseline = 'middle'; cx.fillText(it.l, lx + 6, ly + h/2 + .5); cx.restore(); prevY = ly;
+    });
+  }};
+  const glow = {id:'scGlow', beforeDatasetDraw(ch, args){ if (args.index === 1){ ch.ctx.save(); ch.ctx.shadowColor = rg(PL.sRgb, .55); ch.ctx.shadowBlur = 10; ch.ctx.shadowOffsetY = 3; } }, afterDatasetDraw(ch, args){ if (args.index === 1) ch.ctx.restore(); }};
+  const barFill = ctx => {
+    const v = ctx.raw, i = ctx.dataIndex, a = ctx.chart.chartArea; if (v === null || v === undefined) return 'transparent';
+    if (v >= goal){ if (!a) return PL.a; const g = ctx.chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, rg(PL.aRgb, dim(i, 1))); g.addColorStop(1, rg(PL.aRgb, dim(i, .5))); return g; }
+    return rg(PL.aRgb, dim(i, i === last ? .42 : .24));
+  };
+  const anim = reduce ? false : {duration:900, easing:'easeOutQuart'};
+  const anims = reduce ? {} : {y:{from: ctx => ctx.type === 'data' && ctx.chart.scales.y ? ctx.chart.scales.y.getPixelForValue(0) : undefined, delay: ctx => ctx.type === 'data' && ctx.mode === 'default' && ctx.datasetIndex === 0 ? ctx.dataIndex * Math.min(26, 620 / n) : 0}};
+  const xs = (show) => ({offset:true, display:show, grid:{display:false}, border:{display:false}, ticks:{maxRotation:0, autoSkip:true, autoSkipPadding:14, maxTicksLimit: n <= 14 ? n : 8, padding:6, color: ctx => ctx.index === last ? PL.a2 : PL.muted, font: ctx => ({weight: ctx.index === last ? '700' : '500'})}});
+  mkChart('cStudy', {type:'bar', data:{labels, datasets:[
+      {label:'Studio', data:D.hrs, backgroundColor:barFill, borderRadius:{topLeft:5, topRight:5, bottomLeft:1, bottomRight:1}, borderSkipped:false, categoryPercentage: n > 30 ? .84 : .72, barPercentage:.92, maxBarThickness:34, order:3},
+      {type:'line', label:'Media mobile 7g', data:D.ma, borderColor:PL.s, borderWidth:2.2, cubicInterpolationMode:'monotone', pointRadius:0, pointHoverRadius:0, spanGaps:true, fill:false, hidden:scHide.ma, order:1,
+        segment:{borderColor: ctx => scSync.idx !== null ? rg(PL.sRgb, .55) : PL.s}},
+    ]},
+    plugins:[band, glow, refs],
+    options:{events:[], animation:anim, animations:anims, layout:{padding:{top:8, right:2, left:0}},
+      plugins:{legend:{display:false}, tooltip:{enabled:false}},
+      scales:{x:xs(true), y:{min:0, max:top, afterFit:fitY, grid:{color:rg(PL.aRgb, .07), drawTicks:false}, border:{display:false}, ticks:{stepSize: top > 6 ? 2 : 1, padding:8, callback:v => v + 'h'}}}}});
+  bindCC('sc');
+}
+function drawCC(){ scSync.idx = null; scSync.src = null; drawGeneral(); drawStudyCC(); countUp($('#view')); }
+function scLive(){
+  const c = charts.cStudy, D = scSync.D; if (!c || !D) return;
+  const t = D.t, h = +hOf(t).toFixed(3), last = D.keys.length - 1, w = range(addDays(t,-6), t).filter(tracked);
+  D.hrs[last] = h; D.ma[last] = +(avg(w.map(hOf))).toFixed(3);
+  c.data.datasets[0].data[last] = h; c.data.datasets[1].data[last] = D.ma[last]; c.update('none');
+  const tot = sum(D.tk.map(hOf));
+  $$('[data-live="sc-total"]').forEach(x => x.textContent = N1.format(tot));
+  $$('[data-live="sc-today"]').forEach(x => x.textContent = fmtDur(studySecs(t)));
+  const g = charts.cGeneral; if (g){ g.data.datasets[2].data[last] = +Math.min(150, studySecs(t)/STUDY_GOAL*100).toFixed(1); g.update('none'); }
+  if (scSync.idx === last){ const tip = $(CC[scSync.src || 'sc'].tip); if (tip) tip.innerHTML = CC[scSync.src || 'sc'].html(last); }
+}
+function scRefresh(){
+  const card = $('#studyCC'), gp = $('#gpCC'); if (!card && !gp) return;
+  ['cStudy','cGeneral'].forEach(id => { if (charts[id]){ charts[id].destroy(); delete charts[id]; } });
+  if (card) card.outerHTML = studyCard();
+  if (gp) gp.outerHTML = gpCard();
+  drawCC();
+}
+function countUp(root){
+  if (!root || !scAnimate || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  $$('[data-count]', root).forEach(el => {
+    const to = +el.dataset.count, t0 = performance.now(), dur = 900;
+    const int = el.hasAttribute('data-int'), step = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3); el.textContent = int ? Math.round(to * e) : N1.format(to * e); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
 }
 
 /* ---- Compact: intestazione densa e tab ---- */
@@ -1924,17 +2645,18 @@ function renderHome(){
   const L = currentLayout(), D = homeData();
   let body;
   if (L === 'focus') body = `<div class="focus-grid">
-      <div class="stack">${focusPanel(D)}${insightsCard()}</div>
+      <div class="stack">${focusPanel(D)}${gpCard()}${studyCard()}${insightsCard()}</div>
       <aside class="stack">${kpiListCard(D)}${remindersCard()}${finMini()}${crmMini()}</aside>
     </div>`;
   else if (L === 'analytics') body = `<div class="ana-grid">
-      <div class="stack">${trendCard()}${finChartCard()}<div class="grid g-2">${crmMini()}${kpiListCard(D)}</div>${insightsCard()}</div>
+      <div class="stack">${gpCard()}${studyCard()}${finChartCard()}<div class="grid g-2">${crmMini()}${kpiListCard(D)}</div>${insightsCard()}</div>
       <aside class="stack">${trackerPanel(D)}${remindersCard()}</aside>
     </div>`;
-  else if (L === 'compact') body = compactHome(D);
-  else body = `${heroHTML(D)}${kpisHTML(D)}<div class="grid g-2">${finMini()}${crmMini()}</div><div class="grid g-main">${insightsCard()}${remindersCard()}</div>`;
+  else if (L === 'compact') body = compactHome(D).replace('<section class="card compact-tabs">', gpCard() + studyCard() + '<section class="card compact-tabs">');
+  else body = `${heroHTML(D)}${gpCard()}${studyCard()}${kpisHTML(D)}<div class="grid g-2">${finMini()}${crmMini()}</div><div class="grid g-main">${insightsCard()}${remindersCard()}</div>`;
   $('#view').innerHTML = `<div class="home home-${L}">${installBanner()}${body}</div>`;
   if (L === 'analytics') drawHomeCharts();
+  drawCC();
 }
 function quickChange(fn){
   const k = todayKey(), before = score(k);
@@ -2002,6 +2724,15 @@ function habitCard(id){
         <div class="small muted">Sonno della notte appena passata. Inserendo gli orari, le ore si calcolano da sole.</div>`;
       break;
     }
+    case 'water': {
+      const l = +d.water || 0;
+      body = `<div class="water-top"><div class="water-big"><b class="num">${N1.format(l)}</b><span>/ 3 litri</span></div><span class="small ${l >= WATER_GOAL ? 'em' : 'muted'}">${l >= WATER_GOAL ? 'Idratazione completa' : `mancano ${N1.format(WATER_GOAL - l)} L`}</span></div>
+        <div class="glasses" role="group" aria-label="Bicchieri da 250 ml">${Array.from({length:12}, (_, i) => { const f = clamp((l - i*.25) / .25, 0, 1); return `<button class="glass ${f >= 1 ? 'on' : ''}" style="--f:${Math.round(f*100)}%" data-act="water-glass" data-v="${(i+1)*.25}" aria-label="${(i+1)*250} ml" title="${N1.format((i+1)*.25)} L"></button>`; }).join('')}</div>
+        <div class="field"><label for="waterL">Oppure scrivi direttamente i litri</label><div class="stepper"><button class="btn btn-icon" data-act="water-step" data-v="-0.25" aria-label="Meno un bicchiere">${icon('minus')}</button><div class="unit-wrap"><input class="input input-num" id="waterL" type="text" inputmode="decimal" autocomplete="off" maxlength="5" data-field="water" aria-label="Litri d'acqua bevuti oggi" value="${d.water === null || d.water === undefined || d.water === '' ? '' : String(d.water).replace('.', ',')}" placeholder="0,0"><span>litri</span></div><button class="btn btn-icon" data-act="water-step" data-v="0.25" aria-label="Più un bicchiere">${icon('plus')}</button></div></div>
+        <div class="row wrap" style="gap:6px">${[['+250 ml', .25], ['+500 ml', .5], ['+1 L', 1]].map(([lab, v]) => `<button class="btn btn-sm" data-act="water-step" data-v="${v}">${lab}</button>`).join('')}<button class="btn btn-sm ${l >= WATER_GOAL ? 'btn-outline-gold' : ''}" data-act="water-set" data-v="3">3 L</button></div>
+        <div class="small muted">Ogni bicchiere vale 250 ml: toccalo per segnare fin dove sei arrivato, oppure scrivi i litri (es. 1,5).</div>`;
+      break;
+    }
     case 'skin':
       body = `<button class="toggle-big ${d.skin?'on':''}" data-act="skin-toggle" aria-pressed="${d.skin}"><span class="sw"></span><span><b>${d.skin?'Skincare fatta':'Skincare non ancora fatta'}</b><small>${d.skin?'Ottimo: la costanza è tutto.':'Tocca per segnare la routine completata'}</small></span></button>`;
       break;
@@ -2038,6 +2769,12 @@ function refreshChrome(id){
 }
 function replaceCard(id){ const el = $(`.habit[data-h="${id}"]`); if (el){ el.outerHTML = habitCard(id); } refreshChrome(id); }
 let prevScore = null;
+function paintWater(v){
+  const l = +v || 0;
+  $$('.glass').forEach((g, i) => { const f = clamp((l - i*.25) / .25, 0, 1); g.style.setProperty('--f', Math.round(f*100) + '%'); g.classList.toggle('on', f >= 1); });
+  const b = $('.water-big b'); if (b) b.textContent = N1.format(l);
+  const m = $('.water-top>.small'); if (m){ m.textContent = l >= WATER_GOAL ? 'Idratazione completa' : `mancano ${N1.format(WATER_GOAL - l)} L`; m.className = `small ${l >= WATER_GOAL ? 'em' : 'muted'}`; }
+}
 function afterHabitChange(id, replace=true){
   save();
   if (replace) replaceCard(id); else refreshChrome(id);
@@ -2523,11 +3260,13 @@ function periodMetrics(a, b){
   const rts = keys.map(ratio);
   keys.forEach((k,i) => byDow[(parse(k).getDay()+6)%7].push(rts[i]));
   const sleepLogged = keys.map(k => S.days[k]?.sleep).filter(v => v !== null && v !== undefined && v !== '').map(Number);
+  const waterLogged = keys.filter(k => k >= (S.waterSince || S.createdAt)).map(k => S.days[k]?.water).filter(v => v !== null && v !== undefined && v !== '').map(Number);
   return {
     n, keys, rates, den,
     completion: n ? avg(rts) : 0,
     perfect: sts.filter(s => Object.values(s).every(Boolean)).length,
     wins: keys.filter(isWin).length,
+    waterAvg: waterLogged.length ? avg(waterLogged) : null, waterOk: waterLogged.filter(v => v >= WATER_GOAL).length,
     sleepAvg: sleepLogged.length ? avg(sleepLogged) : null, sleepOk: sleepLogged.filter(v => v >= SLEEP_GOAL).length,
     studyH: sum(keys.map(studySecs))/3600,
     km: sum(runs), runDays: runs.length,
@@ -2665,6 +3404,7 @@ function reportHTML(M, P, days){
   p.push(`Nel periodo (${per}) hai tracciato <strong>${plural(M.n,'giorno','giorni')}</strong> con un completamento medio del <strong>${Math.round(M.completion*100)}%</strong>: ${verdict}. ${dc===null?'':dc>0?`Rispetto al periodo precedente sei cresciuto di <strong class="em">${dc} punti</strong>: il sistema sta funzionando.`:dc<0?`Rispetto al periodo precedente hai perso <strong class="ruby">${-dc} punti</strong>: niente drammi, ma serve un reset sulle basi.`:'Sei stabile rispetto al periodo precedente.'} Giornate vincenti (al massimo ${WIN_MISS} task mancate): <strong>${M.wins}</strong>, di cui <strong>${M.perfect}</strong> perfette.`);
   p.push(`<strong>Punto di forza:</strong> ${best.name.toLowerCase()} con il ${Math.round(best.r*100)}% di successo. ${worst.length ? `<strong>Da migliorare:</strong> ${worst.map(h => `${h.name.toLowerCase()} (${Math.round(h.r*100)}%)`).join(', ')}.` : 'Tutte le abitudini sono sopra l\'85%: livello eccellente.'}`);
   p.push(`<strong>Studio:</strong> ${N1.format(M.studyH)} ore, il ${Math.round(studyPct*100)}% del target teorico di ${M.n*2} ore. ${studyPct>=1?'Sei sopra obiettivo: valuta di alzare la qualità con esercizi pratici.':studyPct>=.7?'Vicino al target: un blocco extra nel weekend chiude il gap.':'Sotto target: sposta lo studio nella fascia oraria in cui hai più energia e proteggila.'} <strong>Corsa:</strong> ${N1.format(M.km)} km in ${plural(M.runDays,'uscita','uscite')}${M.runDays?` (media ${N1.format(M.km/M.runDays)} km)`:''}. ${M.socialAvg!==null?`<strong>Social:</strong> media di ${Math.round(M.socialAvg)} minuti al giorno, ${plural(M.socialOver,'giorno','giorni')} oltre il limite.`:''}`);
+  if (M.waterAvg !== null) p.push(`<strong>Idratazione:</strong> media di ${N1.format(M.waterAvg)} L al giorno, ${plural(M.waterOk,'giorno','giorni')} da 3 litri o più. ${M.waterAvg >= WATER_GOAL ? 'Ottimo: concentrazione e recupero ne beneficiano.' : 'Usa una borraccia da 1 litro e riempila tre volte: è il modo più semplice per arrivare a 3 litri.'}`);
   if (M.sleepAvg !== null) p.push(`<strong>Sonno:</strong> media di ${fmtDur(M.sleepAvg*3600)} a notte, ${plural(M.sleepOk,'notte','notti')} da 8 ore o più. ${M.sleepAvg >= SLEEP_GOAL ? 'Base solida: il recupero sostiene studio e corsa.' : M.sleepAvg >= 7 ? 'Quasi a target: anticipa di 30 minuti l\'orario a letto.' : 'Debito di sonno evidente: è la prima leva da sistemare, prima ancora dello studio.'}`);
   if (bestDow && worstDow && bestDow[1] !== worstDow[1]) p.push(`Il tuo giorno migliore è il <strong>${dowNames[bestDow[1]]}</strong> (${Math.round(bestDow[0]*100)}%), il più debole il <strong>${dowNames[worstDow[1]]}</strong> (${Math.round(worstDow[0]*100)}%). Replica la struttura del ${dowNames[bestDow[1]]} — orari, sveglia, ordine delle task — nei giorni più fragili.`);
   const LS = M.learn;
@@ -2954,6 +3694,7 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]'); if (!el) return;
   const act = el.dataset.act, id = el.dataset.id, v = el.dataset.v;
   if (el.tagName === 'SELECT' || el.tagName === 'INPUT') return;
+  haptic();
   const k = viewDay, d = () => getDay(k, true);
   switch(act){
     case 'settings': settingsModal(); break;
@@ -2962,6 +3703,9 @@ document.addEventListener('click', e => {
     case 'layout-set': applyLayout(v); break;
     case 'preset-set': applyPreset(v); break;
     case 'set-tab': setSettingsTab(v); break;
+    case 'sc-range': S.ui.scRange = +v; save(); scRefresh(); break;
+    case 'gp-toggle': { gpHide[v] = !gpHide[v]; el.classList.toggle('off', gpHide[v]); el.setAttribute('aria-pressed', String(!gpHide[v])); const c = charts.cGeneral; if (c){ c.setDatasetVisibility(GP_DS[v], !gpHide[v]); c.update(); } break; }
+    case 'sc-toggle': { scHide[v] = !scHide[v]; el.classList.toggle('off', scHide[v]); el.setAttribute('aria-pressed', String(!scHide[v])); const c = charts.cStudy; if (c){ if (v === 'ma') c.setDatasetVisibility(1, !scHide.ma); c.update(); } break; }
     case 'home-tab': { S.ui.homeTab = v; save(); const panel = $('#ctabPanel'); if (panel){ panel.outerHTML = `<div class="ctab-panel" id="ctabPanel" role="tabpanel">${compactTabPanel(v, homeData())}</div>`; $$('.ctabs [data-act="home-tab"]').forEach(b => { const on = b.dataset.v === v; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); }); } break; }
     case 'q-timer': S.timer ? stopTimer() : startTimer(); renderNav(); rerender(); break;
     case 'q-skin': quickChange(dd => { dd.skin = !dd.skin; }); break;
@@ -2976,6 +3720,10 @@ document.addEventListener('click', e => {
     case 'q-learn': learnHubModal(); break;
     case 'learn-manual-home': closeModal(); learnMode = 'man'; viewDay = todayKey(); if (location.hash === '#tracker') renderTracker(); else location.hash = '#tracker'; setTimeout(() => { const t = $('[data-field="learnDraft"]'); if (t){ t.scrollIntoView({block:'center'}); t.focus(); } }, 120); break;
     case 'q-run': quickChange(dd => { dd.km = +((+dd.km||0) + 1).toFixed(2); }); break;
+    case 'q-water': quickChange(dd => { dd.water = +((+dd.water||0) + .5).toFixed(2); }); break;
+    case 'water-step': { prevScore = score(k); const dd = d(); dd.water = clamp(+((+dd.water||0) + +v).toFixed(2), 0, 15); afterHabitChange('water'); break; }
+    case 'water-set': { prevScore = score(k); d().water = +v; afterHabitChange('water'); break; }
+    case 'water-glass': { prevScore = score(k); const dd = d(), cur = +dd.water||0; dd.water = Math.abs(cur - +v) < 1e-6 ? +(+v - .25).toFixed(2) : +v; afterHabitChange('water'); break; }
     case 'q-sleep': quickChange(dd => { dd.sleep = (+dd.sleep||0) >= SLEEP_GOAL ? null : SLEEP_GOAL; dd.bed = dd.wake = ''; }); break;
     case 'q-study-add': quickChange(dd => { dd.studySec = Math.max(0, (dd.studySec||0) + +v); }); break;
     case 'theme-more': toggleThemeMenu(false); settingsModal(); break;
@@ -3051,6 +3799,7 @@ document.addEventListener('input', e => {
   if (f === 'learnDraft'){ d.learnDraft = el.value; save(); return; }
   if (f === 'social'){ d.social = el.value === '' ? null : Math.max(0, Math.round(+el.value)); afterHabitChange('social', false); return; }
   if (f === 'sleep'){ d.sleep = el.value === '' ? null : clamp(+el.value, 0, 24); afterHabitChange('sleep', false); return; }
+  if (f === 'water'){ const raw = el.value.trim().replace(',', '.'), n = parseFloat(raw); if (raw !== '' && !isFinite(n)) return; d.water = raw === '' ? null : clamp(+n.toFixed(2), 0, 15); afterHabitChange('water', false); paintWater(d.water); return; }
   if (f === 'bed' || f === 'wake'){
     d[f] = el.value; const h = sleepFromTimes(d.bed, d.wake);
     if (h !== null){ d.sleep = h; const inp = $('[data-field="sleep"]'); if (inp) inp.value = h; }
@@ -3085,6 +3834,25 @@ document.addEventListener('submit', e => {
 });
 
 /* =========================================================
+   MICRO-INTERAZIONI
+   ========================================================= */
+function haptic(){ try { if (navigator.vibrate && matchMedia('(pointer:coarse)').matches) navigator.vibrate(6); } catch(e){} }
+document.addEventListener('touchstart', () => {}, {passive:true}); // attiva gli stati :active su iOS
+(() => {
+  if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  let raf = 0, last = null;
+  document.addEventListener('pointermove', e => {
+    last = e; if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; const c = last.target.closest && last.target.closest('.card'); if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty('--mx', `${last.clientX - r.left}px`); c.style.setProperty('--my', `${last.clientY - r.top}px`); });
+  }, {passive:true});
+})();
+(() => {
+  const tb = $('.topbar'); let on = false;
+  const f = () => { const y = window.scrollY, room = document.documentElement.scrollHeight - innerHeight > 180; const v = room && (on ? y > 8 : y > 44); if (v !== on){ on = v; tb.classList.toggle('stuck', v); } };
+  window.addEventListener('scroll', f, {passive:true}); f();
+})();
+
+/* =========================================================
    LIVE TICK
    ========================================================= */
 let lastMinute = -1, lastDayKey_ = todayKey();
@@ -3102,6 +3870,7 @@ setInterval(() => {
     $$('[data-live="study-mini"]').forEach(x => x.textContent = `${fmtDur(s)} / 2h`);
     $$('[data-live="focus-timer"]').forEach(x => x.textContent = txt);
     $$('[data-live="focus-bar"]').forEach(x => x.style.width = Math.min(100, s/STUDY_GOAL*100) + '%');
+    if (route === 'home' && now.getSeconds() % 10 === 0) scLive();
     if (s >= STUDY_GOAL && s - 1.05 < STUDY_GOAL){ toast('Obiettivo studio raggiunto: 2 ore di focus. Rispetto.', {tone:'em', icon:'crown', ms:6000}); if (route === 'tracker') replaceCard('study'); else if (route === 'home') rerender(); }
   }
   if (now.getMinutes() !== lastMinute){ lastMinute = now.getMinutes(); }
