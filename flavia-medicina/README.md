@@ -32,7 +32,11 @@ e funziona anche offline. I dati sono salvati in automatico sul dispositivo (`lo
 Serve un indirizzo **https**. Pubblica la cartella `flavia-medicina` con GitHub Pages (Settings → Pages, poi branch e cartella `/ (root)`)
 oppure con Netlify Drop, che basta trascinare.
 
-L'indirizzo con GitHub Pages sarà `https://<utente>.github.io/<repository>/flavia-medicina/`.
+Indirizzo pubblico attuale: **https://siriofaziani.github.io/Claude-code/flavia-medicina/**
+
+Per un indirizzo dedicato e più corto, crea un repository pubblico (es. `flavia-med`) e carica nella radice il *contenuto* di questa
+cartella, compreso il file `.nojekyll`. Poi apri Settings → Pages → Deploy from a branch → `main` / `/ (root)`. L'app sarà su
+`https://<utente>.github.io/flavia-med/`.
 
 - **iPhone (Safari):** Condividi (su iOS 26 nel menu •••) → «Aggiungi alla schermata Home».
 - **Android (Chrome):** menu ⋮ → «Installa app».
