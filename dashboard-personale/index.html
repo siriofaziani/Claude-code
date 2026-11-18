@@ -1285,6 +1285,29 @@ button.sc-lg.off i{opacity:.3}
 .sc-plot{cursor:pointer}
 .sc-tip-r span{white-space:nowrap;flex:none}
 @media (max-width:900px){ .sc-tip{width:232px} }
+/* ---------- Attività fisica: corsa o palestra ---------- */
+.fit-rule{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:12px;background:var(--em-a);border:1px solid var(--em-b);font-size:12.5px;color:var(--text-2);line-height:1.5}
+.fit-rule .ic{width:15px;height:15px;color:var(--em);flex:none;margin-top:2px}
+.fit-rule b{color:var(--text)}
+.fit-rule i{font-style:normal;color:var(--em-2);font-weight:700}
+.fit-sec{display:flex;flex-direction:column;gap:10px;padding-top:12px;border-top:1px solid var(--line)}
+.fit-h{display:flex;align-items:center;gap:8px}
+.fit-h .ic{width:16px;height:16px;color:var(--gold)}
+.fit-h b{font-size:13.5px;font-weight:600}
+.fit-h .small{margin-left:auto}
+.fit-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fit-t{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;border:1px solid var(--line-2);background:var(--tile);color:var(--text);text-align:left;font:inherit;cursor:pointer;transition:transform .34s var(--spring),border-color .2s,background-color .2s}
+.fit-t .ic{width:18px;height:18px;flex:none;color:var(--muted)}
+.fit-t b{display:block;font-size:13.5px;font-weight:600}
+.fit-t small{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+.fit-t:hover{border-color:var(--line-3)}
+.fit-t:active{transform:scale(.96);transition-duration:.08s}
+.fit-t.on{border-color:var(--em-b);background:var(--em-a)}
+.fit-t.on .ic{color:var(--em)}
+.mus{display:flex;flex-direction:column;gap:9px;padding:12px;border-radius:14px;background:var(--tile);border:1px solid var(--line)}
+.mus .chips{gap:6px}
+.mus .chip{height:32px;padding:0 11px}
+@media (max-width:420px){ .fit-types{grid-template-columns:minmax(0,1fr)} }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -1352,6 +1375,7 @@ const IC = {
   book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23"/><path d="M8.5 7.5h7"/>',
   house:'<path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/><path d="M12 17.2s-3-1.8-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 2-3 3.8-3 3.8z"/>',
   phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.6"/><path d="M11 18.5h2"/>',
+  dumbbell:'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',
   route:'<circle cx="6" cy="18.5" r="2"/><circle cx="18" cy="5.5" r="2"/><path d="M8 18.5h8.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H16"/>',
   film:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7.5 4v16M16.5 4v16M3 9h4.5M3 15h4.5M16.5 9H21M16.5 15H21"/>',
   bulb:'<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/>',
@@ -1450,7 +1474,7 @@ const HABITS = [
   {id:'study',  name:'Studio',              target:'Almeno 2 ore di studio',        icon:'book'},
   {id:'home',   name:'Attività domestica',  target:'Almeno una cosa produttiva',    icon:'house'},
   {id:'social', name:'Social media',        target:'TikTok + Instagram sotto 1 ora', icon:'phone'},
-  {id:'run',    name:'Corsa',               target:'Almeno 5 km',                   icon:'route'},
+  {id:'run',    name:'Attività fisica',     target:'Corsa da 5 km oppure palestra (sala pesi o MMA)', icon:'dumbbell'},
   {id:'cinema', name:'Cinema',              target:'Almeno 1 film ogni 3 giorni',   icon:'film'},
   {id:'learn',  name:'Imparare',            target:'Una cosa nuova ogni giorno',    icon:'bulb'},
   {id:'skin',   name:'Skincare',            target:'Routine quotidiana',            icon:'drop'},
@@ -1551,13 +1575,24 @@ window.addEventListener('beforeunload', () => { try { localStorage.setItem(KEY, 
 /* =========================================================
    DAYS & HABIT LOGIC
    ========================================================= */
-const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', learnItems:[], learnDraft:'', skin:false, sleep:null, bed:'', wake:'', water:null});
+const blankDay = () => ({studySec:0, home:{acts:[], note:''}, social:null, km:null, films:[], learned:'', learnItems:[], learnDraft:'', skin:false, sleep:null, bed:'', wake:'', water:null, gym:{pesi:false, mma:false, muscles:[]}});
+// Palestra: sala pesi (con i gruppi muscolari) e/o MMA
+const MUSCLES = [['petto','Petto'],['dorsali','Dorsali'],['spalle','Spalle'],['bicipiti','Bicipiti'],['tricipiti','Tricipiti'],['addome','Addome'],['quadricipiti','Quadricipiti'],['femorali','Femorali'],['glutei','Glutei'],['polpacci','Polpacci']];
+const MUSCLE_PRESETS = [['Push',['petto','spalle','tricipiti']],['Pull',['dorsali','bicipiti']],['Gambe',['quadricipiti','femorali','glutei','polpacci']],['Full body',['petto','dorsali','spalle','quadricipiti','glutei','addome']]];
+const muscleName = id => (MUSCLES.find(m => m[0] === id) || [id, id])[1];
+const gymOf = d => { const g = d && d.gym; return {pesi:!!(g && g.pesi), mma:!!(g && g.mma), muscles:(g && Array.isArray(g.muscles)) ? g.muscles : []}; };
+const gymDone = d => { const g = gymOf(d); return g.pesi || g.mma; };
+const gymLabel = d => { const g = gymOf(d); return [g.pesi ? 'Sala pesi' : '', g.mma ? 'MMA' : ''].filter(Boolean).join(' + '); };
+const runDone = d => (+(d && d.km) || 0) >= RUN_GOAL;
+const fitDone = d => runDone(d) || gymDone(d);
 function getDay(k, create=false){
   let d = S.days[k];
   if (!d){ d = blankDay(); if (create) S.days[k] = d; }
   if (!d.home) d.home = {acts:[], note:''};
   if (!d.films) d.films = [];
   if (!Array.isArray(d.learnItems)) d.learnItems = [];
+  if (!d.gym || typeof d.gym !== 'object') d.gym = {pesi:false, mma:false, muscles:[]};
+  if (!Array.isArray(d.gym.muscles)) d.gym.muscles = [];
   return d;
 }
 const tracked = k => k >= S.createdAt && k <= todayKey();
@@ -1583,7 +1618,7 @@ function status(k){
     study: studySecs(k) >= STUDY_GOAL,
     home: (d.home?.acts?.length||0) > 0,
     social: soc !== null && soc !== '' && soc !== undefined && +soc < SOCIAL_LIMIT,
-    run: (+d.km||0) >= RUN_GOAL,
+    run: fitDone(d), // corsa da 5 km oppure palestra (sala pesi e/o MMA)
     cinema: cinemaInfo(k).covered,
     learn: (d.learnItems||[]).length > 0 || (d.learned||'').trim().length >= 3,
     skin: !!d.skin,
@@ -1626,9 +1661,11 @@ function chromeOf(id, k){
         meta: over ? `Limite superato di ${n-SOCIAL_LIMIT+ (n===SOCIAL_LIMIT?0:0)} min` : `Margine residuo: ${SOCIAL_LIMIT-n} min`, mini:`${n} min`};
     }
     case 'run': {
-      const km = +d.km || 0, done = km >= RUN_GOAL;
-      return {done, pct:Math.min(1,km/RUN_GOAL), state: done?'done':km>0?'progress':'todo',
-        meta: done ? (km>RUN_GOAL ? `+${N1.format(km-RUN_GOAL)} km oltre l'obiettivo` : 'Obiettivo centrato') : `Mancano ${N1.format(RUN_GOAL-km)} km`, mini:`${N1.format(km)} / 5 km`};
+      const km = +d.km || 0, g = gymOf(d), gl = gymLabel(d), done = km >= RUN_GOAL || !!gl;
+      const parts = [km ? `Corsa ${N1.format(km)} km` : '', g.pesi ? `Sala pesi${g.muscles.length ? ' (' + g.muscles.map(muscleName).join(', ').toLowerCase() + ')' : ''}` : '', g.mma ? 'MMA' : ''].filter(Boolean);
+      return {done, pct: done ? 1 : Math.min(1, km/RUN_GOAL), state: done ? 'done' : km > 0 ? 'progress' : 'todo',
+        meta: done ? parts.join(' · ') : km > 0 ? `Mancano ${N1.format(RUN_GOAL-km)} km, oppure registra un allenamento` : 'Corri 5 km oppure allenati in palestra',
+        mini: [km ? `${N1.format(km)} km` : '', gl].filter(Boolean).join(' + ') || 'Da fare'};
     }
     case 'cinema': {
       const ci = cinemaInfo(k);
@@ -1929,13 +1966,14 @@ function insights(){
     if (v >= SOCIAL_LIMIT) add(9,'warn','Social fuori controllo oggi', `${v} minuti: ${v-SOCIAL_LIMIT>0?(v-SOCIAL_LIMIT)+' oltre il limite':'esattamente al limite'}. Trucco: schermo in scala di grigi e app spostate fuori dalla home. Meno colore, meno dopamina.`);
     else if (v >= 45) add(6,'warn','Sei vicino al limite social', `${v} minuti su 60. Da qui in avanti ogni scroll è tempo rubato a corsa e studio: logout fino a domani.`);
   } else if (h >= 21) add(5,'tip','Registra il tempo sui social','Apri "Tempo di utilizzo" nelle impostazioni del telefono e segna i minuti: ciò che si misura, migliora.');
-  // Corsa
+  // Attività fisica: corsa oppure palestra
   if (!st.run){
-    let since = 0; for (let i=1;i<30;i++){ const k = addDays(t,-i); if (k < S.createdAt) { since = -1; break; } if ((+getDay(k).km||0) > 0){ since = i; break; } }
-    if (since >= 3) add(7,'push',`${since} giorni senza corsa`,'Il corpo è il tuo primo asset. Anche 5 km lenti resettano la mente: scarpe ai piedi entro un\'ora, senza negoziare.');
+    let since = 0; for (let i=1;i<30;i++){ const k = addDays(t,-i); if (k < S.createdAt) { since = -1; break; } const dk = getDay(k); if ((+dk.km||0) > 0 || gymDone(dk)){ since = i; break; } }
+    if (since >= 3) add(7,'push',`${since} giorni senza allenamento`,'Il corpo è il tuo primo asset. Basta una delle due: 5 km di corsa oppure una sessione di sala pesi o MMA. Borsa pronta entro un\'ora, senza negoziare.');
     else if ((+d.km||0) > 0) add(5,'push','Corsa a metà strada', `Sei a ${N1.format(+d.km)} km. Ne mancano ${N1.format(RUN_GOAL-(+d.km))}: un secondo giro breve stasera chiude l'obiettivo.`);
     else if (h >= 6 && h <= 19) add(3,'tip','Finestra ideale per correre','Corri prima delle 20: migliora il sonno e alza energia e concentrazione per lo studio del giorno dopo.');
-  } else if ((+d.km||0) >= 10) add(6,'scale','Prestazione da élite', `${N1.format(+d.km)} km oggi. Domani recupero attivo: sonno, proteine, idratazione. Si scala con la costanza, non con i picchi.`);
+  } else if (gymDone(d) && (+d.km||0) >= RUN_GOAL) add(6,'scale','Doppia sessione', `Corsa e ${gymLabel(d).toLowerCase()} nello stesso giorno: stasera proteine e almeno 8 ore di sonno, domani recupero attivo.`);
+  else if ((+d.km||0) >= 10) add(6,'scale','Prestazione da élite', `${N1.format(+d.km)} km oggi. Domani recupero attivo: sonno, proteine, idratazione. Si scala con la costanza, non con i picchi.`);
   // Cinema
   const ci = cinemaInfo(t);
   if (!ci.covered) add(6,'tip','Serata film','Sei fuori dalla finestra dei 3 giorni. Stasera scegli un film che ti ispiri — una storia di imprenditori o un grande classico — e annota una lezione.');
@@ -2064,6 +2102,7 @@ function homeData(){
     study7: sum(past7.map(studySecs))/3600,
     km7: sum(past7.map(k => +(S.days[k]?.km)||0)),
     runs5: past7.filter(k => (+(S.days[k]?.km)||0) >= RUN_GOAL).length,
+    gym7: past7.filter(k => gymDone(S.days[k])).length, fit7: past7.filter(k => fitDone(S.days[k])).length,
     incM: incomeIn(ms, me),
     pipe: sum(active.map(c => +c.price||0)),
     cur: currentStreak(), best: bestStreak(),
@@ -2101,7 +2140,7 @@ function kpisHTML(D){
   return `<section class="kpis">
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Serie vincente</span>${icon('fire')}</div><div class="kpi-val">${D.cur}<small>${D.cur===1?'giorno':'giorni'}</small></div><div class="kpi-sub">Record: ${D.best} · giornate ≥ ${D.n-WIN_MISS}/${D.n}</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Studio · 7 giorni</span>${icon('book')}</div><div class="kpi-val">${N1.format(D.study7)}<small>ore</small></div>${stSp}<div class="kpi-sub">Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))} al giorno</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Corsa · 7 giorni</span>${icon('route')}</div><div class="kpi-val">${N1.format(D.km7)}<small>km</small></div>${kmSp}<div class="kpi-sub">${D.runs5} uscite da 5 km+</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Attività fisica · 7 giorni</span>${icon('dumbbell')}</div><div class="kpi-val">${D.fit7}<small>/ ${Math.max(1, D.past7.length)} giorni</small></div>${kmSp}<div class="kpi-sub">${N1.format(D.km7)} km · ${plural(D.gym7,'allenamento','allenamenti')} in palestra</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Entrate · ${fmtDate(D.t,{month:'long'})}</span>${icon('euro')}</div><div class="kpi-val em">${EUR0.format(D.incM)}</div><div class="kpi-sub">Abbonamenti: ${EUR.format(subsMonthly())}/mese</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Pipeline CRM</span>${icon('briefcase')}</div><div class="kpi-val gold">${EUR0.format(D.pipe)}</div><div class="kpi-sub">${plural(D.active.length,'trattativa aperta','trattative aperte')}</div></div>
   </section>`;
@@ -2110,7 +2149,7 @@ function kpiListCard(D){
   const rows = [
     ['fire','Serie vincente', `${D.cur} ${D.cur===1?'giorno':'giorni'}`, `Record ${D.best}`],
     ['book','Studio · 7 giorni', `${N1.format(D.study7)} h`, `Media ${fmtDur(D.study7*3600/Math.max(1,D.past7.length))}/giorno`],
-    ['route','Corsa · 7 giorni', `${N1.format(D.km7)} km`, `${D.runs5} uscite da 5 km+`],
+    ['dumbbell','Attività fisica · 7 giorni', `${D.fit7}/${Math.max(1, D.past7.length)} giorni`, `${N1.format(D.km7)} km · ${plural(D.gym7,'allenamento','allenamenti')} in palestra`],
     ['euro',`Entrate · ${fmtDate(D.t,{month:'long'})}`, EUR0.format(D.incM), `Abbonamenti ${EUR.format(subsMonthly())}/mese`],
     ['briefcase','Pipeline CRM', EUR0.format(D.pipe), plural(D.active.length,'trattativa aperta','trattative aperte')],
   ];
@@ -2157,7 +2196,7 @@ function quickList({cols=false} = {}){
     if (h.id === 'study') act = S.timer ? `<button class="btn btn-sm btn-ruby" data-act="q-timer">${icon('stop','ic-fill')} Stop</button>` : `<button class="btn btn-sm btn-em" data-act="q-timer">${icon('play','ic-fill')} Avvia</button>`;
     else if (h.id === 'skin') act = `<button class="btn btn-sm ${d.skin?'btn-outline-gold':''}" data-act="q-skin" aria-pressed="${!!d.skin}">${d.skin?icon('check')+' Fatta':'Segna'}</button>`;
     else if (h.id === 'social') act = `<button class="btn btn-sm" data-act="q-social" title="Aggiungi 5 minuti">+5′</button>`;
-    else if (h.id === 'run') act = `<button class="btn btn-sm" data-act="q-run" title="Aggiungi 1 km">+1 km</button>`;
+    else if (h.id === 'run') act = `<span class="row" style="gap:4px"><button class="btn btn-sm" data-act="q-run" title="Aggiungi 1 km">+1 km</button><a class="btn btn-sm btn-icon ${gymDone(d) ? 'btn-outline-gold' : ''}" href="#tracker" title="Registra la palestra (sala pesi o MMA)" aria-label="Registra la palestra">${icon('dumbbell')}</a></span>`;
     else if (h.id === 'learn') act = `<button class="btn btn-sm ${c.done?'btn-outline-gold':''}" data-act="q-learn" title="Generatore di Sapere">${icon('spark')} ${c.done?'Altra':'Pillola'}</button>`;
     else if (h.id === 'water') act = `<button class="btn btn-sm ${+d.water>=WATER_GOAL?'btn-outline-gold':''}" data-act="q-water" title="Aggiungi mezzo litro">+0,5 L</button>`;
     else if (h.id === 'sleep') act = `<button class="btn btn-sm ${+d.sleep>=SLEEP_GOAL?'btn-outline-gold':''}" data-act="q-sleep" title="Registra 8 ore di sonno">${+d.sleep>=SLEEP_GOAL?icon('check')+' 8h':'8h'}</button>`;
@@ -2238,6 +2277,7 @@ function tickerHTML(){
     ['Acqua', `${N1.format(+(S.days[t]?.water)||0)} L`, `<span class="tk-d ${(+(S.days[t]?.water)||0) >= WATER_GOAL ? 'up' : 'flat'}">obiettivo 3 L</span>`],
     ['Studio 7G', `${N1.format(sw)} h`, pw.length ? dl(sw, sp, v => N1.format(v)+' h') : ''],
     ['Corsa 7G', `${N1.format(kw)} km`, pw.length ? dl(kw, kp, v => N1.format(v)+' km') : ''],
+    ['Attività 7G', `${w.filter(k => fitDone(S.days[k])).length}/${Math.max(1, w.length)} gg`, `<span class="tk-d flat">${w.filter(k => gymDone(S.days[k])).length} palestra</span>`],
     ['Social / giorno', so === null ? '—' : `${Math.round(so)} min`, pw.length ? dl(so, sop, v => Math.round(v)+' min', true) : ''],
     ['Entrate mese', EUR0.format(incM), incP ? dl(incM, incP, v => EUR0.format(v)) : ''],
     ['Abbonamenti', `${EUR.format(subsMonthly())}/m`, ''],
@@ -2534,7 +2574,7 @@ function scTipHTML(i){
   const badge = ok ? '<span class="sc-b ok">2h ✓</span>' : isT ? '<span class="sc-b live">in corso</span>' : s > 0 ? '<span class="sc-b mid">sotto 2h</span>' : '<span class="sc-b no">nessuno</span>';
   const vs = (s/3600 - D.avgH) * 3600;
   const hs = habitsFor(k).filter(h => h.id !== 'study');
-  const vals = [(+day.km || 0) ? `${N1.format(+day.km)} km` : '', (+day.sleep || 0) ? `${N1.format(+day.sleep)} h sonno` : '', day.social !== null && day.social !== '' && day.social !== undefined ? `${day.social} min social` : ''].filter(Boolean).join(' · ');
+  const vals = [(+day.km || 0) ? `${N1.format(+day.km)} km` : '', gymLabel(day), (+day.sleep || 0) ? `${N1.format(+day.sleep)} h sonno` : '', day.social !== null && day.social !== '' && day.social !== undefined ? `${day.social} min social` : ''].filter(Boolean).join(' · ');
   return `<div class="sc-tip-h"><b>${cap(fmtDate(k,{weekday:'short', day:'numeric', month:'short'}).replace('.',''))}</b>${badge}</div>
     <div class="sc-tip-v num">${fmtDur(s)}</div>
     <div class="bar thin ${ok ? 'done' : ''}"><i style="width:${Math.min(100, s/STUDY_GOAL*100)}%"></i></div>
@@ -2663,7 +2703,7 @@ function compactHome(D){
   return `<section class="card card-gold compact-head">
       ${ring(D.sc/D.n, 84, 7, `<div class="ring-num" style="font-size:24px">${Math.round(D.sc/D.n*100)}<span style="font-size:12px">%</span></div>`)}
       <div style="min-width:0"><div class="eyebrow">Riepilogo di oggi</div><h2 class="ch-greet">${greeting()}${D.name}.</h2><p class="ch-line">${D.line}</p></div>
-      <div class="chips-kpi">${ck('Serie', `${D.cur} gg`)}${ck('Studio 7g', `${N1.format(D.study7)} h`)}${ck('Corsa 7g', `${N1.format(D.km7)} km`)}${ck('Entrate', EUR0.format(D.incM), 'em')}${ck('Pipeline', EUR0.format(D.pipe), 'gold')}</div>
+      <div class="chips-kpi">${ck('Serie', `${D.cur} gg`)}${ck('Studio 7g', `${N1.format(D.study7)} h`)}${ck('Attività 7g', `${D.fit7}/${Math.max(1, D.past7.length)}`)}${ck('Entrate', EUR0.format(D.incM), 'em')}${ck('Pipeline', EUR0.format(D.pipe), 'gold')}</div>
     </section>
     <section class="card compact-tabs">
       <div class="ctabs" role="tablist" aria-label="Sezioni della Home">${HOME_TABS.map(([id,l,ic]) => `<button role="tab" aria-selected="${tab===id}" class="${tab===id?'on':''}" data-act="home-tab" data-v="${id}">${icon(ic)}${l}${cnt[id]!==undefined?`<span class="cnt">${cnt[id]}</span>`:''}</button>`).join('')}</div>
@@ -2728,10 +2768,22 @@ function habitCard(id){
       break;
     }
     case 'run': {
-      const wk = sum(range(addDays(k,-6), k).map(x => +(S.days[x]?.km)||0));
-      body = `<div class="stepper"><button class="btn btn-icon" data-act="run-step" data-v="-0.5" aria-label="Meno mezzo km">${icon('minus')}</button><div class="unit-wrap"><input class="input input-num" type="number" min="0" step="0.1" inputmode="decimal" data-field="km" value="${d.km ?? ''}" placeholder="0,0"><span>km</span></div><button class="btn btn-icon" data-act="run-step" data-v="0.5" aria-label="Più mezzo km">${icon('plus')}</button></div>
+      const wk = sum(range(addDays(k,-6), k).map(x => +(S.days[x]?.km)||0)), g = gymOf(d);
+      body = `<div class="fit-rule">${icon('check')}<span>Basta <b>una delle due</b>: corsa da almeno 5 km <i>oppure</i> un allenamento in palestra.</span></div>
+        <div class="fit-sec"><div class="fit-h">${icon('route')}<b>Corsa</b><span class="small ${(+d.km||0) >= RUN_GOAL ? 'em' : 'muted'}">${(+d.km||0) >= RUN_GOAL ? '5 km raggiunti' : 'obiettivo 5 km'}</span></div>
+        <div class="stepper"><button class="btn btn-icon" data-act="run-step" data-v="-0.5" aria-label="Meno mezzo km">${icon('minus')}</button><div class="unit-wrap"><input class="input input-num" type="number" min="0" step="0.1" inputmode="decimal" data-field="km" value="${d.km ?? ''}" placeholder="0,0"><span>km</span></div><button class="btn btn-icon" data-act="run-step" data-v="0.5" aria-label="Più mezzo km">${icon('plus')}</button></div>
         <div class="row wrap" style="gap:6px">${[3,5,7.5,10,15].map(n => `<button class="btn btn-sm" data-act="run-set" data-v="${n}">${N1.format(n)} km</button>`).join('')}</div>
-        <div class="small muted">Ultimi 7 giorni: <span class="gold" data-live="run-week">${N1.format(wk)} km</span></div>`;
+        <div class="small muted">Ultimi 7 giorni: <span class="gold" data-live="run-week">${N1.format(wk)} km</span></div></div>
+        <div class="fit-sec"><div class="fit-h">${icon('dumbbell')}<b>Palestra</b><span class="small ${g.pesi || g.mma ? 'em' : 'muted'}">${gymLabel(d) || 'scegli cosa hai fatto'}</span></div>
+          <div class="fit-types" role="group" aria-label="Tipo di allenamento">
+            <button class="fit-t ${g.pesi ? 'on' : ''}" data-act="gym-toggle" data-v="pesi" aria-pressed="${g.pesi}">${icon(g.pesi ? 'check' : 'dumbbell')}<span><b>Sala pesi</b><small>con i gruppi muscolari</small></span></button>
+            <button class="fit-t ${g.mma ? 'on' : ''}" data-act="gym-toggle" data-v="mma" aria-pressed="${g.mma}">${icon(g.mma ? 'check' : 'bolt')}<span><b>MMA</b><small>sparring, tecnica, sacco</small></span></button>
+          </div>
+          ${g.pesi ? `<div class="mus">
+            <div class="row between wrap" style="gap:6px"><span class="label">Gruppi muscolari allenati</span><span class="row wrap" style="gap:5px">${MUSCLE_PRESETS.map((pr, i) => `<button class="btn btn-sm ${pr[1].every(m => g.muscles.includes(m)) ? 'btn-outline-gold' : 'btn-ghost'}" data-act="mus-preset" data-v="${i}">${pr[0]}</button>`).join('')}</span></div>
+            <div class="chips">${MUSCLES.map(([id, nm]) => `<button class="chip ${g.muscles.includes(id) ? 'on' : ''}" data-act="mus-toggle" data-v="${id}" aria-pressed="${g.muscles.includes(id)}">${g.muscles.includes(id) ? icon('check') : ''}${nm}</button>`).join('')}</div>
+            ${g.muscles.length ? '' : '<div class="small muted">Seleziona i muscoli che hai allenato oggi.</div>'}</div>` : ''}
+        </div>`;
       break;
     }
     case 'cinema': {
@@ -3300,7 +3352,9 @@ function periodMetrics(a, b){
     waterAvg: waterLogged.length ? avg(waterLogged) : null, waterOk: waterLogged.filter(v => v >= WATER_GOAL).length,
     sleepAvg: sleepLogged.length ? avg(sleepLogged) : null, sleepOk: sleepLogged.filter(v => v >= SLEEP_GOAL).length,
     studyH: sum(keys.map(studySecs))/3600,
-    km: sum(runs), runDays: runs.length,
+    km: sum(runs), runDays: runs.length, run5: keys.filter(k => runDone(S.days[k])).length,
+    pesi: keys.filter(k => gymOf(S.days[k]).pesi).length, mma: keys.filter(k => gymOf(S.days[k]).mma).length, fitDays: keys.filter(k => fitDone(S.days[k])).length,
+    muscles: (() => { const c = {}; keys.forEach(k => { const g = gymOf(S.days[k]); if (g.pesi) g.muscles.forEach(m => c[m] = (c[m] || 0) + 1); }); return Object.entries(c).sort((a, b) => b[1] - a[1]); })(),
     socialAvg: socialLogged.length ? avg(socialLogged) : null, socialOver: socialLogged.filter(v => v >= SOCIAL_LIMIT).length,
     films: sum(keys.map(k => S.days[k]?.films?.length || 0)),
     learned: keys.filter(k => status(k).learn).length,
@@ -3344,7 +3398,7 @@ function renderStats(){
   <section class="kpis mt-18">
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Completamento medio</span>${icon('target')}</div><div class="kpi-val">${Math.round(M.completion*100)}<small>%</small></div><div class="kpi-sub">${dl(M.completion*100, P.completion*100, v => Math.round(v)+' pt')} vs periodo prec.</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Ore di studio</span>${icon('book')}</div><div class="kpi-val">${N1.format(M.studyH)}<small>h</small></div><div class="kpi-sub">${dl(M.studyH, P.studyH, v => N1.format(v)+' h')} · ${Math.round(M.n?M.studyH/(M.n*2)*100:0)}% del target</div></div>
-    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Km corsi</span>${icon('route')}</div><div class="kpi-val">${N1.format(M.km)}<small>km</small></div><div class="kpi-sub">${dl(M.km, P.km, v => N1.format(v)+' km')} · ${plural(M.runDays,'uscita','uscite')}</div></div>
+    <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Attività fisica</span>${icon('dumbbell')}</div><div class="kpi-val">${M.fitDays}<small>/ ${M.n} giorni</small></div><div class="kpi-sub">${N1.format(M.km)} km · ${M.pesi} sala pesi · ${M.mma} MMA</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Social / giorno</span>${icon('phone')}</div><div class="kpi-val">${M.socialAvg===null?'—':Math.round(M.socialAvg)}<small>min</small></div><div class="kpi-sub">${M.socialAvg===null?'Nessun dato':`${dl(M.socialAvg, P.socialAvg??M.socialAvg, v => Math.round(v)+' min', true)} · ${M.socialOver} giorni oltre`}</div></div>
     <div class="card kpi"><div class="kpi-top"><span class="eyebrow">Giornate vincenti</span>${icon('fire')}</div><div class="kpi-val">${M.wins}<small>/ ${M.n}</small></div><div class="kpi-sub">${M.perfect} perfette · ${M.sleepAvg===null?`${M.films} film visti`:`sonno medio ${fmtDur(M.sleepAvg*3600)}`}</div></div>
   </section>
@@ -3356,7 +3410,7 @@ function renderStats(){
 
   <section class="grid g-2 mt-18">
     <div class="card"><div class="card-head"><div><div class="eyebrow">Focus</div><h3 class="card-title">Ore di studio</h3></div><span class="gold serif" style="font-size:22px">${N1.format(M.studyH)} h</span></div><div class="chart-box"><canvas id="cStudy"></canvas></div></div>
-    <div class="card"><div class="card-head"><div><div class="eyebrow">Corpo</div><h3 class="card-title">Km di corsa</h3></div><span class="em serif" style="font-size:22px">${N1.format(M.km)} km</span></div><div class="chart-box"><canvas id="cRun"></canvas></div></div>
+    <div class="card"><div class="card-head"><div><div class="eyebrow">Corpo</div><h3 class="card-title">Corsa e palestra</h3></div><span class="em serif" style="font-size:22px">${N1.format(M.km)} km · ${M.pesi + M.mma} sessioni</span></div><div class="chart-box"><canvas id="cRun"></canvas></div></div>
     <div class="card"><div class="card-head"><div><div class="eyebrow">Disciplina digitale</div><h3 class="card-title">Minuti sui social</h3></div><span class="pill plain">limite 60 min</span></div><div class="chart-box"><canvas id="cSocial"></canvas></div></div>
     <div class="card"><div class="card-head"><div><div class="eyebrow">Costanza</div><h3 class="card-title">Tasso di successo per abitudine</h3></div></div>
       <div class="habit-rates">${HABITS.map(h => { const v = M.rates[h.id]; return `<div class="hr-row"><span class="row" style="gap:8px">${icon(h.icon)}${h.name}</span><div class="bar ${v>=.7?'done':v<.35&&M.den[h.id]?'over':''}"><i style="width:${v*100}%"></i></div><b>${M.den[h.id] ? Math.round(v*100)+'%' : '—'}</b></div>`; }).join('')}</div>
@@ -3403,9 +3457,15 @@ function renderStats(){
     {type:'line', label:'Obiettivo', data:goalStudy, borderColor:'rgba(255,255,255,.28)', borderDash:[4,4], borderWidth:1, pointRadius:0, stepped:'middle'}]},
     options:{scales:baseScales({ticks:{callback:v=>v+'h', maxTicksLimit:5, padding:8}}), interaction:{mode:'index', intersect:false}, plugins:{tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${N1.format(c.raw)} h`}}}}});
   const runData = B.map(b => +sum(b.keys.map(k => +(S.days[k]?.km)||0)).toFixed(1));
-  mkChart('cRun', {type:'bar', data:{labels:L, datasets:[{label:'Km', data:runData, backgroundColor:gradFill(PL.s2, rg(PL.sRgb,.35)), borderRadius:6, maxBarThickness:28},
-    ...(days<=31?[{type:'line', label:'Obiettivo', data:L.map(()=>RUN_GOAL), borderColor:'rgba(255,255,255,.28)', borderDash:[4,4], borderWidth:1, pointRadius:0}]:[])]},
-    options:{scales:baseScales({ticks:{callback:v=>v+' km', maxTicksLimit:5, padding:8}}), interaction:{mode:'index', intersect:false}, plugins:{tooltip:{callbacks:{label:c => ` ${c.dataset.label}: ${N1.format(c.raw)} km`}}}}});
+  const pesiData = B.map(b => b.keys.filter(k => gymOf(S.days[k]).pesi).length), mmaData = B.map(b => b.keys.filter(k => gymOf(S.days[k]).mma).length);
+  const bsR = baseScales({ticks:{callback:v=>v+' km', maxTicksLimit:5, padding:8}});
+  mkChart('cRun', {type:'bar', data:{labels:L, datasets:[{label:'Km', data:runData, backgroundColor:gradFill(PL.s2, rg(PL.sRgb,.35)), borderRadius:6, maxBarThickness:28, yAxisID:'y', order:3},
+    ...(days<=31?[{type:'line', label:'Obiettivo', data:L.map(()=>RUN_GOAL), borderColor:'rgba(255,255,255,.28)', borderDash:[4,4], borderWidth:1, pointRadius:0, yAxisID:'y', order:1}]:[]),
+    {type:'line', label:'Sala pesi', data:pesiData, yAxisID:'y1', showLine:false, pointRadius: c => c.raw ? 4 + Math.min(3, c.raw) : 0, pointBackgroundColor:PL.a2, pointBorderColor:'rgba(0,0,0,.4)', order:0},
+    {type:'line', label:'MMA', data:mmaData, yAxisID:'y1', showLine:false, pointStyle:'rectRot', pointRadius: c => c.raw ? 5 + Math.min(3, c.raw) : 0, pointBackgroundColor:PL.ruby, pointBorderColor:'rgba(0,0,0,.4)', order:0}]},
+    options:{scales:{x:bsR.x, y:bsR.y, y1:{position:'right', min:0, suggestedMax:Math.max(2, ...pesiData, ...mmaData) + 1, grid:{display:false}, border:{display:false}, ticks:{stepSize:1, precision:0, padding:6, callback:v => v ? v + '×' : ''}}},
+      interaction:{mode:'index', intersect:false}, plugins:{legend:{display:true, position:'bottom', labels:{boxWidth:10, boxHeight:10, usePointStyle:true, filter:i => i.text !== 'Obiettivo'}},
+        tooltip:{callbacks:{label:c => c.dataset.yAxisID === 'y1' ? ` ${c.dataset.label}: ${plural(c.raw, 'sessione', 'sessioni')}` : ` ${c.dataset.label}: ${N1.format(c.raw)} km`}}}}});
   const socData = B.map(b => { const v = b.keys.map(k => S.days[k]?.social).filter(x => x !== null && x !== undefined && x !== '').map(Number); return v.length ? Math.round(avg(v)) : null; });
   mkChart('cSocial', {type:'line', data:{labels:L, datasets:[{label:'Minuti (media)', data:socData, borderColor:PL.sky, borderWidth:2, tension:.35, fill:true, backgroundColor:gradFill(rg(PL.skyRgb,.22), rg(PL.skyRgb,0)), pointRadius:days<=31?3:2, pointBackgroundColor: socData.map(v => v>=SOCIAL_LIMIT?PL.ruby:PL.sky), pointBorderWidth:0, spanGaps:true},
     {label:'Limite', data:L.map(()=>SOCIAL_LIMIT), borderColor:rg(PL.rRgb,.55), borderDash:[5,5], borderWidth:1, pointRadius:0, fill:false}]},
@@ -3436,6 +3496,7 @@ function reportHTML(M, P, days){
   p.push(`<strong>Punto di forza:</strong> ${best.name.toLowerCase()} con il ${Math.round(best.r*100)}% di successo. ${worst.length ? `<strong>Da migliorare:</strong> ${worst.map(h => `${h.name.toLowerCase()} (${Math.round(h.r*100)}%)`).join(', ')}.` : 'Tutte le abitudini sono sopra l\'85%: livello eccellente.'}`);
   p.push(`<strong>Studio:</strong> ${N1.format(M.studyH)} ore, il ${Math.round(studyPct*100)}% del target teorico di ${M.n*2} ore. ${studyPct>=1?'Sei sopra obiettivo: valuta di alzare la qualità con esercizi pratici.':studyPct>=.7?'Vicino al target: un blocco extra nel weekend chiude il gap.':'Sotto target: sposta lo studio nella fascia oraria in cui hai più energia e proteggila.'} <strong>Corsa:</strong> ${N1.format(M.km)} km in ${plural(M.runDays,'uscita','uscite')}${M.runDays?` (media ${N1.format(M.km/M.runDays)} km)`:''}. ${M.socialAvg!==null?`<strong>Social:</strong> media di ${Math.round(M.socialAvg)} minuti al giorno, ${plural(M.socialOver,'giorno','giorni')} oltre il limite.`:''}`);
   if (M.waterAvg !== null) p.push(`<strong>Idratazione:</strong> media di ${N1.format(M.waterAvg)} L al giorno, ${plural(M.waterOk,'giorno','giorni')} da 3 litri o più. ${M.waterAvg >= WATER_GOAL ? 'Ottimo: concentrazione e recupero ne beneficiano.' : 'Usa una borraccia da 1 litro e riempila tre volte: è il modo più semplice per arrivare a 3 litri.'}`);
+  if (M.fitDays || M.km) p.push(`<strong>Attività fisica:</strong> task completata in ${plural(M.fitDays,'giorno','giorni')} su ${M.n} (${Math.round(M.fitDays / Math.max(1, M.n) * 100)}%): ${plural(M.run5,'corsa','corse')} da 5 km o più (${N1.format(M.km)} km in tutto), ${plural(M.pesi,'giorno','giorni')} di sala pesi e ${plural(M.mma,'sessione','sessioni')} di MMA.${M.muscles.length ? ` Gruppi più allenati: ${M.muscles.slice(0, 3).map(([m, n]) => `${muscleName(m).toLowerCase()} (${n})`).join(', ')}.` : ''} ${M.fitDays / Math.max(1, M.n) >= .7 ? 'Costanza da atleta: alterna corsa e pesi per recuperare meglio.' : 'Obiettivo semplice: almeno 5 giorni su 7, alternando corsa, pesi e MMA.'}`);
   if (M.sleepAvg !== null) p.push(`<strong>Sonno:</strong> media di ${fmtDur(M.sleepAvg*3600)} a notte, ${plural(M.sleepOk,'notte','notti')} da 8 ore o più. ${M.sleepAvg >= SLEEP_GOAL ? 'Base solida: il recupero sostiene studio e corsa.' : M.sleepAvg >= 7 ? 'Quasi a target: anticipa di 30 minuti l\'orario a letto.' : 'Debito di sonno evidente: è la prima leva da sistemare, prima ancora dello studio.'}`);
   if (bestDow && worstDow && bestDow[1] !== worstDow[1]) p.push(`Il tuo giorno migliore è il <strong>${dowNames[bestDow[1]]}</strong> (${Math.round(bestDow[0]*100)}%), il più debole il <strong>${dowNames[worstDow[1]]}</strong> (${Math.round(worstDow[0]*100)}%). Replica la struttura del ${dowNames[bestDow[1]]} — orari, sveglia, ordine delle task — nei giorni più fragili.`);
   const LS = M.learn;
@@ -3775,6 +3836,9 @@ document.addEventListener('click', e => {
     case 'social-set': { prevScore = score(k); d().social = +v; afterHabitChange('social'); break; }
     case 'run-step': { prevScore = score(k); const dd = d(); dd.km = Math.max(0, +((+dd.km||0) + +v).toFixed(2)); afterHabitChange('run'); break; }
     case 'run-set': { prevScore = score(k); d().km = +v; afterHabitChange('run'); break; }
+    case 'gym-toggle': { prevScore = score(k); const g = d().gym; g[v] = !g[v]; if (g[v]) toast(v === 'mma' ? 'MMA registrata: attività fisica completata.' : 'Sala pesi registrata: ora scegli i gruppi muscolari.', {tone:'em', icon:'dumbbell'}); afterHabitChange('run'); break; }
+    case 'mus-toggle': { prevScore = score(k); const g = d().gym, i = g.muscles.indexOf(v); i >= 0 ? g.muscles.splice(i, 1) : g.muscles.push(v); if (g.muscles.length) g.pesi = true; afterHabitChange('run'); break; }
+    case 'mus-preset': { prevScore = score(k); const g = d().gym, pr = MUSCLE_PRESETS[+v]; pr[1].forEach(m => { if (!g.muscles.includes(m)) g.muscles.push(m); }); g.pesi = true; afterHabitChange('run'); break; }
     case 'film-del': { prevScore = score(k); d().films.splice(+v,1); afterHabitChange('cinema'); break; }
     case 'skin-toggle': { prevScore = score(k); const dd = d(); dd.skin = !dd.skin; afterHabitChange('skin'); break; }
     case 'sleep-step': { prevScore = score(k); const dd = d(); dd.sleep = clamp(+((+dd.sleep||0) + +v).toFixed(2), 0, 24); dd.bed = dd.wake = ''; afterHabitChange('sleep'); break; }

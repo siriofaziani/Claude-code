@@ -48,6 +48,17 @@ restano invariati. La data è nella costante `HISTORY_START` in `index.html`.
 
 Con il timer acceso i grafici si aggiornano in tempo reale.
 
+## Attività fisica
+
+La task «Attività fisica» (prima «Corsa») è completata se fai **almeno una delle due**:
+- **corsa** da almeno 5 km, indicando i km;
+- **palestra**: **Sala pesi**, con i gruppi muscolari allenati (o una scheda rapida Push, Pull, Gambe o Full body), **MMA**,
+  oppure entrambe.
+
+Basta una sola delle due perché la task si spunti da sola e venga contata nei grafici dei progressi, nella serie e nelle
+giornate vincenti. Nelle Statistiche il grafico «Corsa e palestra» mostra i km e le sessioni di sala pesi e MMA, e il
+resoconto riassume giorni attivi e gruppi muscolari più allenati. I giorni passati con una corsa da 5 km restano completati.
+
 ## Acqua
 
 La task «Acqua» (obiettivo **3 litri**) conta dal giorno dell'aggiornamento, quindi i giorni passati non vengono penalizzati.
